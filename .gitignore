@@ -1,0 +1,6 @@
+build
+state/*
+definitions/old
+mapper_scripts
+gen_keys
+todo.org

@@ -1,0 +1,43 @@
+commands = {}
+dependencies = {
+   serpent = {
+      ["0.28-1"] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               },
+               {
+                  op = "<",
+                  version = {
+                     5, 4, string = "5.4"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   }
+}
+modules = {
+   serpent = {
+      "serpent/0.28-1"
+   }
+}
+repository = {
+   serpent = {
+      ["0.28-1"] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               serpent = "serpent.lua"
+            }
+         }
+      }
+   }
+}
