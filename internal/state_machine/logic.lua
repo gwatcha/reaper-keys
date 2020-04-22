@@ -42,6 +42,7 @@ end
 
 function getCompletions(command_sequence, definitions_tables, valid_command_types)
     local completions = {}
+    local found_completion = false
     for _, definition_table in ipairs(definitions_tables) do
       for _, valid_command_type in ipairs(valid_command_types) do
         local section_completions = definitions.getCompletions(command_sequence, definition_table[valid_command_type])
@@ -49,6 +50,7 @@ function getCompletions(command_sequence, definitions_tables, valid_command_type
         if section_completions then
           for sequence, sequence_value in pairs(section_completions) do
             if not completions[sequence] then
+              found_completion = true
               completions[sequence] = sequence_value
             end
           end
@@ -56,22 +58,18 @@ function getCompletions(command_sequence, definitions_tables, valid_command_type
       end
     end
 
-    return completions
+    if found_completion then
+      return completions
+    else
+      return nil
+    end
 end
 
 function logic.tick(state, key_press)
-  local new_state = state
-
-  if key_press['key'] == "<esc>" then
-    new_state['key_sequence'] = ""
-    new_state['mode'] = modes['normal']
-    return new_state
-  end
-
   local new_key_sequence = state['key_sequence'] .. key_press['key']
 
-  local prefix_num, command_sequence = splitIntoPrefixNumberAndCommandSequence(new_key_sequence)
   local repetitions = 1
+  local prefix_num, command_sequence = splitIntoPrefixNumberAndCommandSequence(new_key_sequence)
   if prefix_num then
     repetitions = prefix_num
   end
@@ -85,15 +83,20 @@ function logic.tick(state, key_press)
 
   local definitions_tables = definitions.readMultiple({key_press['context'], 'global'})
 
+  local new_state = state
+
   local command = findCommand(command_sequence, definitions_tables, valid_command_types)
   if command then
     log.info('Command triggered: ' .. serpent.block(command, {comment=false}))
     new_state = dispatch(command, repetitions, state)
   else
     local completions = getCompletions(command_sequence, definitions_tables, valid_command_types)
-    if #completions > 0 then
+    if completions then
       new_state['key_sequence'] = new_key_sequence
       log.info('Completions: ' .. serpent.block(completions, {comment=false}))
+
+      -- if timeout(time)
+      display.showAutocompleteHelp(completions)
     else
       new_state['key_sequence'] = ""
       log.info('Invalid key sequence.')

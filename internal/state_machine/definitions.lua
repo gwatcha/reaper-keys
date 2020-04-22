@@ -64,7 +64,7 @@ function definitions.findCommand(command_sequence, definitions_table_section)
   local folder = definitions_table_section[first_key]
   if rest_of_command_sequence and folder and isFolder(folder) then
     local folder_table = folder[2]
-    return findCommand(rest_of_command_sequence,  folder_table)
+    return definitions.findCommand(rest_of_command_sequence,  folder_table)
   end
 
   return nil
@@ -75,6 +75,19 @@ function definitions.getCompletions(command_sequence, definitions_table_section)
   if command_sequence_value and isFolder(command_sequence_value) then
       local folder_table = command_sequence_value[2]
       return folder_table
+  end
+
+  local sequence_completions = {}
+  local found_sequence_completion = false
+  for full_command_sequence, full_command_sequence_value in pairs(definitions_table_section) do
+    rest_of_sequence, match = string.gsub(full_command_sequence, "^" .. command_sequence, "")
+    if match == 1 then
+      sequence_completions[rest_of_sequence] = full_command_sequence_value
+      found_sequence_completion = true
+    end
+  end
+  if found_sequence_completion then
+    return sequence_completions
   end
 
   local first_key, rest_of_command_sequence = stripFirstKey(command_sequence)

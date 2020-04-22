@@ -627,7 +627,7 @@
   },
   motions = {
     G = {{"_XENAKIOS_TVPAGEEND", 40296, "_XENAKIOS_SELLASTOFSELTRAX"} ,"TrackViewEnd, SelectAllTracks, SelectLastOfSelectedTracks" },
-    ["g"] = {{"_XENAKIOS_TVPAGEHOME", 40296, "_XENAKIOS_SELFIRSTOFSELTRAX"} , "TrackViewStart, SelectAllTracks, SelectFirstOfSelectedTracks" },
+    ["gg"] = {{"_XENAKIOS_TVPAGEHOME", 40296, "_XENAKIOS_SELFIRSTOFSELTRAX"} , "TrackViewStart, SelectAllTracks, SelectFirstOfSelectedTracks" },
     B = {
       40790,
       "PrevBigItem"
