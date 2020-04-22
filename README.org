@@ -10,7 +10,7 @@ Inspired by and written in spacemacs, a text editor with vim bindings.
 * Usage
 - Put this repository in your ~Scripts~ directory
 - Import the keymap ~reaper-keys-<distribution>.ReaperKeyMap~.  In the
-  ~keymaps/build~ folder
+  keymaps/build folder
   
 * Customization
 

@@ -7,17 +7,26 @@ local definitions_dir = root_path .. "definitions/"
 local table_io = require("utils.table_io")
 local log = require("utils.log")
 local str = require("string")
+local ser = require("serpent")
 
-function read(definition_table_name)
-  local ok, definitions = table_io.read(definitions_dir .. definition_table_name)
+function definitions.read(table_name)
+  local ok, definitions = table_io.read(definitions_dir .. table_name)
   if not ok then
-    log.fatal("Couldn't read '" .. definition_table_name .. "': " .. definitions)
+    log.fatal("Couldn't read '" .. table_name .. "', got: " .. definitions)
   end
 
   return definitions
 end
 
-function write(name, definition_table)
+function definitions.readMultiple(table_names)
+  local tables = {}
+  for index, table_name in ipairs(table_names) do
+    tables[index] = definitions.read(table_name)
+  end
+  return tables
+end
+
+function definitions.write(name, definition_table)
   table_io.write(definitions_dir .. file, definition_table)
 end
 
@@ -45,38 +54,37 @@ function stripFirstKey(key_sequence)
   return first_key, rest_of_sequence
 end
 
-function findCommandInTable(command_sequence, definitions_table)
-  local command_sequence_value = definitions_table[command_sequence]
+function definitions.findCommand(command_sequence, definitions_table_section)
+  local command_sequence_value = definitions_table_section[command_sequence]
   if command_sequence_value and not isFolder(command_sequence_value) then
     return command_sequence_value
   end
 
   local first_key, rest_of_command_sequence = stripFirstKey(command_sequence)
-  local folder = definitions_table[first_key]
+  local folder = definitions_table_section[first_key]
   if rest_of_command_sequence and folder and isFolder(folder) then
     local folder_table = folder[2]
-    return findCommandInTable(rest_of_command_sequence,  folder_table)
+    return findCommand(rest_of_command_sequence,  folder_table)
   end
 
   return nil
 end
 
-function definitions.findCommand(command_sequence, definition_table_names, command_types)
-  local definition_tables = {}
-  for index, table_name in ipairs(definition_table_names) do
-    definition_tables[index] = read(table_name)
+function definitions.getCompletions(command_sequence, definitions_table_section)
+  local command_sequence_value = definitions_table_section[command_sequence]
+  if command_sequence_value and isFolder(command_sequence_value) then
+      local folder_table = command_sequence_value[2]
+      return folder_table
   end
 
-  log.info("finding sequence .." .. command_sequence)
-
-  for _, definition_table in ipairs(definition_tables) do
-    for _, command_type in ipairs(command_types) do
-      local command = findCommandInTable(command_sequence, definition_table[command_type])
-      if command then
-        return command
-      end
-    end
+  local first_key, rest_of_command_sequence = stripFirstKey(command_sequence)
+  local folder = definitions_table_section[first_key]
+  if rest_of_command_sequence and folder and isFolder(folder) then
+    local folder_table = folder[2]
+    return definitions.getCompletions(rest_of_command_sequence, folder_table)
   end
+
+  return nil
 end
 
 return definitions
