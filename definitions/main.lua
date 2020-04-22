@@ -355,6 +355,10 @@
       40210,
       "CopyTrack"
     },
+    zp = {
+      40295,
+      "ZoomProject"
+    }, 
     z1 = {
       40444,
       "TrackView.Load_1"

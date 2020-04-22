@@ -9,7 +9,8 @@ Inspired by and written in spacemacs, a text editor with vim bindings.
 
 * Usage
 - Put this repository in your ~Scripts~ directory
-- Import the keymap ~keys.ReaperKeyMap~. BACKUP YOUR KEYMAP FIRST. This will overwrite any mappings you have for letters and numbers.
+- Import the keymap ~reaper-keys-<distribution>.ReaperKeyMap~.  In the
+  ~keymaps/build~ folder
   
 * Customization
 

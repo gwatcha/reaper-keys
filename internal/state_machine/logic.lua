@@ -11,7 +11,7 @@ local modes = {
 }
 
 local display = require("display")
-local definitions = require("definitions")
+local definitions = require("state_machine.definitions")
 local dispatch = require("dispatch")
 local str = require("string")
 

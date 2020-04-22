@@ -1,9 +1,10 @@
 local state_interface= {}
 
 local serpent = require("serpent")
+
 local info = debug.getinfo(1,'S');
-local root_path = info.source:match[[.*vimper/]]:sub(2)
-local state_file_path = root_path .. "state_machine/state"
+local root_path = info.source:match[[[^@]*reaper.keys/]]
+local state_file_path = root_path .. "internal/state_machine/state"
 
 local table_io = require("utils.table_io")
 
