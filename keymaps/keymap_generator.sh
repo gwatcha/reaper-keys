@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 scriptRoot="./reaper-keys/"
 
-# keymapFile="keymaps/build/reaper-keys-linux.ReaperKeyMap"
-keymapFile="keymaps/build/reaper-keys-windows.ReaperKeyMap"
+keymapFile="keymaps/build/reaper-keys-linux.ReaperKeyMap"
+# keymapFile="keymaps/build/reaper-keys-windows.ReaperKeyMap"
 
-rm -r keymaps/build/
-mkdir keymaps/build/
-mkdir keymaps/build/key_scripts
+# rm -r keymaps/build/
+# mkdir keymaps/build/
+# mkdir keymaps/build/key_scripts
 
 tmpScripts="scripts"
 tmpKeys="keys"
@@ -88,7 +88,7 @@ function genLetters() {
     local letters="abcdefghijklmnopqrstuvwxyz"
     for (( i=0; i<${#letters};i++ )) ; do
         local char="${letters:$i:1}"
-        local upper=$(echo "$c" | tr '[:lower:]' '[:upper:]')
+        local upper=$(echo "$char" | tr '[:lower:]' '[:upper:]')
         local n=$(( 65 + i ))
         gen $char $char $(( 65 + i ))
         gen "big_$char" "$upper" "$n" 5
@@ -150,25 +150,11 @@ gen "up" "<up>" 32806 1
 gen "right" "<right>" 32807 1
 gen "down" "<down>" 32808 1
 
-# works on windows
-gen "openparen" "(" 57 5
-gen "closeparen" ")" 48 5
-gen "dollar" "$" 52 5
-gen "percent" "%" 53 5
-gen "ampersand" "&" 55 5
-gen "exclamation" "!" 49 5
-gen "quotation" "\"" 124 5
-gen "big_left" "<LEFT>" 32805 5
-gen "big_up" "<UP>" 32806 5
-gen "big_right" "<RIGHT>" 32807 5
-gen "big_down" "<DOWN>" 32808 5
-# /) works on windows
-
-# # # works on linux
-# gen "openparen" "(" 40 0
-# gen "closeparen" ")" 41 0
+# # works on windows
+# gen "openparen" "(" 57 5
+# gen "closeparen" ")" 48 5
 # gen "dollar" "$" 52 5
-# gen "percent" "%" 37 0
+# gen "percent" "%" 53 5
 # gen "ampersand" "&" 55 5
 # gen "exclamation" "!" 49 5
 # gen "quotation" "\"" 124 5
@@ -176,7 +162,21 @@ gen "big_down" "<DOWN>" 32808 5
 # gen "big_up" "<UP>" 32806 5
 # gen "big_right" "<RIGHT>" 32807 5
 # gen "big_down" "<DOWN>" 32808 5
-# # # /> works on linux
+# # /) works on windows
+
+# # works on linux
+gen "openparen" "(" 40 0
+gen "closeparen" ")" 41 0
+gen "dollar" "$" 52 5
+gen "percent" "%" 37 0
+gen "ampersand" "&" 55 5
+gen "exclamation" "!" 49 5
+gen "quotation" "\"" 124 5
+gen "big_left" "<LEFT>" 32805 5
+gen "big_up" "<UP>" 32806 5
+gen "big_right" "<RIGHT>" 32807 5
+gen "big_down" "<DOWN>" 32808 5
+# # /> works on linux
 
 # If you want to add another key but are unsure of the keycode, set your new key to an
 # action via the action list in reaper, then export the key map, and look up the
