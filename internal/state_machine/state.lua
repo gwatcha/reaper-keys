@@ -1,5 +1,5 @@
 {
-  key_sequence = "",
+  key_sequence = "z",
   last_action = "",
   last_context = "main",
   last_time = 1587165322,

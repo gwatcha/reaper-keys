@@ -112,8 +112,9 @@
       times = 4
     },
     ["<ctrl>a"] = {
-      40042,
-      "GoProjectBeginning"
+      {"_XENAKIOS_SELFIRSTITEMSOFTRACKS", 41173},
+      -- TODO restore selection
+      "MoveToFirstItem"
     },
     ["<ctrl>h"] = {
       "vim.seq('h')",

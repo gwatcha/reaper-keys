@@ -7,15 +7,14 @@ if not libPath or libPath == "" then
 end
 loadfile(libPath .. "scythe.lua")()
 
-local config_display = require("display.config")
-local autocomplete_help_display = require("display.autocomplete_help")
-
 function display.showConfig()
+  local config_display = require("display.config")
   config_display()
 end
 
-function display.showAutocompleteHelp(completions)
-  autocomplete_help_display(completions)
+function display.showAutocompleteHelp(initial_state, completions)
+  local autocomplete_help_display = require("display.autocomplete_help")
+  autocomplete_help_display(initial_state, completions)
 end
 
 return display

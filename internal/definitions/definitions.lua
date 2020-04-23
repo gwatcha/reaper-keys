@@ -2,7 +2,7 @@ local definitions = {}
 
 local info = debug.getinfo(1,'S');
 local root_path = info.source:match[[.*reaper.keys/]]:sub(2)
-local definitions_dir = root_path .. "definitions/"
+local definitions_dir = root_path .. "internal/definitions/data/"
 
 local table_io = require("utils.table_io")
 local log = require("utils.log")

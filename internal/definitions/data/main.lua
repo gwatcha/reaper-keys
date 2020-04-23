@@ -1,5 +1,13 @@
 {
   actions = {
+    ["<ctrl>j"] = {
+      40287,
+      "NextTrackKeepSel"
+    },
+    ["<ctrl>k"] = {
+      40288,
+      "PrevTrackKeepSel"
+    },
     ["%"] = {
       40131,
       "CropToActiveTake"
@@ -649,11 +657,11 @@
       "NextBigItem"
     },
     b = {
-      40416,
-      "PrevItem"
+      41167,
+      "MoveToBeginningOfItem"
     },
     e = {
-      41174,
+      41168,
       "MoveToEndOfItem"
     },
     j = {

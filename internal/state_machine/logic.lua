@@ -11,7 +11,7 @@ local modes = {
 }
 
 local display = require("display")
-local definitions = require("state_machine.definitions")
+local definitions = require("definitions")
 local dispatch = require("dispatch")
 local str = require("string")
 
@@ -93,12 +93,11 @@ function logic.tick(state, key_press)
     local completions = getCompletions(command_sequence, definitions_tables, valid_command_types)
     if completions then
       new_state['key_sequence'] = new_key_sequence
-      log.info('Completions: ' .. serpent.block(completions, {comment=false}))
-
-      -- if timeout(time)
-      display.showAutocompleteHelp(completions)
+      new_state['in_progress'] = true
+      -- log.trace('Completions: ' .. serpent.block(completions, {comment=false}))
     else
       new_state['key_sequence'] = ""
+      new_state['in_progress'] = false
       log.info('Invalid key sequence.')
     end
   end
