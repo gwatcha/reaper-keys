@@ -8,6 +8,10 @@
       40288,
       "PrevTrackKeepSel"
     },
+    a = {
+      9,
+      "ArmToggleSelected",
+    },
     ["%"] = {
       40131,
       "CropToActiveTake"

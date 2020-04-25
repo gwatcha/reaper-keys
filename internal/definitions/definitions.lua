@@ -30,7 +30,7 @@ function definitions.write(name, definition_table)
   table_io.write(definitions_dir .. file, definition_table)
 end
 
-function isFolder(key_sequence_value)
+function definitions.isFolder(key_sequence_value)
   if key_sequence_value[1] and type(key_sequence_value[1]) == "string" then
     if key_sequence_value[2] and type(key_sequence_value[2]) == "table" then
       return true
@@ -56,23 +56,25 @@ end
 
 function definitions.findCommand(command_sequence, definitions_table_section)
   local command_sequence_value = definitions_table_section[command_sequence]
-  if command_sequence_value and not isFolder(command_sequence_value) then
+  if command_sequence_value and not definitions.isFolder(command_sequence_value) then
     return command_sequence_value
   end
-
   local first_key, rest_of_command_sequence = stripFirstKey(command_sequence)
   local folder = definitions_table_section[first_key]
-  if rest_of_command_sequence and folder and isFolder(folder) then
+  if rest_of_command_sequence and folder and definitions.isFolder(folder) then
     local folder_table = folder[2]
     return definitions.findCommand(rest_of_command_sequence,  folder_table)
   end
-
   return nil
 end
 
 function definitions.getCompletions(command_sequence, definitions_table_section)
+  if command_sequence == "" then
+    return definitions_table_section
+  end
+
   local command_sequence_value = definitions_table_section[command_sequence]
-  if command_sequence_value and isFolder(command_sequence_value) then
+  if command_sequence_value and definitions.isFolder(command_sequence_value) then
       local folder_table = command_sequence_value[2]
       return folder_table
   end
@@ -92,7 +94,7 @@ function definitions.getCompletions(command_sequence, definitions_table_section)
 
   local first_key, rest_of_command_sequence = stripFirstKey(command_sequence)
   local folder = definitions_table_section[first_key]
-  if rest_of_command_sequence and folder and isFolder(folder) then
+  if rest_of_command_sequence and folder and definitions.isFolder(folder) then
     local folder_table = folder[2]
     return definitions.getCompletions(rest_of_command_sequence, folder_table)
   end

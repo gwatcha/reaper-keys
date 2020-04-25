@@ -1,9 +1,10 @@
 {
-  key_sequence = "z",
-  last_action = "",
+  context = "main",
+  edit_mode = "normal",
+  internal_mode = "reset",
+  key_sequence = "",
   last_context = "main",
-  last_time = 1587165322,
   macro_recording = false,
   macro_register = "",
-  mode = 0
+  time = 1587781823
 }
