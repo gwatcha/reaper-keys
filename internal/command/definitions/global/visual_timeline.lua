@@ -1,3 +1,5 @@
+local cmd = require('command.output')
+
 return {
   {
     { 'timeline_operator' },

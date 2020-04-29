@@ -6,10 +6,10 @@ package.path = package.path .. ";" .. root_path .. "?/?.lua"
 package.path = package.path .. ";" .. root_path .. "vendor/share/lua/5.3/?.lua"
 package.path = package.path .. ";" .. root_path .. "vendor/share/lua/5.3/?/init.lua"
 
-local state_machine = require('state_machine')
+local input = require('state_machine')
 
 function doInput(key_press)
-  state_machine.input(key_press)
+  input(key_press)
 end
 
 return doInput

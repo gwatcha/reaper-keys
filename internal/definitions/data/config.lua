@@ -1,5 +1,5 @@
 {
-  command_leader_keys = {"<space>", "<alt>x"},
+  command_leader_keys = {"<SPC>", "<M-x>"},
   log_level = "info",
   font_size = 1,
   gui = {

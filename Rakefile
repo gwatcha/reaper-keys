@@ -4,7 +4,7 @@
 require './scripts/generator'
 require 'fileutils'
 
-@root_dir_name = Dir.pwd[%r{[^/]*$}]
+@root_dir_name = Dir.pwd[%r{[^/]*$}] + '/'
 @key_script_dir = 'key_scripts/'
 @library_dir = 'library/'
 @keymap_path = 'reaper-keys.ReaperKeyMap'

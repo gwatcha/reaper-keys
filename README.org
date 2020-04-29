@@ -12,27 +12,4 @@ Inspired by and written in spacemacs, a text editor with vim bindings.
 - Import the keymap ~reaper-keys-<distribution>.ReaperKeyMap~.  In the
   keymaps/build folder
   
-* Customization
-
-#+begin_src lua
-local default_cmd_example = {
-  cmd = 65535, -- an item or array of cmd id's and/or cmd name's and/or Vimper cmds, to execute in sequence
-  name = "No-op (no action)", -- the name to be shown in hint window, defaults to desc. of 1st cmd
-  times = 1, -- number of times to run cmd
-  prenum = true, -- interpret prefixed number as # repetitions
-  postnum = false, -- interpret post-fixed number as selector (e.g. mute for track n)
-}
-
---[[
-  Special keys:
-  <space>
-  <ctrl>
-  <alt>
-  <mod> (windows key)
---]]
-#+end_src
-
-To add new bindable keys you need to create a new script in ~mapper_scripts~, and map it to a key in reaper. Most people should not need to do this, and I will work towards having as many keys mappable as possible.
-Alternatively, you can add a new entry in ~gen_mapper_scripts.sh~, run it, and re-import the keymap, but this requires bash.
-
 

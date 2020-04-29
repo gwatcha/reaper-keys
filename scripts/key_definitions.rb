@@ -74,7 +74,7 @@ module KeyDefinitions
       ]
     ],
     letters: Hash[
-      key_type_id: 0,
+      key_type_id: 1,
       keys: Hash[
         'a' => 65,
         'b' => 66,
@@ -129,7 +129,7 @@ module KeyDefinitions
       ]
     ],
     numbers: Hash[
-      key_type_id: 0,
+      key_type_id: 1,
       keys: Hash[
         '0' => 48,
         '1' => 49,
