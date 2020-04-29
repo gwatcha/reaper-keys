@@ -40,7 +40,7 @@ function utils.splitFirstKey(key_sequence)
   local first_char = str.sub(key_sequence, 1, 1)
   local first_key = first_char
   if first_char == "<" then
-    local control_key_regex = '(<.*>)'
+    local control_key_regex = '(<[^(><)]*>)'
     local control_key = str.match(key_sequence, control_key_regex)
     if control_key then
       first_key = control_key

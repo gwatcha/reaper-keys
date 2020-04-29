@@ -20,8 +20,9 @@ function buildCommandFollowingSequence(key_sequence, entry_type_sequence, entrie
       first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
       sequence_for_entry_type = sequence_for_entry_type .. first_key
 
+
       local entry = utils.getEntryForKeySequence(sequence_for_entry_type, entries[entry_type])
-      if entry then
+      if entry and not utils.isFolder(entry) then
         command[entry_type] = entry
         break
       end
