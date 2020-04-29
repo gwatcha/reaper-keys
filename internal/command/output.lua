@@ -12,9 +12,12 @@ function output.runReaperCommand(action)
     repetitions = action['repetitions']
   end
 
-  local numeric_id = action[1]
-  if type(command_id) == "string" then
-    numeric_id = reaper.NamedCommandLookup(command_id)
+  local id = action[1]
+  local numeric_id
+  if type(id) == "string" then
+    numeric_id = reaper.NamedCommandLookup(id)
+  else
+    numeric_id = id
   end
 
   for i=1,repetitions,1 do

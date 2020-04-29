@@ -4,50 +4,14 @@ local str = require("string")
 local ser = require("serpent")
 
 local sequences = require("command.sequences")
-
-function isFolder(entry)
-  if entry then
-    if entry[1] and type(entry[1]) == "string" then
-      if entry[2] and type(entry[2]) == "table" then
-        return true
-      end
-    end
-  end
-
-  return false
-end
-
-function splitFirstKey(key_sequence)
-  local first_char = str.sub(key_sequence, 1, 1)
-  local first_key = first_char
-  if first_char == "<" then
-    local control_key_regex = '(<.*>)'
-    local control_key = str.match(key_sequence, control_key_regex)
-    if control_key then
-      first_key = control_key
-    end
-  end
-
-  local rest_of_sequence = str.sub(key_sequence, str.len(first_key) + 1)
-  return first_key, rest_of_sequence
-end
-
-function splitFirstMatch(key_sequence, regex)
-  local match = str.match(key_sequence, "^" .. regex)
-  if match then
-    local rest_of_sequence = str.sub(key_sequence, str.len(match) + 1)
-    return match, rest_of_sequence
-  end
-
-  return nil, key_sequence
-end
+local utils = require("command.utils")
 
 function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   if not entries then return nil end
   if key_sequence == "" then return entries end
 
   local entry = entries[key_sequence]
-  if entry and isFolder(entry) then
+  if entry and utils.isFolder(entry) then
       local folder_table = entry[2]
       return folder_table
   end
@@ -66,9 +30,9 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
     return possible_future_entries
   end
 
-  local first_key, rest_of_key_sequence = splitFirstKey(key_sequence)
+  local first_key, rest_of_key_sequence = utils.splitFirstKey(key_sequence)
   local possible_folder = entries[first_key]
-  if rest_of_key_sequence and isFolder(possible_folder) then
+  if rest_of_key_sequence and utils.isFolder(possible_folder) then
     local folder = possible_folder
     local folder_table = folder[2]
     return getPossibleFutureEntriesForKeySequence(rest_of_key_sequence, folder_table)
@@ -77,33 +41,19 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   return nil
 end
 
-function getEntryForKeySequence(key_sequence, entries)
-  local entry = entries[key_sequence]
-  if entry and not isFolder(entry) then
-    return entry
-  end
-  local first_key, rest_of_key_sequence = splitFirstKey(key_sequence)
-  local possible_folder = entries[first_key]
-  if rest_of_key_sequence and isFolder(possible_folder) then
-    local folder_table = possible_folder[2]
-    return getEntryForKeySequence(rest_of_key_sequence,  folder_table)
-  end
-  return nil
-end
 
 function getPossibleFutureEntriesFollowingSequence(key_sequence, entry_type_sequence, entries)
   if not entries then return nil end
   if #entry_type_sequence == 0 then return nil end
-
   local first_entry_type = entry_type_sequence[1]
   local entries_for_first_entry_type = entries[first_entry_type]
   if not entries_for_first_entry_type then return nil end
 
   if key_sequence == "" then return entries_for_first_entry_type end
 
-  -- regex type of entry
+  -- regex type of entry (such as number, or macro key, or macro letter)
   if type(entries_for_first_entry_type) == 'string' then
-    local match, rest_of_sequence = splitFirstMatch(key_sequence, entries_for_first_entry_type)
+    local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, entries_for_first_entry_type)
     if match then
       table.remove(entry_type_sequence, 1)
       return getPossibleFutureEntriesFollowingSequence(rest_of_sequence, entry_type_sequence, entries)
@@ -118,8 +68,8 @@ function getPossibleFutureEntriesFollowingSequence(key_sequence, entry_type_sequ
 
   local rest_of_sequence = key_sequence
   while #rest_of_sequence ~= 0 do
-    first_key, rest_of_sequence = splitFirstKey(rest_of_sequence)
-    local entry = getEntryForKeySequence(first_key, entries_for_first_entry_type)
+    first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
+    local entry = utils.getEntryForKeySequence(first_key, entries_for_first_entry_type)
     if entry then
       table.remove(entry_type_sequence, 1)
       return getPossibleFutureEntriesFollowingSequence(rest_of_sequence, entry_type_sequence, entries)

@@ -23,18 +23,19 @@ function input(key_press)
 
   local new_state = state
   new_state["key_sequence"] = state['key_sequence'] .. key_press['key']
+  log.info("key sequence: " .. new_state["key_sequence"])
 
-  -- local command = command.buildCommand(new_state)
-  -- if command then
-  --   log.info('Command triggered: ' .. ser.block(command, {comment=false}))
-  --   new_state = command.executeCommand(state, command)
-  -- end
-
-  local future_entries = command.getPossibleFutureEntries(new_state)
-  log.trace("Future entries: " .. ser.line(future_entries, {comment=false}) .. "\n")
-  if not future_entries then
-      new_state = state_machine_definitions['reset_state']
-      log.info('Undefined key sequence.')
+  local cmd = command.buildCommand(new_state)
+  if cmd then
+    log.info('Command triggered: ' .. ser.block(cmd, {comment=false}))
+    new_state = command.executeCommand(state, cmd)
+  else
+    local future_entries = command.getPossibleFutureEntries(new_state)
+    log.info("Future entries: " .. ser.block(future_entries, {comment=false, maxlevel=2}))
+    if not future_entries then
+        new_state = state_machine_definitions['reset_state']
+        log.info('Undefined key sequence.')
+    end
   end
 
   log.trace("new state: " .. ser.block(new_state, {comment=false}) .. "\n")

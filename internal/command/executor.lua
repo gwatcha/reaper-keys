@@ -1,12 +1,15 @@
 local state_machine_definitions = require('state_machine.definitions')
+local sequences = require("command.sequences")
 local log = require('utils.log')
+local utils = require('command.utils')
 
 function makeCommandDescription(command)
   local desc = ""
-  for entry in command['entry_values'] do
-    local command_name = entry[2]
+  for _, entry_value  in pairs(command) do
+    -- FIXME numbers
+    local command_name = entry_value[2]
     if command_name then
-      desc = desc + command_name + " "
+      desc = desc .. command_name .. " "
     end
   end
 
@@ -14,19 +17,23 @@ function makeCommandDescription(command)
 end
 
 function executeCommand(state, command)
-  local entry_types = command['entry_types']
-  local entry_values = command['entry_values']
-
-  if table.maxn(entry_types) ~= table.maxn(entry_values) then
-    log.error('Number of entry types (' + table.maxn(entry_type) + ') does not equal number of entry values (' + table.maxn(entry_value) + ')')
-    return state_machine_definitions['reset_state']
+  local entry_type_sequence = {}
+  local entry_value_sequence = {}
+  for entry_type, entry_value in pairs(command) do
+    table.insert(entry_type_sequence, entry_type)
+    table.insert(entry_value_sequence, entry_value)
   end
 
-  local functionForCommand = getFunctionForEntryTypeSequence(entry_types, state['context'], state['mode'])
+  local functionForCommand = sequences.getFunctionForCommand(command, state['context'], state['mode'])
+  if not functionForCommand then
+    functionForCommand = sequences.getFunctionForCommand(command, 'global', state['mode'])
+  end
+
   if functionForCommand then
     reaper.Undo_BeginBlock()
-    local new_state = functionForCommand(state, unpack(entry_values))
+    local new_state = functionForCommand(state, table.unpack(entry_value_sequence))
     reaper.Undo_EndBlock('reaper-keys: ' .. makeCommandDescription(command), 0)
+    new_state['key_sequence'] = ""
     return new_state
   end
 
