@@ -9,7 +9,7 @@ local state_file_path = root_path .. "internal/state_machine/state"
 local table_io = require("utils.table_io")
 local log = require("utils.log")
 
-local state_machine_definitions = require("state_machine.definitions")
+local state_machine_constants = require("state_machine.constants")
 
 function state_interface.set(state)
   table_io.write(state_file_path, state)
@@ -19,7 +19,7 @@ function state_interface.get()
     local ok, state = table_io.read(state_file_path)
     if not ok then
       log.warn("Could not read state data from file, it may have become corrupted. Resetting.")
-      state = state_machine_definitions['reset_state']
+      state = state_machine_constants['reset_state']
     end
 
   return state

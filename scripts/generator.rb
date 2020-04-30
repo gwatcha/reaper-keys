@@ -4,16 +4,14 @@
 require('./scripts/key_definitions')
 
 class Generator
-  def initialize(root_dir_name, keymap_path, key_script_dir, library_dir)
+  def initialize(root_dir_name, keymap_path, key_script_dir)
     @root_dir_name = root_dir_name
     @keymap_path = keymap_path
     @key_script_dir = key_script_dir
-    @library_dir = library_dir
   end
 
-  def gen_keymap()
+  def gen_keymap
     gen_key_scripts
-    gen_library_scripts
   end
 
   def gen_key_script(key, context, path)
@@ -108,26 +106,4 @@ doInput({['key'] = '#{key}', ['context'] = '#{context}'})
       end
     end
   end
-
-  def gen_library_scripts
-    Dir.foreach(@library_dir) do |file_name|
-      next if (file_name == '.') || (file_name == '..')
-
-      path = './' + @root_dir_name + @library_dir + file_name
-      script_name = file_name[/(.*)\.lua/, 1]
-      script_id = 'reaper-keys.' + script_name
-
-      keymap_lines = ''
-      desc = "[reaper-keys] [library] [#{script_name}]"
-
-      KeyDefinitions::CONTEXTS.each do |_context, context_id|
-        keymap_lines += "SCR 4 #{context_id} \"#{script_id}\" \"#{desc}\" #{path}\n"
-      end
-
-      open(@keymap_path, 'a') { |file| file.puts keymap_lines }
-    end
-  end
-
-
 end
-

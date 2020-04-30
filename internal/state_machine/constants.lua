@@ -1,4 +1,4 @@
-local definitions = {
+local constants = {
   reset_state = {
     key_sequence = "",
     context = "main",
@@ -9,4 +9,4 @@ local definitions = {
   }
 }
 
-return definitions
+return constants

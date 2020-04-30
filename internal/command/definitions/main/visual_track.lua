@@ -24,13 +24,13 @@ return {
     end
   },
   {
-    { 'action' },
+    { 'command' },
     function(state, action)
       return state
     end
   },
   {
-    { 'number', 'action' },
+    { 'number', 'command' },
     function(state, number, action)
       return state
     end

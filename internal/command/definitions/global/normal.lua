@@ -68,14 +68,14 @@ return {
       end
     },
     {
-      { 'action' },
+      { 'command' },
       function(state, action)
         cmd.runAction(action)
         return state
       end
     },
     {
-      { 'number', 'action' },
+      { 'number', 'command' },
       function(state, number, action)
         cmd.runActionNTimes(action, number)
         return state

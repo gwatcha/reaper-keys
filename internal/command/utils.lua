@@ -1,14 +1,8 @@
-local def = require("definitions")
 local log = require("utils.log")
 local str = require("string")
 local ser = require("serpent")
 
 local utils = {}
-
-local actions = def.read('actions')
-function utils.getCommandFromName(name)
-  return actions[name]
-end
 
 function utils.getEntry(key_sequence, entries)
   if entries[key_sequence] then
@@ -23,18 +17,18 @@ function utils.getEntry(key_sequence, entries)
   end
 end
 
-function utils.checkIfCommandFollowsSequence(command, entry_type_sequence)
+function utils.checkIfCommandHasActionSequence(command, action_sequence)
   local i = 1
   local length = 0
   for entry_type, _ in pairs(command) do
     length = length + 1
-    if entry_type ~= entry_type_sequence[i] then
+    if entry_type ~= action_sequence[i] then
       return false
     end
     i = i + 1
   end
 
-  if length ~= #entry_type_sequence then
+  if length ~= #action_sequence then
     return false
   end
 

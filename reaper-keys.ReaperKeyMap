@@ -2254,13 +2254,3 @@ SCR 4 0 "_reaper_keys_main_<M-`>" "[reaper-keys] [key_press] [<M-`>]" ./reaper-k
 KEY 17 96 _reaper_keys_main_<M-`> 0
 SCR 4 0 "_reaper_keys_main_<CM-`>" "[reaper-keys] [key_press] [<CM-`>]" ./reaper-keys/key_scripts/main_<CM-backtick>.lua
 KEY 25 96 _reaper_keys_main_<CM-`> 0
-SCR 4 32060 "reaper-keys.enable_completion_hints" "[reaper-keys] [library] [enable_completion_hints]" ./reaper-keys/library/enable_completion_hints.lua
-SCR 4 0 "reaper-keys.enable_completion_hints" "[reaper-keys] [library] [enable_completion_hints]" ./reaper-keys/library/enable_completion_hints.lua
-SCR 4 32060 "reaper-keys.play_macro" "[reaper-keys] [library] [play_macro]" ./reaper-keys/library/play_macro.lua
-SCR 4 0 "reaper-keys.play_macro" "[reaper-keys] [library] [play_macro]" ./reaper-keys/library/play_macro.lua
-SCR 4 32060 "reaper-keys.escape" "[reaper-keys] [library] [escape]" ./reaper-keys/library/escape.lua
-SCR 4 0 "reaper-keys.escape" "[reaper-keys] [library] [escape]" ./reaper-keys/library/escape.lua
-SCR 4 32060 "reaper-keys.set_visual_mode" "[reaper-keys] [library] [set_visual_mode]" ./reaper-keys/library/set_visual_mode.lua
-SCR 4 0 "reaper-keys.set_visual_mode" "[reaper-keys] [library] [set_visual_mode]" ./reaper-keys/library/set_visual_mode.lua
-SCR 4 32060 "reaper-keys.store_macro" "[reaper-keys] [library] [store_macro]" ./reaper-keys/library/store_macro.lua
-SCR 4 0 "reaper-keys.store_macro" "[reaper-keys] [library] [store_macro]" ./reaper-keys/library/store_macro.lua

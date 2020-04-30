@@ -6,7 +6,6 @@ require 'fileutils'
 
 @root_dir_name = Dir.pwd[%r{[^/]*$}] + '/'
 @key_script_dir = 'key_scripts/'
-@library_dir = 'library/'
 @keymap_path = 'reaper-keys.ReaperKeyMap'
 
 task default: %i[clean:all gen:key_map]
@@ -22,7 +21,7 @@ namespace :clean do
 end
 
 namespace :gen do
-  generator = Generator.new(@root_dir_name, @keymap_path, @key_script_dir, @library_dir)
+  generator = Generator.new(@root_dir_name, @keymap_path, @key_script_dir)
 
   task :key_map do
     generator.gen_keymap

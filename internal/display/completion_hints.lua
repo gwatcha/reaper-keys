@@ -67,8 +67,6 @@ layer:addElements( GUI.createElements(
 ------------------------------------
 
 local state_interface = require("state_machine.state_interface")
-local definitions = require("definitions")
-local config = definitions.read("config")
 local log = require("utils.log")
 
 local initial_time = nil
@@ -81,7 +79,6 @@ function Main()
 
   local current_time = os.time()
   local user_idle_time = current_time - initial_time
-  local time_to_wait_until_completion_hints = config["gui"]["completion_hints"]["delay"]
   if not window_open and user_idle_time >= time_to_wait_until_completion_hints then
 
     log.info("hello")

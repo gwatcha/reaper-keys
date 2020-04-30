@@ -1,10 +1,17 @@
-local def = require("definitions")
+local sequences = require("command.sequences")
+local utils = require("command.utils")
+local definitions = require("utils.definitions")
 local log = require("utils.log")
+
 local str = require("string")
 local ser = require("serpent")
 
-local sequences = require("command.sequences")
-local utils = require("command.utils")
+-- number = {
+--   ["[1-9][0-9]*"] = "Number"
+-- },
+-- register_location = {
+--   ["a-zA-Z0-9"] = "RegisterLocation"
+-- },
 
 function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   if not entries then return nil end
@@ -42,10 +49,10 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
 end
 
 
-function getPossibleFutureEntriesFollowingSequence(key_sequence, entry_type_sequence, entries)
+function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   if not entries then return nil end
-  if #entry_type_sequence == 0 then return nil end
-  local first_entry_type = entry_type_sequence[1]
+  if #action_sequence == 0 then return nil end
+  local first_entry_type = action_sequence[1]
   local entries_for_first_entry_type = entries[first_entry_type]
   if not entries_for_first_entry_type then return nil end
 
@@ -55,8 +62,8 @@ function getPossibleFutureEntriesFollowingSequence(key_sequence, entry_type_sequ
   if type(entries_for_first_entry_type) == 'string' then
     local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, entries_for_first_entry_type)
     if match then
-      table.remove(entry_type_sequence, 1)
-      return getPossibleFutureEntriesFollowingSequence(rest_of_sequence, entry_type_sequence, entries)
+      table.remove(action_sequence, 1)
+      return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries)
     end
     return nil
   end
@@ -71,8 +78,8 @@ function getPossibleFutureEntriesFollowingSequence(key_sequence, entry_type_sequ
     first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
     local entry = utils.getEntryForKeySequence(first_key, entries_for_first_entry_type)
     if entry then
-      table.remove(entry_type_sequence, 1)
-      return getPossibleFutureEntriesFollowingSequence(rest_of_sequence, entry_type_sequence, entries)
+      table.remove(action_sequence, 1)
+      return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries)
     end
   end
 
@@ -80,26 +87,18 @@ function getPossibleFutureEntriesFollowingSequence(key_sequence, entry_type_sequ
 end
 
 function getPossibleFutureEntries(state)
-  local context_sequences = sequences.getPossibleSequences(state['context'], state['mode'])
-  local global_sequences = sequences.getPossibleSequences('global', state['mode'])
-
-  local context_entries = def.read(state['context'])
-  local global_entries = def.read('global')
+  local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
+  local entries = definitions.getPossibleEntries(state['context'])
 
   local future_entries = {}
   local future_entry_exists = false
-  for _, possible_entry_type_sequences in pairs({context_sequences, global_sequences}) do
-    for _, possible_entry_type_sequence in pairs(possible_entry_type_sequences) do
-      for _, entries in pairs({context_entries, global_entries}) do
-        local future_entries_following_sequence = getPossibleFutureEntriesFollowingSequence(state['key_sequence'], possible_entry_type_sequence, entries)
-        if future_entries_following_sequence then
-          future_entry_exists = true
-          for key, entry in pairs(future_entries_following_sequence) do
-            future_entries[key] = entry
-          end
-        end
+  for _, action_sequence in pairs(action_sequences) do
+    local future_entries_on_sequence = getFutureEntriesOnSequence(state['key_sequence'], action_sequence, entries)
+    if future_entries_on_sequence then
+      future_entry_exists = true
+      for key, entry in pairs(future_entries_on_sequence) do
+        future_entries[key] = entry
       end
-
     end
   end
 

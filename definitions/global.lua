@@ -1,10 +1,4 @@
-{
-  number = {
-    ["[1-9][0-9]*"] = "Number"
-  },
-  register_location = {
-    ["a-zA-Z0-9"] = "RegisterLocation"
-  },
+return {
   register_action = {
     ["q"] = "RecordMaro",
     ["@"] = "PlayMacro",
@@ -40,7 +34,7 @@
     ["c"] = "Change",
     ["t"] = "Play",
   },
-  action = {
+  command = {
     ["<M-l>"] = "MidiLearnLastTouchedFX",
     ["<M-f>"] = "PlayFromMouse",
     ["<M-m>"] = "ShowEnvelopeModulationLastTouchedFx",

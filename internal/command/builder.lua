@@ -1,17 +1,17 @@
-local def = require("definitions")
 local log = require("utils.log")
 local ser = require("serpent")
 local utils = require("command.utils")
 local sequences = require("command.sequences")
+local definitions = require("utils.definitions")
 
 local str = require("string")
 
-function buildCommandFollowingSequence(key_sequence, entry_type_sequence, entries)
+function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
   local command = {}
 
   local rest_of_sequence = key_sequence
-  for _, entry_type in pairs(entry_type_sequence) do
-    if not entries[entry_type] then
+  for _, action_type in pairs(action_sequence) do
+    if not entries[action_type] then
       return nil
     end
 
@@ -20,15 +20,15 @@ function buildCommandFollowingSequence(key_sequence, entry_type_sequence, entrie
       first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
       sequence_for_entry_type = sequence_for_entry_type .. first_key
 
-      local entry = utils.getEntryForKeySequence(sequence_for_entry_type, entries[entry_type])
+      local entry = utils.getEntryForKeySequence(sequence_for_entry_type, entries[action_type])
       if entry and not utils.isFolder(entry) then
-        command[entry_type] = entry
+        command[action_type] = entry
         break
       end
     end
   end
 
-  if utils.checkIfCommandFollowsSequence(command, entry_type_sequence) then
+  if utils.checkIfCommandHasActionSequence(command, action_sequence) then
     return command
   end
 
@@ -36,19 +36,13 @@ function buildCommandFollowingSequence(key_sequence, entry_type_sequence, entrie
 end
 
 function buildCommand(state)
-  local context_sequences = sequences.getPossibleSequences(state['context'], state['mode'])
-  local global_sequences = sequences.getPossibleSequences('global', state['mode'])
+  local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
+  local entries = definitions.getPossibleEntries(state['context'])
 
-  local future_entries = {}
-  local future_entry_exists = false
-  for _, entries in pairs({def.read(state['context']), def.read('global')}) do
-    for _, possible_entry_type_sequences in pairs({context_sequences, global_sequences}) do
-      for _, possible_entry_type_sequence in pairs(possible_entry_type_sequences) do
-        local command = buildCommandFollowingSequence(state['key_sequence'], possible_entry_type_sequence, entries)
-        if command then
-          return command
-        end
-      end
+  for _, action_sequence in pairs(action_sequences) do
+    local command = buildCommandWithActionSequence(state['key_sequence'], action_sequence, entries)
+    if command then
+      return command
     end
   end
 

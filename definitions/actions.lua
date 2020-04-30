@@ -1,13 +1,15 @@
-{
-  ["ResetReaperKeys"] = "_reaper_keys.reset",
-  ["RepeatLastAction"] = "_reaper_keys.repeatLastAction",
-  ["OpenReaperKeysConfig"] = "_reaper_keys.openConfig",
-  ["VisualTimelineMode"] = "_reaper_keys.visualTimelineMode",
-  ["PasteRegister"] = "_reaper_keys.pasteRegister",
-  ["PlayMacro"] = "_reaper_keys.playMacro",
-  ["RecordMacro"] = "_reaper_keys.recordMacro",
-  ["SaveFxChain"] = "_reaper_keys.saveFxChain",
-  ["VisualTrackMode"] = "_reaper_keys.visualTrackMode",
+local lib = require("library")
+
+return {
+  ["ForceNormalMode"] = lib.forceNormalMode,
+  ["RepeatLastAction"] = lib.repeatLastAction,
+  ["OpenReaperKeysConfig"] = lib.openConfig,
+  ["VisualTimelineMode"] = lib.visualTimelineMode,
+  ["PasteRegister"] = lib.pasteRegister,
+  ["PlayMacro"] = lib.playMacro,
+  ["RecordMacro"] = lib.recordMacro,
+  ["SaveFxChain"] = lib.saveFxChain,
+  ["VisualTrackMode"] = lib.visualTrackMode,
   ["LastTrack"] = {"VerticalScrollEnd", "SelectAllTracks", "SelectLastOfSelectedTracks"},
   ["VerticalScrollEnd"] = "_XENAKIOS_TVPAGEEND",
   ["VerticalScrollBeginning"] = "_XENAKIOS_TVPAGEHOME",

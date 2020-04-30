@@ -1,8 +1,7 @@
 local state_machine = {}
 
 local state_interface = require('state_machine.state_interface')
-local state_machine_definitions = require("state_machine.definitions")
-local definitions = require("definitions")
+local state_machine_constants = require("state_machine.constants")
 local command = require("command")
 local log = require('utils.log')
 
@@ -17,7 +16,7 @@ function input(key_press)
     state['context'] = key_press['context']
   elseif state['context'] ~= key_press['context'] then
     log.info('Invalid key sequence. Next key is in different context.')
-    return state_machine_definitions['reset_state']
+    return state_machine_constants['reset_state']
   end
 
   local new_state = state
@@ -30,7 +29,7 @@ function input(key_press)
   else
     local future_entries = command.getPossibleFutureEntries(new_state)
     if not future_entries then
-        new_state = state_machine_definitions['reset_state']
+        new_state = state_machine_constants['reset_state']
         log.info('Undefined key sequence.')
     else
       log.info("Completions: " .. ser.block(future_entries, {comment=false, maxlevel=2}))

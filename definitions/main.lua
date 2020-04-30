@@ -1,4 +1,4 @@
-{
+return {
   track_motion = {
     ["G"] = "LastTrack",
     ["gg"] = "FirstTrack",
@@ -23,7 +23,7 @@
     ["b"] = "MoveToBeginningOfItem",
     ["e"] = "MoveToEndOfItem",
   },
-  action = {
+  command = {
     ["<C-j>"] = "NextTrackKeepSel",
     ["<C-k>"] = "PrevTrackKeepSel",
     ["a"] = "ArmToggleSelected",
@@ -113,7 +113,7 @@
     ["x"] = "CutItem",
     ["yf"] = "CopyFxChain",
     ["yy"] = "CopyTrack",
-    ["z"] = { "zoom", {
+    ["z"] = { "+zoom", {
               ["p"] = "ZoomProject",
               -- ["1"] = "TrackView.Load_1",
               -- ["2"] = "TrackView.Load_2",
@@ -144,7 +144,7 @@
     }},
     ["{"] = "PrevTake",
     ["}"] = "NextTake",
-    ["<SPC>"] = { "leader actions", {
+    ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
       ["d"] = "DeleteItem",
       ["y"] = "CopyItem",
@@ -154,7 +154,7 @@
                 ["N"] = "PrevMarker",
                 ["p"] = "PrevMarker",
       }},
-      ["i"] = { "items", {
+      ["i"] = { "+items", {
                   ["e"] = "OpenMidiEditor",
                   ["n"] = "ItemNormalize",
                   ["f"] = "ItemApplyFX",
@@ -166,10 +166,10 @@
                   ["th"] = "TrimItemLeftToEditCursor",
                   ["tl"] = "TrimItemRightToEditCursor",
       }},
-      ["t"] = { "tracks", {
+      ["t"] = { "+track", {
                   ["x"] = "ShowTrackRouting",
                   ["r"] = "RenderTrack",
-                  ["f"] = { "freeze", {
+                  ["f"] = { "+freeze", {
                     ["f"] = "FreezeTrack",
                     ["u"] = "UnfreezeTrack",
                     ["s"] = "ShowTrackFreezeDetails"}},
@@ -186,7 +186,7 @@
                   ["h"] = "MixerShowHideChildrenOfSelectedTrack",
                   ["<tab>"] = "CycleFolderCollapsedState",
                   ["F"] = "CycleTrackFolderState"}},
-      ["f"] = { "fx", {
+      ["f"] = { "+fx", {
                   ["id"] = "ClearFxChainInputCurrentTrack",
                   ["d"] = "ClearFxChainCurrentTrack",
                   ["a"] = "FxAdd",
@@ -208,34 +208,38 @@
                   ["7"] = "FxToggleShow7",
                   ["8"] = "FxToggleShow8",
       }},
-      ["g"] = { "global", {
+      ["g"] = { "+global", {
                   ["r"] = "ShowRoutingMatrix",
                   ["w"] = "ShowWiringDiagram",
                   ["c"] = "FxCloseAll",
                   ["fS"] = "FxCloseAll",
                   ["dr"] = "ResetControlDevices",
-                  ["tm"] = "ShowTrackManager",
-                  ["ts"] = "UnsoloAllTracks",
-                  ["tm"] = "UnmuteAllTracks",
                   ["fc"] = "ViewFxChainMaster",
                   ["a"] = "ClearAllRecordArm",
                   [","] = "Preferences",
                   ["e"] = "CycleRippleEditMode",
                   ["S"] = "SnapToggle",
                   ["m"] = "ToggleMetronome",
-                  ["ss"] = "ToggleShowAllEnvelopeGlobal",
-                  ["se"] = "ToggleEnvelopePointsMoveWithItems",
-                  ["sr"] = "GlobalSetTrackAutomationMode_TrimRead",
-                  ["sg"] = "GlobalSetTrackAutomationMode_Latch",
-                  ["sG"] = "GlobalSetTrackAutomationMode_LatchPreview",
-                  ["sl"] = "GlobalSetTrackAutomationMode_Latch",
-                  ["sL"] = "GlobalSetTrackAutomationMode_LatchPreview",
-                  ["sR"] = "GlobalSetTrackAutomationMode_Read",
-                  ["st"] = "GlobalSetTrackAutomationMode_Touch",
-                  ["sw"] = "GlobalSetTrackAutomationMode_Write",
-                  ["sS"] = "GlobalSetTrackAutomationMode_Off",
+                  ["t"] = { "+track", {
+                      ["tm"] = "ShowTrackManager",
+                      ["ts"] = "UnsoloAllTracks",
+                      ["tm"] = "UnmuteAllTracks",
+                  }},
+                  ["e"] = { "+envelope", {
+                      ["s"] = "ToggleShowAllEnvelopeGlobal",
+                      ["e"] = "ToggleEnvelopePointsMoveWithItems",
+                      ["r"] = "GlobalSetTrackAutomationMode_TrimRead",
+                      ["g"] = "GlobalSetTrackAutomationMode_Latch",
+                      ["G"] = "GlobalSetTrackAutomationMode_LatchPreview",
+                      ["l"] = "GlobalSetTrackAutomationMode_Latch",
+                      ["L"] = "GlobalSetTrackAutomationMode_LatchPreview",
+                      ["R"] = "GlobalSetTrackAutomationMode_Read",
+                      ["t"] = "GlobalSetTrackAutomationMode_Touch",
+                      ["w"] = "GlobalSetTrackAutomationMode_Write",
+                      ["S"] = "GlobalSetTrackAutomationMode_Off",
+                  }},
       }},
-      ["a"] = { "arming", {
+      ["a"] = { "+arming", {
                   ["t"] = "ArmToggleSelected",
                   ["i"] = "SetTrackRecordMode_Input",
                   ["o"] = "SetTrackRecordMode_MidiOutput",
@@ -246,7 +250,7 @@
                   ["f"] = "SetTrackRecordMode_Input",
                   ["v"] = "SetTrackRecordMode_MonitorOnly",
             }},
-      ["e"] = { "envelopes", {
+      ["e"] = { "+envelopes", {
                   ["s"] = "ToggleShowAllEnvelope",
                   ["h"] = "ToggleShowEnvelope",
                   ["v"] = "ToggleVolumeEnvelope",
@@ -266,11 +270,11 @@
                   ["t"] = "SetTrackAutomationMode_Touch",
                   ["w"] = "SetTrackAutomationMode_Write",
             }},
-      ["r"] = { "region", {
+      ["r"] = { "+region", {
                   ["s"] = "SetLoopPointsToItem",
             }},
-      ["p"] = { "project", {
-                ["pr"] = { "render", {
+      ["p"] = { "+project", {
+                ["pr"] = { "+render", {
                             ["."] = "RenderProjectWithLastSetting",
                             ["r"] = "RenderProject",
                         }},
