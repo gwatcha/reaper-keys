@@ -83,11 +83,14 @@ function getPossibleFutureEntries(state)
   local context_sequences = sequences.getPossibleSequences(state['context'], state['mode'])
   local global_sequences = sequences.getPossibleSequences('global', state['mode'])
 
+  local context_entries = def.read(state['context'])
+  local global_entries = def.read('global')
+
   local future_entries = {}
   local future_entry_exists = false
-  for _, entries in pairs({def.read(state['context']), def.read('global')}) do
-    for _, possible_entry_type_sequences in pairs({context_sequences, global_sequences}) do
-      for _, possible_entry_type_sequence in pairs(possible_entry_type_sequences) do
+  for _, possible_entry_type_sequences in pairs({context_sequences, global_sequences}) do
+    for _, possible_entry_type_sequence in pairs(possible_entry_type_sequences) do
+      for _, entries in pairs({context_entries, global_entries}) do
         local future_entries_following_sequence = getPossibleFutureEntriesFollowingSequence(state['key_sequence'], possible_entry_type_sequence, entries)
         if future_entries_following_sequence then
           future_entry_exists = true

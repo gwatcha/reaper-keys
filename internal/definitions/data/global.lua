@@ -1,6 +1,10 @@
 {
-  number = "[1-9][0-9]*",
-  register_location = "[a-zA-Z0-9]",
+  number = {
+    ["[1-9][0-9]*"] = "Number"
+  },
+  register_location = {
+    ["a-zA-Z0-9"] = "RegisterLocation"
+  },
   register_action = {
     ["q"] = "RecordMaro",
     ["@"] = "PlayMacro",
@@ -8,10 +12,10 @@
     ["yf"] = "SaveFxChain",
   },
   internal_command = {
-    ["<ESC>"] = {"_reaper_keys.reset"},
-    ["."] = {"_reaper_keys.repeatLastAction"},
-    ["<C-,>"] = {"_reaper_keys.openConfig"},
-    ["v"] = {"_reaper_keys.visualTimelineMode"},
+    ["<ESC>"] = {"ResetReaperKeys"},
+    ["."] = {"RepeatLastAction"},
+    ["<C-,>"] = {"OpenReaperKeysConfig"},
+    ["v"] = {"VisualTimelineMode"},
   },
   timeline_selector = {},
   timeline_motion = {

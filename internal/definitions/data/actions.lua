@@ -1,4 +1,8 @@
 {
+  ["ResetReaperKeys"] = "_reaper_keys.reset",
+  ["RepeatLastAction"] = "_reaper_keys.repeatLastAction",
+  ["OpenReaperKeysConfig"] = "_reaper_keys.openConfig",
+  ["VisualTimelineMode"] = "_reaper_keys.visualTimelineMode",
   ["PasteRegister"] = "_reaper_keys.pasteRegister",
   ["PlayMacro"] = "_reaper_keys.playMacro",
   ["RecordMacro"] = "_reaper_keys.recordMacro",

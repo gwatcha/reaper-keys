@@ -10,6 +10,19 @@ function utils.getCommandFromName(name)
   return actions[name]
 end
 
+function utils.getEntry(key_sequence, entries)
+  if entries[key_sequence] then
+    return entries[key_sequence]
+  end
+  for k, sub_command_name in pairs(entries) do
+    if actions[sub_command_name]['format'] then
+      local match = str.match(key_sequence, k)
+      if match then
+      end
+    end
+  end
+end
+
 function utils.checkIfCommandFollowsSequence(command, entry_type_sequence)
   local i = 1
   local length = 0
