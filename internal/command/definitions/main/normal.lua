@@ -6,14 +6,14 @@ return {
   {
     { 'track_motion' },
     function(state, track_motion)
-      cmd.runReaperCommand(track_motion)
+      cmd.runAction(track_motion)
       return state
     end
   },
   {
     { 'number', 'track_motion' },
     function(state, number, track_motion)
-      cmd.runReaperCommandNTimes(track_motion, number)
+      cmd.runActionNTimes(track_motion, number)
       return state
     end
   },

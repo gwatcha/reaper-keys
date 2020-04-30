@@ -3,7 +3,6 @@ local state_machine = {}
 local state_interface = require('state_machine.state_interface')
 local state_machine_definitions = require("state_machine.definitions")
 local definitions = require("definitions")
-
 local command = require("command")
 local log = require('utils.log')
 
@@ -31,7 +30,7 @@ function input(key_press)
     new_state = command.executeCommand(state, cmd)
   else
     local future_entries = command.getPossibleFutureEntries(new_state)
-    log.info("Future entries: " .. ser.block(future_entries, {comment=false, maxlevel=2}))
+    log.info("Completions: " .. ser.block(future_entries, {comment=false, maxlevel=2}))
     if not future_entries then
         new_state = state_machine_definitions['reset_state']
         log.info('Undefined key sequence.')

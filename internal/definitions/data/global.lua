@@ -1,11 +1,11 @@
 {
-  number = '[1-9][0-9]*',
-  register_location = '[a-zA-Z0-9]',
+  number = "[1-9][0-9]*",
+  register_location = "[a-zA-Z0-9]",
   register_action = {
-    ["q"] = "RecordMaro"
+    ["q"] = "RecordMaro",
     ["@"] = "PlayMacro",
-    ['"'] = "PasteRegister"
-    ['yf'] = "SaveFxChain",
+    ['"'] = "PasteRegister",
+    ["yf"] = "SaveFxChain",
   },
   internal_command = {
     ["<ESC>"] = {"_reaper_keys.reset"},

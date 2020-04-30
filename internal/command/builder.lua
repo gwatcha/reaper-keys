@@ -1,10 +1,10 @@
 local def = require("definitions")
 local log = require("utils.log")
+local ser = require("serpent")
 local utils = require("command.utils")
 local sequences = require("command.sequences")
 
 local str = require("string")
-local ser = require("serpent")
 
 function buildCommandFollowingSequence(key_sequence, entry_type_sequence, entries)
   local command = {}
@@ -19,7 +19,6 @@ function buildCommandFollowingSequence(key_sequence, entry_type_sequence, entrie
     while #rest_of_sequence ~= 0 do
       first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
       sequence_for_entry_type = sequence_for_entry_type .. first_key
-
 
       local entry = utils.getEntryForKeySequence(sequence_for_entry_type, entries[entry_type])
       if entry and not utils.isFolder(entry) then

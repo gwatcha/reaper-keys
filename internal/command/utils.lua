@@ -5,6 +5,11 @@ local ser = require("serpent")
 
 local utils = {}
 
+local actions = def.read('actions')
+function utils.getCommandFromName(name)
+  return actions[name]
+end
+
 function utils.checkIfCommandFollowsSequence(command, entry_type_sequence)
   local i = 1
   local length = 0
@@ -22,7 +27,6 @@ function utils.checkIfCommandFollowsSequence(command, entry_type_sequence)
 
   return true
 end
-
 
 function utils.isFolder(entry)
   if entry then
