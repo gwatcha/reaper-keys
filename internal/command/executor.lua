@@ -1,34 +1,29 @@
 local state_machine_constants = require('state_machine.constants')
 local sequences = require("command.sequences")
 local definitions = require("utils.definitions")
+local regex_match_entry_types = require("command.definitions.regex_match_entry_types")
 local log = require('utils.log')
 local utils = require('command.utils')
 local ser = require("serpent")
 
-function makeCommandDescription(command)
-  local desc = ""
-  for _, action_name  in pairs(command) do
-    -- FIXME numbers
-    desc = desc .. action_name .. " "
-  end
-
-  return desc
-end
-
 function executeCommand(state, command)
-  local action_sequence = {}
-  local actions = {}
-  for action_type, action_name in pairs(command) do
-    table.insert(action_sequence, action_type)
-    table.insert(actions, definitions.getAction(action_name))
+  local executable_command_parts = {}
+  for i,action_type in pairs(command.sequence) do
+    if regex_match_entry_types[action_type] then
+      local value = command.parts[i]
+      if action_type == 'number' then value = tonumber(value) end
+      table.insert(executable_command_parts, value)
+    else
+      table.insert(executable_command_parts, definitions.getAction(command.parts[i]))
+    end
   end
 
-  local functionForCommand = sequences.getFunctionForCommand(command, state['context'], state['mode'])
+  local functionForCommand = sequences.getFunctionForSequence(command.sequence, state['context'], state['mode'])
 
   if functionForCommand then
     reaper.Undo_BeginBlock()
-    local new_state = functionForCommand(state, table.unpack(actions))
-    reaper.Undo_EndBlock('reaper-keys: ' .. makeCommandDescription(command), 0)
+    local new_state = functionForCommand(state, table.unpack(executable_command_parts))
+    reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 0)
     new_state['key_sequence'] = ""
     return new_state
   end

@@ -15,7 +15,9 @@ return {
   },
   track_selector = {},
   track_operator = {},
-  timeline_selector = {},
+  timeline_selector = {
+    ["s"] = "SetLoopPointsToItem",
+  },
   timeline_motion = {
     ["B"] = "PrevBigItem",
     ["E"] = "MoveToEndOfBigItem",

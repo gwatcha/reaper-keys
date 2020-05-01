@@ -30,7 +30,6 @@ function getPossibleSequenceFunctionPairs(context, mode)
   return sequence_function_pairs
 end
 
-
 function sequences.getPossibleActionSequences(context, mode)
   local sequence_function_pairs = getPossibleSequenceFunctionPairs(context, mode)
 
@@ -43,13 +42,23 @@ function sequences.getPossibleActionSequences(context, mode)
   return action_sequences
 end
 
-function sequences.getFunctionForCommand(command, context, mode)
+function checkIfSequencesAreEqual(seq1, seq2)
+  if #seq1 ~= #seq2 then return false end
+  for i=1,#seq1 do
+    if seq1[i] ~= seq2[i] then
+      return false
+    end
+  end
+
+  return true
+end
+
+function sequences.getFunctionForSequence(sequence, context, mode)
   local sequence_function_pairs = getPossibleSequenceFunctionPairs(context, mode)
 
-  action_sequence = {}
   for _, sequence_function_pair in ipairs(sequence_function_pairs) do
     local action_sequence = sequence_function_pair[1]
-    if utils.checkIfCommandHasActionSequence(command, action_sequence) then
+    if checkIfSequencesAreEqual(sequence, action_sequence) then
       return sequence_function_pair[2]
     end
   end

@@ -2,16 +2,10 @@ local sequences = require("command.sequences")
 local utils = require("command.utils")
 local definitions = require("utils.definitions")
 local log = require("utils.log")
+local regex_match_entry_types = require("command.definitions.regex_match_entry_types")
 
 local str = require("string")
 local ser = require("serpent")
-
--- number = {
---   ["[1-9][0-9]*"] = "Number"
--- },
--- register_location = {
---   ["a-zA-Z0-9"] = "RegisterLocation"
--- },
 
 function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   if not entries then return nil end
@@ -48,19 +42,16 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   return nil
 end
 
-
 function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
-  if not entries then return nil end
   if #action_sequence == 0 then return nil end
-  local first_entry_type = action_sequence[1]
-  local entries_for_first_entry_type = entries[first_entry_type]
-  if not entries_for_first_entry_type then return nil end
 
-  if key_sequence == "" then return entries_for_first_entry_type end
+  local current_entry_type = action_sequence[1]
 
-  -- regex type of entry (such as number, or macro key, or macro letter)
-  if type(entries_for_first_entry_type) == 'string' then
-    local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, entries_for_first_entry_type)
+  if regex_match_entry_types[current_entry_type] then
+    if key_sequence == "" then return {"(" .. current_entry_type .. ")"} end
+
+    local match_regex = regex_match_entry_types[current_entry_type]
+    local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
     if match then
       table.remove(action_sequence, 1)
       return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries)
@@ -68,7 +59,11 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
     return nil
   end
 
-  local completions = getPossibleFutureEntriesForKeySequence(key_sequence, entries_for_first_entry_type)
+  local entries_for_current_entry_type = entries[current_entry_type]
+  if not entries_for_current_entry_type then return nil end
+  if key_sequence == "" then return entries_for_current_entry_type end
+
+  local completions = getPossibleFutureEntriesForKeySequence(key_sequence, entries_for_current_entry_type)
   if completions then
     return completions
   end
@@ -76,7 +71,7 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   local rest_of_sequence = key_sequence
   while #rest_of_sequence ~= 0 do
     first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
-    local entry = utils.getEntryForKeySequence(first_key, entries_for_first_entry_type)
+    local entry = utils.getEntryForKeySequence(first_key, entries_for_current_entry_type)
     if entry then
       table.remove(action_sequence, 1)
       return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries)
@@ -88,7 +83,9 @@ end
 
 function getPossibleFutureEntries(state)
   local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
+  if not action_sequences then return nil end
   local entries = definitions.getPossibleEntries(state['context'])
+  if not entries then return nil end
 
   local future_entries = {}
   local future_entry_exists = false

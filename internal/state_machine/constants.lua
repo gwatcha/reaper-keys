@@ -3,7 +3,6 @@ local constants = {
     key_sequence = "",
     context = "main",
     mode = "normal",
-    time = os.time(),
     macro_recording = false,
     macro_register = "",
   }

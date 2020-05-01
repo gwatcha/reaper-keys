@@ -5,13 +5,6 @@ return {
     ['"'] = "PasteRegister",
     ["yf"] = "SaveFxChain",
   },
-  internal_command = {
-    ["<ESC>"] = {"ResetReaperKeys"},
-    ["."] = {"RepeatLastAction"},
-    ["<C-,>"] = {"OpenReaperKeysConfig"},
-    ["v"] = {"VisualTimelineMode"},
-  },
-  timeline_selector = {},
   timeline_motion = {
     ["$"] = "GoProjectEnd",
     ["0"] = "GoProjectBeginning",
@@ -35,6 +28,10 @@ return {
     ["t"] = "Play",
   },
   command = {
+    ["<ESC>"] = "Reset",
+    ["."] = "RepeatLastAction",
+    ["<C-,>"] = "OpenReaperKeysConfig",
+    ["v"] = "ToggleVisualTimelineMode",
     ["<M-l>"] = "MidiLearnLastTouchedFX",
     ["<M-f>"] = "PlayFromMouse",
     ["<M-m>"] = "ShowEnvelopeModulationLastTouchedFx",
@@ -47,7 +44,7 @@ return {
     ["<C-p>"] = "FxShowPrevSel",
     ["<C-r>"] = "Redo",
     ["<C-t>"] = "StartStop",
-    ["C"] = "ToggleRecording",
+    ["C"] = "ChangeUntilEnd",
     ["u"] = "Undo",
   },
 }

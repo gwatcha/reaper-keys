@@ -4,6 +4,14 @@ local ser = require("serpent")
 
 local utils = {}
 
+function utils.makeCommandDescription(command)
+  local desc = ""
+  for _, command_part  in pairs(command.parts) do
+    desc = desc .. command_part .. " "
+  end
+  return desc
+end
+
 function utils.getEntry(key_sequence, entries)
   if entries[key_sequence] then
     return entries[key_sequence]
@@ -17,23 +25,6 @@ function utils.getEntry(key_sequence, entries)
   end
 end
 
-function utils.checkIfCommandHasActionSequence(command, action_sequence)
-  local i = 1
-  local length = 0
-  for entry_type, _ in pairs(command) do
-    length = length + 1
-    if entry_type ~= action_sequence[i] then
-      return false
-    end
-    i = i + 1
-  end
-
-  if length ~= #action_sequence then
-    return false
-  end
-
-  return true
-end
 
 function utils.isFolder(entry)
   if entry then
@@ -45,6 +36,16 @@ function utils.isFolder(entry)
   end
 
   return false
+end
+
+function utils.splitFirstMatch(key_sequence, regex)
+  local match = str.match(key_sequence, "^" .. regex)
+  if match then
+    local rest_of_sequence = str.sub(key_sequence, str.len(match) + 1)
+    return match, rest_of_sequence
+  end
+
+  return nil, key_sequence
 end
 
 function utils.splitFirstKey(key_sequence)
@@ -60,15 +61,6 @@ function utils.splitFirstKey(key_sequence)
 
   local rest_of_sequence = str.sub(key_sequence, str.len(first_key) + 1)
   return first_key, rest_of_sequence
-end
-function utils.splitFirstMatch(key_sequence, regex)
-  local match = str.match(key_sequence, "^" .. regex)
-  if match then
-    local rest_of_sequence = str.sub(key_sequence, str.len(match) + 1)
-    return match, rest_of_sequence
-  end
-
-  return nil, key_sequence
 end
 
 function utils.getEntryForKeySequence(key_sequence, entries)

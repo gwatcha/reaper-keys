@@ -1,10 +1,12 @@
 local lib = require("library")
 
 return {
+  ["Reset"] = {"Stop", "SetRecordModeToNormal", lib.forceNormalMode},
+  ["SetRecordModeToNormal"] = 40252,
   ["ForceNormalMode"] = lib.forceNormalMode,
   ["RepeatLastAction"] = lib.repeatLastAction,
   ["OpenReaperKeysConfig"] = lib.openConfig,
-  ["VisualTimelineMode"] = lib.visualTimelineMode,
+  ["ToggleVisualTimelineMode"] = lib.toggleVisualTimelineMode,
   ["PasteRegister"] = lib.pasteRegister,
   ["PlayMacro"] = lib.playMacro,
   ["RecordMacro"] = lib.recordMacro,
@@ -18,6 +20,7 @@ return {
   ["FirstTrack"] = {"VerticalScrollBeginning", "SelectAllTracks", "SelectFirstOfSelectedTracks"},
   ["NextFolderNear"] = "_SWS_SELNEARESTNEXTFOLDER",
   ["PrevFolderNear"] = "_SWS_SELNEARESTPREVFOLDER",
+  ["Stop"] = 40667,
   ["NextTrack"] = 40285,
   ["PrevTrack"] = 40286,
   ["Prev10Track"] = {"PrevTrack", repetitions=10},
@@ -34,7 +37,7 @@ return {
   ["NextBigItem"] = 40791,
   ["MoveToBeginningOfItem"] = 41167,
   ["MoveToEndOfItem"] = 41168,
-  ["Change"] = "_SWS_AWRECORDCOND",
+  ["Change"] = {"GoToLoopStart", "Play", "_SWS_AWRECORDCOND"},
   ["Play"] = 1007,
   ["NextTrackKeepSel"] = 40287,
   ["PrevTrackKeepSel"] = 40288,
@@ -313,5 +316,6 @@ return {
   ["Redo"] = 40030,
   ["StartStop"] = 40044,
   ["ToggleRecording"] = 1013,
+  ["ChangeUntilEnd"] = {"Play", 1013},
   ["Undo"] = 40029,
 }

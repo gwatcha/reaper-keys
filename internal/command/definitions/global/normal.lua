@@ -1,4 +1,6 @@
-local cmd = require('command.output')
+local output = require('command.output')
+local log = require("utils.log")
+local ser = require("serpent")
 
 return {
     {
@@ -22,62 +24,52 @@ return {
     {
       { 'timeline_operator', 'timeline_selector' },
       function(state, timeline_operator, timeline_selector)
-        cmd.runAction(timeline_selector)
-        cmd.runAction(timeline_operator)
+        output.runAction(timeline_selector)
+        output.runAction(timeline_operator)
         return state
       end
     },
     {
       { 'timeline_operator', 'timeline_motion' },
       function(state, timeline_operator, timeline_motion)
-        local sel_start = reaper.GetCursorPosition()
-        cmd.runAction(timeline_motion)
-        local sel_end = reaper.GetCursorPosition()
-
-        cmd.makeSelectionFromPositions(sel_start, sel_end)
-        cmd.runAction(timeline_operator)
-
+        output.makeSelectionFromMotion(timeline_motion, 1)
+        output.runAction(timeline_operator)
         return state
       end
     },
     {
       { 'timeline_operator', 'number', 'timeline_motion' },
       function(state, timeline_operator, number, timeline_motion)
-        local sel_start = reaper.GetCursorPosition()
-        cmd.runActionNTimes(timeline_motion, number)
-        local sel_end = reaper.GetCursorPosition()
-
-        cmd.makeSelectionFromPositions(sel_start, sel_end)
-        cmd.runAction(timeline_operator)
-
+        output.makeSelectionFromMotion(timeline_motion, number)
+        output.runAction(timeline_operator)
         return state
       end
     },
     {
       { 'timeline_motion' },
       function(state, timeline_motion)
-        cmd.runAction(timeline_motion)
+        output.runAction(timeline_motion)
         return state
       end
     },
     {
       { 'number', 'timeline_motion' },
       function(state, number, timeline_motion)
-        cmd.runActionNTimes(timeline_motion, number)
+        output.runActionNTimes(timeline_motion, number)
         return state
       end
     },
     {
       { 'command' },
       function(state, action)
-        cmd.runAction(action)
+        output.runAction(action)
         return state
       end
     },
     {
       { 'number', 'command' },
       function(state, number, action)
-        cmd.runActionNTimes(action, number)
+        output.runActionNTimes(action, number)
         return state
       end
     },

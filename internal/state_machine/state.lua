@@ -1,8 +1,7 @@
 {
   context = "main",
-  key_sequence = "<SPC>",
+  key_sequence = "",
   macro_recording = false,
   macro_register = "",
-  mode = "normal",
-  time = 1588241465
+  mode = "normal"
 }

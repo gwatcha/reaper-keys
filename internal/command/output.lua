@@ -1,4 +1,6 @@
 local definitions = require("utils.definitions")
+local log = require('utils.log')
+local ser = require("serpent")
 
 local output = {}
 
@@ -6,6 +8,11 @@ function runSubAction(id)
   local action = definitions.getAction(id)
   if action then
     output.runAction(action)
+    return
+  end
+
+  if type(id) == "function" then
+    id()
     return
   end
 
@@ -47,14 +54,12 @@ function output.runActionNTimes(action, times)
   end
 end
 
-function output.makeSelectionFromPositions(selection_start, selection_end)
-  if selection_start > selection_end then
-    local tmp = selection_start
-    selection_start = selection_end
-    selection_end = tmp
-  end
-
-  reaper.GetSet_LoopTimeRange(true, false, selection_start, selection_end, false)
+function output.makeSelectionFromMotion(timeline_motion, repetitions)
+  local sel_start = reaper.GetCursorPosition()
+  output.runActionNTimes(timeline_motion, repetitions)
+  local sel_end = reaper.GetCursorPosition()
+  local length = sel_end - sel_start
+  reaper.MoveEditCursor(length * -1, true)
 end
 
 return output
