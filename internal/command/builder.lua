@@ -45,8 +45,6 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
     return nil
   end
 
-  log.info("made cmd: " .. ser.block(command))
-
   return command
 end
 

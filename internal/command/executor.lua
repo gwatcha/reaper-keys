@@ -23,7 +23,7 @@ function executeCommand(state, command)
   if functionForCommand then
     reaper.Undo_BeginBlock()
     local new_state = functionForCommand(state, table.unpack(executable_command_parts))
-    reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 0)
+    reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 1)
     new_state['key_sequence'] = ""
     return new_state
   end
