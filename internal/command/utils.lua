@@ -25,11 +25,47 @@ function utils.getEntry(key_sequence, entries)
   end
 end
 
+function utils.printEntries(entries)
+  local max_seq_length = 1
+  for key_seq,_ in pairs(entries) do
+    if type(key_seq) == 'string' and #key_seq > max_seq_length then
+      max_seq_length = #key_seq
+    end
+  end
 
-function utils.isFolder(entry)
-  if entry then
-    if entry[1] and type(entry[1]) == "string" then
-      if entry[2] and type(entry[2]) == "table" then
+  local collapsed_entries = {}
+  local entries_string = ""
+  for key_seq, value in pairs(entries) do
+    local pretty_key_seq = key_seq
+    if str.sub(key_seq, 1, 1) == "<" and str.sub(key_seq, #key_seq, #key_seq) == ">" then
+      pretty_key_seq = str.sub(key_seq, 2, #key_seq - 1)
+    end
+
+    local entry_string = "  "
+    if key_seq == 'number' then
+      entry_string = entry_string .. value
+    else
+      entry_string = entry_string .. "'" .. pretty_key_seq .. "'" .. " -> "
+      if utils.isFolder(value) then
+        local folder_name = value[1]
+        entry_string = entry_string .. folder_name
+      else
+        entry_string = entry_string .. value
+      end
+    end
+
+    entry_string = str.format("%" .. max_seq_length + 2 .. "s -> %s", pretty_key_seq, value)
+
+    entries_string = entries_string .. "\n" .. entry_string
+  end
+
+  return entries_string
+end
+
+function utils.isFolder(entry_value)
+  if entry_value then
+    if entry_value[1] and type(entry_value[1]) == "string" then
+      if entry_value[2] and type(entry_value[2]) == "table" then
         return true
       end
     end

@@ -5,29 +5,35 @@ local utils = require("command.utils")
 local sequences = {}
 
 local sequence_definitions = {
-  global = {
-    normal = require('command.definitions.global.normal'),
-    visual_timeline = require('command.definitions.global.visual_timeline'),
-  },
-  main = {
-    normal = require('command.definitions.main.normal'),
-    visual_track = require('command.definitions.main.visual_track'),
-  },
-  midi = {},
+  global = require('command.sequence_functions.global'),
+  main = require('command.sequence_functions.main'),
+  midi = require('command.sequence_functions.midi'),
 }
 
-function getPossibleSequenceFunctionPairs(context, mode)
-  local context_sequences = sequence_definitions[context][mode]
-  local global_sequences  = sequence_definitions['global'][mode]
-
-  local sequence_function_pairs = {}
-  for _, sequence_list in pairs({context_sequences, global_sequences}) do
-    for _, sequence_function_pair in ipairs(sequence_list) do
-      table.insert(sequence_function_pairs, sequence_function_pair)
+function concatTables(...) 
+  local t = {}
+  for n = 1,select("#",...) do
+    local arg = select(n,...)
+    if type(arg)=="table" then
+      for _,v in ipairs(arg) do
+        t[#t+1] = v
+      end
+    else
+      t[#t+1] = arg
     end
   end
+  return t
+end
 
-  return sequence_function_pairs
+function getPossibleSequenceFunctionPairs(context, mode)
+  local possible_sequence_function_pairs = concatTables(
+    sequence_definitions[context][mode],
+    sequence_definitions[context]['all_modes'],
+    sequence_definitions['global'][mode],
+    sequence_definitions['global']['all_modes']
+  )
+
+  return possible_sequence_function_pairs
 end
 
 function sequences.getPossibleActionSequences(context, mode)

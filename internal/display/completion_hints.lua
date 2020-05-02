@@ -18,7 +18,7 @@ local GUI = require("gui.core")
 ------------------------------------
 
 local window = GUI.createWindow({
-    name = "Vimper Customize Window",
+    name = "Reaper-Keys Customize Window",
     x = 0,
     dock = 1,
     y = 0,
@@ -81,7 +81,6 @@ function Main()
   local user_idle_time = current_time - initial_time
   if not window_open and user_idle_time >= time_to_wait_until_completion_hints then
 
-    log.info("hello")
     window:addLayers(layer)
     window:open()
     window_open = true

@@ -6,6 +6,8 @@ return {
     ["yf"] = "SaveFxChain",
   },
   timeline_motion = {
+    ["["] = "GoToLoopStart",
+    ["]"] = "GoToLoopEnd",
     ["$"] = "GoProjectEnd",
     ["0"] = "GoProjectBeginning",
     ["f"] = "MoveEditCursorToPlayCursor",
@@ -25,11 +27,13 @@ return {
   },
   timeline_operator = {
     ["c"] = "Change",
-    ["t"] = "Play",
+    ["t"] = "PlaySelection",
   },
   command = {
+    ["T"] = "Play",
+    ["<C-t>"] = "StartStop",
     ["<ESC>"] = "Reset",
-    ["."] = "RepeatLastAction",
+    ["."] = "RepeatLastCommand",
     ["<C-,>"] = "OpenReaperKeysConfig",
     ["v"] = "ToggleVisualTimelineMode",
     ["<M-l>"] = "MidiLearnLastTouchedFX",
@@ -43,7 +47,6 @@ return {
     ["<C-n>"] = "FxShowNextSel",
     ["<C-p>"] = "FxShowPrevSel",
     ["<C-r>"] = "Redo",
-    ["<C-t>"] = "StartStop",
     ["C"] = "ChangeUntilEnd",
     ["u"] = "Undo",
   },

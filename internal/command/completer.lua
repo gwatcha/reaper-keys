@@ -2,7 +2,7 @@ local sequences = require("command.sequences")
 local utils = require("command.utils")
 local definitions = require("utils.definitions")
 local log = require("utils.log")
-local regex_match_entry_types = require("command.definitions.regex_match_entry_types")
+local regex_match_entry_types = require("command.constants").regex_match_entry_types
 
 local str = require("string")
 local ser = require("serpent")
@@ -17,17 +17,20 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
       return folder_table
   end
 
+  if entry then return nil end
+
   local possible_future_entries = {}
 
-  local found_sequence_completion = false
+  local found_possible_future_entry = false
   for full_key_sequence, entry_value in pairs(entries) do
     rest_of_sequence, full_seq_starts_with_key_seq = string.gsub(full_key_sequence, "^" .. key_sequence, "")
     if full_seq_starts_with_key_seq == 1 then
-      possible_future_entries[full_key_sequence] = entry_value
+      log.info("hello")
+      possible_future_entries[rest_of_sequence] = entry_value
       found_possible_future_entry = true
     end
   end
-  if found_future_entry then
+  if found_possible_future_entry then
     return possible_future_entries
   end
 
@@ -81,7 +84,7 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   return nil
 end
 
-function getPossibleFutureEntries(state)
+function getPossibleFutureEntries(state, key_sequence)
   local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
   if not action_sequences then return nil end
   local entries = definitions.getPossibleEntries(state['context'])
@@ -90,7 +93,7 @@ function getPossibleFutureEntries(state)
   local future_entries = {}
   local future_entry_exists = false
   for _, action_sequence in pairs(action_sequences) do
-    local future_entries_on_sequence = getFutureEntriesOnSequence(state['key_sequence'], action_sequence, entries)
+    local future_entries_on_sequence = getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
     if future_entries_on_sequence then
       future_entry_exists = true
       for key, entry in pairs(future_entries_on_sequence) do

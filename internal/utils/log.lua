@@ -66,7 +66,7 @@ for i, x in ipairs(modes) do
 
     -- Output to console
     -- (modified to use reaper console)
-    reaper.ShowConsoleMsg(string.format("Vimper[%s]: %s\n",
+    reaper.ShowConsoleMsg(string.format("Keys[%s]: %s\n",
                         nameupper,
                         msg))
 

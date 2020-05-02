@@ -74,7 +74,7 @@ end
 
 
 local window = GUI.createWindow({
-  name = "Vimper Customize Window",
+  name = "Reaper-Keys Customize Window",
   x = 0,
   y = 0,
   w = 432,
