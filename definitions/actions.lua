@@ -1,8 +1,11 @@
 local lib = require("library")
 
 return {
-  ["SwitchTimelineSelectionSide"] = lib.switchTimelineSelectionSide,
+  ["PlayMacro"] = "PlayMacro",
+  ["RecordMacro"] = "RecordMacro",
   ["RepeatLastCommand"] = "RepeatLastCommand",
+
+  ["SwitchTimelineSelectionSide"] = lib.switchTimelineSelectionSide,
   ["FolderParent"] = "_SWS_SELPARENTS",
   ["AllTracks"] = 40296,
   ["MakeFolder"] = "_SWS_MAKEFOLDER",
@@ -21,8 +24,6 @@ return {
   ["ToggleVisualTimelineMode"] = lib.toggleVisualTimelineMode,
   ["ToggleVisualTrackMode"] = lib.toggleVisualTrackMode,
   ["PasteRegister"] = lib.register_actions.pasteRegister,
-  ["PlayMacro"] = lib.register_actions.playMacro,
-  ["RecordMacro"] = lib.register_actions.recordMacro,
   ["SaveFxChain"] = lib.register_actions.saveFxChain,
   ["LastTrack"] = {"VerticalScrollEnd", "SelectAllTracks", "SelectLastOfSelectedTracks"},
   ["VerticalScrollEnd"] = "_XENAKIOS_TVPAGEEND",

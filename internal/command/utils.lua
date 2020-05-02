@@ -25,7 +25,50 @@ function utils.getEntry(key_sequence, entries)
   end
 end
 
-function utils.printEntries(entries)
+function utils.printUserInfo(state, sequence_defined)
+  local chars_for_modes = {
+    normal = "·",
+    visual_timeline = "»",
+    visual_track = "¬",
+  }
+
+  local width = 30
+
+  ser.block(state, {comment=false})
+  local airline_bar = ""
+  for i=1,width do airline_bar = airline_bar .. chars_for_modes[state['mode']] end
+
+  local info_line = ""
+  if state['key_sequence'] == "" then
+    if not sequence_defined then
+      info_line = "Undefined key sequence"
+    elseif state['last_command'].parts[1] ~= "No-op" then
+      info_line = utils.makeCommandDescription(state['last_command'])
+    end
+  else
+    local rest_of_key_seq = state['key_sequence']
+    while #rest_of_key_seq ~= 0 do
+      first_key, rest_of_key_seq = utils.splitFirstKey(rest_of_key_seq)
+      info_line = info_line .. " " .. removeUglyBrackets(first_key)
+    end
+    info_line = info_line .. "-"
+    -- info_line = str.format("%s%" .. width - #info_line .. "s", info_line, "(C-, for help)")
+    info_line = str.format("%s%" .. width - #info_line .. "s", info_line, "(C-, for help)")
+  end
+
+  return str.format("%s\n%s", airline_bar, info_line)
+end
+
+function removeUglyBrackets(key)
+  local pretty_key = key
+  if str.sub(key, 1, 1) == "<" and str.sub(key, #key, #key) == ">" then
+    pretty_key = str.sub(key, 2, #key - 1)
+  end
+
+  return pretty_key
+end
+
+function utils.printCompletions(entries)
   local max_seq_length = 1
   for key_seq,_ in pairs(entries) do
     if type(key_seq) == 'string' and #key_seq > max_seq_length then
@@ -39,8 +82,8 @@ function utils.printEntries(entries)
     local pretty_key_seq = key_seq
     if key_seq == 'number' then
       entry_string = entry_string .. value
-    elseif str.sub(key_seq, 1, 1) == "<" and str.sub(key_seq, #key_seq, #key_seq) == ">" then
-      pretty_key_seq = str.sub(key_seq, 2, #key_seq - 1)
+    else
+      pretty_key_seq = removeUglyBrackets(key_seq)
     end
 
     local pretty_value = value
@@ -49,7 +92,7 @@ function utils.printEntries(entries)
       pretty_value = folder_name
     end
 
-    entry_string = str.format("%" .. max_seq_length + 2 .. "s -> %s", pretty_key_seq, pretty_value)
+    entry_string = str.format("%" .. max_seq_length + 1 .. "s -> %s", pretty_key_seq, pretty_value)
     entries_string = entries_string .. "\n" .. entry_string
   end
 

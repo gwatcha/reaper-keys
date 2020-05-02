@@ -1,17 +1,16 @@
 {
   context = "main",
-  key_sequence = "",
+  key_sequence = "<SPC>a",
   last_command = {
     parts = {
-      "No-op"
+      "NextTrack"
     },
     sequence = {
-      "command"
+      "track_motion"
     }
   },
   macro_commands = {},
-  macro_recording = true,
-  macro_register = "a",
-  macro_triggered = false,
+  macro_recording = false,
+  macro_register = "+",
   mode = "normal"
 }

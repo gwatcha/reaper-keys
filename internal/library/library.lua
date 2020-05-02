@@ -17,20 +17,6 @@ end
 function library.register_actions.pasteRegister(register)
 end
 
-function library.register_actions.playMacro(register)
-  local macro_commands = saved.macros.get(register)
-  state_functions.triggerMacroCommands(macro_commands)
-end
-
-function library.register_actions.recordMacro(register)
-  if not state_functions.getIsMacroRecording() then
-    saved.macros.clear(register)
-    state_functions.startMacroRecording(register)
-  else
-    state_functions.endMacroRecording()
-  end
-end
-
 function library.register_actions.saveFxChain(register)
 end
 

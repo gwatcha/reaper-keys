@@ -11,7 +11,7 @@ local log = { _version = "0.1.0" }
 
 log.usecolor = false
 log.outfile = nil
-log.level = "info"
+log.level = "user"
 
 local modes = {
   { name = "trace", color = "\27[34m", },
@@ -19,6 +19,7 @@ local modes = {
   { name = "info",  color = "\27[32m", },
   { name = "warn",  color = "\27[33m", },
   { name = "error", color = "\27[31m", },
+  { name = "user", color = "\27[35m"},
   { name = "fatal", color = "\27[35m", },
 }
 
@@ -66,9 +67,12 @@ for i, x in ipairs(modes) do
 
     -- Output to console
     -- (modified to use reaper console)
-    reaper.ShowConsoleMsg(string.format("Keys[%s]: %s\n",
-                        nameupper,
-                        msg))
+    if nameupper == "USER" then
+      reaper.ShowConsoleMsg(string.format("%s\n", msg))
+    else
+      reaper.ShowConsoleMsg(string.format("Keys[%s]: %s\n", nameupper, msg))
+    end
+
 
     -- Output to log file
     if log.outfile then
