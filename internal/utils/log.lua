@@ -11,7 +11,7 @@ local log = { _version = "0.1.0" }
 
 log.usecolor = false
 log.outfile = nil
-log.level = "trace"
+log.level = "info"
 
 local modes = {
   { name = "trace", color = "\27[34m", },

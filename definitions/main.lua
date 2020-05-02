@@ -12,8 +12,12 @@ return {
   },
   track_selector = {
     ["if"] = "FolderChildren",
-    ["ig"] = "AllTracks",
-    ["af"] = "FolderParentAndChildren",
+    ["i"] = {"+inner", {
+               ["g"] = "AllTracks",
+    }},
+    ["o"] = {"+outer", {
+               ["f"] = "FolderParentAndChildren"
+    }},
   },
   track_operator = {
     ["z"] = "VerticalZoom",

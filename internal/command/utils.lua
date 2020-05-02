@@ -37,25 +37,19 @@ function utils.printEntries(entries)
   local entries_string = ""
   for key_seq, value in pairs(entries) do
     local pretty_key_seq = key_seq
-    if str.sub(key_seq, 1, 1) == "<" and str.sub(key_seq, #key_seq, #key_seq) == ">" then
+    if key_seq == 'number' then
+      entry_string = entry_string .. value
+    elseif str.sub(key_seq, 1, 1) == "<" and str.sub(key_seq, #key_seq, #key_seq) == ">" then
       pretty_key_seq = str.sub(key_seq, 2, #key_seq - 1)
     end
 
-    local entry_string = "  "
-    if key_seq == 'number' then
-      entry_string = entry_string .. value
-    else
-      entry_string = entry_string .. "'" .. pretty_key_seq .. "'" .. " -> "
-      if utils.isFolder(value) then
-        local folder_name = value[1]
-        entry_string = entry_string .. folder_name
-      else
-        entry_string = entry_string .. value
-      end
+    local pretty_value = value
+    if utils.isFolder(value) then
+      local folder_name = value[1]
+      pretty_value = folder_name
     end
 
-    entry_string = str.format("%" .. max_seq_length + 2 .. "s -> %s", pretty_key_seq, value)
-
+    entry_string = str.format("%" .. max_seq_length + 2 .. "s -> %s", pretty_key_seq, pretty_value)
     entries_string = entries_string .. "\n" .. entry_string
   end
 

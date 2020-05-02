@@ -1,6 +1,6 @@
 {
   context = "main",
-  key_sequence = "",
+  key_sequence = "<SPC>",
   last_command = {
     parts = {
       "No-op"

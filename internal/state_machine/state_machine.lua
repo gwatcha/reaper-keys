@@ -11,7 +11,7 @@ local ser = require("serpent")
 
 function input(key_press)
   reaper.ClearConsole()
-  log.info("input: " .. ser.line(key_press, {comment=false}))
+  log.trace("input: " .. ser.line(key_press, {comment=false}))
 
   local state = state_interface.get()
 
