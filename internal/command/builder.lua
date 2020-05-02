@@ -41,7 +41,7 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
     end
   end
 
-  if #command.sequence ~= #action_sequence then
+  if #command.sequence ~= #action_sequence or #rest_of_sequence ~= 0 then
     return nil
   end
 

@@ -2,34 +2,222 @@
   a = {
     {
       parts = {
-        "MoveToFirstItem"
+        "NextMeasure"
       },
       sequence = {
         "timeline_motion"
       }
-    },
+    }
+  },
+  d = {
     {
       parts = {
-        "GoProjectBeginning"
-      },
-      sequence = {
-        "timeline_motion"
-      }
-    },
-    {
-      parts = {
-        "NextItem"
-      },
-      sequence = {
-        "timeline_motion"
-      }
-    },
-    {
-      parts = {
-        "ToggleVisualTimelineMode"
+        "ToggleVisualTrackMode"
       },
       sequence = {
         "command"
+      }
+    },
+    {
+      parts = {
+        "PlayMacro",
+        "r"
+      },
+      sequence = {
+        "meta_command",
+        "register_location"
+      }
+    }
+  },
+  f = {
+    {
+      parts = {
+        "NextTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "NextTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "EnterTrackBelow"
+      },
+      sequence = {
+        "command"
+      }
+    },
+    {
+      parts = {
+        "EnterTrackBelow"
+      },
+      sequence = {
+        "command"
+      }
+    },
+    {
+      parts = {
+        "EnterTrackBelow"
+      },
+      sequence = {
+        "command"
+      }
+    }
+  },
+  g = {
+    {
+      parts = {
+        "NextMeasure"
+      },
+      sequence = {
+        "timeline_motion"
+      }
+    },
+    {
+      parts = {
+        "PrevMeasure"
+      },
+      sequence = {
+        "timeline_motion"
+      }
+    },
+    {
+      parts = {
+        "PrevMeasure"
+      },
+      sequence = {
+        "timeline_motion"
+      }
+    },
+    {
+      parts = {
+        "PrevMeasure"
+      },
+      sequence = {
+        "timeline_motion"
+      }
+    },
+    {
+      parts = {
+        "PrevMeasure"
+      },
+      sequence = {
+        "timeline_motion"
+      }
+    },
+    {
+      parts = {
+        "NextMeasure"
+      },
+      sequence = {
+        "timeline_motion"
+      }
+    },
+    {
+      parts = {
+        "VerticalZoom",
+        "AllTracks"
+      },
+      sequence = {
+        "track_operator",
+        "track_selector"
+      }
+    },
+    {
+      parts = {
+        "NextTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "NextTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "PrevTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "PrevTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "NextTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "NextTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "EnterTrackBelow"
+      },
+      sequence = {
+        "command"
+      }
+    },
+    {
+      parts = {
+        "EnterTrackBelow"
+      },
+      sequence = {
+        "command"
+      }
+    },
+    {
+      parts = {
+        "PrevTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    },
+    {
+      parts = {
+        "PrevTrack"
+      },
+      sequence = {
+        "track_motion"
+      }
+    }
+  },
+  r = {
+    {
+      parts = {
+        "EndOfItem"
+      },
+      sequence = {
+        "timeline_motion"
       }
     },
     {
@@ -42,28 +230,18 @@
     },
     {
       parts = {
-        "DeleteItems"
+        "NextBeat"
       },
       sequence = {
-        "timeline_operator"
-      }
-    }
-  },
-  r = {
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
+        "timeline_motion"
       }
     },
     {
       parts = {
-        "PrevTrack"
+        "NextBeat"
       },
       sequence = {
-        "track_motion"
+        "timeline_motion"
       }
     },
     {
@@ -72,392 +250,6 @@
       },
       sequence = {
         "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "VerticalZoom",
-        "NextTrack"
-      },
-      sequence = {
-        "track_operator",
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "PrevTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "NextTrack"
-      },
-      sequence = {
-        "track_motion"
-      }
-    },
-    {
-      parts = {
-        "ToggleVisualTimelineMode"
-      },
-      sequence = {
-        "command"
       }
     }
   }

@@ -11,12 +11,12 @@ return {
     ["<C-u>"] = "Prev5Track",
   },
   track_selector = {
-    ["if"] = "FolderChildren",
+    ["if"] = "InnerFolder",
     ["i"] = {"+inner", {
                ["g"] = "AllTracks",
     }},
     ["o"] = {"+outer", {
-               ["f"] = "FolderParentAndChildren"
+               ["f"] = "OuterFolder"
     }},
   },
   track_operator = {

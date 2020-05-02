@@ -23,7 +23,7 @@ function makeExecutableCommandParts(command)
   return executable_command_parts
 end
 
-function dispatchCommand(command, context, mode)
+function executor.dispatchCommand(command, context, mode)
   local functionForCommand = sequences.getFunctionForSequence(command.sequence, context, mode)
   if functionForCommand then
     local executable_command_parts = makeExecutableCommandParts(command)
@@ -36,21 +36,16 @@ end
 
 function executor.executeCommand(command, context, mode)
   reaper.Undo_BeginBlock()
-  dispatchCommand(command, context, mode)
+  executor.dispatchCommand(command, context, mode)
   reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 1)
 end
 
-function executor.executeMacroCommands(commands, context, mode, desc)
-  if not commands then
-    log.info("This macro has no commands recorded.")
-    return nil
-  end
-
+function executor.executeCommandMultipleTimes(command, context, mode, repetitions)
   reaper.Undo_BeginBlock()
-  for _,command in pairs(commands) do
-    dispatchCommand(command, context, mode)
+  for i=1,repetitions do
+    executor.dispatchCommand(command, context, mode)
   end
-  reaper.Undo_EndBlock('reaper-keys: ' .. desc, 1)
+  reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. utils.makeCommandDescription(command), 1)
 end
 
 return executor

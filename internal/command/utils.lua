@@ -4,6 +4,15 @@ local ser = require("serpent")
 
 local utils = {}
 
+function utils.getActionTypeValueInCommand(command, action_type)
+  for i,current_action_type in pairs(command.sequence) do
+    if current_action_type == action_type then
+      return command.parts[i]
+    end
+  end
+  return nil
+end
+
 function utils.makeCommandDescription(command)
   local desc = ""
   for _, command_part  in pairs(command.parts) do
@@ -49,12 +58,20 @@ function utils.printUserInfo(state, sequence_defined)
     local rest_of_key_seq = state['key_sequence']
     while #rest_of_key_seq ~= 0 do
       first_key, rest_of_key_seq = utils.splitFirstKey(rest_of_key_seq)
-      info_line = info_line .. " " .. removeUglyBrackets(first_key)
+      if tonumber(first_key) then
+        info_line = info_line .. first_key
+      else
+        info_line = info_line .. " " .. removeUglyBrackets(first_key)
+      end
     end
     info_line = info_line .. "-"
-    -- info_line = str.format("%s%" .. width - #info_line .. "s", info_line, "(C-, for help)")
-    info_line = str.format("%s%" .. width - #info_line .. "s", info_line, "(C-, for help)")
   end
+
+  local right_text = ""
+  if state['macro_recording'] then
+    right_text = str.format("(rec %s..)", state['macro_register'])
+  end
+  info_line = str.format("%s%" .. width - #info_line .. "s", info_line, right_text)
 
   return str.format("%s\n%s", airline_bar, info_line)
 end

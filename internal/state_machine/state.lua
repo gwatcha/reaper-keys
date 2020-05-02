@@ -1,16 +1,16 @@
 {
   context = "main",
-  key_sequence = "<SPC>a",
+  key_sequence = "",
   last_command = {
     parts = {
-      "NextTrack"
+      "RecordMacro"
     },
     sequence = {
-      "track_motion"
+      "meta_command"
     }
   },
   macro_commands = {},
   macro_recording = false,
-  macro_register = "+",
-  mode = "normal"
+  macro_register = "d",
+  mode = "visual_track"
 }

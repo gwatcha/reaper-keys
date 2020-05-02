@@ -1,7 +1,10 @@
 return {
-  register_action = {
-    ["q"] = "RecordMacro",
+  meta_command = {
+    ["."] = "RepeatLastCommand",
     ["@"] = "PlayMacro",
+    ["q"] = "RecordMacro",
+  },
+  register_action = {
     ['"'] = "PasteRegister",
     ["yf"] = "SaveFxChain",
   },
@@ -40,7 +43,6 @@ return {
     ["T"] = "Play",
     ["<C-t>"] = "StartStop",
     ["<ESC>"] = "Reset",
-    ["."] = "RepeatLastCommand",
     ["<C-,>"] = "OpenReaperKeysConfig",
     ["v"] = "ToggleVisualTimelineMode",
     ["<M-l>"] = "MidiLearnLastTouchedFX",

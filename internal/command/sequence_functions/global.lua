@@ -3,8 +3,36 @@ local log = require('utils.log')
 local state_functions = require('state_machine.state_functions')
 local definitions = require("utils.definitions")
 
+function formatInvalidSequenceMessage(action_sequence)
+  return "A '" .. action_sequence  .. "' action sequence has been called, even though these types of sequences should be handled by the state machine."
+end
+
 return {
   all_modes = {
+    {
+      { 'number', 'meta_command', 'register_location' },
+      function()
+        log.fatal(formatInvalidSequenceMessage(" 'number', 'meta_command', 'register_location' "))
+      end
+    },
+    {
+      { 'number', 'meta_command'},
+      function()
+        log.fatal(formatInvalidSequenceMessage(" 'number', 'meta_command'"))
+      end
+    },
+    {
+      { 'meta_command', 'register_location' },
+      function()
+        log.fatal(formatInvalidSequenceMessage(" 'meta_command', 'register_location' "))
+      end
+     },
+    {
+      { 'meta_command'},
+      function()
+        log.fatal(formatInvalidSequenceMessage(" 'meta_command'"))
+      end
+    },
     {
       { 'command' },
       function(action)
