@@ -4,7 +4,8 @@ local constants = {
     context = "main",
     mode = "normal",
     macro_recording = false,
-    macro_register = "",
+    macro_register = "+",
+    macro_commands = {},
     last_command = {
       parts = {
         "No-op"

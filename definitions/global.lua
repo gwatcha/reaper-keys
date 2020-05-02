@@ -1,6 +1,6 @@
 return {
   register_action = {
-    ["q"] = "RecordMaro",
+    ["q"] = "RecordMacro",
     ["@"] = "PlayMacro",
     ['"'] = "PasteRegister",
     ["yf"] = "SaveFxChain",

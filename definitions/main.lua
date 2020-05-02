@@ -23,7 +23,7 @@ return {
     ["z"] = "VerticalZoom",
     ["f"] = "MakeFolder",
     ["d"] = "CutTrack",
-    -- ["a"] = "ArmToggle",
+    ["a"] = "ArmToggle",
     ["s"] = "ToggleSolo",
     ["m"] = "ToggleMute",
     ["y"] = "CopyTrack",
@@ -48,7 +48,7 @@ return {
   },
   command = {
     ["<TAB>"] = "CycleFolderCollapsedState",
-    ["<S-TAB>"] = "CycleFolderState",
+    ["<C-TAB>"] = "CycleFolderState",
     ["V"] = "ToggleVisualTrackMode",
     ["%"] = "CropToActiveTake",
     ["("] = "SetTimeSelectionStart",

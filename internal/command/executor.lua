@@ -6,6 +6,8 @@ local log = require('utils.log')
 local utils = require('command.utils')
 local ser = require("serpent")
 
+local executor = {}
+
 function makeExecutableCommandParts(command)
   local executable_command_parts = {}
   for i,action_type in pairs(command.sequence) do
@@ -21,10 +23,9 @@ function makeExecutableCommandParts(command)
   return executable_command_parts
 end
 
-function executeCommand(command, context, mode)
+function dispatchCommand(command, context, mode)
   local functionForCommand = sequences.getFunctionForSequence(command.sequence, context, mode)
   if functionForCommand then
-    reaper.Undo_BeginBlock()
     local executable_command_parts = makeExecutableCommandParts(command)
     functionForCommand(table.unpack(executable_command_parts))
     reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 1)
@@ -33,4 +34,23 @@ function executeCommand(command, context, mode)
   end
 end
 
-return executeCommand
+function executor.executeCommand(command, context, mode)
+  reaper.Undo_BeginBlock()
+  dispatchCommand(command, context, mode)
+  reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 1)
+end
+
+function executor.executeMacroCommands(commands, context, mode, desc)
+  if not commands then
+    log.info("This macro has no commands recorded.")
+    return nil
+  end
+
+  reaper.Undo_BeginBlock()
+  for _,command in pairs(commands) do
+    dispatchCommand(command, context, mode)
+  end
+  reaper.Undo_EndBlock('reaper-keys: ' .. desc, 1)
+end
+
+return executor

@@ -1,6 +1,6 @@
 {
   context = "main",
-  key_sequence = "<SPC>",
+  key_sequence = "",
   last_command = {
     parts = {
       "No-op"
@@ -9,7 +9,9 @@
       "command"
     }
   },
-  macro_recording = false,
-  macro_register = "",
+  macro_commands = {},
+  macro_recording = true,
+  macro_register = "a",
+  macro_triggered = false,
   mode = "normal"
 }

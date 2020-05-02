@@ -1,6 +1,7 @@
 local output = require('command.output')
 local log = require('utils.log')
 local state_functions = require('state_machine.state_functions')
+local definitions = require("utils.definitions")
 
 return {
   all_modes = {
@@ -17,18 +18,9 @@ return {
       end
     },
     {
-      { 'macro_play', 'register_location' },
-      function(macro_play, register_location)
-      end
-    },
-    {
-      { 'macro_rec', 'register_location' },
-      function(macro_rec, register_location)
-      end
-    },
-    {
-      { 'register_key', 'register_location', 'register_action' },
-      function(register_key, register_location, register_action)
+      { 'register_action', 'register_location' },
+      function(register_action, register_location)
+        register_action(register_location)
       end
     },
   },

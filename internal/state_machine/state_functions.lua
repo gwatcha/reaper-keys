@@ -16,6 +16,31 @@ function state_functions.checkIfConsistentState(state)
   return true
 end
 
+function state_functions.getIsMacroRecording()
+  local state = state_interface.get()
+  return state['macro_recording']
+end
+
+function state_functions.endMacroRecording()
+  local state = state_interface.get()
+  state['macro_recording'] = false
+  state_interface.set(state)
+end
+
+function state_functions.triggerMacroCommands(commands)
+  local state = state_interface.get()
+  state['macro_triggered'] = true
+  state['macro_commands'] = commands
+  state_interface.set(state)
+end
+
+function state_functions.startMacroRecording(register)
+  local state = state_interface.get()
+  state['macro_register'] = register
+  state['macro_recording'] = true
+  state_interface.set(state)
+end
+
 function state_functions.setTimelineSelectionSide(left_or_right)
   local state = state_interface.get()
   state['timeline_selection_side'] = left_or_right

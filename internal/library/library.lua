@@ -1,8 +1,11 @@
 local constants = require('state_machine.constants')
+local saved = require('saved')
 local state_functions = require('state_machine.state_functions')
 local log = require('utils.log')
 
-local library = {}
+local library = {
+  register_actions = {}
+}
 
 function library.resetToNormal()
   state_functions.resetToNormal()
@@ -11,13 +14,24 @@ end
 function library.openConfig()
 end
 
-function library.pasteRegister()
+function library.register_actions.pasteRegister(register)
 end
 
-function library.playMacro()
+function library.register_actions.playMacro(register)
+  local macro_commands = saved.macros.get(register)
+  state_functions.triggerMacroCommands(macro_commands)
 end
 
-function library.recordMacro()
+function library.register_actions.recordMacro(register)
+  if not state_functions.getIsMacroRecording() then
+    saved.macros.clear(register)
+    state_functions.startMacroRecording(register)
+  else
+    state_functions.endMacroRecording()
+  end
+end
+
+function library.register_actions.saveFxChain(register)
 end
 
 function library.saveFxChain()
