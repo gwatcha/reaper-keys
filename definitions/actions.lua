@@ -1,6 +1,7 @@
 local lib = require("library")
 
 return {
+  ["RepeatLastCommand"] = "RepeatLastCommand", 
   ["FolderParent"] = "_SWS_SELPARENTS",
   ["MakeFolder"] = "_SWS_MAKEFOLDER",
   ["FolderParentAndChildren"] =  {"FolderParent", "SelectFoldersChildren"},
@@ -14,14 +15,13 @@ return {
   ["Reset"] = {"Stop", "SetRecordModeToNormal", "ResetToNormal"},
   ["SetRecordModeToNormal"] = 40252,
   ["ResetToNormal"] = lib.resetToNormal,
-  ["RepeatLastCommand"] = lib.repeatLastCommand,
   ["OpenReaperKeysConfig"] = lib.openConfig,
   ["ToggleVisualTimelineMode"] = lib.toggleVisualTimelineMode,
+  ["ToggleVisualTrackMode"] = lib.toggleVisualTrackMode,
   ["PasteRegister"] = lib.pasteRegister,
   ["PlayMacro"] = lib.playMacro,
   ["RecordMacro"] = lib.recordMacro,
   ["SaveFxChain"] = lib.saveFxChain,
-  ["VisualTrackMode"] = lib.visualTrackMode,
   ["LastTrack"] = {"VerticalScrollEnd", "SelectAllTracks", "SelectLastOfSelectedTracks"},
   ["VerticalScrollEnd"] = "_XENAKIOS_TVPAGEEND",
   ["VerticalScrollBeginning"] = "_XENAKIOS_TVPAGEHOME",

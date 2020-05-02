@@ -3,12 +3,10 @@
   key_sequence = "",
   last_command = {
     parts = {
-      "Change",
-      "AllTrackItems"
+      "PrevTrack"
     },
     sequence = {
-      "timeline_operator",
-      "timeline_selector"
+      "track_motion"
     }
   },
   macro_recording = false,

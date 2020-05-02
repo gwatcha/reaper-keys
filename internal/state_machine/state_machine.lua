@@ -1,22 +1,13 @@
 local state_machine = {}
 
 local state_interface = require('state_machine.state_interface')
+local state_functions = require('state_machine.state_functions')
 local state_machine_constants = require("state_machine.constants")
 local command = require("command")
 local utils = require("command.utils")
 local log = require('utils.log')
 
 local ser = require("serpent")
-
-function checkIfStatesAreSame(state1, state2)
-  for k,value in pairs(state1) do
-    if value ~= state2[k] then
-      return false
-    end
-  end
-
-  return true
-end
 
 function input(key_press)
   reaper.ClearConsole()
@@ -35,14 +26,20 @@ function input(key_press)
 
   local cmd = command.buildCommand(state, new_key_sequence)
   if cmd then
-    command.executeCommand(cmd, state['context'], state['mode'])
     log.info('Command triggered: ' .. utils.makeCommandDescription(cmd))
-    -- internal commands may have changed the state
-    if not checkIfStatesAreSame(state_interface.get(), state) then
-      state = state_interface.get()
+    if cmd.parts[1] == "RepeatLastCommand" then
+      cmd = state['last_command']
     end
-    state['key_sequence'] = ""
-    state['last_command'] = cmd
+
+    command.executeCommand(cmd, state['context'], state['mode'])
+
+    -- internal commands may have changed the state
+    if not state_functions.checkIfConsistentState(state) then
+      state = state_interface.get()
+    else
+      state['key_sequence'] = ""
+      state['last_command'] = cmd
+    end
   else
     local future_entries = command.getPossibleFutureEntries(state, new_key_sequence)
     if not future_entries then

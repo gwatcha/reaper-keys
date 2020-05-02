@@ -43,7 +43,7 @@ return {
   command = {
     ["<TAB>"] = "CycleFolderCollapsedState",
     ["<S-TAB>"] = "CycleFolderState",
-    ["V"] = "VisualTrackMode",
+    ["V"] = "ToggleVisualTrackMode",
     ["%"] = "CropToActiveTake",
     ["("] = "SetLoopStart",
     [")"] = "SetLoopEnd",

@@ -30,7 +30,6 @@ function concatEntryTables(t1,t2)
   return merged_tables
 end
 
--- entry: [key_sequences] -> action_name
 function definitions.getPossibleEntries(context)
   return concatEntryTables(definition_tables[context], definition_tables['global'])
 end
