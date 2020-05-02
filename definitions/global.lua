@@ -29,6 +29,12 @@ return {
     ["c"] = "Change",
     ["t"] = "PlaySelection",
   },
+  visual_timeline_command = {
+    ["o"] = "SwitchTimelineSelectionSide",
+  },
+  visual_track_command = {
+    ["o"] = "SwitchTrackSelectionSide",
+  },
   command = {
     ["T"] = "Play",
     ["<C-t>"] = "StartStop",

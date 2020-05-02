@@ -16,6 +16,17 @@ function state_functions.checkIfConsistentState(state)
   return true
 end
 
+function state_functions.setTimelineSelectionSide(left_or_right)
+  local state = state_interface.get()
+  state['timeline_selection_side'] = left_or_right
+  state_interface.set(state)
+end
+
+function state_functions.getTimelineSelectionSide()
+  local state = state_interface.get()
+  return state['timeline_selection_side']
+end
+
 function state_functions.toggleMode(mode)
   local state = state_interface.get()
   if state.mode == mode then

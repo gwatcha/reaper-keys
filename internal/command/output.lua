@@ -1,6 +1,7 @@
 local definitions = require("utils.definitions")
 local log = require('utils.log')
 local ser = require("serpent")
+local state_functions = require('state_machine.state_functions')
 
 local output = {}
 
@@ -54,12 +55,21 @@ function output.runActionNTimes(action, times)
   end
 end
 
-function output.makeSelectionFromMotion(timeline_motion, repetitions)
+function output.makeSelectionFromTimelineMotion(timeline_motion, repetitions)
   local sel_start = reaper.GetCursorPosition()
   output.runActionNTimes(timeline_motion, repetitions)
   local sel_end = reaper.GetCursorPosition()
   local length = sel_end - sel_start
   reaper.MoveEditCursor(length * -1, true)
+end
+
+function output.extendTimelineSelection(movement, args)
+  movement(table.unpack(args))
+  if state_functions.getTimelineSelectionSide() == 'right' then
+    output.runAction({"SetTimeSelectionEnd"})
+  else
+    output.runAction({"SetTimeSelectionStart"})
+  end
 end
 
 function output.addToTrackSelection(selection_action, args)

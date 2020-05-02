@@ -5,6 +5,14 @@ local constants = {
     mode = "normal",
     macro_recording = false,
     macro_register = "",
+    last_command = {
+      parts = {
+        "No-op"
+      },
+      sequence = {
+        "command"
+      }
+    }
   }
 }
 

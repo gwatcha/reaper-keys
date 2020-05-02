@@ -3,10 +3,10 @@
   key_sequence = "",
   last_command = {
     parts = {
-      "PrevTrack"
+      "No-op"
     },
     sequence = {
-      "track_motion"
+      "command"
     }
   },
   macro_recording = false,

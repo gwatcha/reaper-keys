@@ -28,8 +28,19 @@ function library.toggleVisualTrackMode()
 end
 
 function library.toggleVisualTimelineMode()
-  log.info("h")
   state_functions.toggleMode('visual_timeline')
+end
+
+function library.switchTimelineSelectionSide()
+  local go_to_start_of_selection = 40630
+  local go_to_end_of_selection = 40631
+  if state_functions.getTimelineSelectionSide() == 'right' then
+    reaper.Main_OnCommand(go_to_start_of_selection, 0)
+    state_functions.setTimelineSelectionSide('left')
+  else
+    reaper.Main_OnCommand(go_to_end_of_selection, 0)
+    state_functions.setTimelineSelectionSide('right')
+  end
 end
 
 return library

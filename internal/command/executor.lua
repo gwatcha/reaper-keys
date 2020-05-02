@@ -22,7 +22,6 @@ function makeExecutableCommandParts(command)
 end
 
 function executeCommand(command, context, mode)
-
   local functionForCommand = sequences.getFunctionForSequence(command.sequence, context, mode)
   if functionForCommand then
     reaper.Undo_BeginBlock()

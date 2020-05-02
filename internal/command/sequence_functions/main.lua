@@ -18,12 +18,16 @@ return {
     },
     {
       { 'track_operator', 'track_motion' },
-      function(track_operator, number, track_motion)
+      function(track_operator, track_motion)
+        output.makeSelectionFromTrackMotion(track_motion, 1)
+        output.runAction(track_operator)
       end
     },
     {
       { 'track_operator', 'number', 'track_motion' },
       function(track_operator, number, track_motion)
+        output.makeSelectionFromTrackMotion(track_motion, number)
+        output.runAction(track_operator)
       end
     },
     {
