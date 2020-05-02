@@ -1,4 +1,3 @@
--- i loove including files in lua.
 local info = debug.getinfo(1,'S');
 local root_path = info.source:match[[.*reaper.keys/internal/]]:sub(2)
 package.path = package.path .. ";" .. root_path .. "../definitions/?.lua"

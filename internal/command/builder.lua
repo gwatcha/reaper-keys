@@ -1,5 +1,3 @@
-local log = require("utils.log")
-local ser = require("serpent")
 local utils = require("command.utils")
 local regex_match_entry_types = require("command.constants").regex_match_entry_types
 local sequences = require("command.sequences")
@@ -48,13 +46,15 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
   return command
 end
 
-function buildCommand(state, key_sequence)
+function buildCommand(state)
   local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
   local entries = definitions.getPossibleEntries(state['context'])
 
   for _, action_sequence in pairs(action_sequences) do
-    local command = buildCommandWithActionSequence(key_sequence, action_sequence, entries)
+    local command = buildCommandWithActionSequence(state['key_sequence'], action_sequence, entries)
     if command then
+      command['mode'] = state['mode']
+      command['context'] = state['context']
       return command
     end
   end

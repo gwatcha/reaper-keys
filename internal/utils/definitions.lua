@@ -1,5 +1,3 @@
-local log = require('utils.log')
-
 local definition_tables = {
   global = require("definitions.global"),
   midi = require("definitions.midi"),

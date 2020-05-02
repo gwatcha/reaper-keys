@@ -1,11 +1,7 @@
 local sequences = require("command.sequences")
 local utils = require("command.utils")
 local definitions = require("utils.definitions")
-local log = require("utils.log")
 local regex_match_entry_types = require("command.constants").regex_match_entry_types
-
-local str = require("string")
-local ser = require("serpent")
 
 function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   if not entries then return nil end
@@ -83,7 +79,7 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   return nil
 end
 
-function getPossibleFutureEntries(state, key_sequence)
+function getPossibleFutureEntries(state)
   local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
   if not action_sequences then return nil end
   local entries = definitions.getPossibleEntries(state['context'])
@@ -92,7 +88,7 @@ function getPossibleFutureEntries(state, key_sequence)
   local future_entries = {}
   local future_entry_exists = false
   for _, action_sequence in pairs(action_sequences) do
-    local future_entries_on_sequence = getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
+    local future_entries_on_sequence = getFutureEntriesOnSequence(state['key_sequence'], action_sequence, entries)
     if future_entries_on_sequence then
       future_entry_exists = true
       for key, entry in pairs(future_entries_on_sequence) do

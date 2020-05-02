@@ -1,8 +1,16 @@
-local log = require("utils.log")
 local str = require("string")
-local ser = require("serpent")
 
 local utils = {}
+
+function utils.checkIfCommandsAreEqual(command1, command2)
+  if #command1.sequence ~= #command2.sequence then return false end
+  for i,action in pairs(command1.parts) do
+    if action ~= command2.parts[i] then
+      return false
+    end
+  end
+  return true
+end
 
 function utils.getActionTypeValueInCommand(command, action_type)
   for i,current_action_type in pairs(command.sequence) do
@@ -32,88 +40,6 @@ function utils.getEntry(key_sequence, entries)
       end
     end
   end
-end
-
-function utils.printUserInfo(state, sequence_defined)
-  local chars_for_modes = {
-    normal = "·",
-    visual_timeline = "»",
-    visual_track = "¬",
-  }
-
-  local width = 30
-
-  ser.block(state, {comment=false})
-  local airline_bar = ""
-  for i=1,width do airline_bar = airline_bar .. chars_for_modes[state['mode']] end
-
-  local info_line = ""
-  if state['key_sequence'] == "" then
-    if not sequence_defined then
-      info_line = "Undefined key sequence"
-    elseif state['last_command'].parts[1] ~= "No-op" then
-      info_line = utils.makeCommandDescription(state['last_command'])
-    end
-  else
-    local rest_of_key_seq = state['key_sequence']
-    while #rest_of_key_seq ~= 0 do
-      first_key, rest_of_key_seq = utils.splitFirstKey(rest_of_key_seq)
-      if tonumber(first_key) then
-        info_line = info_line .. first_key
-      else
-        info_line = info_line .. " " .. removeUglyBrackets(first_key)
-      end
-    end
-    info_line = info_line .. "-"
-  end
-
-  local right_text = ""
-  if state['macro_recording'] then
-    right_text = str.format("(rec %s..)", state['macro_register'])
-  end
-  info_line = str.format("%s%" .. width - #info_line .. "s", info_line, right_text)
-
-  return str.format("%s\n%s", airline_bar, info_line)
-end
-
-function removeUglyBrackets(key)
-  local pretty_key = key
-  if str.sub(key, 1, 1) == "<" and str.sub(key, #key, #key) == ">" then
-    pretty_key = str.sub(key, 2, #key - 1)
-  end
-
-  return pretty_key
-end
-
-function utils.printCompletions(entries)
-  local max_seq_length = 1
-  for key_seq,_ in pairs(entries) do
-    if type(key_seq) == 'string' and #key_seq > max_seq_length then
-      max_seq_length = #key_seq
-    end
-  end
-
-  local collapsed_entries = {}
-  local entries_string = ""
-  for key_seq, value in pairs(entries) do
-    local pretty_key_seq = key_seq
-    if key_seq == 'number' then
-      entry_string = entry_string .. value
-    else
-      pretty_key_seq = removeUglyBrackets(key_seq)
-    end
-
-    local pretty_value = value
-    if utils.isFolder(value) then
-      local folder_name = value[1]
-      pretty_value = folder_name
-    end
-
-    entry_string = str.format("%" .. max_seq_length + 1 .. "s -> %s", pretty_key_seq, pretty_value)
-    entries_string = entries_string .. "\n" .. entry_string
-  end
-
-  return entries_string
 end
 
 function utils.isFolder(entry_value)

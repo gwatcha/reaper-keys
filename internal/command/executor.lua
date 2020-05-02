@@ -1,10 +1,8 @@
-local state_machine_constants = require('state_machine.constants')
 local sequences = require("command.sequences")
 local definitions = require("utils.definitions")
 local regex_match_entry_types = require("command.constants").regex_match_entry_types
 local log = require('utils.log')
 local utils = require('command.utils')
-local ser = require("serpent")
 
 local executor = {}
 
@@ -23,27 +21,27 @@ function makeExecutableCommandParts(command)
   return executable_command_parts
 end
 
-function executor.dispatchCommand(command, context, mode)
-  local functionForCommand = sequences.getFunctionForSequence(command.sequence, context, mode)
+function executor.dispatchCommand(command)
+  local functionForCommand = sequences.getFunctionForCommand(command)
   if functionForCommand then
     local executable_command_parts = makeExecutableCommandParts(command)
     functionForCommand(table.unpack(executable_command_parts))
     reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 1)
   else
-    log.error('Did not find an associated command function to execute for this command!')
+    log.error('Did not find an associated action sequence function to execute for this command!')
   end
 end
 
-function executor.executeCommand(command, context, mode)
+function executor.executeCommand(command)
   reaper.Undo_BeginBlock()
-  executor.dispatchCommand(command, context, mode)
+  executor.dispatchCommand(command)
   reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 1)
 end
 
-function executor.executeCommandMultipleTimes(command, context, mode, repetitions)
+function executor.executeCommandMultipleTimes(command, repetitions)
   reaper.Undo_BeginBlock()
   for i=1,repetitions do
-    executor.dispatchCommand(command, context, mode)
+    executor.dispatchCommand(command)
   end
   reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. utils.makeCommandDescription(command), 1)
 end

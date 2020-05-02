@@ -4,7 +4,6 @@ return {
   ["PlayMacro"] = "PlayMacro",
   ["RecordMacro"] = "RecordMacro",
   ["RepeatLastCommand"] = "RepeatLastCommand",
-
   ["SwitchTimelineSelectionSide"] = lib.switchTimelineSelectionSide,
   ["FolderParent"] = "_SWS_SELPARENTS",
   ["AllTracks"] = 40296,

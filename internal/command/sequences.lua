@@ -1,7 +1,3 @@
-local log = require("utils.log")
-local ser = require("serpent")
-local utils = require("command.utils")
-
 local sequences = {}
 
 local sequence_definitions = {
@@ -59,12 +55,12 @@ function checkIfSequencesAreEqual(seq1, seq2)
   return true
 end
 
-function sequences.getFunctionForSequence(sequence, context, mode)
-  local sequence_function_pairs = getPossibleSequenceFunctionPairs(context, mode)
+function sequences.getFunctionForCommand(command)
+  local sequence_function_pairs = getPossibleSequenceFunctionPairs(command.context, command.mode)
 
   for _, sequence_function_pair in ipairs(sequence_function_pairs) do
     local action_sequence = sequence_function_pair[1]
-    if checkIfSequencesAreEqual(sequence, action_sequence) then
+    if checkIfSequencesAreEqual(command.sequence, action_sequence) then
       return sequence_function_pair[2]
     end
   end

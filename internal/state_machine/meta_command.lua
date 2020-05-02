@@ -2,12 +2,10 @@ local meta_command = {}
 
 local executor = require("command.executor")
 local utils = require("command.utils")
+local format = require("utils.format")
 local saved = require('saved')
-local state_functions = require('state_machine.state_functions')
 
 local log = require('utils.log')
-local ser = require("serpent")
-
 
 function executeMultipleCommandOrMetaCommands(state, command, macro_commands, repetitions)
   reaper.Undo_BeginBlock()
@@ -119,7 +117,7 @@ function meta_command.executeMetaCommand(state, command)
 
   if not commands[meta_command_name] then
     log.fatal("Unknown meta command: " .. meta_command_name)
-    log.fatal("Available meta commands are: " .. ser.line(commands, {comment=false, maxlevel=1}))
+    log.fatal("Available meta commands are: " .. format.line(commands))
   end
 
   local new_state = commands[meta_command_name](state, command)

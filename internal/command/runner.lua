@@ -1,14 +1,13 @@
 local definitions = require("utils.definitions")
 local log = require('utils.log')
-local ser = require("serpent")
 local state_functions = require('state_machine.state_functions')
 
-local output = {}
+local runner = {}
 
 function runSubAction(id)
   local action = definitions.getAction(id)
   if action then
-    output.runAction(action)
+    runner.runAction(action)
     return
   end
 
@@ -30,7 +29,7 @@ function runSubAction(id)
   reaper.Main_OnCommand(numeric_id, 0)
 end
 
-function output.runAction(action)
+function runner.runAction(action)
   local sub_actions = action
   if type(action) ~= 'table' then
     sub_actions = {action}
@@ -49,30 +48,30 @@ function output.runAction(action)
 
 end
 
-function output.runActionNTimes(action, times)
+function runner.runActionNTimes(action, times)
   for i=1,times,1 do
-    output.runAction(action)
+    runner.runAction(action)
   end
 end
 
-function output.makeSelectionFromTimelineMotion(timeline_motion, repetitions)
+function runner.makeSelectionFromTimelineMotion(timeline_motion, repetitions)
   local sel_start = reaper.GetCursorPosition()
-  output.runActionNTimes(timeline_motion, repetitions)
+  runner.runActionNTimes(timeline_motion, repetitions)
   local sel_end = reaper.GetCursorPosition()
   local length = sel_end - sel_start
   reaper.MoveEditCursor(length * -1, true)
 end
 
-function output.extendTimelineSelection(movement, args)
+function runner.extendTimelineSelection(movement, args)
   movement(table.unpack(args))
   if state_functions.getTimelineSelectionSide() == 'right' then
-    output.runAction({"SetTimeSelectionEnd"})
+    runner.runAction({"SetTimeSelectionEnd"})
   else
-    output.runAction({"SetTimeSelectionStart"})
+    runner.runAction({"SetTimeSelectionStart"})
   end
 end
 
-function output.addToTrackSelection(selection_action, args)
+function runner.addToTrackSelection(selection_action, args)
   local selected_tracks = {}
   for i=0,reaper.CountSelectedTracks()-1 do
     local track = reaper.GetSelectedTrack(0, i)
@@ -86,18 +85,16 @@ function output.addToTrackSelection(selection_action, args)
   end
 end
 
-function output.makeSelectionFromTrackMotion(track_motion, repetitions)
+function runner.makeSelectionFromTrackMotion(track_motion, repetitions)
   local num_tracks = reaper.GetNumTracks()
 
   local initial_track = reaper.GetSelectedTrack(0, 0)
   local first_index = reaper.GetMediaTrackInfo_Value(initial_track, "IP_TRACKNUMBER") - 1
 
-  output.runActionNTimes(track_motion, repetitions)
+  runner.runActionNTimes(track_motion, repetitions)
 
   local end_track = reaper.GetSelectedTrack(0, 0)
   local second_index = reaper.GetMediaTrackInfo_Value(end_track, "IP_TRACKNUMBER") - 1
-
-  log.info("first i:" .. first_index .. " second i: " .. second_index)
 
   if first_index > second_index then
     local swp = second_index
@@ -107,9 +104,8 @@ function output.makeSelectionFromTrackMotion(track_motion, repetitions)
 
   for i=first_index,second_index do
     local track = reaper.GetTrack(0, i)
-    log.info("making track sel")
     reaper.SetTrackSelected(track, true)
   end
 end
 
-return output
+return runner

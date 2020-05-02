@@ -1,6 +1,2 @@
-build
-state/*
-definitions/old
-mapper_scripts
-gen_keys
-todo.org
+internal/saved/data/*
+internal/state_machine/state.lua

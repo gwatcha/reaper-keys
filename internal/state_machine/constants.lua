@@ -6,6 +6,7 @@ local constants = {
     macro_recording = false,
     macro_register = "+",
     macro_commands = {},
+    timeline_selection_side = "left",
     last_command = {
       parts = {
         "No-op"

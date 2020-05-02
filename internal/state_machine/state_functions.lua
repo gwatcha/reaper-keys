@@ -1,18 +1,20 @@
 local state_interface = require('state_machine.state_interface')
 local constants = require("state_machine.constants")
+local utils = require("command.utils")
 
 local state_functions = {}
 
 function state_functions.checkIfConsistentState(state)
   local current_state = state_interface.get()
   for k,value in pairs(current_state) do
-    if k ~= 'last_command' then
-      if value ~= state[k] then
+    if k == 'last_command' then
+      if not utils.checkIfCommandsAreEqual(state.last_command, current_state.last_command) then
         return false
       end
+    elseif value ~= state[k] then
+        return false
     end
   end
-
   return true
 end
 
@@ -39,21 +41,6 @@ end
 
 function state_functions.resetToNormal()
   state_interface.set(constants['reset_state'])
-end
-
-function state_functions.getContext()
-  local state = state_interface.get()
-  return state['context']
-end
-
-function state_functions.getMode()
-  local state = state_interface.get()
-  return state['mode']
-end
-
-function state_functions.getLastCommand()
-  local state = state_interface.get()
-  return state['last_command']
 end
 
 return state_functions
