@@ -8,14 +8,13 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   if key_sequence == "" then return entries end
 
   local entry = entries[key_sequence]
-  if entry and utils.isFolder(entry) then
-      local folder_table = entry[2]
-      return folder_table
-  end
-
-  if entry then return nil end
+  if entry and not utils.isFolder(entry) then return nil end
 
   local possible_future_entries = {}
+  if entry and utils.isFolder(entry) then
+    local folder_table = entry[2]
+    possible_future_entries = folder_table
+  end
 
   local found_possible_future_entry = false
   for full_key_sequence, entry_value in pairs(entries) do
