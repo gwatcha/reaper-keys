@@ -37,6 +37,8 @@ return {
     ["t"] = "AllTrackItems",
     ["il"] = "AllTrackItems",
     ["v"] = "Selection",
+    ["iw"] = "Item",
+    ["iW"] = "BigItem",
   },
   timeline_motion = {
     ["B"] = "PrevBigItemStart",

@@ -15,6 +15,7 @@ function clearTrackSelection()
   end
 end
 
+
 function library.firstTrack()
   clearTrackSelection()
   local first_track = reaper.GetTrack(0, 0)
@@ -26,6 +27,28 @@ function library.lastTrack()
   local num_tracks = reaper.GetNumTracks()
   local last_track = reaper.GetTrack(0, num_tracks-1)
   reaper.SetTrackSelected(last_track, true)
+end
+
+function library.selectInnerItem()
+  local item_positions = getItemPositionsOnSelectedTrack()
+  local current_position = reaper.GetCursorPosition()
+  for i,item in pairs(item_positions) do
+    if item.left < current_position and item.right >= current_position then
+      reaper.GetSet_LoopTimeRange(true, false, item.left, item.right, false)
+      break
+    end
+  end
+end
+
+function library.selectInnerBigItem()
+  local item_positions = getBigItemPositionsOnSelectedTrack()
+  local current_position = reaper.GetCursorPosition()
+  for i,item in pairs(item_positions) do
+    if item.left < current_position and item.right >= current_position then
+      reaper.GetSet_LoopTimeRange(true, false, item.left, item.right, false)
+      break
+    end
+  end
 end
 
 function library.moveToLastItemEnd()

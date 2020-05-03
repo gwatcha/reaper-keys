@@ -11,6 +11,8 @@ return {
   ["LastItemEnd"] = lib.moveToLastItemEnd,
   ["FirstTrack"] = lib.firstTrack,
   ["LastTrack"] = lib.lastTrack,
+  ["BigItem"] = lib.selectInnerBigItem,
+  ["Item"] = lib.selectInnerItem,
   ["PlayMacro"] = "PlayMacro",
   ["Selection"] = "No-op",
   ["RecordMacro"] = "RecordMacro",
