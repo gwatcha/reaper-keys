@@ -1,6 +1,3 @@
-local log = require('utils.log')
-local format = require("utils.format")
-
 local sequences = require("command.sequences")
 local utils = require("command.utils")
 local definitions = require("utils.definitions")
@@ -45,14 +42,12 @@ end
 
 -- what a monstrosity of recursion, i am not proud of how complicated this is
 function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
-  log.user("action sequence: " .. format.line(action_sequence))
   if #action_sequence == 0 then return nil end
 
   local current_entry_type = action_sequence[1]
 
   if regex_match_entry_types[current_entry_type] then
     if key_sequence == "" then
-      log.user("on sequence:" .. format.line(action_sequence))
       return {"(" .. current_entry_type .. ")"}
     end
 
