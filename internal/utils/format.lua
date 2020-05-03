@@ -70,7 +70,7 @@ function formatKeySequence(key_sequence, spacing)
 end
 
 function format.userInfoWithCompletions(state, future_entries)
-  local key_sequence_string = formatKeySequence(state['key_sequence'])
+  local key_sequence_string = formatKeySequence(state['key_sequence'], true)
   key_sequence_string = key_sequence_string .. "-"
   local completions = formatCompletions(future_entries)
   local mode_line_and_info_line = format.userInfo(state, key_sequence_string)

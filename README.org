@@ -12,7 +12,7 @@ REAPER's tremendouse bag of actions...
 
 ** Composable actions
 Reaper-keys  lets one compose actions of different types to create new commands.
-For example, any '~timeline motion~'  action can follow any  '~timeline operator'~
+For example, any ~timeline motion~  action can follow any  ~timeline operator~
 action, and any ~number~ can prefix a ~timeline motion~ .
 
 So if one types ~c4l~ it would compose into ~(c = "Change", 4, l = "NextBeat"~), and trigger a command to set up a record loop to change the next 4 beats.
