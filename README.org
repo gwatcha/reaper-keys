@@ -1,15 +1,81 @@
 * Reaper-Keys
-Provides a structure for REAPER's gigantic bag of actions.
-Inspired by and written in spacemacs, a text editor with vim bindings.
+Reaper-Keys is an extension for the [[https://www.reaper.fm/][REAPER DAW]], that provides a new shortcut
+mapping system based on key sequences instead of key chords. The system is 
+based on [[https://en.wikipedia.org/wiki/Vim_%2528text_editor%2529][Vim]], a modal text editor, and by default comes with vim-like bindings. 
 
-* Features
-** Hint Box
+The main features are:
+
+** Structure
+.. video of reaper scrolling ...
+The biggest benefit I find of using this, is the structure it provides to
+REAPER's tremendouse bag of actions...
+
+** Composable actions
+Reaper-keys  lets one compose actions of different types to create new commands.
+For example, any '~timeline motion~'  action can follow any  '~timeline operator'~
+action, and any ~number~ can prefix a ~timeline motion~ .
+
+So if one types ~c4l~ it would compose into ~(c = "Change", 4, l = "NextBeat"~), and trigger a command to set up a record loop to change the next 4 beats.
+
+... video ...
+
+To select the next 4 beats (splitting items if necessary), one could enter ~s4l~.
+
+This grows the number of available actions exponentially but still preserves your
+brain, as you only need to know the ~timeline_motions~, ~timeline_operators~, and
+the fact that you can compose them. 
+
+Learn more about this ~action sequence~ and other ones,  in the [[file+sys:definitions/README.org][definitions/README]] file.
+
+** Multi-modal
+Reaper-keys has multiple modes as well.
+
+Changing modes changes the way keys compose, meaning it changes the possible ~action
+sequences~, as well as their behaviours.
+
+By default, it is in ~normal~ mode, but you could for example go into ~visual timeline~ mode by pressing ~v~.
+In this mode, ~timeline motions~ extend the current time selection, and ~timeline
+actions~ operate immediately and return one to ~normal~ mode.
+
+.. video ..
+
 ** Macros
+A powerful feature reaper-keys provides is the ability to record /macros/. A macro
+is simply a saved sequence of commands, that one may 'play back' later.
+
+To record a macro, enter ~q~ and an arbitrary character to specify the ~register~ that
+the macro will save into. Then, perform a series of actions, and finish
+recording by pressing ~q~. 
+
+You can play it back by entering ~@~ and the character you specified earlier.
+
+Here is an example of recording a macro that deletes every second note for a midi track.
+
+.. video ..
+
+** Hint Box
+Reaper-keys provides a hint box that you may toggle TODO
+.. video ..
+
 ** Registers
+- save fx chains, item selections, regions, etc..
+* Installation
+- Clone this repository or download it via the 'releases' tab.
+- Put this repository into your  ~REAPER/Scripts~  directory . If you're unsure where your ~REAPER~ directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
+- Import the provided keymap ~reaper-keys.ReaperKeyMap~ via the ~import~ button at
+  the bottom of the action list window in Reaper.
+- For all the actions to work, install the [[https://sws-extension.org/][SWS/S&M]]  extension for Reaper .
+* Configuration
+All you need to configure reaper-keys is under the ~definitions~ directory.  
 
-* Usage
-- Put this repository in your ~Scripts~ directory
-- Import the keymap ~reaper-keys-<distribution>.ReaperKeyMap~.  In the
-  keymaps/build folder
-  
+In a nutshell, you may define or change key sequences for a specific context (in ~main.lua~
+or ~midi.lua~) or for all contexts (in ~global.lua~).
 
+If an action does not exist for a command you want to create a binding for,  you
+may add an entry into ~actions.lua~ containing your name for it, and it's ~Command Id~ ( available in the action list).
+
+Take a look at the ~definitions/README~ file for more details.
+
+Reaper-keys may have a GUI in the future for adding new key bindings.
+
+# You can always return to normal mode by entering ~<ESC>~. 
