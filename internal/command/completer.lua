@@ -1,3 +1,6 @@
+local log = require('utils.log')
+local format = require("utils.format")
+
 local sequences = require("command.sequences")
 local utils = require("command.utils")
 local definitions = require("utils.definitions")
@@ -42,12 +45,14 @@ end
 
 -- what a monstrosity of recursion, i am not proud of how complicated this is
 function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
+  log.user("action sequence: " .. format.line(action_sequence))
   if #action_sequence == 0 then return nil end
 
   local current_entry_type = action_sequence[1]
 
   if regex_match_entry_types[current_entry_type] then
     if key_sequence == "" then
+      log.user("on sequence:" .. format.line(action_sequence))
       return {"(" .. current_entry_type .. ")"}
     end
 
@@ -61,7 +66,6 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   end
 
   local entries_for_current_entry_type = entries[current_entry_type]
-
   if not entries_for_current_entry_type then return nil end
   if key_sequence == "" then return entries_for_current_entry_type end
 
@@ -79,7 +83,7 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
 
     if entry then
       table.remove(action_sequence, 1)
-      return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries_for_current_entry_type)
+      return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries)
     end
   end
 
