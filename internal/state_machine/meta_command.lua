@@ -30,7 +30,7 @@ function executeCommandOrMetaCommand(state, command, repetitions)
     end
     reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. utils.makeCommandDescription(command), 1)
   else
-    executor.executeCommandMultipleTimes(command, state['context'], state['mode'], repetitions)
+    executor.executeCommandMultipleTimes(command, repetitions)
   end
 end
 

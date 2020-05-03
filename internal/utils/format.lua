@@ -22,6 +22,7 @@ function formatCompletions(entries)
 
   local collapsed_entries = {}
   local entries_string = ""
+
   for key_seq, value in pairs(entries) do
     local pretty_key_seq = ""
     local pretty_value = ""
@@ -89,7 +90,6 @@ function format.userInfo(state, message)
     right_text = str.format("(rec %s..)", state['macro_register'])
   end
 
-
   local min_width = 30
   local width = min_width
   if #message + #right_text + 3 > min_width then
@@ -103,6 +103,5 @@ function format.userInfo(state, message)
 
   return str.format("%s\n%s", pretty_mode_bar, info_line)
 end
-
 
 return format

@@ -14,7 +14,6 @@ local saved = require('saved')
 local log = require('utils.log')
 local format = require("utils.format")
 
-
 function handleCommand(state, command)
   local new_state = state
 

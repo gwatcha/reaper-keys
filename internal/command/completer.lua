@@ -40,13 +40,16 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   return nil
 end
 
+-- what a monstrosity of recursion, i am not proud of how complicated this is
 function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   if #action_sequence == 0 then return nil end
 
   local current_entry_type = action_sequence[1]
 
   if regex_match_entry_types[current_entry_type] then
-    if key_sequence == "" then return {"(" .. current_entry_type .. ")"} end
+    if key_sequence == "" then
+      return {"(" .. current_entry_type .. ")"}
+    end
 
     local match_regex = regex_match_entry_types[current_entry_type]
     local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
@@ -58,6 +61,7 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   end
 
   local entries_for_current_entry_type = entries[current_entry_type]
+
   if not entries_for_current_entry_type then return nil end
   if key_sequence == "" then return entries_for_current_entry_type end
 
@@ -67,12 +71,15 @@ function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   end
 
   local rest_of_sequence = key_sequence
+  local sequence_to_try = ""
   while #rest_of_sequence ~= 0 do
     first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
-    local entry = utils.getEntryForKeySequence(first_key, entries_for_current_entry_type)
+    sequence_to_try = sequence_to_try .. first_key
+    local entry = utils.getEntryForKeySequence(sequence_to_try, entries_for_current_entry_type)
+
     if entry then
       table.remove(action_sequence, 1)
-      return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries)
+      return getFutureEntriesOnSequence(rest_of_sequence, action_sequence, entries_for_current_entry_type)
     end
   end
 
