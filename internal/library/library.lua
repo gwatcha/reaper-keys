@@ -8,25 +8,16 @@ local library = {
   register_actions = {}
 }
 
-function clearTrackSelection()
-  for i=0,reaper.CountSelectedTracks(0)-1 do
-    local selected_track = reaper.GetSelectedTrack(0, i)
-    reaper.SetTrackSelected(selected_track, false)
-  end
-end
-
 
 function library.firstTrack()
-  clearTrackSelection()
   local first_track = reaper.GetTrack(0, 0)
-  reaper.SetTrackSelected(first_track, true)
+  reaper.SetOnlyTrackSelected(first_track)
 end
 
 function library.lastTrack()
-  clearTrackSelection()
   local num_tracks = reaper.GetNumTracks()
   local last_track = reaper.GetTrack(0, num_tracks-1)
-  reaper.SetTrackSelected(last_track, true)
+  reaper.SetOnlyTrackSelected(last_track)
 end
 
 function library.selectInnerItem()
