@@ -1057,11 +1057,11 @@ KEY 24 45 _reaper_keys_midi_<CM--> 32060
 SCR 4 32060 "_reaper_keys_midi_;" "[reaper-keys] [key_press] [;]" ./reaper-keys/key_scripts/midi_semicolon.lua
 KEY 0 59 _reaper_keys_midi_; 32060
 SCR 4 32060 "_reaper_keys_midi_<C-;>" "[reaper-keys] [key_press] [<C-;>]" ./reaper-keys/key_scripts/midi_<C-semicolon>.lua
-KEY 9 59 _reaper_keys_midi_<C-;> 32060
+KEY 8 59 _reaper_keys_midi_<C-;> 32060
 SCR 4 32060 "_reaper_keys_midi_<M-;>" "[reaper-keys] [key_press] [<M-;>]" ./reaper-keys/key_scripts/midi_<M-semicolon>.lua
-KEY 17 59 _reaper_keys_midi_<M-;> 32060
+KEY 16 59 _reaper_keys_midi_<M-;> 32060
 SCR 4 32060 "_reaper_keys_midi_<CM-;>" "[reaper-keys] [key_press] [<CM-;>]" ./reaper-keys/key_scripts/midi_<CM-semicolon>.lua
-KEY 25 59 _reaper_keys_midi_<CM-;> 32060
+KEY 24 59 _reaper_keys_midi_<CM-;> 32060
 SCR 4 32060 "_reaper_keys_midi_\" "[reaper-keys] [key_press] [\]" ./reaper-keys/key_scripts/midi_backslash.lua
 KEY 0 92 _reaper_keys_midi_\ 32060
 SCR 4 32060 "_reaper_keys_midi_<C-\>" "[reaper-keys] [key_press] [<C-\>]" ./reaper-keys/key_scripts/midi_<C-backslash>.lua
@@ -2185,11 +2185,11 @@ KEY 24 45 _reaper_keys_main_<CM--> 0
 SCR 4 0 "_reaper_keys_main_;" "[reaper-keys] [key_press] [;]" ./reaper-keys/key_scripts/main_semicolon.lua
 KEY 0 59 _reaper_keys_main_; 0
 SCR 4 0 "_reaper_keys_main_<C-;>" "[reaper-keys] [key_press] [<C-;>]" ./reaper-keys/key_scripts/main_<C-semicolon>.lua
-KEY 9 59 _reaper_keys_main_<C-;> 0
+KEY 8 59 _reaper_keys_main_<C-;> 0
 SCR 4 0 "_reaper_keys_main_<M-;>" "[reaper-keys] [key_press] [<M-;>]" ./reaper-keys/key_scripts/main_<M-semicolon>.lua
-KEY 17 59 _reaper_keys_main_<M-;> 0
+KEY 16 59 _reaper_keys_main_<M-;> 0
 SCR 4 0 "_reaper_keys_main_<CM-;>" "[reaper-keys] [key_press] [<CM-;>]" ./reaper-keys/key_scripts/main_<CM-semicolon>.lua
-KEY 25 59 _reaper_keys_main_<CM-;> 0
+KEY 24 59 _reaper_keys_main_<CM-;> 0
 SCR 4 0 "_reaper_keys_main_\" "[reaper-keys] [key_press] [\]" ./reaper-keys/key_scripts/main_backslash.lua
 KEY 0 92 _reaper_keys_main_\ 0
 SCR 4 0 "_reaper_keys_main_<C-\>" "[reaper-keys] [key_press] [<C-\>]" ./reaper-keys/key_scripts/main_<C-backslash>.lua

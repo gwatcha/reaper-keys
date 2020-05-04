@@ -18,7 +18,7 @@ module KeyDefinitions
   # these key codes clash with others when modifiers are on, reaper solves the problem by by decrementing the key_mod_id
   MOD_DECREMENTED_KEYS = ["'", '%', '&', '(', '!', '{',
                           '}', '|', '.', '!', '#', '$',
-                          ',', '-', '"', '>', '<', "+"].freeze
+                          ',', '-', '"', '>', '<', '+', ';'].freeze
   ALIASES = Hash[
     '.' => 'period',
     ':' => 'colon',
