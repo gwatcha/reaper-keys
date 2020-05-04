@@ -9,7 +9,7 @@ local constants = {
     timeline_selection_side = "left",
     last_command = {
       parts = {
-        "No-op"
+        "NoOp"
       },
       sequence = {
         "command"
