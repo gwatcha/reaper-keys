@@ -58,16 +58,25 @@ function runner.makeSelectionFromTimelineMotion(timeline_motion, repetitions)
   local sel_start = reaper.GetCursorPosition()
   runner.runActionNTimes(timeline_motion, repetitions)
   local sel_end = reaper.GetCursorPosition()
-  local length = sel_end - sel_start
-  reaper.MoveEditCursor(length * -1, true)
+  reaper.SetEditCurPos(sel_start, false, false)
+
+  reaper.GetSet_LoopTimeRange(true, false, sel_start, sel_end, false)
 end
 
 function runner.extendTimelineSelection(movement, args)
+  local start_pos = reaper.GetCursorPosition()
   movement(table.unpack(args))
+  local end_pos = reaper.GetCursorPosition()
+
+  local left, right = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
+  if not left or not right then
+    left, right = start_pos, end_pos
+  end
+
   if state_functions.getTimelineSelectionSide() == 'right' then
-    runner.runAction({"SetTimeSelectionEnd"})
+    reaper.GetSet_LoopTimeRange(true, false, left, end_pos, false)
   else
-    runner.runAction({"SetTimeSelectionStart"})
+    reaper.GetSet_LoopTimeRange(true, false, end_pos, right, false)
   end
 end
 
