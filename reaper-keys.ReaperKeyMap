@@ -809,11 +809,11 @@ KEY 25 41 _reaper_keys_midi_<CM-)> 32060
 SCR 4 32060 "_reaper_keys_midi_+" "[reaper-keys] [key_press] [+]" ./reaper-keys/key_scripts/midi_plus.lua
 KEY 0 43 _reaper_keys_midi_+ 32060
 SCR 4 32060 "_reaper_keys_midi_<C-+>" "[reaper-keys] [key_press] [<C-+>]" ./reaper-keys/key_scripts/midi_<C-plus>.lua
-KEY 9 43 _reaper_keys_midi_<C-+> 32060
+KEY 8 43 _reaper_keys_midi_<C-+> 32060
 SCR 4 32060 "_reaper_keys_midi_<M-+>" "[reaper-keys] [key_press] [<M-+>]" ./reaper-keys/key_scripts/midi_<M-plus>.lua
-KEY 17 43 _reaper_keys_midi_<M-+> 32060
+KEY 16 43 _reaper_keys_midi_<M-+> 32060
 SCR 4 32060 "_reaper_keys_midi_<CM-+>" "[reaper-keys] [key_press] [<CM-+>]" ./reaper-keys/key_scripts/midi_<CM-plus>.lua
-KEY 25 43 _reaper_keys_midi_<CM-+> 32060
+KEY 24 43 _reaper_keys_midi_<CM-+> 32060
 SCR 4 32060 "_reaper_keys_midi_$" "[reaper-keys] [key_press] [$]" ./reaper-keys/key_scripts/midi_dollar.lua
 KEY 0 36 _reaper_keys_midi_$ 32060
 SCR 4 32060 "_reaper_keys_midi_<C-$>" "[reaper-keys] [key_press] [<C-$>]" ./reaper-keys/key_scripts/midi_<C-dollar>.lua
@@ -1937,11 +1937,11 @@ KEY 25 41 _reaper_keys_main_<CM-)> 0
 SCR 4 0 "_reaper_keys_main_+" "[reaper-keys] [key_press] [+]" ./reaper-keys/key_scripts/main_plus.lua
 KEY 0 43 _reaper_keys_main_+ 0
 SCR 4 0 "_reaper_keys_main_<C-+>" "[reaper-keys] [key_press] [<C-+>]" ./reaper-keys/key_scripts/main_<C-plus>.lua
-KEY 9 43 _reaper_keys_main_<C-+> 0
+KEY 8 43 _reaper_keys_main_<C-+> 0
 SCR 4 0 "_reaper_keys_main_<M-+>" "[reaper-keys] [key_press] [<M-+>]" ./reaper-keys/key_scripts/main_<M-plus>.lua
-KEY 17 43 _reaper_keys_main_<M-+> 0
+KEY 16 43 _reaper_keys_main_<M-+> 0
 SCR 4 0 "_reaper_keys_main_<CM-+>" "[reaper-keys] [key_press] [<CM-+>]" ./reaper-keys/key_scripts/main_<CM-plus>.lua
-KEY 25 43 _reaper_keys_main_<CM-+> 0
+KEY 24 43 _reaper_keys_main_<CM-+> 0
 SCR 4 0 "_reaper_keys_main_$" "[reaper-keys] [key_press] [$]" ./reaper-keys/key_scripts/main_dollar.lua
 KEY 0 36 _reaper_keys_main_$ 0
 SCR 4 0 "_reaper_keys_main_<C-$>" "[reaper-keys] [key_press] [<C-$>]" ./reaper-keys/key_scripts/main_<C-dollar>.lua
