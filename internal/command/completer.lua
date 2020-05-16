@@ -19,7 +19,7 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   local found_possible_future_entry = false
   for full_key_sequence, entry_value in pairs(entries) do
     rest_of_sequence, full_seq_starts_with_key_seq = string.gsub(full_key_sequence, "^" .. key_sequence, "")
-    if full_seq_starts_with_key_seq == 1 then
+    if full_seq_starts_with_key_seq == 1 and not utils.isFolder(entry_value) then
       possible_future_entries[rest_of_sequence] = entry_value
       found_possible_future_entry = true
     end
