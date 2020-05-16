@@ -5,9 +5,8 @@ local state_functions = require('state_machine.state_functions')
 local runner = {}
 
 function runSubAction(id)
-  local action = definitions.getAction(id)
-  if action then
-    runner.runAction(action)
+  if type(id) == 'number' then
+    reaper.Main_OnCommand(id, 0)
     return
   end
 
@@ -16,7 +15,13 @@ function runSubAction(id)
     return
   end
 
-  local numeric_id = id
+  local action = definitions.getAction(id)
+  if action then
+    runner.runAction(action)
+    return
+  end
+
+  local numeric_id
   if type(id) == "string" then
     numeric_id = reaper.NamedCommandLookup(id)
   end

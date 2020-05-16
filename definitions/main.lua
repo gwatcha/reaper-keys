@@ -141,7 +141,7 @@ return {
               ["f"] = "ZoomToPlayPosition",
               ["is"] = "ZoomItemSelection",
               ["ig"] = "ZoomAllTracks",
-              ["r"] = "ZoomTimeSelection",
+              ["r"] = "ZoomHorizontal",
               ["s"] = "ZoomTimeAndTrackSelection",
               ["z"] = "ScrollToSelectedTrack",
     }},
