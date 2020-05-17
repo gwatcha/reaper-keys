@@ -34,7 +34,7 @@ return {
       AllTrackItems = {"SelectItemsOnTrack", "SelectedItems"},
       SelectItemsOnTrack = 40421,
       NoOp = 65535,
-      Reset = {"Stop", "SetRecordModeToNormal", "UnselectAll", "ResetToNormal"},
+      Reset = {"Stop", "SetRecordModeToNormal", "ResetToNormal"},
       UnselectItems = 40289,
       UnselectTracks = 40297,
       UnselectAll = {"UnselectTracks", "UnselectItems"},

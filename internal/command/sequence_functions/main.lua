@@ -53,12 +53,23 @@ return {
       function(track_operator)
         runner.runAction(track_operator)
         state_functions.resetToNormal()
+        local first_track = reaper.GetSelectedTrack(0, 0)
+        reaper.SetOnlyTrackSelected(first_track)
       end
     },
     {
       { 'track_selector' },
       function(track_selector)
         runner.runAction(track_selector)
+      end
+    },
+    {
+      { 'timeline_operator' },
+      function(timeline_operator)
+        runner.runAction(timeline_operator)
+        state_functions.resetToNormal()
+        local first_track = reaper.GetSelectedTrack(0, 0)
+        reaper.SetOnlyTrackSelected(first_track)
       end
     },
     {

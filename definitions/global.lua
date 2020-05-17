@@ -191,7 +191,7 @@ return {
                   ["w"] = "SetEnvelopeModeWrite",
             }},
       ["p"] = { "+project", {
-                ["pr"] = { "+render", {
+                ["r"] = { "+render", {
                             ["."] = "RenderProjectWithLastSetting",
                             ["r"] = "RenderProject",
                         }},
