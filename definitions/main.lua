@@ -62,6 +62,7 @@ return {
     ["w"] = "NextItemStart",
     ["<C-a>"] = "FirstItemStart",
     ["$"] = "LastItemEnd",
+    ["g$"] = "ProjectEnd",
   },
   command = {
     ["<C-j>"] = "NextTrackKeepSel",

@@ -11,7 +11,7 @@ return {
   timeline_motion = {
     ["["] = "TimeSelectionStart",
     ["]"] = "TimeSelectionEnd",
-    ["0"] = "ProjectBeginning",
+    ["0"] = "ProjectStart",
     ["f"] = "CursorToPlayCursor",
     ["<M-f>"] = "CursorToMouse",
     ["<CM-f>"] = "CursorToMouseAndSnap",
