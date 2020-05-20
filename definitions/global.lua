@@ -12,9 +12,9 @@ return {
     ["["] = "TimeSelectionStart",
     ["]"] = "TimeSelectionEnd",
     ["0"] = "ProjectBeginning",
-    ["f"] = "MoveEditCursorToPlayCursor",
-    ["<M-f>"] = "MoveEditCursorToMouse",
-    ["<CM-f>"] = "MoveEditCursorToMouseAndSnap",
+    ["f"] = "CursorToPlayCursor",
+    ["<M-f>"] = "CursorToMouse",
+    ["<CM-f>"] = "CursorToMouseAndSnap",
     ["<M-H>"] = "CursorLeft40",
     ["<M-L>"] = "CursorRight40",
     ["<M-h>"] = "CursorLeft10",
@@ -36,16 +36,13 @@ return {
   visual_timeline_command = {
     ["o"] = "SwitchTimelineSelectionSide",
   },
-  visual_track_command = {
-    ["o"] = "SwitchTrackSelectionSide",
-  },
   command = {
     ["<ESC>"] = "Reset",
     ["T"] = "TransportPlay",
     ["<C-f>"] = "TransportPlayPause",
     ["C"] = "TransportRecordOrStop",
-    ["<M-T>"] = "MoveEditCursorToMouseAndPlay",
-    ["<CM-T>"] = "MoveEditCursorToMouseAndPlaySnap",
+    ["<M-T>"] = "CursorToMouseAndPlay",
+    ["<CM-T>"] = "CursorToMouseAndPlaySnap",
     ["<M-t>"] = "PlayFromMouse",
     ["<C-t>"] = "StartStop",
     ["<SPC>v"] = "ToggleLoop",
@@ -85,7 +82,7 @@ return {
       }},
       ["t"] = { "+track", {
                   ["x"] = "ShowTrackRouting",
-                  ["r"] = "RenderTrack",
+                  ["R"] = "RenderTrack",
                   ["f"] = { "+freeze", {
                     ["f"] = "FreezeTrack",
                     ["u"] = "UnfreezeTrack",
