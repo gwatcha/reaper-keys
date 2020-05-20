@@ -44,10 +44,13 @@ return {
     ["i"] = {"+inner", {
       ["r"] = "Region",
       ["l"] = "AllTrackItems",
-      ["$"] = "AllTrackItems",
+      ["p"] = "ProjectTimeline",
       ["w"] = "Item",
       ["W"] = "BigItem",
-      ["p"] = "ProjectTimeline",
+    }},
+    ["o"] = {"+outer", {
+      ["l"] = "ProjectTimeline",
+      ["$"] = "ProjectTimeline",
     }},
     ["n"] = "NextRegion",
     ["N"] = "PrevRegion",
