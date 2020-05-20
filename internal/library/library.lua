@@ -183,8 +183,8 @@ function getBigItemPositionsOnSelectedTrack()
   return big_item_positions
 end
 
-function library.resetToNormal()
-  state_functions.resetToNormal()
+function library.resetModeToNormal()
+  state_functions.resetModeToNormal()
   local first_track = reaper.GetSelectedTrack(0, 0)
   reaper.SetOnlyTrackSelected(first_track)
 end

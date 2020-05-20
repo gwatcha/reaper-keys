@@ -2,6 +2,7 @@ local utils = require("command.utils")
 local regex_match_entry_types = require("command.constants").regex_match_entry_types
 local sequences = require("command.sequences")
 local definitions = require("utils.definitions")
+local log = require('utils.log')
 
 local str = require("string")
 
@@ -29,10 +30,15 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
         first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
         sequence_for_action_type = sequence_for_action_type .. first_key
 
-        local entry = utils.getEntryForKeySequence(sequence_for_action_type, entries[action_type])
-        if entry and not utils.isFolder(entry) then
+        local entry_value = utils.getEntryForKeySequence(sequence_for_action_type, entries[action_type])
+        if entry_value and not utils.isFolder(entry_value) then
+          if not definitions.getAction(entry_value) then
+            log.fatal("No definition for action '" .. entry_value .. "'exists.")
+            return nil
+          end
+
           table.insert(command.sequence, action_type)
-          table.insert(command.parts, entry)
+          table.insert(command.parts, entry_value)
           break
         end
       end

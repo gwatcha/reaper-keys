@@ -39,7 +39,16 @@ function state_functions.toggleMode(mode)
   state_interface.set(state)
 end
 
-function state_functions.resetToNormal()
+function state_functions.resetModeToNormal()
+  local state = state_interface.get()
+  state['key_sequence'] = ""
+  state['context'] = "main"
+  state['mode'] = "normal"
+  state['timeline_selection_side'] = "left"
+  state_interface.set(state)
+end
+
+function state_functions.resetFully()
   state_interface.set(constants['reset_state'])
 end
 

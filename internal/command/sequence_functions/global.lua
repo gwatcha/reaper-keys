@@ -36,22 +36,37 @@ return {
     {
       { 'timeline_operator', 'timeline_selector' },
       function(timeline_operator, timeline_selector)
+        -- local start_sel, end_sel = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
         runner.runAction(timeline_selector)
         runner.runAction(timeline_operator)
+
+        -- FIXME
+        if type(timeline_operator) ~= 'table' or not timeline_operator['setTimeSelection'] then
+          reaper.GetSet_LoopTimeRange(true, false, start_sel, end_sel, false)
+        end
       end
     },
     {
       { 'timeline_operator', 'timeline_motion' },
       function(timeline_operator, timeline_motion)
+        local start_sel, end_sel = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
         runner.makeSelectionFromTimelineMotion(timeline_motion, 1)
         runner.runAction(timeline_operator)
+        if type(timeline_operator) ~= 'table' or not timeline_operator['setTimeSelection'] then
+          reaper.GetSet_LoopTimeRange(true, false, start_sel, end_sel, false)
+        end
       end
     },
     {
       { 'timeline_operator', 'number', 'timeline_motion' },
       function(timeline_operator, number, timeline_motion)
+        local start_sel, end_sel = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
+
         runner.makeSelectionFromTimelineMotion(timeline_motion, number)
         runner.runAction(timeline_operator)
+        if type(timeline_operator) ~= 'table' or not timeline_operator['setTimeSelection'] then
+          reaper.GetSet_LoopTimeRange(true, false, start_sel, end_sel, false)
+        end
       end
     },
     {
@@ -78,7 +93,7 @@ return {
       { 'timeline_operator' },
       function(timeline_operator)
         runner.runAction(timeline_operator)
-        state_functions.resetToNormal()
+        state_functions.resetModeToNormal()
       end
     },
     {

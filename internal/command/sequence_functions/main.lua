@@ -49,10 +49,16 @@ return {
   },
   visual_track = {
     {
+      { 'visual_track_command' },
+      function(visual_track_command)
+        runner.runAction(visual_track_command)
+      end
+    },
+    {
       { 'track_operator' },
       function(track_operator)
         runner.runAction(track_operator)
-        state_functions.resetToNormal()
+        state_functions.resetModeToNormal()
         local first_track = reaper.GetSelectedTrack(0, 0)
         reaper.SetOnlyTrackSelected(first_track)
       end
@@ -67,7 +73,7 @@ return {
       { 'timeline_operator' },
       function(timeline_operator)
         runner.runAction(timeline_operator)
-        state_functions.resetToNormal()
+        state_functions.resetModeToNormal()
         local first_track = reaper.GetSelectedTrack(0, 0)
         reaper.SetOnlyTrackSelected(first_track)
       end
