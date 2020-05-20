@@ -1,0 +1,92 @@
+* Configuration
+** Key sequences / Bindings
+You may define or change key sequences for a specific context (in ~main.lua~ or ~midi.lua~) or for all contexts (in ~global.lua~).
+
+The entries in these files are organized by ~action type~. Actions have a
+particular type because they are composable. An explanation of all the types follows:
+
+  | action type             | description                                                      |
+  |-------------------------+------------------------------------------------------------------|
+  | ~command~                 | A generic command. Does not compose, accessible from every mode. |
+  | ~timeline_motion~         | Moves the edit cursor somewhere on the timeline.                 |
+  | ~timeline_selector~       | Sets the timeline selection to a region.                         |
+  | ~timeline_operator~       | Operates on a timeline selection.                                |
+  | ~track_motion~            | Changes the selected track.                                      |
+  | ~track_selector~          | Selects multiple tracks.                                         |
+  | ~track_operator~          | Operates on a selection of tracks.                               |
+  | ~visual_timeline_command~ | Only command only available in visual timeline mode.             |
+  | ~visual_track_command~    | Only available in visual track mode                              |
+  | ~meta_command~            | Makes use of previous commands and macros.                       |
+  | ~register_action~         | Followed by a register (TODO also don't work yet)                |
+  
+** Action / Key Type Sequences
+In which ways you may compose keys (i.e. the available action type sequences) depends on the mode of reaper-keys.
+
+*** All Modes
+      | ~command~                                 |
+      | ~number~, ~command~                         |
+      | ~register_action~, ~register_location~      |
+      | ~timeline_operator~, ~timeline_selector~    |
+      | ~track_motion~                            |
+      | ~number~, ~track_motion~                    |
+      | ~number~, ~meta_command~, ~register_location~ |
+      | ~meta_command~, ~register_location~         |
+      | ~meta_command~                           |
+
+*** Normal  Mode
+      | ~timeline_operator~, ~timeline_selector~       |
+      | ~timeline_operator~, ~timeline_motion~         |
+      | ~timeline_operator~, ~number~, ~timeline_motion~ |
+      | ~timeline_motion~                            |
+      | ~number~, ~timeline_motion~                    |
+      | ~track_operator~, ~track_motion~               |
+      | ~track_operator~, ~number~, ~track_motion~       |
+      | ~track_operator~, ~track_selector~             |
+      
+      /return to normal mode via '<ESC'> by default/
+*** Visual Timeline Mode
+      | ~visual_timeline_command~ |
+      | ~timeline_operator~       |
+      | ~timeline_selector~       |
+      | ~timeline_motion~         |
+      | ~number~, ~timeline_motion~ |
+      | ~track_selector~          |
+      
+/enter this mode by via 'v' by default./
+*** Visual Track
+      | ~track_operator~       |
+      | ~track_selector~       |
+      | ~timeline_operator~    |
+      | ~track_motion~         |
+      | ~number~, ~track_motion~ |
+      
+      /enter this mode via 'V' by default/
+** Actions
+The available actions for bindings are in the ~actions.lua~ file.
+
+If an action does not exist for a command you want to create a binding for, you
+may add an entry into ~actions.lua~. You just need to come up with a name for the
+action and get it's ~Command Id~ ( available in the action list).
+
+Here is an example entry:
+
+#+begin_src lua
+SelectFoldersChildren = "_SWS_SELCHILDREN2",
+#+end_src
+
+Reaper-keys actions may also be a sequence of command id's, reaper-key
+action names, or internal 'lib' functions, or any combination of them. They may
+also have additional options, such as the number of repetitions.
+
+Here is an example of a more complicated action definition, that makes use of 
+previous ones, and has a repetitions.
+
+#+begin_src lua
+    SetRecordModeToNormal = 40252,
+    Stop = 40667,
+    UnselectItems = 40289,
+    ResetToNormal = lib.resetModeToNormal,
+    Reset = {"Stop", "SetRecordModeToNormal", "ResetToNormal", "UnselectItems"},
+    Reset4TimesForSomeReason = {"Reset", repetitions=4}
+#+end_src
+
