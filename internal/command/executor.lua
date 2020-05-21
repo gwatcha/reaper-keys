@@ -26,7 +26,6 @@ function executor.dispatchCommand(command)
   if functionForCommand then
     local executable_command_parts = makeExecutableCommandParts(command)
     functionForCommand(table.unpack(executable_command_parts))
-    reaper.Undo_EndBlock('reaper-keys: ' .. utils.makeCommandDescription(command), 1)
   else
     log.error('Did not find an associated action sequence function to execute for this command!')
   end
