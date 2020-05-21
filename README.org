@@ -18,11 +18,11 @@ Reaper-keys  lets one compose actions of different types to create new commands.
 For example, any ~timeline motion~  action can follow any  ~timeline operator~
 action, and any ~number~ can prefix a ~timeline motion~.
 
-If one enters ~c4l~ it would compose into ~(c = "Change", 4, l = "NextBeat"~), and trigger a command to set up a record loop to change the next 4 beats.
+If one enters ~c4l~ it would compose into ~(c = "Change", 4, l = "NextBeat")~, and trigger a command to set up a record loop to change the next 4 beats.
 
 ... video ...
 
-To select the items in the next 4 beats, one could enter ~s4l~.
+To select the items in the next 4 beats , one could enter ~s4l~.
 
 This grows the number of available actions exponentially but still preserves your
 brain, as you only need to know the ~timeline_motions~, ~timeline_operators~, and
