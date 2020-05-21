@@ -32,7 +32,7 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
 
         local entry_value = utils.getEntryForKeySequence(sequence_for_action_type, entries[action_type])
         if entry_value and not utils.isFolder(entry_value) then
-          if not definitions.getAction(entry_value) then
+          if not definitions.getAction(entry_value) and not type(entry_value) == 'function'then
             log.fatal("No definition for action '" .. entry_value .. "'exists.")
             return nil
           end
