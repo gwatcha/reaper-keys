@@ -1,10 +1,11 @@
+[[file:img/reaper-keys.png]]
 * Reaper-Keys
 Reaper-Keys is an extension for the [[https://www.reaper.fm/][REAPER DAW]], that provides a new action
 mapping system based on key sequences instead of key chords. The system is 
 similar to [[https://en.wikipedia.org/wiki/Vim_%2528text_editor%2529][Vim]], a modal text editor, and by default comes with vim-like bindings. 
 
-Reaper-keys provides features like composable actions, macros, multiple edit
-modes and more.
+
+
 ** Pros
 - Saving a couple minutes per hour
 - Developing arthritis at 60 instead of 40
