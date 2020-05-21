@@ -20,18 +20,21 @@ or 'a' for arming.
 A completion/feedback window is provided to assist with command completion. Here
 is an example of navigating through the menu to render a project.
 
-[[https://gifs.com/gif/reaper-keys-completions-mOWGZ3][completions]]
+[[file:img/completion.gif]]
 
 *** Compose actions
 Reaper-keys  lets one compose actions of different types to create new commands.
 For example, any ~timeline motion~  action can follow any  ~timeline operator~
 action, and any ~number~ can prefix a ~timeline motion~.
 
-If one enters ~c4l~ it would compose into ~(c = "Change", 4, l = "NextBeat")~, and trigger a command to set up a record loop to change the next 4 beats.
+If one enters ~c2L~ it would compose into ~(c = "Change", 2, L = "NextMeasure")~,
+and trigger a command to set up a record loop and record over the next 2 measures.
 
-... video ...
+[[file:img/change.gif]]
 
-To select the items in the next 4 beats , one could enter ~s4l~.
+To select the items in the next 2  measures, one could enter ~s2L~.
+
+[[file:img/select.gif]]
 
 This grows the number of available actions exponentially but still preserves your
 brain, as you only need to know the ~timeline_motions~, ~timeline_operators~, and
@@ -45,7 +48,7 @@ actions~ operate immediately and return one to ~normal~ mode. Useful if you want
 visual feedback before executing a timeline action, or just want to extend the
 time selection using motion commands.
 
-.. video ..
+[[file:img/visual_timeline.gif]]
 
 *** Macros
 Macros are a way to save a sequence of commands, and play them back later.
@@ -56,14 +59,10 @@ recording by pressing ~q~.
 
 You can play it back by entering ~@~ and the character you specified earlier.
 
-Here is an example of recording a macro that deletes every second note for a midi track.
+Here is an example of recording and playing a macro that deletes item parts across
+two tracks in a ribbon style.
 
-.. video ..
-
-*** Hint Box
-A hint box with autocompletions and feedback.
-
-.. video ..
+[[file:img/macros.gif]]
 
 ** Installation
 - Clone this repository or download it via the 'releases' tab.
