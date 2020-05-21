@@ -1,31 +1,31 @@
 
 # Table of Contents
 
-1.  [Reaper-Keys](#org4e8632b)
-    1.  [Pros](#orgbc92c70)
-    2.  [Features](#orgf260534)
-        1.  [Bind key sequences](#org8d97701)
-        2.  [Compose actions](#orge8b26eb)
-        3.  [Multi-modal](#org4e0a487)
-        4.  [Macros](#org599fb60)
-    3.  [Installation](#org8aac790)
-    4.  [Configuration](#org97b79bd)
-    5.  [Future Plans](#org581274c)
+1.  [Reaper-Keys](#org71e8f08)
+    1.  [Pros](#org4107eed)
+    2.  [Features](#orgb585563)
+        1.  [Bind key sequences](#orgd134b60)
+        2.  [Compose actions](#org7a4a16b)
+        3.  [Multi-modal](#org4d1c987)
+        4.  [Macros](#org68af783)
+    3.  [Installation](#org3c42c3a)
+    4.  [Configuration](#orgbb08da7)
+    5.  [Future Plans](#org74fc071)
 
 
-<a id="org4e8632b"></a>
+<a id="org71e8f08"></a>
 
 # Reaper-Keys
 
 Reaper-Keys is an extension for the [REAPER DAW](https://www.reaper.fm/), that provides a new action
 mapping system based on key sequences instead of key chords. The system is 
-very similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal text editor, and by default comes with vim-like bindings. 
+similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal text editor, and by default comes with vim-like bindings. 
 
 Reaper-keys provides features like composable actions, macros, multiple edit
 modes and more.
 
 
-<a id="orgbc92c70"></a>
+<a id="org4107eed"></a>
 
 ## Pros
 
@@ -35,12 +35,12 @@ modes and more.
 -   A more fluid experience
 
 
-<a id="orgf260534"></a>
+<a id="orgb585563"></a>
 
 ## Features
 
 
-<a id="org8d97701"></a>
+<a id="orgd134b60"></a>
 
 ### Bind key sequences
 
@@ -54,7 +54,7 @@ is an example of navigating through the menu to render a project.
 ![img](img/save.gif)
 
 
-<a id="orge8b26eb"></a>
+<a id="org7a4a16b"></a>
 
 ### Compose actions
 
@@ -76,7 +76,7 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="org4e0a487"></a>
+<a id="org4d1c987"></a>
 
 ### Multi-modal
 
@@ -90,7 +90,7 @@ time selection using motion commands.
 ![img](img/mode.gif)
 
 
-<a id="org599fb60"></a>
+<a id="org68af783"></a>
 
 ### Macros
 
@@ -111,7 +111,7 @@ Here is an example of recording and playing a macro that deletes item parts acro
 two tracks in a ribbon style.
 
 
-<a id="org8aac790"></a>
+<a id="org3c42c3a"></a>
 
 ## Installation
 
@@ -121,7 +121,7 @@ two tracks in a ribbon style.
 -   For all the actions to work, install the [SWS/S&M](https://sws-extension.org/)  extension for Reaper .
 
 
-<a id="org97b79bd"></a>
+<a id="orgbb08da7"></a>
 
 ## Configuration
 
@@ -129,7 +129,7 @@ All you need to configure reaper-keys is under the `definitions` directory.
 Take a look at the `definitions/README` file for more details.
 
 
-<a id="org581274c"></a>
+<a id="org74fc071"></a>
 
 ## Future Plans
 
