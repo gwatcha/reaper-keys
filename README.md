@@ -1,19 +1,19 @@
 
 # Table of Contents
 
-1.  [Reaper-Keys](#org7578b57)
-    1.  [Pros](#org94d851b)
-    2.  [Features](#orge38abb7)
-        1.  [Bind key sequences](#org8b43cc5)
-        2.  [Compose actions](#org1e461c7)
-        3.  [Multi-modal](#orgcbc9a3c)
-        4.  [Macros](#org7f09a7b)
-    3.  [Installation](#org0c3fc0a)
-    4.  [Configuration](#org2905b9f)
-    5.  [Future Plans](#org7e289fe)
+1.  [Reaper-Keys](#orgd8e6851)
+    1.  [Pros](#org6d3f882)
+    2.  [Features](#org3a140db)
+        1.  [Bind key sequences](#org73e3c2a)
+        2.  [Compose actions](#orgfa15ef8)
+        3.  [Multi-modal](#org6d6832b)
+        4.  [Macros](#org29b1cfd)
+    3.  [Installation](#org423eaf3)
+    4.  [Configuration](#org418e23d)
+    5.  [Future Plans](#org96ebdb4)
 
 
-<a id="org7578b57"></a>
+<a id="orgd8e6851"></a>
 
 # Reaper-Keys
 
@@ -25,7 +25,7 @@ Reaper-keys provides features like composable actions, macros, multiple edit
 modes and more.
 
 
-<a id="org94d851b"></a>
+<a id="org6d3f882"></a>
 
 ## Pros
 
@@ -35,12 +35,12 @@ modes and more.
 -   A more fluid experience
 
 
-<a id="orge38abb7"></a>
+<a id="org3a140db"></a>
 
 ## Features
 
 
-<a id="org8b43cc5"></a>
+<a id="org73e3c2a"></a>
 
 ### Bind key sequences
 
@@ -51,10 +51,10 @@ or 'a' for arming.
 A completion/feedback window is provided to assist with command completion. Here
 is an example of navigating through the menu to render a project.
 
-![img](img/completion.gif)
+![img](img/save.gif)
 
 
-<a id="org1e461c7"></a>
+<a id="orgfa15ef8"></a>
 
 ### Compose actions
 
@@ -76,7 +76,7 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="orgcbc9a3c"></a>
+<a id="org6d6832b"></a>
 
 ### Multi-modal
 
@@ -90,7 +90,7 @@ time selection using motion commands.
 ![img](img/visual_timeline.gif)
 
 
-<a id="org7f09a7b"></a>
+<a id="org29b1cfd"></a>
 
 ### Macros
 
@@ -108,7 +108,7 @@ two tracks in a ribbon style.
 ![img](img/macros.gif)
 
 
-<a id="org0c3fc0a"></a>
+<a id="org423eaf3"></a>
 
 ## Installation
 
@@ -118,7 +118,7 @@ two tracks in a ribbon style.
 -   For all the actions to work, install the [SWS/S&M](https://sws-extension.org/)  extension for Reaper .
 
 
-<a id="org2905b9f"></a>
+<a id="org418e23d"></a>
 
 ## Configuration
 
@@ -126,7 +126,7 @@ All you need to configure reaper-keys is under the `definitions` directory.
 Take a look at the `definitions/README` file for more details.
 
 
-<a id="org7e289fe"></a>
+<a id="org96ebdb4"></a>
 
 ## Future Plans
 
