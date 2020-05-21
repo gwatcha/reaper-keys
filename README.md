@@ -1,19 +1,15 @@
 
 # Table of Contents
 
-1.  [Reaper-Keys](#orgd8e6851)
-    1.  [Pros](#org6d3f882)
-    2.  [Features](#org3a140db)
-        1.  [Bind key sequences](#org73e3c2a)
-        2.  [Compose actions](#orgfa15ef8)
-        3.  [Multi-modal](#org6d6832b)
-        4.  [Macros](#org29b1cfd)
-    3.  [Installation](#org423eaf3)
-    4.  [Configuration](#org418e23d)
-    5.  [Future Plans](#org96ebdb4)
+1.  [Reaper-Keys](#org8226321)
+    1.  [Pros](#org8e78f9a)
+        1.  [Bind key sequences](#org5805ef3)
+        2.  [Compose actions](#org53e0c82)
+        3.  [Multi-modal](#org02723cf)
+        4.  [Macros](#org33b7bc1)
 
 
-<a id="orgd8e6851"></a>
+<a id="org8226321"></a>
 
 # Reaper-Keys
 
@@ -25,7 +21,7 @@ Reaper-keys provides features like composable actions, macros, multiple edit
 modes and more.
 
 
-<a id="org6d3f882"></a>
+<a id="org8e78f9a"></a>
 
 ## Pros
 
@@ -35,12 +31,7 @@ modes and more.
 -   A more fluid experience
 
 
-<a id="org3a140db"></a>
-
-## Features
-
-
-<a id="org73e3c2a"></a>
+<a id="org5805ef3"></a>
 
 ### Bind key sequences
 
@@ -54,7 +45,7 @@ is an example of navigating through the menu to render a project.
 ![img](img/save.gif)
 
 
-<a id="orgfa15ef8"></a>
+<a id="org53e0c82"></a>
 
 ### Compose actions
 
@@ -76,7 +67,7 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="org6d6832b"></a>
+<a id="org02723cf"></a>
 
 ### Multi-modal
 
@@ -90,7 +81,7 @@ time selection using motion commands.
 ![img](img/visual_timeline.gif)
 
 
-<a id="org29b1cfd"></a>
+<a id="org33b7bc1"></a>
 
 ### Macros
 
@@ -100,38 +91,13 @@ To record a macro, enter `q` and an arbitrary character to specify the `register
 the macro will save into. Then, perform a series of actions, and finish
 recording by pressing `q`. 
 
-You can play it back by entering `@` and the character you specified earlier.
+![img](img/rec_macro.gif)
+
+You may play it back by entering `@` and the character you specified earlier.
+Optionally, prefix it with a number to indicate the number of repetitions.
+
+![img](img/play_macro.gif)
 
 Here is an example of recording and playing a macro that deletes item parts across
 two tracks in a ribbon style.
-
-![img](img/macros.gif)
-
-
-<a id="org423eaf3"></a>
-
-## Installation
-
--   Clone this repository or download it via the 'releases' tab.
--   Put this repository into your  `REAPER/Scripts`  directory . If you're unsure where your `REAPER` directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
--   Back up your key map by exporting it, then import the provided keymap `reaper-keys.ReaperKeyMap` via the `import` button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
--   For all the actions to work, install the [SWS/S&M](https://sws-extension.org/)  extension for Reaper .
-
-
-<a id="org418e23d"></a>
-
-## Configuration
-
-All you need to configure reaper-keys is under the `definitions` directory.  
-Take a look at the `definitions/README` file for more details.
-
-
-<a id="org96ebdb4"></a>
-
-## Future Plans
-
--   A GUI for adding new key bindings.
--   A GUI for the help window.
--   Registers for storing and retrieving all sorts of things such as fx chains,
-    track selections, items, snapshots.
 
