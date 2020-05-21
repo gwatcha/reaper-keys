@@ -264,7 +264,7 @@ return {
       NextTab = 40861,
       PrevTab = 40862,
       SaveProject = 40026,
-      OpenProject = 4025,
+      OpenProject = 40025,
       NewProjectTab = 40859,
       CloseProject = 40860,
       CleanProjectDirectory = 40098,

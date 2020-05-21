@@ -52,7 +52,7 @@ return {
     ["<M-m>"] = "ShowEnvelopeModulationLastTouchedFx",
     ["<M-s>"] = "FxToggleShowAll",
     ["<C-N>"] = "FxShowPrevSel",
-    ["<C-c>"] = "ToggleFloatingWindows",
+    ["<M-x>"] = "ToggleFloatingWindows",
     ["<C-g>"] = "FocusMain",
     ["<C-n>"] = "FxShowNextSel",
     ["<C-p>"] = "FxShowPrevSel",
