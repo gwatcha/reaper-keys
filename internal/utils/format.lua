@@ -1,6 +1,7 @@
 local utils = require("command.utils")
 local ser = require("serpent")
 local str = require("string")
+local log = require('utils.log')
 
 local format = {}
 
@@ -27,8 +28,13 @@ function formatCompletions(entries)
     local pretty_key_seq = ""
     local pretty_value = ""
     if type(key_seq) == 'number' then
-      pretty_key_seq = '(num)'
-      pretty_value = '(times/select)'
+      if value == '(number)' then
+        pretty_key_seq = '(num)'
+        pretty_value = '(times/select)'
+      elseif value == '(register_location)' then
+        pretty_key_seq = '(key)'
+        pretty_value = '(register location)'
+      end
     else
       pretty_key_seq = formatKeySequence(key_seq, false)
       pretty_value = value
@@ -90,7 +96,7 @@ function format.userInfo(state, message)
     right_text = str.format("(rec %s..)", state['macro_register'])
   end
 
-  local min_width = 50
+  local min_width = 35
   local width = min_width
   if #message + #right_text + 3 > min_width then
     width = #message + #right_text
