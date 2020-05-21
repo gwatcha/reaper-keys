@@ -29,8 +29,6 @@ brain, as you only need to know the ~timeline_motions~, ~timeline_operators~, an
 the fact that you can compose them. 
 
 ** Multi-modal
-Reaper-keys has multiple modes as well.
-
 Changing modes changes the way keys compose. By default, it is in ~normal~ mode, but you could for example go into ~visual timeline~ mode by pressing ~v~.
 
 In this mode, ~timeline motions~ extend the current time selection, and ~timeline
