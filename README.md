@@ -1,20 +1,20 @@
 
 # Table of Contents
 
-1.  [Reaper-Keys](#orge58639d)
-    1.  [Pros](#org2c06f6e)
-2.  [Features](#org09782b4)
-    1.  [Bind key sequences](#org3b1143c)
-    2.  [Compose actions](#orgcf979d4)
-    3.  [Multi-modal](#org6a74606)
-    4.  [Macros](#org13832dc)
-    5.  [Hint Box](#orgd24792f)
-3.  [Installation](#org87f2ab8)
-4.  [Configuration](#org0204f84)
-5.  [Future Plans](#orgf64632a)
+1.  [Reaper-Keys](#org23e3ff5)
+    1.  [Pros](#org881af29)
+    2.  [Features](#orgaca1dea)
+        1.  [Bind key sequences](#org70b3d76)
+        2.  [Compose actions](#org7d9b26f)
+        3.  [Multi-modal](#orgbb98539)
+        4.  [Macros](#orgd949767)
+        5.  [Hint Box](#org671d2a3)
+    3.  [Installation](#org504be01)
+    4.  [Configuration](#orgd28530c)
+    5.  [Future Plans](#org1f06b1a)
 
 
-<a id="orge58639d"></a>
+<a id="org23e3ff5"></a>
 
 # Reaper-Keys
 
@@ -26,7 +26,7 @@ Reaper-keys provides features like composable actions, macros, multiple edit
 modes and more.
 
 
-<a id="org2c06f6e"></a>
+<a id="org881af29"></a>
 
 ## Pros
 
@@ -36,14 +36,14 @@ modes and more.
 -   A more fluid experience
 
 
-<a id="org09782b4"></a>
+<a id="orgaca1dea"></a>
 
-# Features
+## Features
 
 
-<a id="org3b1143c"></a>
+<a id="org70b3d76"></a>
 
-## Bind key sequences
+### Bind key sequences
 
 With reaper-keys, you may bind key sequences to actions, rather then singular
 key presses. This allows one to make use of mnemonics, such as 't' for track,
@@ -55,9 +55,9 @@ is an example of navigating through the menu to render a project.
 [completions](img/completion.gif)
 
 
-<a id="orgcf979d4"></a>
+<a id="org7d9b26f"></a>
 
-## Compose actions
+### Compose actions
 
 Reaper-keys  lets one compose actions of different types to create new commands.
 For example, any `timeline motion`  action can follow any  `timeline operator`
@@ -74,9 +74,9 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="org6a74606"></a>
+<a id="orgbb98539"></a>
 
-## Multi-modal
+### Multi-modal
 
 Changing modes changes the way keys compose. By default, it is in `normal` mode, but you could for example go into `visual timeline` mode by pressing `v`.
 
@@ -88,9 +88,9 @@ time selection using motion commands.
 .. video ..
 
 
-<a id="org13832dc"></a>
+<a id="orgd949767"></a>
 
-## Macros
+### Macros
 
 Macros are a way to save a sequence of commands, and play them back later.
 
@@ -105,18 +105,18 @@ Here is an example of recording a macro that deletes every second note for a mid
 .. video ..
 
 
-<a id="orgd24792f"></a>
+<a id="org671d2a3"></a>
 
-## Hint Box
+### Hint Box
 
 A hint box with autocompletions and feedback.
 
 .. video ..
 
 
-<a id="org87f2ab8"></a>
+<a id="org504be01"></a>
 
-# Installation
+## Installation
 
 -   Clone this repository or download it via the 'releases' tab.
 -   Put this repository into your  `REAPER/Scripts`  directory . If you're unsure where your `REAPER` directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
@@ -124,17 +124,17 @@ A hint box with autocompletions and feedback.
 -   For all the actions to work, install the [SWS/S&M](https://sws-extension.org/)  extension for Reaper .
 
 
-<a id="org0204f84"></a>
+<a id="orgd28530c"></a>
 
-# Configuration
+## Configuration
 
 All you need to configure reaper-keys is under the `definitions` directory.  
 Take a look at the `definitions/README` file for more details.
 
 
-<a id="orgf64632a"></a>
+<a id="org1f06b1a"></a>
 
-# Future Plans
+## Future Plans
 
 -   A GUI for adding new key bindings.
 -   A GUI for the help window.
