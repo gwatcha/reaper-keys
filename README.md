@@ -1,15 +1,19 @@
 
 # Table of Contents
 
-1.  [Reaper-Keys](#org845ebd5)
-    1.  [Pros](#orgb63fac4)
-        1.  [Bind key sequences](#orgdb92ed9)
-        2.  [Compose actions](#orgbc04a26)
-        3.  [Multi-modal](#org7004387)
-        4.  [Macros](#orgeeb5814)
+1.  [Reaper-Keys](#org4e8632b)
+    1.  [Pros](#orgbc92c70)
+    2.  [Features](#orgf260534)
+        1.  [Bind key sequences](#org8d97701)
+        2.  [Compose actions](#orge8b26eb)
+        3.  [Multi-modal](#org4e0a487)
+        4.  [Macros](#org599fb60)
+    3.  [Installation](#org8aac790)
+    4.  [Configuration](#org97b79bd)
+    5.  [Future Plans](#org581274c)
 
 
-<a id="org845ebd5"></a>
+<a id="org4e8632b"></a>
 
 # Reaper-Keys
 
@@ -21,7 +25,7 @@ Reaper-keys provides features like composable actions, macros, multiple edit
 modes and more.
 
 
-<a id="orgb63fac4"></a>
+<a id="orgbc92c70"></a>
 
 ## Pros
 
@@ -31,7 +35,12 @@ modes and more.
 -   A more fluid experience
 
 
-<a id="orgdb92ed9"></a>
+<a id="orgf260534"></a>
+
+## Features
+
+
+<a id="org8d97701"></a>
 
 ### Bind key sequences
 
@@ -45,7 +54,7 @@ is an example of navigating through the menu to render a project.
 ![img](img/save.gif)
 
 
-<a id="orgbc04a26"></a>
+<a id="orge8b26eb"></a>
 
 ### Compose actions
 
@@ -67,7 +76,7 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="org7004387"></a>
+<a id="org4e0a487"></a>
 
 ### Multi-modal
 
@@ -81,7 +90,7 @@ time selection using motion commands.
 ![img](img/mode.gif)
 
 
-<a id="orgeeb5814"></a>
+<a id="org599fb60"></a>
 
 ### Macros
 
@@ -100,4 +109,32 @@ Optionally, prefix it with a number to indicate the number of repetitions.
 
 Here is an example of recording and playing a macro that deletes item parts across
 two tracks in a ribbon style.
+
+
+<a id="org8aac790"></a>
+
+## Installation
+
+-   Clone this repository or download it via the 'releases' tab.
+-   Put this repository into your  `REAPER/Scripts`  directory . If you're unsure where your `REAPER` directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
+-   Back up your key map by exporting it, then import the provided keymap `reaper-keys.ReaperKeyMap` via the `import` button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
+-   For all the actions to work, install the [SWS/S&M](https://sws-extension.org/)  extension for Reaper .
+
+
+<a id="org97b79bd"></a>
+
+## Configuration
+
+All you need to configure reaper-keys is under the `definitions` directory.  
+Take a look at the `definitions/README` file for more details.
+
+
+<a id="org581274c"></a>
+
+## Future Plans
+
+-   A GUI for adding new key bindings.
+-   A GUI for the help window.
+-   Registers for storing and retrieving all sorts of things such as fx chains,
+    track selections, items, snapshots.
 

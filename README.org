@@ -10,8 +10,7 @@ modes and more.
 - Developing arthritis at 60 instead of 40
 - Reduced mouse usage
 - A more fluid experience 
- 
-
+** Features
 *** Bind key sequences
 With reaper-keys, you may bind key sequences to actions, rather then singular
 key presses. This allows one to make use of mnemonics, such as 't' for track,
@@ -66,3 +65,19 @@ Optionally, prefix it with a number to indicate the number of repetitions.
 
 Here is an example of recording and playing a macro that deletes item parts across
 two tracks in a ribbon style.
+
+** Installation
+- Clone this repository or download it via the 'releases' tab.
+- Put this repository into your  ~REAPER/Scripts~  directory . If you're unsure where your ~REAPER~ directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
+- Back up your key map by exporting it, then import the provided keymap ~reaper-keys.ReaperKeyMap~ via the ~import~ button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
+- For all the actions to work, install the [[https://sws-extension.org/][SWS/S&M]]  extension for Reaper .
+ 
+** Configuration
+All you need to configure reaper-keys is under the ~definitions~ directory.  
+Take a look at the ~definitions/README~ file for more details.
+
+** Future Plans
+- A GUI for adding new key bindings.
+- A GUI for the help window.
+- Registers for storing and retrieving all sorts of things such as fx chains,
+  track selections, items, snapshots.
