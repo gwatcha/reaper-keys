@@ -52,7 +52,7 @@ or 'a' for arming.
 A completion/feedback window is provided to assist with command completion. Here
 is an example of navigating through the menu to render a project.
 
-![completions](https://gifs.com/gif/reaper-keys-completions-mOWGZ3)
+![](img/completion.gif)
 
 
 <a id="org4375891"></a>
