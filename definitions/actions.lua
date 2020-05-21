@@ -1,7 +1,6 @@
 local lib = require("library")
 
 return {
-      Region = lib.selectInnerRegion,
       PrevBigItemStart = lib.moveToPrevBigItemStart,
       NextBigItemStart = lib.moveToNextBigItemStart,
       NextBigItemEnd = lib.moveToNextBigItemEnd,
@@ -117,6 +116,7 @@ return {
       SelectItems = {"SelectItemsCrossingTimeSelection", "SplitAtTimeSelection"},
       NextRegion = "_SWS_SELNEXTREG",
       PrevRegion = "_SWS_SELPREVREG",
+      Region = lib.innerRegion, -- TODO
       SplitAndSelectItemsInRegion = "_S&M_SPLIT11",
       DelEnvelopeInRegion = 40089,
       SnapshotsAddNewAllTracks = "_SWSSNAPSHOT_NEWALL",
@@ -282,7 +282,7 @@ return {
       Next4Beats = {"NextBeat", repetitions = 4},
       PlayFromMouse = "_BR_PLAY_MOUSECURSOR",
       TransportPlay = 1007,
-      TransportPlayPause = 40073,
+      TransportPause = 1008,
       CursorToMouse = 40514,
       CursorToMouseAndSnap = 40513,
       CursorToMouseAndPlay = {"CursorToMouse", "TransportPlay"},

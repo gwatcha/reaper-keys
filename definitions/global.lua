@@ -39,7 +39,7 @@ return {
   command = {
     ["<ESC>"] = "Reset",
     ["T"] = "TransportPlay",
-    ["<C-f>"] = "TransportPlayPause",
+    ["F"] = "TransportPause",
     ["C"] = "TransportRecordOrStop",
     ["<M-T>"] = "CursorToMouseAndPlay",
     ["<CM-T>"] = "CursorToMouseAndPlaySnap",
@@ -60,10 +60,7 @@ return {
     ["u"] = "Undo",
     ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
-      ["d"] = "DeleteItem",
-      ["y"] = "CopyItem",
-      ["p"] = "PasteItem",
-      ["m"]= { "markers", {
+      ["m"]= { "+markers", {
                 ["n"] = "NextMarker",
                 ["N"] = "PrevMarker",
                 ["p"] = "PrevMarker",

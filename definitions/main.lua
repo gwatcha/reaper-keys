@@ -7,6 +7,7 @@ return {
     ["j"] = "NextTrack",
     ["k"] = "PrevTrack",
     ["<C-b>"] = "Prev10Track",
+    ["<C-f>"] = "Next10Track",
     ["<C-d>"] = "Next5Track",
     ["<C-u>"] = "Prev5Track",
   },
