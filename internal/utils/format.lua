@@ -90,7 +90,7 @@ function format.userInfo(state, message)
     right_text = str.format("(rec %s..)", state['macro_register'])
   end
 
-  local min_width = 30
+  local min_width = 50
   local width = min_width
   if #message + #right_text + 3 > min_width then
     width = #message + #right_text
