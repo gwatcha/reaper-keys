@@ -1,21 +1,4 @@
-
-# Table of Contents
-
-1.  [Reaper-Keys](#org93a2df6)
-    1.  [Pros](#org3bbee52)
-    2.  [Features](#org1beecdb)
-        1.  [Bind key sequences](#org5dd02dc)
-        2.  [Compose actions](#org5d1bd71)
-        3.  [Multi-modal](#orgb0be90d)
-        4.  [Macros](#org66c6504)
-    3.  [Installation](#org2214a60)
-    4.  [Configuration](#orgcb6d835)
-    5.  [Future Plans](#org7873430)
-
 ![img](img/reaper-keys.png)
-
-
-<a id="org93a2df6"></a>
 
 # Reaper-Keys
 
@@ -35,6 +18,23 @@ similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal t
 
 
 <a id="org1beecdb"></a>
+
+
+## Table of Contents
+
+  1.  [Features](#org1beecdb)
+      1.  [Bind key sequences](#org5dd02dc)
+      2.  [Compose actions](#org5d1bd71)
+      3.  [Multi-modal](#orgb0be90d)
+      4.  [Macros](#org66c6504)
+  2.  [Installation](#org2214a60)
+  3.  [Configuration](#orgcb6d835)
+  4.  [Future Plans](#org7873430)
+
+
+
+<a id="org93a2df6"></a>
+
 
 ## Features
 
