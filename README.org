@@ -3,38 +3,26 @@ Reaper-Keys is an extension for the [[https://www.reaper.fm/][REAPER DAW]], that
 mapping system based on key sequences instead of key chords. The system is 
 very similar to [[https://en.wikipedia.org/wiki/Vim_%2528text_editor%2529][Vim]], a modal text editor, and by default comes with vim-like bindings. 
 
-Why bother with Reaper-keys instead of the standard way to bind actions to keys?
-Well for one, it's much more intuitive for a program with a lot of actions. With
-keys and key chords, one can only bind a few favourite actions, and for all
-other situations, manually look them up in the action list. With Reaper-keys you
-can bind key /combinations,/ using mnemonics to organize them. For example, all key sequences starting with '<Space>t' can have actions related to tracks. 
+Reaper-keys provides features like composable actions, macros, multiple edit
+modes and more.
 
-Reaper-keys provides other features as well, such as the ability to compose actions
-to create new actions, record macros, and change behaviour based on it's mode.
-
- When picked up, other benefits include: 
+ When learned, benefits include: 
 - Saving a couple minutes per hour
 - Developing arthritis at 60 instead of 40
-- Reducing mouse usage
+- Reduced mouse usage
 - A more fluid experience 
- 
-* Installation
-- Clone this repository or download it via the 'releases' tab.
-- Put this repository into your  ~REAPER/Scripts~  directory . If you're unsure where your ~REAPER~ directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
-- Back up your key map by exporting it, then import the provided keymap ~reaper-keys.ReaperKeyMap~ via the ~import~ button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
-- For all the actions to work, install the [[https://sws-extension.org/][SWS/S&M]]  extension for Reaper .
  
 * Features
 ** Composable actions
 Reaper-keys  lets one compose actions of different types to create new commands.
 For example, any ~timeline motion~  action can follow any  ~timeline operator~
-action, and any ~number~ can prefix a ~timeline motion~ .
+action, and any ~number~ can prefix a ~timeline motion~.
 
-So if one types ~c4l~ it would compose into ~(c = "Change", 4, l = "NextBeat"~), and trigger a command to set up a record loop to change the next 4 beats.
+If one enters ~c4l~ it would compose into ~(c = "Change", 4, l = "NextBeat"~), and trigger a command to set up a record loop to change the next 4 beats.
 
 ... video ...
 
-To select the items in next 4 beats (splitting if necessary), one could enter ~s4l~.
+To select the items in the next 4 beats, one could enter ~s4l~.
 
 This grows the number of available actions exponentially but still preserves your
 brain, as you only need to know the ~timeline_motions~, ~timeline_operators~, and
@@ -74,9 +62,14 @@ A hint box with autocompletions and feedback.
 ** Registers
 coming soon...
   
+* Installation
+- Clone this repository or download it via the 'releases' tab.
+- Put this repository into your  ~REAPER/Scripts~  directory . If you're unsure where your ~REAPER~ directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
+- Back up your key map by exporting it, then import the provided keymap ~reaper-keys.ReaperKeyMap~ via the ~import~ button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
+- For all the actions to work, install the [[https://sws-extension.org/][SWS/S&M]]  extension for Reaper .
+ 
 * Configuration
 All you need to configure reaper-keys is under the ~definitions~ directory.  
-
 Take a look at the ~definitions/README~ file for more details.
 
 * Future Plans

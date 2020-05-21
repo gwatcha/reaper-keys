@@ -2,8 +2,10 @@
 ** Key sequences / Bindings
 You may define or change key sequences for a specific context (in ~main.lua~ or ~midi.lua~) or for all contexts (in ~global.lua~).
 
-The entries in these files are organized by ~action type~. Actions have a
-particular type because they are composable. An explanation of all the types follows:
+I organize the entries in these files by ~action type~. Actions have a
+particular type because they are composable. 
+
+Here's a short description of all the action types:
 
   | action type             | description                                                      |
   |-------------------------+------------------------------------------------------------------|
