@@ -55,7 +55,7 @@ end
 
 function input(key_press)
   reaper.ClearConsole()
-  log.user("\n")
+  log.user("")
 
   local state = state_interface.get()
 
