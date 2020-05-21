@@ -68,7 +68,7 @@ The available actions for bindings are in the ~actions.lua~ file.
 
 If an action does not exist for a command you want to create a binding for, you
 may add an entry into ~actions.lua~. You just need to come up with a name for the
-action and get it's ~Command Id~ ( available in the action list).
+action and get it's ~Command Id~ ( available in reapers action list).
 
 Here is an example entry:
 
@@ -81,7 +81,7 @@ action names, or internal 'lib' functions, or any combination of them. They may
 also have additional options, such as the number of repetitions.
 
 Here is an example of a more complicated action definition, that makes use of 
-previous ones, and has a repetitions.
+previous ones, and makes use of the repetitions option.
 
 #+begin_src lua
     SetRecordModeToNormal = 40252,

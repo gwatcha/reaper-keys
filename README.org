@@ -5,15 +5,24 @@ very similar to [[https://en.wikipedia.org/wiki/Vim_%2528text_editor%2529][Vim]]
 
 Reaper-keys provides features like composable actions, macros, multiple edit
 modes and more.
-
- When learned, benefits include: 
+** Pros
 - Saving a couple minutes per hour
 - Developing arthritis at 60 instead of 40
 - Reduced mouse usage
 - A more fluid experience 
  
 * Features
-** Composable actions
+** Bind key sequences
+With reaper-keys, you may bind key sequences to actions, rather then singular
+key presses. This allows one to make use of mnemonics, such as 't' for track,
+or 'a' for arming.
+
+A completion/feedback window is provided to assist with command completion. Here
+is an example of navigating through the menu to render a project.
+
+[[file:img/completion.webm][feedback window]]
+
+** Compose actions
 Reaper-keys  lets one compose actions of different types to create new commands.
 For example, any ~timeline motion~  action can follow any  ~timeline operator~
 action, and any ~number~ can prefix a ~timeline motion~.
@@ -29,8 +38,6 @@ brain, as you only need to know the ~timeline_motions~, ~timeline_operators~, an
 the fact that you can compose them. 
 
 ** Multi-modal
-Reaper-keys has multiple modes as well.
-
 Changing modes changes the way keys compose. By default, it is in ~normal~ mode, but you could for example go into ~visual timeline~ mode by pressing ~v~.
 
 In this mode, ~timeline motions~ extend the current time selection, and ~timeline
@@ -41,8 +48,7 @@ time selection using motion commands.
 .. video ..
 
 ** Macros
-Reaper-keys provides the ability to record /macros/. A macro
-is simply a saved sequence of commands, that one may 'play back' later.
+Macros are a way to save a sequence of commands, and play them back later.
 
 To record a macro, enter ~q~ and an arbitrary character to specify the ~register~ that
 the macro will save into. Then, perform a series of actions, and finish
@@ -59,9 +65,6 @@ A hint box with autocompletions and feedback.
 
 .. video ..
 
-** Registers
-coming soon...
-  
 * Installation
 - Clone this repository or download it via the 'releases' tab.
 - Put this repository into your  ~REAPER/Scripts~  directory . If you're unsure where your ~REAPER~ directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
