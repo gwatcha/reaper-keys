@@ -20,7 +20,7 @@ or 'a' for arming.
 A completion/feedback window is provided to assist with command completion. Here
 is an example of navigating through the menu to render a project.
 
-[[file:img/completion.gif][completions]]
+[[<iframe src='//gifs.com/embed/reaper-keys-completions-mOWGZ3' frameborder='0' scrolling='no' width='440' height='400' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>][gif]]
 
 *** Compose actions
 Reaper-keys  lets one compose actions of different types to create new commands.
