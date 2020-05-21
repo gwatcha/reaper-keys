@@ -73,8 +73,8 @@ two tracks in a ribbon style.
 - For all the actions to work, install the [[https://sws-extension.org/][SWS/S&M]]  extension for Reaper .
  
 ** Configuration
-All you need to configure reaper-keys is under the ~definitions~ directory.  
-Take a look at the ~definitions/README~ file for more details.
+All you need to configure reaper-keys is under the [[file:definitions/]] directory.  
+Take a look at the [[file:definitions/README.org]] file for more details.
 
 ** Future Plans
 - A GUI for adding new key bindings.
