@@ -48,7 +48,7 @@ actions~ operate immediately and return one to ~normal~ mode. Useful if you want
 visual feedback before executing a timeline action, or just want to extend the
 time selection using motion commands.
 
-[[file:img/visual_timeline.gif]]
+[[file:img/mode.gif]]
 
 *** Macros
 Macros are a way to save a sequence of commands, and play them back later.

@@ -1,15 +1,15 @@
 
 # Table of Contents
 
-1.  [Reaper-Keys](#org8226321)
-    1.  [Pros](#org8e78f9a)
-        1.  [Bind key sequences](#org5805ef3)
-        2.  [Compose actions](#org53e0c82)
-        3.  [Multi-modal](#org02723cf)
-        4.  [Macros](#org33b7bc1)
+1.  [Reaper-Keys](#org845ebd5)
+    1.  [Pros](#orgb63fac4)
+        1.  [Bind key sequences](#orgdb92ed9)
+        2.  [Compose actions](#orgbc04a26)
+        3.  [Multi-modal](#org7004387)
+        4.  [Macros](#orgeeb5814)
 
 
-<a id="org8226321"></a>
+<a id="org845ebd5"></a>
 
 # Reaper-Keys
 
@@ -21,7 +21,7 @@ Reaper-keys provides features like composable actions, macros, multiple edit
 modes and more.
 
 
-<a id="org8e78f9a"></a>
+<a id="orgb63fac4"></a>
 
 ## Pros
 
@@ -31,7 +31,7 @@ modes and more.
 -   A more fluid experience
 
 
-<a id="org5805ef3"></a>
+<a id="orgdb92ed9"></a>
 
 ### Bind key sequences
 
@@ -45,7 +45,7 @@ is an example of navigating through the menu to render a project.
 ![img](img/save.gif)
 
 
-<a id="org53e0c82"></a>
+<a id="orgbc04a26"></a>
 
 ### Compose actions
 
@@ -67,7 +67,7 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="org02723cf"></a>
+<a id="org7004387"></a>
 
 ### Multi-modal
 
@@ -78,10 +78,10 @@ actions` operate immediately and return one to `normal` mode. Useful if you want
 visual feedback before executing a timeline action, or just want to extend the
 time selection using motion commands.
 
-![img](img/visual_timeline.gif)
+![img](img/mode.gif)
 
 
-<a id="org33b7bc1"></a>
+<a id="orgeeb5814"></a>
 
 ### Macros
 
