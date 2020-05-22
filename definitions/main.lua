@@ -27,9 +27,7 @@ return {
                ["f"] = "InnerFolder",
                ["g"] = "AllTracks",
     }},
-    ["o"] = {"+outer", {
-               ["f"] = "OuterFolder"
-    }},
+    ["p"] = "SelectFolderParent",
   },
   track_operator = {
     ["z"] = "VerticalZoom",

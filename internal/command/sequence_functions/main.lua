@@ -7,14 +7,12 @@ return {
       { 'track_motion' },
       function(track_motion)
         runner.runAction(track_motion)
-        runner.runAction("ScrollToSelectedTracks")
       end
     },
     {
       { 'number', 'track_motion' },
       function(number, track_motion)
         runner.runActionNTimes(track_motion, number)
-        runner.runAction("ScrollToSelectedTracks")
       end
     },
   },
@@ -61,7 +59,6 @@ return {
       { 'track_selector' },
       function(track_selector)
         runner.runAction(track_selector)
-        runner.runAction("ScrollToSelectedTracks")
       end
     },
     {
@@ -79,7 +76,6 @@ return {
         local args = {track_motion, 1}
         local sel_function = runner.makeSelectionFromTrackMotion
         runner.addToTrackSelection(sel_function, args)
-        runner.runAction("ScrollToSelectedTracks")
       end
     },
     {
@@ -88,7 +84,6 @@ return {
         local args = {track_motion, number}
         local sel_function = runner.makeSelectionFromTrackMotion
         runner.addToTrackSelection(sel_function, args)
-        runner.runAction("ScrollToSelectedTracks")
       end
     },
   }
