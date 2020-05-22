@@ -22,7 +22,6 @@ return {
   },
   command = {
     ["<esc>"] = "CloseWindow",
-    ["<M-w>"] = "FocusMain",
     ["<M-e>"] = "EditCursorRightMeasure",
     ["<M-q>"] = "EditCursorLeftMeasure",
     ["="] = "DoubleGridSize",
