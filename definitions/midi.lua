@@ -3,14 +3,14 @@
 -- add some yourself though!
 return {
   timeline_selector = {},
+  timeline_operator = {},
   timeline_motion = {
     ["<M-n>"] = "SelectNextNoteSamePitch",
     ["<M-p>"] = "SelectPrevNoteSamePitch",
     ["w"] = "SelectNextNoteSamePitch",
     ["b"] = "SelectPrevNoteSamePitch",
   },
-  timeline_operator = {},
-  pitch_motion = {
+  command = {
     ["k"] = "PitchCursorUp",
     ["j"] = "PitchCursorDown",
     ["K"] = "PitchCursorUpOctave",
@@ -19,21 +19,18 @@ return {
     ["<C-f>"] = "PitchCursorDownOctave",
     ["<C-u>"] = "PitchCursorUp7",
     ["<C-d>"] = "PitchCursorDown7",
-  },
-  command = {
-    ["<esc>"] = "CloseWindow",
+    ["<ESC>"] = "CloseWindow",
     ["<M-e>"] = "EditCursorRightMeasure",
     ["<M-q>"] = "EditCursorLeftMeasure",
     ["="] = "DoubleGridSize",
     ["+"] = "HalfGridSize",
-    ["<M-a>"] = "AddNearestNoteToSelection",
-    ["c"] = "ClearNoteSelection",
-    ["i"] = "InsertNote",
+    ["s"] = "AddNearestNoteToSelection",
     ["S"] = "ToggleSnapToGrid",
-    ["q"] = "Quantize",
+    ["i"] = "InsertNote",
     ["V"] = "SelectAllNotesAtPitchCursor",
     ["n"] = "SelectNextNote",
     ["p"] = "SelectPrevNote",
+    ["N"] = "SelectPrevNote",
     ["<M-k>"] = "MoveNoteUpSemitone",
     ["<M-j>"] = "MoveNoteDownSemitone",
     ["<M-K>"] = "MoveNoteUpOctave",
@@ -41,10 +38,6 @@ return {
     ["d"] = "DeleteNote",
     ["<M-l>"] = "MoveNoteRight",
     ["<M-h>"] = "MoveNoteLeft",
-    ["+"] = "ZoomInHoriz",
-    ["-"] = "ZoomOutHoriz",
-    ["<C-+>"] = "ZoomInVert",
-    ["<C-->"] = "ZoomOutVert",
   },
 }
 
