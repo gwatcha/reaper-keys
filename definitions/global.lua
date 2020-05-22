@@ -36,14 +36,14 @@ return {
     ["o"] = "SwitchTimelineSelectionSide",
   },
   command = {
+    ["T"] = "TransportPlay",
+    ["F"] = "TransportPause",
+    ["C"] = "TransportRecordOrStop",
     ["v"] = "SetModeVisualTimeline",
     ["<ESC>"] = "Reset",
     ["<C-r>"] = "Redo",
     ["<return>"] = "StartStop",
     ["u"] = "Undo",
-    ["T"] = "TransportPlay",
-    ["F"] = "TransportPause",
-    ["C"] = "TransportRecordOrStop",
     ["<M-T>"] = "CursorToMouseAndPlay",
     ["<CM-T>"] = "CursorToMouseAndPlaySnap",
     ["<M-t>"] = "PlayFromMouse",
@@ -81,7 +81,7 @@ return {
       ["t"] = { "+track", {
                   ["x"] = "ShowTrackRouting",
                   ["R"] = "RenderTrack",
-                  ["f"] = { "+freeze", {
+                  ["F"] = { "+freeze", {
                     ["f"] = "FreezeTrack",
                     ["u"] = "UnfreezeTrack",
                     ["s"] = "ShowTrackFreezeDetails"}},
@@ -96,11 +96,13 @@ return {
                   ["+"] = "IncreaseTrackHeight",
                   ["-"] = "DecreaseTrackHeight",
                   ["h"] = "MixerShowHideChildrenOfSelectedTrack",
-                  ["F"] = "CycleTrackFolderState"}},
+                  ["f"] = "MakeFolder",
+      }},
       ["f"] = { "+fx", {
                   ["id"] = "ClearFxChainInputCurrentTrack",
                   ["d"] = "ClearFxChainCurrentTrack",
                   ["a"] = "FxAdd",
+                  ["y"] = "CopyFxChain",
                   ["p"] = "PasteFxChain",
                   ["i"] = "ViewFxChainInputCurrentTrack",
                   ["c"] = "FxChainToggleShow",

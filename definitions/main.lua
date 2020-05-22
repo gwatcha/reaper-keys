@@ -1,7 +1,5 @@
 return {
   register_action = {
-    ['"'] = "PasteRegister",
-    ["yf"] = "SaveFxChain",
   },
   track_motion = {
     ["G"] = "LastTrack",
@@ -25,13 +23,13 @@ return {
     ["V"] = "Selection",
     ["i"] = {"+inner", {
                ["f"] = "InnerFolder",
+               ["F"] = "InnerFolderAndParent",
                ["g"] = "AllTracks",
     }},
-    ["p"] = "SelectFolderParent",
+    ["F"] = "SelectFolderParent",
   },
   track_operator = {
     ["z"] = "VerticalZoom",
-    ["f"] = "MakeFolder",
     ["d"] = "CutTrack",
     ["a"] = "ArmToggle",
     ["s"] = "ToggleSolo",
@@ -86,12 +84,10 @@ return {
     ["<C-j>"] = "NextTrackKeepSel",
     ["<C-k>"] = "PrevTrackKeepSel",
     ["V"] = "SetModeVisualTrack",
-    ["S"] = "UnselectItems",
     ["("] = "SetTimeSelectionStart",
     [")"] = "SetTimeSelectionEnd",
     ["+"] = "ZoomInHoriz",
-    ["-"] = "ZoomOutHorizon",
-    ["<"] = "GrowItemLeft",
+    ["-"] = "ZoomOutHoriz",
     ["<M-j>"] = "NextEnvelope",
     ["<M-k>"] = "PrevEnvelope",
     ["<M-s>"] = "FxToggleShowAll",
@@ -115,7 +111,6 @@ return {
     ["o"] = "EnterTrackBelow",
     ["p"] = "Paste",
     ["P"] = "PasteAbove",
-    ["yf"] = "CopyFxChain",
     ["yy"] = "CopyTrack",
     ["zt"] = "ScrollToPlayPosition",
   },

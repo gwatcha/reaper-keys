@@ -20,22 +20,34 @@ return {
     {
       { 'track_operator', 'track_motion' },
       function(track_operator, track_motion)
+        runner.runAction("SaveTrackSelection")
         runner.makeSelectionFromTrackMotion(track_motion, 1)
         runner.runAction(track_operator)
+        if type(track_operator) ~= 'table' or not track_operator['setTrackSelection'] then
+          runner.runAction("RestoreTrackSelection")
+        end
       end
     },
     {
       { 'track_operator', 'number', 'track_motion' },
       function(track_operator, number, track_motion)
+        runner.runAction("SaveTrackSelection")
         runner.makeSelectionFromTrackMotion(track_motion, number)
         runner.runAction(track_operator)
+        if type(track_operator) ~= 'table' or not track_operator['setTrackSelection'] then
+          runner.runAction("RestoreTrackSelection")
+        end
       end
     },
     {
       { 'track_operator', 'track_selector' },
       function(track_operator, track_selector)
+        runner.runAction("SaveTrackSelection")
         runner.runAction(track_selector)
         runner.runAction(track_operator)
+        if type(track_operator) ~= 'table' or not track_operator['setTrackSelection'] then
+          runner.runAction("RestoreTrackSelection")
+        end
       end
     },
   },
