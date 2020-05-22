@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/reaper-keys.png" width="350" title="hover text">
+  <img src="img/reaper-keys.png" width="200" title="hover text">
 </p>
 
 # Reaper-Keys
