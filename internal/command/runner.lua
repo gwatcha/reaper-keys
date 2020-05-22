@@ -47,7 +47,11 @@ function runner.runAction(action)
 
   for i=1,repetitions do
     for _, sub_action in ipairs(sub_actions) do
-      runSubAction(sub_action)
+      if type(sub_action) == 'table' then
+        runner.runAction(sub_action)
+      else
+        runSubAction(sub_action)
+      end
     end
   end
 
