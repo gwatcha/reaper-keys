@@ -73,6 +73,7 @@ module KeyDefinitions
         '<SPC>' => 32,
         '<TAB>' => 9,
         '<ESC>' => 27,
+        '<return>' => 13,
       ]
     ],
     letters: Hash[
@@ -148,7 +149,6 @@ module KeyDefinitions
     normal: Hash[
       key_type_id: 0,
       keys: Hash[
-        '<return>' => 13,
         "'" => 39,
         '.' => 46,
         ',' => 44,

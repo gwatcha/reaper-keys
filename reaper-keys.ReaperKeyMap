@@ -286,6 +286,22 @@ SCR 4 32060 "_reaper_keys_midi_<CM-ESC>" "[reaper-keys] [key_press] [<CM-ESC>]" 
 KEY 25 27 _reaper_keys_midi_<CM-ESC> 32060
 SCR 4 32060 "_reaper_keys_midi_<CMS-ESC>" "[reaper-keys] [key_press] [<CMS-ESC>]" ./reaper-keys/key_scripts/midi_<CMS-ESC>.lua
 KEY 29 27 _reaper_keys_midi_<CMS-ESC> 32060
+SCR 4 32060 "_reaper_keys_midi_<return>" "[reaper-keys] [key_press] [<return>]" ./reaper-keys/key_scripts/midi_<return>.lua
+KEY 1 13 _reaper_keys_midi_<return> 32060
+SCR 4 32060 "_reaper_keys_midi_<C-return>" "[reaper-keys] [key_press] [<C-return>]" ./reaper-keys/key_scripts/midi_<C-return>.lua
+KEY 9 13 _reaper_keys_midi_<C-return> 32060
+SCR 4 32060 "_reaper_keys_midi_<M-return>" "[reaper-keys] [key_press] [<M-return>]" ./reaper-keys/key_scripts/midi_<M-return>.lua
+KEY 17 13 _reaper_keys_midi_<M-return> 32060
+SCR 4 32060 "_reaper_keys_midi_<S-return>" "[reaper-keys] [key_press] [<S-return>]" ./reaper-keys/key_scripts/midi_<S-return>.lua
+KEY 5 13 _reaper_keys_midi_<S-return> 32060
+SCR 4 32060 "_reaper_keys_midi_<MS-return>" "[reaper-keys] [key_press] [<MS-return>]" ./reaper-keys/key_scripts/midi_<MS-return>.lua
+KEY 21 13 _reaper_keys_midi_<MS-return> 32060
+SCR 4 32060 "_reaper_keys_midi_<CS-return>" "[reaper-keys] [key_press] [<CS-return>]" ./reaper-keys/key_scripts/midi_<CS-return>.lua
+KEY 13 13 _reaper_keys_midi_<CS-return> 32060
+SCR 4 32060 "_reaper_keys_midi_<CM-return>" "[reaper-keys] [key_press] [<CM-return>]" ./reaper-keys/key_scripts/midi_<CM-return>.lua
+KEY 25 13 _reaper_keys_midi_<CM-return> 32060
+SCR 4 32060 "_reaper_keys_midi_<CMS-return>" "[reaper-keys] [key_press] [<CMS-return>]" ./reaper-keys/key_scripts/midi_<CMS-return>.lua
+KEY 29 13 _reaper_keys_midi_<CMS-return> 32060
 SCR 4 32060 "_reaper_keys_midi_a" "[reaper-keys] [key_press] [a]" ./reaper-keys/key_scripts/midi_a.lua
 KEY 1 65 _reaper_keys_midi_a 32060
 SCR 4 32060 "_reaper_keys_midi_<C-a>" "[reaper-keys] [key_press] [<C-a>]" ./reaper-keys/key_scripts/midi_<C-a>.lua
@@ -1014,14 +1030,6 @@ SCR 4 32060 "_reaper_keys_midi_<CM-9>" "[reaper-keys] [key_press] [<CM-9>]" ./re
 KEY 25 57 _reaper_keys_midi_<CM-9> 32060
 SCR 4 32060 "_reaper_keys_midi_<CMS-9>" "[reaper-keys] [key_press] [<CMS-9>]" ./reaper-keys/key_scripts/midi_<CMS-9>.lua
 KEY 29 57 _reaper_keys_midi_<CMS-9> 32060
-SCR 4 32060 "_reaper_keys_midi_<return>" "[reaper-keys] [key_press] [<return>]" ./reaper-keys/key_scripts/midi_<return>.lua
-KEY 0 13 _reaper_keys_midi_<return> 32060
-SCR 4 32060 "_reaper_keys_midi_<C-return>" "[reaper-keys] [key_press] [<C-return>]" ./reaper-keys/key_scripts/midi_<C-return>.lua
-KEY 9 13 _reaper_keys_midi_<C-return> 32060
-SCR 4 32060 "_reaper_keys_midi_<M-return>" "[reaper-keys] [key_press] [<M-return>]" ./reaper-keys/key_scripts/midi_<M-return>.lua
-KEY 17 13 _reaper_keys_midi_<M-return> 32060
-SCR 4 32060 "_reaper_keys_midi_<CM-return>" "[reaper-keys] [key_press] [<CM-return>]" ./reaper-keys/key_scripts/midi_<CM-return>.lua
-KEY 25 13 _reaper_keys_midi_<CM-return> 32060
 SCR 4 32060 "_reaper_keys_midi_'" "[reaper-keys] [key_press] [']" ./reaper-keys/key_scripts/midi_apostrophe.lua
 KEY 0 39 _reaper_keys_midi_' 32060
 SCR 4 32060 "_reaper_keys_midi_<C-'>" "[reaper-keys] [key_press] [<C-'>]" ./reaper-keys/key_scripts/midi_<C-apostrophe>.lua
@@ -1414,6 +1422,22 @@ SCR 4 0 "_reaper_keys_main_<CM-ESC>" "[reaper-keys] [key_press] [<CM-ESC>]" ./re
 KEY 25 27 _reaper_keys_main_<CM-ESC> 0
 SCR 4 0 "_reaper_keys_main_<CMS-ESC>" "[reaper-keys] [key_press] [<CMS-ESC>]" ./reaper-keys/key_scripts/main_<CMS-ESC>.lua
 KEY 29 27 _reaper_keys_main_<CMS-ESC> 0
+SCR 4 0 "_reaper_keys_main_<return>" "[reaper-keys] [key_press] [<return>]" ./reaper-keys/key_scripts/main_<return>.lua
+KEY 1 13 _reaper_keys_main_<return> 0
+SCR 4 0 "_reaper_keys_main_<C-return>" "[reaper-keys] [key_press] [<C-return>]" ./reaper-keys/key_scripts/main_<C-return>.lua
+KEY 9 13 _reaper_keys_main_<C-return> 0
+SCR 4 0 "_reaper_keys_main_<M-return>" "[reaper-keys] [key_press] [<M-return>]" ./reaper-keys/key_scripts/main_<M-return>.lua
+KEY 17 13 _reaper_keys_main_<M-return> 0
+SCR 4 0 "_reaper_keys_main_<S-return>" "[reaper-keys] [key_press] [<S-return>]" ./reaper-keys/key_scripts/main_<S-return>.lua
+KEY 5 13 _reaper_keys_main_<S-return> 0
+SCR 4 0 "_reaper_keys_main_<MS-return>" "[reaper-keys] [key_press] [<MS-return>]" ./reaper-keys/key_scripts/main_<MS-return>.lua
+KEY 21 13 _reaper_keys_main_<MS-return> 0
+SCR 4 0 "_reaper_keys_main_<CS-return>" "[reaper-keys] [key_press] [<CS-return>]" ./reaper-keys/key_scripts/main_<CS-return>.lua
+KEY 13 13 _reaper_keys_main_<CS-return> 0
+SCR 4 0 "_reaper_keys_main_<CM-return>" "[reaper-keys] [key_press] [<CM-return>]" ./reaper-keys/key_scripts/main_<CM-return>.lua
+KEY 25 13 _reaper_keys_main_<CM-return> 0
+SCR 4 0 "_reaper_keys_main_<CMS-return>" "[reaper-keys] [key_press] [<CMS-return>]" ./reaper-keys/key_scripts/main_<CMS-return>.lua
+KEY 29 13 _reaper_keys_main_<CMS-return> 0
 SCR 4 0 "_reaper_keys_main_a" "[reaper-keys] [key_press] [a]" ./reaper-keys/key_scripts/main_a.lua
 KEY 1 65 _reaper_keys_main_a 0
 SCR 4 0 "_reaper_keys_main_<C-a>" "[reaper-keys] [key_press] [<C-a>]" ./reaper-keys/key_scripts/main_<C-a>.lua
@@ -2142,14 +2166,6 @@ SCR 4 0 "_reaper_keys_main_<CM-9>" "[reaper-keys] [key_press] [<CM-9>]" ./reaper
 KEY 25 57 _reaper_keys_main_<CM-9> 0
 SCR 4 0 "_reaper_keys_main_<CMS-9>" "[reaper-keys] [key_press] [<CMS-9>]" ./reaper-keys/key_scripts/main_<CMS-9>.lua
 KEY 29 57 _reaper_keys_main_<CMS-9> 0
-SCR 4 0 "_reaper_keys_main_<return>" "[reaper-keys] [key_press] [<return>]" ./reaper-keys/key_scripts/main_<return>.lua
-KEY 0 13 _reaper_keys_main_<return> 0
-SCR 4 0 "_reaper_keys_main_<C-return>" "[reaper-keys] [key_press] [<C-return>]" ./reaper-keys/key_scripts/main_<C-return>.lua
-KEY 9 13 _reaper_keys_main_<C-return> 0
-SCR 4 0 "_reaper_keys_main_<M-return>" "[reaper-keys] [key_press] [<M-return>]" ./reaper-keys/key_scripts/main_<M-return>.lua
-KEY 17 13 _reaper_keys_main_<M-return> 0
-SCR 4 0 "_reaper_keys_main_<CM-return>" "[reaper-keys] [key_press] [<CM-return>]" ./reaper-keys/key_scripts/main_<CM-return>.lua
-KEY 25 13 _reaper_keys_main_<CM-return> 0
 SCR 4 0 "_reaper_keys_main_'" "[reaper-keys] [key_press] [']" ./reaper-keys/key_scripts/main_apostrophe.lua
 KEY 0 39 _reaper_keys_main_' 0
 SCR 4 0 "_reaper_keys_main_<C-'>" "[reaper-keys] [key_press] [<C-'>]" ./reaper-keys/key_scripts/main_<C-apostrophe>.lua
