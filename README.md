@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="img/reaper-keys.png" width="200" title="hover text">
-</p>
 
 # Reaper-Keys
 
@@ -8,6 +5,9 @@ Reaper-Keys is an extension for the [REAPER DAW](https://www.reaper.fm/), that p
 mapping system based on key sequences instead of key chords. The system is 
 similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal text editor, and by default comes with vim-like bindings. 
 
+<p align="center">
+  <img src="img/reaper-keys.png" width="200" title="hover text">
+</p>
 
 <a id="org3bbee52"></a>
 
