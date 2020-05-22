@@ -57,7 +57,7 @@ return {
     ["s"] = "SelectedItems",
     ["v"] = "Selection",
     ["i"] = {"+inner", {
-      ["r"] = "Region",
+      ["r"] = "MarkerRegion",
       ["l"] = "AllTrackItems",
       ["p"] = "ProjectTimeline",
       ["w"] = "Item",
