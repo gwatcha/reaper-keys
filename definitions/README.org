@@ -19,7 +19,6 @@ Here's a short description of all the action types:
   | ~visual_timeline_command~ | Only command only available in visual timeline mode.             |
   | ~visual_track_command~    | Only available in visual track mode                              |
   | ~meta_command~            | Makes use of previous commands and macros.                       |
-  | ~register_action~         | Followed by a register (TODO also don't work yet)                |
   
 ** Action / Key Type Sequences
 In which ways you may compose keys (i.e. the available action type sequences) depends on the mode of reaper-keys.

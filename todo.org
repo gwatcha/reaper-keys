@@ -1,0 +1,24 @@
+** TODO Quick new key defining
+** TODO marks
+    #+begin_src lua
+    ["m"] = "MarkSave", -- save zoom, edit cursor, and selection
+    ["'"] = "MarkRecall",
+    #+end_src
+** TODO Configuration gui
+#+begin_src lua
+function library.openConfig()
+  -- TODO
+end
+#+end_src
+** TODO registers 
+ #+begin_src lua
+ library.register_actions.pasteRegister(register)
+  --TODO
+end
+
+function library.register_actions.saveFxChain(register)
+  --TODO
+end
+ #+end_src
+
+
