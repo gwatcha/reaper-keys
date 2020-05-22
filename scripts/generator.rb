@@ -66,16 +66,21 @@ class Generator
   end
 
   def gen_key_script(key, context, path)
-    key_script = ''"
+    key_script_header = ''"
 local info = debug.getinfo(1,'S');
 local root_path = info.source:match[[[^@]*reaper.keys/]]
 package.path = package.path .. ';' .. root_path .. '?.lua'
 
 local doInput = require('internal.reaper-keys')
 
-doInput({['key'] = '#{key}', ['context'] = '#{context}'})
 "''
 
+    input_line = "doInput({['key'] = '#{key}', ['context'] = '#{context}'})"
+    if key == "'"
+      input_line = "doInput({['key'] = \"#{key}\", ['context'] = '#{context}'})"
+    end
+
+    key_script = key_script_header + input_line
     open(path, 'w') { |file| file.puts key_script }
   end
 
