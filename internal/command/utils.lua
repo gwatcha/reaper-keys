@@ -93,4 +93,14 @@ function utils.getEntryForKeySequence(key_sequence, entries)
   return nil
 end
 
+function utils.qualifiesAsRepeatableCommand(command)
+  for _,action_type in ipairs(command.sequence) do
+    if action_type:find('command') then
+      return true
+    end
+  end
+
+  return false
+end
+
 return utils

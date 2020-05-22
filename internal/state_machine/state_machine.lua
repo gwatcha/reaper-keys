@@ -29,7 +29,9 @@ function handleCommand(state, command)
       new_state = state_interface.get()
     end
 
-    new_state['last_command'] = command
+    if utils.qualifiesAsRepeatableCommand(command) then
+      new_state['last_command'] = command
+    end
     new_state['key_sequence'] = ""
   end
 
