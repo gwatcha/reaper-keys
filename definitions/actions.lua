@@ -19,6 +19,7 @@ return {
       BigItem = utils.selectInnerBigItem,
       Item = utils.selectInnerItem,
       SelectItemsOnTrack = 40421,
+      SelectTracks = {"Noop", setTrackSelection=true},
       SelectItemsCrossingTimeAndTrackSelection = 40718,
       OnlySelectItemsCrossingTimeAndTrackSelection = {"UnselectItems", "SelectItemsCrossingTimeAndTrackSelection"},
       SelectItems = {"OnlySelectItemsCrossingTimeAndTrackSelection", "SplitAtTimeSelection"},
