@@ -25,7 +25,7 @@ return {
     ["="] = "DoubleGridSize",
     ["+"] = "HalfGridSize",
     ["s"] = "AddNearestNoteToSelection",
-    ["S"] = "ToggleSnapToGrid",
+    ["<SPC>,s"] = "ToggleMidiSnap",
     ["i"] = "InsertNote",
     ["V"] = "SelectAllNotesAtPitchCursor",
     ["n"] = "SelectNextNote",

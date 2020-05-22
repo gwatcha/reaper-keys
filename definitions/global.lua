@@ -40,6 +40,7 @@ return {
     ["F"] = "TransportPause",
     ["C"] = "TransportRecordOrStop",
     ["v"] = "SetModeVisualTimeline",
+    ["<C-,>"] = "ToggleViewMixer",
     ["<ESC>"] = "Reset",
     ["<C-r>"] = "Redo",
     ["<return>"] = "StartStop",
@@ -121,6 +122,16 @@ return {
                   ["7"] = "FxToggleShow7",
                   ["8"] = "FxToggleShow8",
       }},
+      [","] = {"+options", {
+                 ["s"] = "ToggleSnap",
+                 ["c"] = "CycleRippleEditMode",
+                 ["m"] = "ToggleMetronome",
+                 ["t"] = "ToggleStopAtEndOfTimeSelectionIfNoRepeat",
+                 ["i"] = "ToggleAutoCrossfade",
+                 ["zr"] = "ToggleRecordingAutoScroll",
+                 ["zt"] = "TogglePlaybackAutoScroll",
+                 ["e"] = "ToggleEnvelopePointsMoveWithItems",
+      }},
       ["g"] = { "+global", {
                   ["s"] = {"+show", {
                              ["r"] = "ShowRoutingMatrix",
@@ -129,9 +140,6 @@ return {
                   }},
                   ["dr"] = "ResetControlDevices",
                   ["a"] = "ClearAllRecordArm",
-                  ["c"] = "CycleRippleEditMode",
-                  ["S"] = "SnapToggle",
-                  ["m"] = "ToggleMetronome",
                   ["f"] = {"+fx", {
                              ["x"] = "FxCloseAll",
                              ["c"] = "ViewFxChainMaster",
