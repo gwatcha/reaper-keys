@@ -11,6 +11,7 @@ end
 return {
   all_modes = {
     {{ 'number', 'meta_command', 'register_location' }, invalidSequenceCall},
+    {{ 'number', 'meta_command' }, invalidSequenceCall},
     {{ 'meta_command', 'register_location' }, invalidSequenceCall},
     {{ 'meta_command'}, invalidSequenceCall},
     {
@@ -92,7 +93,7 @@ return {
       { 'timeline_operator' },
       function(timeline_operator)
         runner.runAction(timeline_operator)
-        state_functions.resetModeToNormal()
+        state_functions.setModeToNormal()
       end
     },
     {

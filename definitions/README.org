@@ -23,6 +23,7 @@ Here's a short description of all the action types:
   
 ** Action / Key Type Sequences
 In which ways you may compose keys (i.e. the available action type sequences) depends on the mode of reaper-keys.
+Listed below are the valid action sequences in each mode.
 
 *** All Modes
       | ~command~                                 |
@@ -64,10 +65,10 @@ In which ways you may compose keys (i.e. the available action type sequences) de
       
       /enter this mode via 'V' by default/
 ** Actions
-The available actions for bindings are in the ~actions.lua~ file.
+The available actions for bindings are in the [[file:actions.lua]] file.
 
 If an action does not exist for a command you want to create a binding for, you
-may add an entry into ~actions.lua~. You just need to come up with a name for the
+may add an entry into [[file:actions.lua]] You just need to come up with a name for the
 action and get it's ~Command Id~ ( available in reapers action list).
 
 Here is an example entry:
@@ -87,8 +88,8 @@ previous ones, and makes use of the repetitions option.
     SetRecordModeToNormal = 40252,
     Stop = 40667,
     UnselectItems = 40289,
-    ResetToNormal = lib.resetModeToNormal,
-    Reset = {"Stop", "SetRecordModeToNormal", "ResetToNormal", "UnselectItems"},
+    SetModeNormal = lib.setModeToNormal,
+    Reset = {"Stop", "SetRecordModeToNormal", "SetModeNormal", "UnselectItems"},
     Reset4TimesForSomeReason = {"Reset", repetitions=4}
 #+end_src
 

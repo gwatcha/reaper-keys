@@ -29,17 +29,18 @@ function state_functions.getTimelineSelectionSide()
   return state['timeline_selection_side']
 end
 
-function state_functions.toggleMode(mode)
+function state_functions.getMode()
   local state = state_interface.get()
-  if state.mode == mode then
-    state.mode = 'normal'
-  else
-    state.mode = mode
-  end
+  return state.mode
+end
+
+function state_functions.setMode(mode)
+  local state = state_interface.get()
+  state.mode = mode
   state_interface.set(state)
 end
 
-function state_functions.resetModeToNormal()
+function state_functions.setModeToNormal()
   local state = state_interface.get()
   state['key_sequence'] = ""
   state['context'] = "main"

@@ -58,7 +58,7 @@ return {
       { 'track_operator' },
       function(track_operator)
         runner.runAction(track_operator)
-        state_functions.resetModeToNormal()
+        state_functions.setModeToNormal()
         local first_track = reaper.GetSelectedTrack(0, 0)
         reaper.SetOnlyTrackSelected(first_track)
       end
@@ -73,7 +73,7 @@ return {
       { 'timeline_operator' },
       function(timeline_operator)
         runner.runAction(timeline_operator)
-        state_functions.resetModeToNormal()
+        state_functions.setModeToNormal()
         local first_track = reaper.GetSelectedTrack(0, 0)
         reaper.SetOnlyTrackSelected(first_track)
       end
