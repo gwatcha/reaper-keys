@@ -8,7 +8,6 @@ local library = {
   register_actions = {}
 }
 
-
 function library.firstTrack()
   local first_track = reaper.GetTrack(0, 0)
   reaper.SetOnlyTrackSelected(first_track)
@@ -98,7 +97,6 @@ function library.moveToNextBigItemEnd()
   reaper.SetEditCurPos(current_position, true, false)
 end
 
--- TODO duplication
 function library.moveToPrevItemStart()
   local current_position = reaper.GetCursorPosition()
   local item_positions = getItemPositionsOnSelectedTrack()
@@ -138,7 +136,6 @@ function library.moveToNextItemEnd()
   end
   reaper.SetEditCurPos(current_position, true, false)
 end
-
 
 function getItemPositionsOnSelectedTrack()
   local current_track = reaper.GetSelectedTrack(0, 0)
@@ -189,17 +186,16 @@ function library.resetModeToNormal()
   reaper.SetOnlyTrackSelected(first_track)
 end
 
--- TODO
 function library.openConfig()
+  -- TODO
 end
 
 function library.register_actions.pasteRegister(register)
+  --TODO
 end
 
 function library.register_actions.saveFxChain(register)
-end
-
-function library.saveFxChain()
+  --TODO
 end
 
 function library.toggleVisualTrackMode()

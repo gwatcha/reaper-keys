@@ -3,6 +3,23 @@ local utils = require("command.utils")
 local definitions = require("utils.definitions")
 local regex_match_entry_types = require("command.constants").regex_match_entry_types
 
+function stripBegginingKeys(full_key_sequence, start_key_sequence)
+  if #start_key_sequence >= #full_key_sequence then
+    return nil
+  end
+
+  rest_of_sequence = ""
+  for i=1,#start_key_sequence do
+    next_key, rest_of_sequence = utils.splitFirstKey(full_key_sequence)
+    next_key_in_start = utils.splitFirstKey(start_key_sequence)
+    if next_key_in_start ~= next_key then
+      return nil
+    end
+  end
+
+  return rest_of_sequence
+end
+
 function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   if not entries then return nil end
   if key_sequence == "" then return entries end
@@ -18,8 +35,8 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
 
   local found_possible_future_entry = false
   for full_key_sequence, entry_value in pairs(entries) do
-    rest_of_sequence, full_seq_starts_with_key_seq = string.gsub(full_key_sequence, "^" .. key_sequence, "")
-    if full_seq_starts_with_key_seq == 1 and not utils.isFolder(entry_value) then
+    rest_of_sequence = stripBegginingKeys(full_key_sequence, key_sequence)
+    if rest_of_sequence and not utils.isFolder(entry_value) then
       possible_future_entries[rest_of_sequence] = entry_value
       found_possible_future_entry = true
     end
