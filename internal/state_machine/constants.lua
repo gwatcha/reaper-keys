@@ -8,6 +8,8 @@ local constants = {
     macro_commands = {},
     timeline_selection_side = "left",
     last_command = {
+      context = "main",
+      mode = "normal",
       parts = {
         "NoOp"
       },
