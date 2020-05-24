@@ -1,9 +1,12 @@
+-- provides functions which are specific to reaper-keys, such as macros
 local lib = require("library")
+-- provides functions which make use of the reaper api
 local utils = require("utils.reaper_util")
 
 -- naming conventions:
 -- a noun implies an action which selects the noun, or moves to it
 -- simple verbs are usually operators on selctions, such as 'change'
+
 
 return {
       ActivateNextMidiItem = {40833, midiCommand=true},
