@@ -24,6 +24,9 @@ function runSubAction(id)
   local numeric_id
   if type(id) == "string" then
     numeric_id = reaper.NamedCommandLookup(id)
+    if numeric_id == 0 then
+      log.fatal("Could not find action in reaper or action list for: " .. id)
+    end
   end
 
   if not numeric_id then
