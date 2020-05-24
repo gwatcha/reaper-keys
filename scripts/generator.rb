@@ -74,11 +74,8 @@ package.path = package.path .. ';' .. root_path .. '?.lua'
 local doInput = require('internal.reaper-keys')
 
 "''
-
+    key = '\\' + key if (key == "'") || (key == '\\')
     input_line = "doInput({['key'] = '#{key}', ['context'] = '#{context}'})"
-    if key == "'"
-      input_line = "doInput({['key'] = \"#{key}\", ['context'] = '#{context}'})"
-    end
 
     key_script = key_script_header + input_line
     open(path, 'w') { |file| file.puts key_script }
