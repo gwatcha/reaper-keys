@@ -1,10 +1,10 @@
-local utils = require("command.utils")
-local regex_match_entry_types = require("command.constants").regex_match_entry_types
-local sequences = require("command.sequences")
-local definitions = require("utils.definitions")
+local utils = require('command.utils')
+local regex_match_entry_types = require('command.constants').regex_match_entry_types
+local sequences = require('command.sequences')
+local definitions = require('utils.definitions')
 local log = require('utils.log')
 
-local str = require("string")
+local str = require('string')
 
 function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
   local command = {
