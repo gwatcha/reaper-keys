@@ -1,46 +1,43 @@
 local definitions = require("utils.definitions")
 local log = require('utils.log')
+local format = require('utils.format')
 local state_functions = require('state_machine.state_functions')
 
 local runner = {}
 
-function runSubAction(id)
-  if type(id) == 'number' then
-    reaper.Main_OnCommand(id, 0)
-    return
-  end
-
+function runSubAction(id, midi_command)
   if type(id) == "function" then
     id()
     return
   end
 
-  local action = definitions.getAction(id)
-  if action then
-    runner.runAction(action)
-    return
-  end
+  local numeric_id = id
+  if type(id) == 'string' then
+    local action = definitions.getAction(id)
+    if action then
+      runner.runAction(action)
+      return
+    end
 
-  local numeric_id
-  if type(id) == "string" then
     numeric_id = reaper.NamedCommandLookup(id)
     if numeric_id == 0 then
       log.fatal("Could not find action in reaper or action list for: " .. id)
+      return
     end
   end
 
-  if not numeric_id then
-    log.fatal("Could not find action with id: " .. id)
-    return
+  if midi_command then
+    reaper.MIDIEditor_LastFocused_OnCommand(numeric_id, false)
+  else
+    reaper.Main_OnCommand(numeric_id, 0)
   end
-
-  reaper.Main_OnCommand(numeric_id, 0)
 end
 
 function runner.runAction(action)
   local sub_actions = action
   if type(action) ~= 'table' then
-    sub_actions = {action}
+    runSubAction(action, false)
+    return
   end
 
   local repetitions = 1
@@ -48,16 +45,22 @@ function runner.runAction(action)
     repetitions = action['repetitions']
   end
 
+  local midi_command = false
+  if sub_actions['midiCommand'] then
+    midi_command = sub_actions['midiCommand']
+  end
+
+  log.trace("running action: " .. format.block(sub_actions))
+
   for i=1,repetitions do
     for _, sub_action in ipairs(sub_actions) do
       if type(sub_action) == 'table' then
         runner.runAction(sub_action)
       else
-        runSubAction(sub_action)
+        runSubAction(sub_action, midi_command)
       end
     end
   end
-
 end
 
 function runner.runActionNTimes(action, times)
