@@ -2,11 +2,13 @@
 
 # Rakefile
 require './scripts/generator'
+require './scripts/refractorer'
 require 'fileutils'
 
 @root_dir_path = Dir.pwd[%r{[^/]*$}] + '/'
 @key_script_dir = 'key_scripts/'
 @keymap_path = 'reaper-keys.ReaperKeyMap'
+@definitions_dir = 'definitions/'
 
 task default: %i[clean build]
 
@@ -19,4 +21,16 @@ end
 task :build do
   generator = Generator.new(@root_dir_path, @keymap_path, @key_script_dir)
   generator.gen_interface
+end
+
+namespace :refractor do
+  refractorer = Refractorer.new(@definitions_dir)
+
+  task :sort_actions do
+    refractorer.sort_actions
+  end
+
+  task :delete_duplicate_actions do
+    refractorer.delete_duplicate_actions
+  end
 end
