@@ -30,15 +30,15 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
         first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
         sequence_for_action_type = sequence_for_action_type .. first_key
 
-        local entry_value = utils.getEntryForKeySequence(sequence_for_action_type, entries[action_type])
-        if entry_value and not utils.isFolder(entry_value) then
-          if not definitions.getAction(entry_value) and not type(entry_value) == 'function'then
-            log.fatal("No definition for action '" .. entry_value .. "'exists.")
+        local action_name = utils.getEntryForKeySequence(sequence_for_action_type, entries[action_type])
+        if action_name and not utils.isFolder(action_name) then
+          if not definitions.getAction(action_name) then
+            log.fatal("No definition for action '" .. action_name .. "'exists.")
             return nil
           end
 
           table.insert(command.sequence, action_type)
-          table.insert(command.parts, entry_value)
+          table.insert(command.parts, action_name)
           break
         end
       end
