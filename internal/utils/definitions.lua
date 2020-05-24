@@ -29,7 +29,7 @@ function concatEntryTables(t1,t2)
 end
 
 function definitions.getPossibleEntries(context)
-  return concatEntryTables(definition_tables[context], definition_tables['global'])
+  return concatEntryTables(definition_tables['global'], definition_tables[context])
 end
 
 function definitions.getAction(action_name)
