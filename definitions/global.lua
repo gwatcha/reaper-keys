@@ -35,12 +35,16 @@ return {
   },
   timeline_selector = {
     ["v"] = "Selection",
+    ["<M-i>"] = {"+inner envelope", {
+                 ["<M-w>"] = "AutomationItem",
+    }},
     ["i"] = {"+inner", {
                ["r"] = "MarkerRegion",
                ["l"] = "AllTrackItems",
                ["p"] = "ProjectTimeline",
                ["w"] = "Item",
                ["W"] = "BigItem",
+
     }},
     ["n"] = "NextRegion",
     ["N"] = "PrevRegion",
@@ -75,7 +79,7 @@ return {
     ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
       ["r"] = {"+regions", {
-                 ["s"] = "",
+                 ["d"] = "DeleteRegion",
       }},
       ["m"]= { "+markers", {
                 ["n"] = "NextMarker",
@@ -85,11 +89,11 @@ return {
       ["v"] = "ToggleLoop",
       ["i"] = { "+items", {
                   ["j"] = "NextTake",
+                  ["ci"] = "CycleItemFadeInShape",
+                  ["co"] = "CycleItemFadeOutShape",
                   ["k"] = "PrevTake",
                   ["d"] = "DeleteActiveTake",
                   ["s"] = "CropToActiveTake",
-                  ["h"] = "GrowItemLeft",
-                  ["l"] = "GrowItemRight",
                   ["e"] = "OpenMidiEditor",
                   ["n"] = "ItemNormalize",
                   ["r"] = "ItemApplyFX",
@@ -201,6 +205,14 @@ return {
                   ["c"] = "CycleRecordMonitor",
             }},
       ["e"] = { "+envelopes", {
+                  ["x"] = {"+shape", {
+                             ["b"] = "SetEnvelopeShapeBezier",
+                             ["e"] = "SetEnvelopeShapeFastEnd",
+                             ["f"] = "SetEnvelopeShapeFastStart",
+                             ["l"] = "SetEnvelopeShapeLinear",
+                             ["s"] = "SetEnvelopeShapeSlowStart",
+                             ["S"] = "SetEnvelopeShapeSquare",
+                  }},
                   ["s"] = "ToggleShowAllEnvelope",
                   ["h"] = "ToggleShowEnvelope",
                   ["v"] = "ToggleVolumeEnvelope",
