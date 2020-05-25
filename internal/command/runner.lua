@@ -1,4 +1,5 @@
-local definitions = require("utils.definitions")
+local definitions = require('utils.definitions')
+local getAction = require('utils.get_action')
 local log = require('utils.log')
 local format = require('utils.format')
 local state_functions = require('state_machine.state_functions')
@@ -13,7 +14,7 @@ function runSubAction(id, midi_command)
 
   local numeric_id = id
   if type(id) == 'string' then
-    local action = definitions.getAction(id)
+    local action = getAction(id)
     if action then
       runner.runAction(action)
       return

@@ -56,7 +56,7 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   return nil
 end
 
--- what a monstrosity of recursion, i am not proud of how complicated this is
+-- i am not proud of how complicated this is
 function getFutureEntriesOnSequence(key_sequence, action_sequence, entries)
   if #action_sequence == 0 then return nil end
 

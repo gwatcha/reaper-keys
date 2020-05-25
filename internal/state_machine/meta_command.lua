@@ -4,6 +4,11 @@ local executor = require("command.executor")
 local utils = require("command.utils")
 local format = require("utils.format")
 local saved = require('saved')
+local definitions = require("utils.definitions")
+
+local getPossibleFutureEntries = require("command.completer")
+local sequences = require("command.sequences")
+local regex_match_entry_types = require("command.constants").regex_match_entry_types
 
 local log = require('utils.log')
 
@@ -94,6 +99,30 @@ local commands = {
 
     local new_state = state
     new_state['key_sequence'] = ""
+    return new_state
+  end,
+  ["ShowReaperKeysHelp"] = function(state, command)
+    local new_state = state
+    new_state['key_sequence'] = ""
+
+    local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
+    log.user("Mode: " .. state['mode'] .. "   Context: " .. state['context'])
+    log.user("")
+
+    log.user('Action sequences available: \n' .. format.actionSequences(action_sequences))
+
+    log.user('Bindings available: ')
+    local entries = definitions.getPossibleEntries(state['context'])
+    local types_seen = {}
+    for _,action_sequence in ipairs(action_sequences) do
+      local first_action_type = action_sequence[1]
+      if not regex_match_entry_types[first_action_type] and not types_seen[first_action_type] then
+        log.user('  >> ' .. first_action_type .. ':')
+        log.user('  ' .. format.completions(entries[first_action_type]) .. '\n\n')
+        types_seen[first_action_type] = true
+      end
+    end
+
     return new_state
   end
 }

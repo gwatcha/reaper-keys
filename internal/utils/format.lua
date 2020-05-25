@@ -13,7 +13,7 @@ function format.block(data)
   return ser.block(data, {comment=false})
 end
 
-function formatCompletions(entries)
+function format.completions(entries)
   local max_seq_length = 6
   for key_seq,_ in pairs(entries) do
     if type(key_seq) == 'string' and #key_seq > max_seq_length then
@@ -36,7 +36,7 @@ function formatCompletions(entries)
         pretty_value = '(register location)'
       end
     else
-      pretty_key_seq = formatKeySequence(key_seq, false)
+      pretty_key_seq = format.keySequence(key_seq, false)
       pretty_value = value
       if utils.isFolder(value) then
         local folder_name = value[1]
@@ -60,7 +60,7 @@ function removeUglyBrackets(key)
   return pretty_key
 end
 
-function formatKeySequence(key_sequence, spacing)
+function format.keySequence(key_sequence, spacing)
   local rest_of_key_seq = key_sequence
   local key_sequence_string = ""
   while #rest_of_key_seq ~= 0 do
@@ -76,9 +76,9 @@ function formatKeySequence(key_sequence, spacing)
 end
 
 function format.userInfoWithCompletions(state, future_entries)
-  local key_sequence_string = formatKeySequence(state['key_sequence'], true)
+  local key_sequence_string = format.keySequence(state['key_sequence'], true)
   key_sequence_string = key_sequence_string .. "-"
-  local completions = formatCompletions(future_entries)
+  local completions = format.completions(future_entries)
   local mode_line_and_info_line = format.userInfo(state, key_sequence_string)
 
   return str.format("%s\n%s", completions, mode_line_and_info_line)
@@ -109,5 +109,22 @@ function format.userInfo(state, message)
 
   return str.format("%s\n%s", pretty_mode_bar, info_line)
 end
+
+function format.actionSequence(action_sequence)
+  local formatted = ''
+  for _,action in ipairs(action_sequence) do
+    formatted = formatted .. action .. ' '
+  end
+  return formatted
+end
+
+function format.actionSequences(action_sequences)
+  local formatted = ''
+  for i,action_sequence in ipairs(action_sequences) do
+    formatted = formatted .. '  ' .. format.actionSequence(action_sequence) .. '\n'
+  end
+  return formatted
+end
+
 
 return format

@@ -2,7 +2,6 @@ local definition_tables = {
   global = require("definitions.global"),
   midi = require("definitions.midi"),
   main = require("definitions.main"),
-  actions = require("definitions.actions"),
 }
 
 local definitions = {}
@@ -30,10 +29,6 @@ end
 
 function definitions.getPossibleEntries(context)
   return concatEntryTables(definition_tables['global'], definition_tables[context])
-end
-
-function definitions.getAction(action_name)
-  return definition_tables['actions'][action_name]
 end
 
 return definitions

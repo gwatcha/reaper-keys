@@ -1,8 +1,10 @@
 return {
+  register_action = {},
   meta_command = {
     ["."] = "RepeatLastCommand",
     ["@"] = "PlayMacro",
     ["q"] = "RecordMacro",
+    ["<SPC>h"] = "ShowReaperKeysHelp",
   },
   timeline_motion = {
     ["0"] = "ProjectStart",
@@ -78,6 +80,7 @@ return {
     ["<C-c>"] = "ToggleFloatingWindows",
     ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
+      ["h"] = "ShowReaperKeysHelp",
       ["r"] = {"+regions", {
                  ["d"] = "DeleteRegion",
       }},

@@ -7,7 +7,6 @@ local utils = require("utils.reaper_util")
 -- a noun implies an action which selects the noun, or a movement to it's position
 -- simple verbs are usually operators on selctions, such as 'change'
 
-
 return {
       ActivateNextMidiItem = {40833, midiCommand=true},
       ActivatePrevMidiItem = {40834, midiCommand=true},
@@ -60,6 +59,7 @@ return {
       SetEnvelopeShapeBezier = 40683,
       AutomationItem = 42197,
       FitEnvelopePoints = "_BR_FIT_ENV_POINTS_TO_TIMESEL",
+      ShowReaperKeysHelp = "ShowReaperKeysHelp",
       SetEnvelopeShapeFastEnd = 40429,
       SetEnvelopeShapeFastStart = 40428,
       SetEnvelopeShapeLinear = 40189,
@@ -296,7 +296,7 @@ return {
       SelectOnlyFoldersChildren = "_SWS_SELCHILDREN",
       SelectPrevNote = {40414, midiCommand=true},
       SelectPrevNoteSamePitch = {40427, midiCommand=true},
-      SelectTracks = {"Noop", setTrackSelection=true},
+      SelectTracks = {setTrackSelection=true},
       SetEnvelopeModeLatch = 40404,
       SetEnvelopeModeLatchPreview = 42023,
       SetEnvelopeModeRead = 40401,

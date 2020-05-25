@@ -1,7 +1,6 @@
 local runner = require('command.runner')
 local log = require('utils.log')
 local state_functions = require('state_machine.state_functions')
-local definitions = require("utils.definitions")
 
 function invalidSequenceCall(...)
   log.error("An action sequence without a command function was called (likely contians a 'meta_command' type).")

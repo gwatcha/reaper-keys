@@ -6,7 +6,7 @@ local sequence_definitions = {
   midi = require('command.sequence_functions.midi'),
 }
 
-function concatTables(...) 
+function concatTables(...)
   local t = {}
   for n = 1,select("#",...) do
     local arg = select(n,...)

@@ -1,5 +1,6 @@
 local sequences = require("command.sequences")
 local definitions = require("utils.definitions")
+local getAction = require('utils.get_action')
 local regex_match_entry_types = require("command.constants").regex_match_entry_types
 local log = require('utils.log')
 local utils = require('command.utils')
@@ -14,7 +15,7 @@ function makeExecutableCommandParts(command)
       if action_type == 'number' then value = tonumber(value) end
       table.insert(executable_command_parts, value)
     else
-      table.insert(executable_command_parts, definitions.getAction(command.parts[i]))
+      table.insert(executable_command_parts, getAction(command.parts[i]))
     end
   end
 
