@@ -1,6 +1,4 @@
 return {
-  register_action = {
-  },
   track_motion = {
     ["G"] = "LastTrack",
     ["gg"] = "FirstTrack",

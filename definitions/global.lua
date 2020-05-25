@@ -115,7 +115,7 @@ return {
                   ["f"] = "MakeFolder",
       }},
       ["f"] = { "+fx", {
-                  ["id"] = "ClearFxChainInputCurrentTrack",
+                  ["D"] = "ClearFxChainInputCurrentTrack",
                   ["d"] = "ClearFxChainCurrentTrack",
                   ["a"] = "FxAdd",
                   ["y"] = "CopyFxChain",
