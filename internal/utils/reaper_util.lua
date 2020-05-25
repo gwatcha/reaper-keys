@@ -1,4 +1,5 @@
 local log = require("utils.log")
+local format = require('utils.format')
 
 local reaper_util = {}
 
@@ -19,26 +20,24 @@ end
 function getBigItemPositionsOnSelectedTrack()
   local item_positions = getItemPositionsOnSelectedTrack()
   local big_item_positions = {}
-  local j = 1
 
   if #item_positions == 0 then
     return big_item_positions
   end
 
-  local next_big_item_left = item_positions[1].left
+  local j = 1
+  big_item_positions[j] = item_positions[1]
   for i=1,#item_positions do
-    local this_item = item_positions[i]
-    local next_item = item_positions[i+1]
-
-    if not next_item then
-      big_item_positions[j] = {left=next_big_item_left, right=this_item.right}
-      break
+    local next_item = item_positions[i]
+    local current_big_item = big_item_positions[j]
+    if next_item.left <= current_big_item.right and next_item.right > current_big_item.right then
+       current_big_item.right = next_item.right
+       big_item_positions[j] = current_big_item
     end
 
-    if this_item.right < next_item.left then
-      big_item_positions[j] = {left=next_big_item_left, right=this_item.right}
-      next_big_item_left = next_item.left
-      j = j +1
+    if next_item.left > current_big_item.right then
+      j = j + 1
+      big_item_positions[j] = next_item
     end
   end
 
@@ -94,84 +93,85 @@ function reaper_util.moveToFirstItemStart()
   end
 end
 
-function reaper_util.moveToPrevBigItemStart()
+function moveToPrevItemStart(item_positions)
   local current_position = reaper.GetCursorPosition()
-  local item_positions = getBigItemPositionsOnSelectedTrack()
+  local next_position = nil
   for i,item in pairs(item_positions) do
-    if item.left < current_position and item.right >= current_position then
-      current_position = item.left
-      break
+    if not next_position and item.left < current_position and item.right >= current_position then
+      next_position = item.left
+    end
+
+    if next_position and item.left > next_position and item.right >= next_position then
+      next_position = item.left
     end
 
     local next_item = item_positions[i+1]
     if not next_item or next_item.left >= current_position then
-      current_position = item.left
+      next_position = item.left
       break
     end
   end
-  reaper.SetEditCurPos(current_position, true, false)
+
+  if next_position then
+    reaper.SetEditCurPos(next_position, true, false)
+  end
 end
 
-function reaper_util.moveToNextBigItemStart()
-  local current_position = reaper.GetCursorPosition()
-  for i,big_item_position in pairs(getBigItemPositionsOnSelectedTrack()) do
-    if current_position < big_item_position.left  then
-      current_position = big_item_position.left
-      break
-    end
-  end
-  reaper.SetEditCurPos(current_position, true, false)
-end
-
-function reaper_util.moveToNextBigItemEnd()
-  local current_position = reaper.GetCursorPosition()
-  for i,big_item_position in pairs(getBigItemPositionsOnSelectedTrack()) do
-    if big_item_position.right > current_position then
-      current_position = big_item_position.right
-      break
-    end
-  end
-  reaper.SetEditCurPos(current_position, true, false)
+function reaper_util.moveToPrevBigItemStart()
+  moveToPrevItemStart(getBigItemPositionsOnSelectedTrack())
 end
 
 function reaper_util.moveToPrevItemStart()
-  local current_position = reaper.GetCursorPosition()
-  local item_positions = getItemPositionsOnSelectedTrack()
-  for i,item in pairs(item_positions) do
-    if item.left < current_position and item.right >= current_position then
-      current_position = item.left
-      break
-    end
+  moveToPrevItemStart(getItemPositionsOnSelectedTrack())
+end
 
-    local next_item = item_positions[i+1]
-    if not next_item or next_item.left >= current_position then
-      current_position = item.left
-      break
+function moveToNextItemStart(item_positions)
+  local current_position = reaper.GetCursorPosition()
+  local next_position = nil
+  for i,item_position in pairs(item_positions) do
+    if not next_position and current_position < item_position.left  then
+      next_position = item_position.left
+    end
+    if next_position and item_position.left < next_position then
+      next_position = item_position.left
     end
   end
-  reaper.SetEditCurPos(current_position, true, false)
+  if next_position then
+    reaper.SetEditCurPos(next_position, true, false)
+  end
+end
+
+function reaper_util.moveToNextBigItemStart()
+  moveToNextItemStart(getBigItemPositionsOnSelectedTrack())
 end
 
 function reaper_util.moveToNextItemStart()
+  moveToNextItemStart(getItemPositionsOnSelectedTrack())
+end
+
+function moveToNextItemEnd(item_positions)
   local current_position = reaper.GetCursorPosition()
-  for i,item_position in pairs(getItemPositionsOnSelectedTrack()) do
-    if current_position < item_position.left  then
-      current_position = item_position.left
-      break
+  local next_postition = nil
+  for _,item_position in pairs(item_positions) do
+    if not next_position and item_position.right > current_position then
+      next_position = item_position.right
+    end
+    if next_position and item_position.right < next_position and item_position.right > current_position then
+      next_position = item_position.right
     end
   end
-  reaper.SetEditCurPos(current_position, true, false)
+  if next_position then
+    reaper.SetEditCurPos(next_position, true, false)
+  end
+end
+
+
+function reaper_util.moveToNextBigItemEnd()
+  moveToNextItemEnd(getBigItemPositionsOnSelectedTrack())
 end
 
 function reaper_util.moveToNextItemEnd()
-  local current_position = reaper.GetCursorPosition()
-  for i,item_position in pairs(getItemPositionsOnSelectedTrack()) do
-    if item_position.right > current_position then
-      current_position = item_position.right
-      break
-    end
-  end
-  reaper.SetEditCurPos(current_position, true, false)
+  moveToNextItemEnd(getItemPositionsOnSelectedTrack())
 end
 
 return reaper_util
