@@ -44,6 +44,7 @@ function library.matchTrackNameBackward()
     state_functions.setLastSearchedTrackNameAndDirection(name, false)
     reaper.SetOnlyTrackSelected(track)
   else
+    state_functions.setLastSearchedTrackNameAndDirection("^$", true)
     log.user("No match for " .. name)
   end
 end
@@ -55,6 +56,7 @@ function library.matchTrackNameForward()
     state_functions.setLastSearchedTrackNameAndDirection(name, true)
     reaper.SetOnlyTrackSelected(track)
   else
+    state_functions.setLastSearchedTrackNameAndDirection("^$", true)
     log.user("No match for " .. name)
   end
 end
