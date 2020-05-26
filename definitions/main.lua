@@ -18,7 +18,7 @@ return {
     ["V"] = "SetModeNormal",
   },
   track_selector = {
-    ["V"] = "Selection",
+    ["s"] = "Selection",
     ["i"] = {"+inner", {
                ["f"] = "InnerFolder",
                ["F"] = "InnerFolderAndParent",
@@ -85,8 +85,6 @@ return {
     ["<M-S>"] = "UnselectEnvelopePoints",
     ["D"] = "CutSelectedItems",
     ["Y"] = "CopySelectedItems",
-    ["<C-j>"] = "NextTrackKeepSel",
-    ["<C-k>"] = "PrevTrackKeepSel",
     ["V"] = "SetModeVisualTrack",
     ["<M-j>"] = "NextEnvelope",
     ["<M-k>"] = "PrevEnvelope",
