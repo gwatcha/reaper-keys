@@ -4,6 +4,18 @@ local utils = require('command.utils')
 
 local state_functions = {}
 
+function state_functions.getLastSearchedTrackNameAndDirection()
+  local state = state_interface.get()
+  return state['last_searched_track_name'], state['last_track_name_search_direction_was_forward']
+end
+
+function state_functions.setLastSearchedTrackNameAndDirection(name, forward)
+  local new_state = state_interface.get()
+  new_state['last_searched_track_name'] = name
+  new_state['last_track_name_search_direction_was_forward'] = forward
+  state_interface.set(new_state)
+end
+
 function state_functions.checkIfConsistentState(state)
   local current_state = state_interface.get()
   for k,value in pairs(current_state) do

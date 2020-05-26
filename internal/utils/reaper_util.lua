@@ -212,4 +212,56 @@ function reaper_util.moveToNextItemEnd()
   moveToNextItemEnd(getItemPositionsOnSelectedTracks())
 end
 
+function reaper_util.matchTrackName(search_name, forward)
+  if not search_name then
+    return nil
+  end
+
+  local current_track = reaper.GetSelectedTrack(0, 0)
+  local start_i = 0
+  if current_track then
+    start_i = reaper.GetMediaTrackInfo_Value(current_track, "IP_TRACKNUMBER") - 1
+  end
+
+  local num_tracks = reaper.GetNumTracks()
+  local tracks_searched = 1
+  local next_track_i = start_i
+  while tracks_searched < num_tracks do
+    if forward == true then
+      next_track_i = next_track_i + 1
+    else
+      next_track_i = next_track_i - 1
+    end
+
+    local track = reaper.GetTrack(0, next_track_i)
+    if not track then
+      if forward == true then
+        next_track_i = -1
+      else
+        next_track_i = num_tracks
+      end
+    else
+      local _, current_name = reaper.GetTrackName(track, "")
+      local number_if_no_name = current_name:match("Track ([0-9]+)", 1)
+      if number_if_no_name then
+        current_name = number_if_no_name
+      end
+      tracks_searched = tracks_searched + 1
+      if current_name:match(search_name) then
+        return track
+      end
+    end
+  end
+
+  return nil
+end
+
+function reaper_util.selectTrackByNumber()
+  local _, number = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
+  local track = reaper.GetTrack(0, number-1)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
+  end
+end
+
 return reaper_util

@@ -1,4 +1,6 @@
 local state_functions = require('state_machine.state_functions')
+local reaper_util = require('utils.reaper_util')
+local log = require('utils.log')
 
 local library = {}
 
@@ -32,6 +34,44 @@ function library.switchTimelineSelectionSide()
   else
     reaper.Main_OnCommand(go_to_end_of_selection, 0)
     state_functions.setTimelineSelectionSide('right')
+  end
+end
+
+function library.matchTrackNameBackward()
+  local _, name = reaper.GetUserInputs("Match Backward", 1, "Match String", "")
+  local track = reaper_util.matchTrackName(name, false)
+  if track then
+    state_functions.setLastSearchedTrackNameAndDirection(name, false)
+    reaper.SetOnlyTrackSelected(track)
+  else
+    log.user("No match for " .. name)
+  end
+end
+
+function library.matchTrackNameForward()
+  local _, name = reaper.GetUserInputs("Match Forward", 1, "Match String", "")
+  local track = reaper_util.matchTrackName(name, true)
+  if track then
+    state_functions.setLastSearchedTrackNameAndDirection(name, true)
+    reaper.SetOnlyTrackSelected(track)
+  else
+    log.user("No match for " .. name)
+  end
+end
+
+function library.repeatTrackNameMatchForward()
+  local last_matched, forward = state_functions.getLastSearchedTrackNameAndDirection()
+  local track = reaper_util.matchTrackName(last_matched, forward)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
+  end
+end
+
+function library.repeatTrackNameMatchBackward()
+  local last_searched, forward = state_functions.getLastSearchedTrackNameAndDirection()
+  local track = reaper_util.matchTrackName(last_searched, not forward)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
   end
 end
 

@@ -4,6 +4,11 @@ return {
     ["gg"] = "FirstTrack",
     ["J"] = "NextFolderNear",
     ["K"] = "PrevFolderNear",
+    ["/"] = "MatchedTrackForward",
+    ["?"] = "MatchedTrackBackward",
+    ["n"] = "NextTrackMatchForward",
+    [":"] = "TrackWithNumber",
+    ["N"] = "NextTrackMatchBackward",
     ["j"] = "NextTrack",
     ["k"] = "PrevTrack",
     ["<C-b>"] = "Prev10Track",
@@ -105,5 +110,6 @@ return {
     ["P"] = "PasteAbove",
     ["yy"] = "CopyTrack",
     ["zt"] = "ScrollToPlayPosition",
+    ["zz"] = "ScrollToSelectedTracks",
   },
 }

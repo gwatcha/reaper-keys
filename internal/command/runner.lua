@@ -121,8 +121,6 @@ function runner.addToTrackSelection(selection_action, args)
 end
 
 function runner.makeSelectionFromTrackMotion(track_motion, repetitions)
-  local num_tracks = reaper.GetNumTracks()
-
   local initial_track = reaper.GetSelectedTrack(0, 0)
   local first_index = reaper.GetMediaTrackInfo_Value(initial_track, "IP_TRACKNUMBER") - 1
 
