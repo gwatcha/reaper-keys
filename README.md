@@ -1,19 +1,19 @@
 
 # Table of Contents
 
-1.  [Reaper-Keys](#org959dd77)
-    1.  [Pros](#org8bb8ad6)
-    2.  [Features](#org65fe201)
-        1.  [Bind key sequences](#org6152342)
-        2.  [Compose actions](#orgbefb7a4)
-        3.  [Multi-modal](#org40a1d56)
-        4.  [Macros](#orga86ccfa)
-    3.  [Installation](#orgad99d12)
-    4.  [Help](#org94e98dd)
-    5.  [Configuration](#org70d5568)
+1.  [Reaper-Keys](#org2d2e474)
+    1.  [Pros](#orgce92733)
+    2.  [Features](#org201ca46)
+        1.  [Bind key sequences](#orgf7d111f)
+        2.  [Compose actions](#org7ed8b3c)
+        3.  [Multi-modal](#org12ab66a)
+        4.  [Macros](#org9cae087)
+    3.  [Installation](#org1c3b4a3)
+    4.  [Help](#orgf08f4b7)
+    5.  [Configuration](#orgb56d37f)
 
 
-<a id="org959dd77"></a>
+<a id="org2d2e474"></a>
 
 # Reaper-Keys
 
@@ -22,7 +22,7 @@ mapping system based on key sequences instead of key chords. The system is
 similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal text editor, and by default comes with vim-like bindings. 
 
 
-<a id="org8bb8ad6"></a>
+<a id="orgce92733"></a>
 
 ## Pros
 
@@ -33,12 +33,12 @@ similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal t
 -   Quick access to many key bindings
 
 
-<a id="org65fe201"></a>
+<a id="org201ca46"></a>
 
 ## Features
 
 
-<a id="org6152342"></a>
+<a id="orgf7d111f"></a>
 
 ### Bind key sequences
 
@@ -52,7 +52,7 @@ is an example of navigating through the menu to render a project.
 ![img](img/save.gif)
 
 
-<a id="orgbefb7a4"></a>
+<a id="org7ed8b3c"></a>
 
 ### Compose actions
 
@@ -74,7 +74,7 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="org40a1d56"></a>
+<a id="org12ab66a"></a>
 
 ### Multi-modal
 
@@ -88,7 +88,7 @@ time selection using motion commands.
 ![img](img/mode.gif)
 
 
-<a id="orga86ccfa"></a>
+<a id="org9cae087"></a>
 
 ### Macros
 
@@ -109,7 +109,7 @@ Here is an example of recording and playing a macro that deletes item parts acro
 two tracks in a ribbon style.
 
 
-<a id="orgad99d12"></a>
+<a id="org1c3b4a3"></a>
 
 ## Installation
 
@@ -119,7 +119,7 @@ two tracks in a ribbon style.
 -   For all the actions to work, install the [SWS/S&M](https://sws-extension.org/)  extension for Reaper .
 
 
-<a id="org94e98dd"></a>
+<a id="orgf08f4b7"></a>
 
 ## Help
 
@@ -127,7 +127,7 @@ Enter `<SPC>h` to print a list of available bindings, their action types, as wel
 action sequences for the current context and mode.
 
 
-<a id="org70d5568"></a>
+<a id="orgb56d37f"></a>
 
 ## Configuration
 

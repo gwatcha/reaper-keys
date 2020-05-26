@@ -1,34 +1,32 @@
 * Configuration
 ** Key sequences / Bindings
-You may define or change key sequences for a specific context (in ~main.lua~ or ~midi.lua~) or for all contexts (in ~global.lua~).
+You may define or change key sequences for a specific context (in [[file:main.lua]] or [[file:midi.lua]]) or for all contexts (in [[file:global.lua]]).
 
-I organize the entries in these files by ~action type~. 
+I organize the entries in these files by ~action type~.
 
 Here is an example snippet that declares some bindings in the ~timeline_operators~
 action type section.
-  #+begin_src lua
-  timeline_operator = {
-    ["c"] = "Change",
-    ["t"] = "Play",
-    ["d"] = "CutItems",
-    ["y"] = "CopyItems", 
-  },
-  #+end_src
+#+begin_src lua
+timeline_operator = {
+  ["c"] = "Change",
+  ["t"] = "Play",
+  ["d"] = "CutItems",
+  ["y"] = "CopyItems",
+},
+#+end_src
 
-  Actions may also be put into folders. To create a folder,  follow this format:
-  #+begin_src  lua
-  ["<C-c>"] = "ToggleFloatingWindows",
-  ["<SPC>"] = { "+leader commands", {
-    ["<SPC>"] = "ShowActionList",
-    ["h"] = "ShowReaperKeysHelp",
-    ["r"] = {"+regions", {
-                ["d"] = "DeleteRegion",
-    }},
-  }}, -- be sure to close the folder
-  #+end_src
-*** Action Types
-Here's a short description of all the action types:
-
+Actions may also be put into folders. To create a folder,  follow this format:
+#+begin_src  lua
+["<C-c>"] = "ToggleFloatingWindows",
+["<SPC>"] = { "+leader commands", {
+  ["<SPC>"] = "ShowActionList",
+  ["h"] = "ShowReaperKeysHelp",
+  ["r"] = {"+regions", {
+              ["d"] = "DeleteRegion",
+  }},
+}}, -- be sure to close the folder
+#+end_src
+** Action Types
   | action type             | description                                                      |
   |-------------------------+------------------------------------------------------------------|
   | ~command~                 | A generic command. Does not compose, accessible from every mode. |
@@ -41,7 +39,7 @@ Here's a short description of all the action types:
   | ~visual_timeline_command~ | A command only available in visual timeline mode.   |
   | ~visual_track_command~    | A command only available in visual track mode                |
   | ~meta_command~            | A special command handled by the reaper-keys engine. |
-  
+
 ** Key Sequences
 In which ways you may compose keys (i.e. the available key sequences) depends on the mode of reaper-keys.
 Listed below are the valid action sequences in each mode.
@@ -65,7 +63,7 @@ Listed below are the valid action sequences in each mode.
       | ~track_operator~, ~track_motion~               |
       | ~track_operator~, ~number~, ~track_motion~       |
       | ~track_operator~, ~track_selector~             |
-      
+
       /return to normal mode via '<ESC'> by default/
 *** Visual Timeline Mode
       | ~visual_timeline_command~ |
@@ -74,7 +72,7 @@ Listed below are the valid action sequences in each mode.
       | ~timeline_motion~         |
       | ~number~, ~timeline_motion~ |
       | ~track_selector~          |
-      
+
 /enter this mode by via 'v' by default./
 *** Visual Track
       | ~track_operator~       |
@@ -82,7 +80,7 @@ Listed below are the valid action sequences in each mode.
       | ~timeline_operator~    |
       | ~track_motion~         |
       | ~number~, ~track_motion~ |
-      
+
       /enter this mode via 'V' by default/
 ** Actions
 The available actions for bindings are in the [[file:actions.lua]] file.
@@ -99,9 +97,9 @@ SelectFoldersChildren = "_SWS_SELCHILDREN2",
 
 Reaper-keys actions may also be a sequence of command id's, reaper-key
 action names, internal 'lib' or 'util' functions, or any combination of them. They may
-also have additional options. So 
+also have additional options. So
 
-Here is an example of a more complicated action definition, that makes use of 
+Here is an example of a more complicated action definition, that makes use of
 previous ones, and makes use of the repetitions option.
 
 #+begin_src lua
@@ -121,8 +119,7 @@ The available options are:
 | setTrackSelection | used with track operator actions to keep the preceding track movement/selector selection             |
 ** Advanced Configuration
 If you are interested in adding another mode or action type to reaper keys and
-aren't scared of a bit of lua scripting, take a look at [[file:~/Dotfiles/.config/REAPER/Scripts/reaper-keys/internal/command/sequence_functions/][sequence functions]]
-directory.  
+aren't scared of a bit of lua scripting, take a look at [[file:/../internal/command/sequence_functions/][sequence functions]] directory.
 
 There you will find all the functions that execute composed actions (excluding
 meta actions). There is a file for each context, and a section for each mode.
@@ -155,14 +152,14 @@ timeline_motion'~, with the accompanying 'glue' function that composes the actio
 #+end_src
 
 When a key binding sequence triggers the action, it will be passed the values of
-the actions used to trigger it. 
+the actions used to trigger it.
 
-So in this case, if one types ~tl~ 
+So in this case, if one types ~tl~
 
 Reaper keys will find the entries "Play" and "NextBeat" in it's search in the definitions.
 
 #+begin_src lua
--- in definitoins/global.lua the 
+-- in definitoins/global.lua the
   timeline_operator = {
     ["t"] = "Play",
   },
@@ -191,7 +188,3 @@ type sequence, to create a new action type.
 
 To create a new mode, add an entry at the level of 'normal' in the example. Then
 populate it with entries alike the above.
-
-
-
-
