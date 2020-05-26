@@ -2,26 +2,48 @@
 ** Key sequences / Bindings
 You may define or change key sequences for a specific context (in ~main.lua~ or ~midi.lua~) or for all contexts (in ~global.lua~).
 
-I organize the entries in these files by ~action type~. Actions have a
-particular type because they are composable. 
+I organize the entries in these files by ~action type~. 
 
+Here is an example snippet that declares some bindings in the ~timeline_operators~
+action type section.
+  #+begin_src lua
+  timeline_operator = {
+    ["c"] = "Change",
+    ["t"] = "Play",
+    ["d"] = "CutItems",
+    ["y"] = "CopyItems", 
+  },
+  #+end_src
+
+  Actions may also be put into folders. To create a folder,  follow this format:
+  #+begin_src  lua
+  ["<C-c>"] = "ToggleFloatingWindows",
+  ["<SPC>"] = { "+leader commands", {
+    ["<SPC>"] = "ShowActionList",
+    ["h"] = "ShowReaperKeysHelp",
+    ["r"] = {"+regions", {
+                ["d"] = "DeleteRegion",
+    }},
+  }}, -- be sure to close the folder
+  #+end_src
+*** Action Types
 Here's a short description of all the action types:
 
   | action type             | description                                                      |
   |-------------------------+------------------------------------------------------------------|
   | ~command~                 | A generic command. Does not compose, accessible from every mode. |
   | ~timeline_motion~         | Moves the edit cursor somewhere on the timeline.                 |
-  | ~timeline_selector~       | Sets the timeline selection to a region.                         |
-  | ~timeline_operator~       | Operates on a timeline selection.                                |
+  | ~timeline_selector~       | Sets the timeline selection .                         |
+  | ~timeline_operator~       | An actions that operates on a timeline selection.                |
   | ~track_motion~            | Changes the selected track.                                      |
-  | ~track_selector~          | Selects multiple tracks.                                         |
-  | ~track_operator~          | Operates on a selection of tracks.                               |
-  | ~visual_timeline_command~ | Only command only available in visual timeline mode.             |
-  | ~visual_track_command~    | Only available in visual track mode                              |
-  | ~meta_command~            | Makes use of previous commands and macros.                       |
+  | ~track_selector~          | Selects a track or multiple tracks.                     |
+  | ~track_operator~          | An actions that operaes on a selection of tracks.        |
+  | ~visual_timeline_command~ | A command only available in visual timeline mode.   |
+  | ~visual_track_command~    | A command only available in visual track mode                |
+  | ~meta_command~            | A special command handled by the reaper-keys engine. |
   
-** Action / Key Type Sequences
-In which ways you may compose keys (i.e. the available action type sequences) depends on the mode of reaper-keys.
+** Key Sequences
+In which ways you may compose keys (i.e. the available key sequences) depends on the mode of reaper-keys.
 Listed below are the valid action sequences in each mode.
 
 *** All Modes
@@ -34,7 +56,6 @@ Listed below are the valid action sequences in each mode.
       | ~number~, ~meta_command~, ~register_location~ |
       | ~meta_command~, ~register_location~         |
       | ~meta_command~                           |
-
 *** Normal  Mode
       | ~timeline_operator~, ~timeline_selector~       |
       | ~timeline_operator~, ~timeline_motion~         |
@@ -77,18 +98,25 @@ SelectFoldersChildren = "_SWS_SELCHILDREN2",
 #+end_src
 
 Reaper-keys actions may also be a sequence of command id's, reaper-key
-action names, or internal 'lib' functions, or any combination of them. They may
-also have additional options, such as the number of repetitions.
+action names, internal 'lib' or 'util' functions, or any combination of them. They may
+also have additional options. So 
 
 Here is an example of a more complicated action definition, that makes use of 
 previous ones, and makes use of the repetitions option.
 
 #+begin_src lua
-    SetRecordModeToNormal = 40252,
     Stop = 40667,
-    UnselectItems = 40289,
     SetModeNormal = lib.setModeToNormal,
-    Reset = {"Stop", "SetRecordModeToNormal", "SetModeNormal", "UnselectItems"},
-    Reset4TimesForSomeReason = {"Reset", repetitions=4}
+    Reset = {"Stop", "SetModeNormal"},
+    Reset4TimesAndPlayForSomeReason = {{"Reset", repetitions=4}, "TransportPlay"}
 #+end_src
+
+The available options are:
+
+| option            | use                                                                                                  |
+|-------------------+------------------------------------------------------------------------------------------------------|
+| repetitions       | specifies the number of times to run the action                                                      |
+| midiCommand       | indicates that the action id is from REAPERs 'MidiEditor' section                                    |
+| setTimeSelection  | used with timeline operator actions to set the timeline selection to the preceding movement/selector |
+| setTrackSelection | used with track operator actions to keep the preceding track movement/selector selection             |
 
