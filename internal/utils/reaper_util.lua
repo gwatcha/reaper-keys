@@ -3,22 +3,61 @@ local format = require('utils.format')
 
 local reaper_util = {}
 
-function getItemPositionsOnSelectedTrack()
-  local current_track = reaper.GetSelectedTrack(0, 0)
-  local num_items = reaper.GetTrackNumMediaItems(current_track)
-  local item_positions = {}
-  for i=1,num_items do
-    local item = reaper.GetTrackMediaItem(current_track, i-1)
-    local start = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
-    local length = reaper.GetMediaItemInfo_Value(item, "D_LENGTH")
-    item_positions[i] = {left=start, right=start+length}
+function mergeItemPositionsLists(item_positions_list)
+  local merged_list = {}
+
+  function areRemainingItems()
+    for i,item_positions in ipairs(item_positions_list) do
+      if #item_positions_list[i] ~= 0 then
+        return true
+      end
+    end
+    return false
   end
 
-  return item_positions
+  while areRemainingItems() do
+    local next_item = nil
+    for i,item_positions in ipairs(item_positions_list) do
+      local next_item_for_this_list = item_positions[1]
+      if next_item_for_this_list then
+        local next_left = next_item_for_this_list.left
+        if not next_item or next_left < next_item.left then
+          next_item = next_item_for_this_list
+          selected_list_i = i
+        end
+      end
+    end
+
+    table.insert(merged_list, next_item)
+    table.remove(item_positions_list[selected_list_i], 1)
+  end
+
+  return merged_list
 end
 
-function getBigItemPositionsOnSelectedTrack()
-  local item_positions = getItemPositionsOnSelectedTrack()
+function getItemPositionsOnSelectedTracks()
+  local item_positions_lists = {}
+  for i=0,reaper.CountSelectedTracks()-1 do
+    local current_track = reaper.GetSelectedTrack(0, i)
+    local item_positions = {}
+    local num_items_on_track = reaper.GetTrackNumMediaItems(current_track)
+
+    for j=1,num_items_on_track do
+      local item = reaper.GetTrackMediaItem(current_track, j-1)
+      local start = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
+      local length = reaper.GetMediaItemInfo_Value(item, "D_LENGTH")
+      item_positions[j] = {left=start, right=start+length}
+    end
+
+    item_positions_lists[i+1] = item_positions
+  end
+
+  local merged_list = mergeItemPositionsLists(item_positions_lists)
+  return merged_list
+end
+
+function getBigItemPositionsOnSelectedTracks()
+  local item_positions = getItemPositionsOnSelectedTracks()
   local big_item_positions = {}
 
   if #item_positions == 0 then
@@ -56,7 +95,7 @@ function reaper_util.lastTrack()
 end
 
 function reaper_util.selectInnerItem()
-  local item_positions = getItemPositionsOnSelectedTrack()
+  local item_positions = getItemPositionsOnSelectedTracks()
   local current_position = reaper.GetCursorPosition()
   for i,item in pairs(item_positions) do
     if item.left <= current_position and item.right >= current_position then
@@ -67,7 +106,7 @@ function reaper_util.selectInnerItem()
 end
 
 function reaper_util.selectInnerBigItem()
-  local item_positions = getBigItemPositionsOnSelectedTrack()
+  local item_positions = getBigItemPositionsOnSelectedTracks()
   local current_position = reaper.GetCursorPosition()
   for i,item in pairs(item_positions) do
     if item.left <= current_position and item.right >= current_position then
@@ -78,7 +117,7 @@ function reaper_util.selectInnerBigItem()
 end
 
 function reaper_util.moveToLastItemEnd()
-  local item_positions = getBigItemPositionsOnSelectedTrack()
+  local item_positions = getBigItemPositionsOnSelectedTracks()
   if #item_positions > 0 then
     local last_item  = item_positions[#item_positions]
     reaper.SetEditCurPos(last_item.right, true, false)
@@ -86,7 +125,7 @@ function reaper_util.moveToLastItemEnd()
 end
 
 function reaper_util.moveToFirstItemStart()
-  local item_positions = getBigItemPositionsOnSelectedTrack()
+  local item_positions = getBigItemPositionsOnSelectedTracks()
   if #item_positions > 0 then
     local first_item  = item_positions[1]
     reaper.SetEditCurPos(first_item.left, true, false)
@@ -118,11 +157,11 @@ function moveToPrevItemStart(item_positions)
 end
 
 function reaper_util.moveToPrevBigItemStart()
-  moveToPrevItemStart(getBigItemPositionsOnSelectedTrack())
+  moveToPrevItemStart(getBigItemPositionsOnSelectedTracks())
 end
 
 function reaper_util.moveToPrevItemStart()
-  moveToPrevItemStart(getItemPositionsOnSelectedTrack())
+  moveToPrevItemStart(getItemPositionsOnSelectedTracks())
 end
 
 function moveToNextItemStart(item_positions)
@@ -142,11 +181,11 @@ function moveToNextItemStart(item_positions)
 end
 
 function reaper_util.moveToNextBigItemStart()
-  moveToNextItemStart(getBigItemPositionsOnSelectedTrack())
+  moveToNextItemStart(getBigItemPositionsOnSelectedTracks())
 end
 
 function reaper_util.moveToNextItemStart()
-  moveToNextItemStart(getItemPositionsOnSelectedTrack())
+  moveToNextItemStart(getItemPositionsOnSelectedTracks())
 end
 
 function moveToNextItemEnd(item_positions)
@@ -167,11 +206,11 @@ end
 
 
 function reaper_util.moveToNextBigItemEnd()
-  moveToNextItemEnd(getBigItemPositionsOnSelectedTrack())
+  moveToNextItemEnd(getBigItemPositionsOnSelectedTracks())
 end
 
 function reaper_util.moveToNextItemEnd()
-  moveToNextItemEnd(getItemPositionsOnSelectedTrack())
+  moveToNextItemEnd(getItemPositionsOnSelectedTracks())
 end
 
 return reaper_util

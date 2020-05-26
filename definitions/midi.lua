@@ -26,7 +26,6 @@ return {
     ["-"] = "MidiZoomOutVert",
     ["p"] = "MidiPaste",
     ["<ESC>"] = "CloseWindow",
-    ["x"] = "DeleteNote",
     ["S"] = "ClearNoteSelection",
     ["G"] = "JoinNotes",
     ["Y"] = "CopySelectedEvents",
