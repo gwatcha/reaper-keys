@@ -207,7 +207,6 @@ return {
       PitchUp = {40049, midiCommand=true},
       PitchUp7 = {"PitchUp", repetitions=7},
       PitchUpOctave = {40187, midiCommand=true},
-      Play = {40434, midiCommand=true},
       PlayFromMouse = "_BR_PLAY_MOUSECURSOR",
       PlayMacro = "PlayMacro",
       PlayPosition = 40434,
