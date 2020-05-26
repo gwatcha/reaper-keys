@@ -106,8 +106,11 @@ two tracks in a ribbon style.
 - Clone this repository or download it via the 'releases' tab.
 - Put this repository into your `REAPER/Scripts` directory . If you're unsure where your `REAPER` directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
 - Back up your key map by exporting it, then import the provided keymap `reaper-keys.ReaperKeyMap` via the `import` button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
-  - When you want to restore (or go back) your old regular keymap you might have to empty the `reaper-kb.ini` in the root directory. Otherwise, some keys won't go back when you import the old keymay.
 - For all the actions to work, install the [SWS/S&M](https://sws-extension.org/) extension for Reaper .
+
+When you want to restore (or go back) your old regular keymap you might have to empty the `reaper-kb.ini` in your `REAPER` root directory and restart REAPER. Otherwise, some keys won't go back when you import the old keymap. 
+
+If you are reinstalling reaper-keys after updating it, you may have to do this as well.
 
 <a id="org08b4794"></a>
 
@@ -115,6 +118,8 @@ two tracks in a ribbon style.
 
 Enter `<SPC>h` to print a list of available bindings, their action types, as well as the available
 action sequences for the current context and mode.
+
+If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
 
 <a id="org1ecda81"></a>
 
