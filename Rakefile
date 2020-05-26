@@ -10,7 +10,7 @@ require 'fileutils'
 @keymap_path = 'reaper-keys.ReaperKeyMap'
 @definitions_dir = 'definitions/'
 
-task default: %i[clean build]
+task default: %i[clean generate build]
 
 task :clean do
   FileUtils.rm_rf(@key_script_dir)
@@ -19,6 +19,10 @@ task :clean do
 end
 
 task :build do
+  `zip -r reaper-keys.zip * -x img/* img`
+end
+
+task :generate do
   generator = Generator.new(@root_dir_path, @keymap_path, @key_script_dir)
   generator.gen_interface
 end
