@@ -1,6 +1,6 @@
 local info = debug.getinfo(1,'S');
 
-local internal_root_path = info.source:match(".*reaper.keys[\\/]internal[\\/]"):sub(2)
+local internal_root_path = info.source:match(".*reaper.keys[^\\/]*[\\/]internal[\\/]"):sub(2)
 package.path = package.path .. ";" .. internal_root_path .. '?.lua'
 
 local windows_files = internal_root_path:match("\\$")

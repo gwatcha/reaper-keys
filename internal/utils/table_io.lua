@@ -3,9 +3,9 @@ local table_io = {}
 local serpent = require('serpent')
 
 function table_io.write(path, lua_table)
-  local state_file = io.open(path .. '.lua', 'w+')
-  state_file:write(serpent.block(lua_table, { comment = false }))
-  state_file:close()
+  local file = io.open(path .. '.lua', 'w+')
+  file:write(serpent.block(lua_table, { comment = false }))
+  file:close()
 end
 
 function table_io.read(path)

@@ -9,7 +9,7 @@ action type section.
 #+begin_src lua
 timeline_operator = {
   ["c"] = "Change",
-  ["t"] = "Play",
+  ["t"] = "LoopAndPlay",
   ["d"] = "CutItems",
   ["y"] = "CopyItems",
 },
@@ -156,7 +156,7 @@ the actions used to trigger it.
 
 So in this case, if one types ~tl~
 
-Reaper keys will find the entries "Play" and "NextBeat" in it's search in the definitions.
+Reaper keys will find the entries "LoopAndPlay" and "NextBeat" in it's search in the definitions.
 
 #+begin_src lua
 -- in definitoins/global.lua the
@@ -172,13 +172,13 @@ And find the value of the action in actions.lua
 
 #+begin_src lua
 -- in definitions/actions.lua
-Play = {"TimeSelectionStart", "TransportPlay" , setTimeSelection=true},
+LoopAndPlay = {"SetLoopSelectionToTimeSelection", "LoopStart", "TransportPlay", setTimeSelection=true},
 NextBeat = 40841,
 #+end_src
 
 and execute the function with
 #+begin_src lua
-  function({"TimeSelectionStart", "TransportPlay" , setTimeSelection=true}, 40841)
+  function({"SetLoopSelectionToTimeSelection", "LoopStart", "TransportPlay", setTimeSelection=true}, 40841)
 #+end_src
 
 Reaper keys prioritizes entries in order of  context, then index in the list.

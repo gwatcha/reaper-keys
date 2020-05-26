@@ -1,13 +1,13 @@
 local info = debug.getinfo(1,'S');
 
-local root_path = info.source:match[[(.*reaper.keys[\\/])]]:sub(2)
+local internal_root_path = info.source:match(".*reaper.keys[^\\/]*[\\/]internal[\\/]"):sub(2)
 
 local saved_data_dir = ""
-local windows_files = root_path:match("\\$")
+local windows_files = internal_root_path:match("\\$")
 if windows_files then
-  saved_data_dir = root_path .. "internal\\saved\\data\\"
+  saved_data_dir = internal_root_path .. "\\saved\\data\\"
 else
-  saved_data_dir = root_path .. "internal/saved/data"
+  saved_data_dir = internal_root_path .. "/saved/data/"
 end
 
 local table_io = require('utils.table_io')

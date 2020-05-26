@@ -1,7 +1,7 @@
 local state_interface= {}
 
 local info = debug.getinfo(1,'S');
-local root_path = info.source:match[[(.*reaper.keys[\\/])]]:sub(2)
+local root_path = info.source:match[[(.*reaper.keys[^\\/]*[\\/])]]:sub(2)
 
 local state_file_path = ""
 local windows_files = root_path:match("\\$")
