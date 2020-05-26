@@ -24,8 +24,8 @@ end
 function getPossibleSequenceFunctionPairs(context, mode)
   local possible_sequence_function_pairs = concatTables(
     sequence_definitions[context][mode],
-    sequence_definitions[context]['all_modes'],
     sequence_definitions['global'][mode],
+    sequence_definitions[context]['all_modes'],
     sequence_definitions['global']['all_modes']
   )
 
