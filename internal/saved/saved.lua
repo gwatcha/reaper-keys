@@ -2,8 +2,8 @@ local info = debug.getinfo(1,'S');
 local root_path = info.source:match[[[^@]*reaper.keys/]]
 local saved_data_dir = root_path .. "internal/saved/data/"
 
-local table_io = require("utils.table_io")
-local log = require("utils.log")
+local table_io = require('utils.table_io')
+local log = require('utils.log')
 
 local saved = {
   macros = {}

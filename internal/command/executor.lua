@@ -1,7 +1,7 @@
-local sequences = require("command.sequences")
-local definitions = require("utils.definitions")
+local sequences = require('command.sequences')
+local definitions = require('utils.definitions')
 local getAction = require('utils.get_action')
-local regex_match_entry_types = require("command.constants").regex_match_entry_types
+local regex_match_entry_types = require('command.constants').regex_match_entry_types
 local log = require('utils.log')
 local utils = require('command.utils')
 

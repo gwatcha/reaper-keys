@@ -1,4 +1,4 @@
-local str = require("string")
+local str = require('string')
 
 local utils = {}
 

@@ -1,4 +1,4 @@
-local log = require("utils.log")
+local log = require('utils.log')
 local format = require('utils.format')
 
 local reaper_util = {}
@@ -20,8 +20,7 @@ function mergeItemPositionsLists(item_positions_list)
     for i,item_positions in ipairs(item_positions_list) do
       local next_item_for_this_list = item_positions[1]
       if next_item_for_this_list then
-        local next_left = next_item_for_this_list.left
-        if not next_item or next_left < next_item.left then
+        if not next_item or next_item_for_this_list.left < next_item.left then
           next_item = next_item_for_this_list
           selected_list_i = i
         end

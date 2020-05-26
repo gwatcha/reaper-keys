@@ -1,6 +1,6 @@
 local table_io = {}
 
-local serpent = require("serpent")
+local serpent = require('serpent')
 
 function table_io.write(path, lua_table)
   local state_file = io.open(path .. '.lua', 'w+')

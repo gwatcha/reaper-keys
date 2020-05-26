@@ -1,7 +1,7 @@
 local definition_tables = {
-  global = require("definitions.global"),
-  midi = require("definitions.midi"),
-  main = require("definitions.main"),
+  global = require('definitions.global'),
+  midi = require('definitions.midi'),
+  main = require('definitions.main'),
 }
 
 local definitions = {}

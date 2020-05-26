@@ -1,14 +1,14 @@
 local meta_command = {}
 
-local executor = require("command.executor")
-local utils = require("command.utils")
-local format = require("utils.format")
+local executor = require('command.executor')
+local utils = require('command.utils')
+local format = require('utils.format')
 local saved = require('saved')
-local definitions = require("utils.definitions")
+local definitions = require('utils.definitions')
 
-local getPossibleFutureEntries = require("command.completer")
-local sequences = require("command.sequences")
-local regex_match_entry_types = require("command.constants").regex_match_entry_types
+local getPossibleFutureEntries = require('command.completer')
+local sequences = require('command.sequences')
+local regex_match_entry_types = require('command.constants').regex_match_entry_types
 
 local log = require('utils.log')
 

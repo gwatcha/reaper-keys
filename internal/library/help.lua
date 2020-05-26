@@ -1,6 +1,6 @@
-local GUI = require("gui.core")
+local GUI = require('gui.core')
 
-local Table = require("public.table")
+local Table = require('public.table')
 
 
 ------------------------------------

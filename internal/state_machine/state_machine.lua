@@ -2,17 +2,17 @@ local state_machine = {}
 
 local state_interface = require('state_machine.state_interface')
 local state_functions = require('state_machine.state_functions')
-local state_machine_constants = require("state_machine.constants")
-local meta_command = require("state_machine.meta_command")
+local state_machine_constants = require('state_machine.constants')
+local meta_command = require('state_machine.meta_command')
 
-local executor = require("command.executor")
-local buildCommand = require("command.builder")
-local getPossibleFutureEntries = require("command.completer")
-local utils = require("command.utils")
+local executor = require('command.executor')
+local buildCommand = require('command.builder')
+local getPossibleFutureEntries = require('command.completer')
+local utils = require('command.utils')
 
 local saved = require('saved')
 local log = require('utils.log')
-local format = require("utils.format")
+local format = require('utils.format')
 
 function handleCommand(state, command)
   local new_state = state

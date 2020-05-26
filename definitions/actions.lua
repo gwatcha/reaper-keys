@@ -1,7 +1,7 @@
 -- provides functions which are specific to reaper-keys, such as macros
-local lib = require("library")
+local lib = require('library')
 -- provides functions which make use of the reaper api
-local utils = require("utils.reaper_util")
+local utils = require('utils.reaper_util')
 
 -- naming conventions:
 -- a noun implies an action which selects the noun, or a movement to it's position

@@ -1,6 +1,6 @@
 local state_interface = require('state_machine.state_interface')
-local constants = require("state_machine.constants")
-local utils = require("command.utils")
+local constants = require('state_machine.constants')
+local utils = require('command.utils')
 
 local state_functions = {}
 
