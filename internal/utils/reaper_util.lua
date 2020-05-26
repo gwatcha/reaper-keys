@@ -34,10 +34,10 @@ function mergeItemPositionsLists(item_positions_list)
   return merged_list
 end
 
-function getItemPositionsOnSelectedTracks()
+function getItemPositionsOnTracks(tracks)
   local item_positions_lists = {}
-  for i=0,reaper.CountSelectedTracks()-1 do
-    local current_track = reaper.GetSelectedTrack(0, i)
+  for i=1,#tracks do
+    local current_track = tracks[i]
     local item_positions = {}
     local num_items_on_track = reaper.GetTrackNumMediaItems(current_track)
 
@@ -48,11 +48,20 @@ function getItemPositionsOnSelectedTracks()
       item_positions[j] = {left=start, right=start+length}
     end
 
-    item_positions_lists[i+1] = item_positions
+    item_positions_lists[i] = item_positions
   end
 
   local merged_list = mergeItemPositionsLists(item_positions_lists)
   return merged_list
+end
+
+function getItemPositionsOnSelectedTracks()
+  local selected_tracks = {}
+  for i=0,reaper.CountSelectedTracks() do
+    selected_tracks[i] = reaper.GetSelectedTrack(0, i-1)
+  end
+
+  return getItemPositionsOnTracks(selected_tracks)
 end
 
 function getBigItemPositionsOnSelectedTracks()
@@ -91,6 +100,37 @@ function reaper_util.lastTrack()
   local num_tracks = reaper.GetNumTracks()
   local last_track = reaper.GetTrack(0, num_tracks-1)
   reaper.SetOnlyTrackSelected(last_track)
+end
+
+
+function reaper_util.selectInnerProject()
+  local project_end = getProjectEnd()
+  reaper.GetSet_LoopTimeRange(true, false, 0, project_end, false)
+end
+
+function reaper_util.moveToProjectStart()
+  reaper.SetEditCurPos(0, false, false)
+end
+
+function getProjectEnd()
+  local all_tracks = {}
+  for i=0,reaper.GetNumTracks()-1 do
+    all_tracks[i] = reaper.GetTrack(0, i)
+  end
+
+  local all_items_positions = getItemPositionsOnTracks(all_tracks)
+  local furthest_item_end = 0
+  for _,item_position in ipairs(all_items_positions) do
+    if item_position.right > furthest_item_end then
+      furthest_item_end = item_position.right
+    end
+  end
+
+  return furthest_item_end
+end
+
+function reaper_util.moveToProjectEnd()
+  reaper.SetEditCurPos(getProjectEnd(), false, false)
 end
 
 function reaper_util.selectInnerItem()

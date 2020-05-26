@@ -8,6 +8,7 @@ return {
   },
   timeline_motion = {
     ["0"] = "ProjectStart",
+    ["<C-$>"] = "ProjectEnd",
     ["f"] = "PlayPosition",
     ["["] = "TimeSelectionStart",
     ["]"] = "TimeSelectionEnd",
@@ -41,7 +42,7 @@ return {
     ["i"] = {"+inner", {
                ["r"] = "MarkerRegion",
                ["l"] = "AllTrackItems",
-               ["p"] = "ProjectTimeline",
+               ["p"] = "Project",
                ["w"] = "Item",
                ["W"] = "BigItem",
 
