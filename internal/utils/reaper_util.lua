@@ -282,12 +282,9 @@ function reaper_util.matchTrackName(search_name, forward)
       end
     else
       local _, current_name = reaper.GetTrackName(track, "")
-      local number_if_no_name = current_name:match("Track ([0-9]+)", 1)
-      if number_if_no_name then
-        current_name = number_if_no_name
-      end
+      local has_no_name = current_name:match("Track ([0-9]+)", 1)
       tracks_searched = tracks_searched + 1
-      if current_name:match(search_name) then
+      if not has_no_name and current_name:match(search_name) then
         return track
       end
     end
