@@ -106,12 +106,11 @@ local commands = {
     new_state['key_sequence'] = ""
 
     local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
-    log.user("Mode: " .. state['mode'] .. "   Context: " .. state['context'])
-    log.user("")
+    log.user("Mode: " .. state['mode'] .. "   Context: " .. state['context'] .. '\n')
 
     log.user('Action sequences available: \n' .. format.actionSequences(action_sequences))
 
-    log.user('Bindings available: ')
+    log.user('Bindings available for initial entry: \n')
     local entries = definitions.getPossibleEntries(state['context'])
     local types_seen = {}
     for _,action_sequence in ipairs(action_sequences) do
