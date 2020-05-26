@@ -58,6 +58,7 @@ return {
     ["F"] = "TransportPause",
     ["C"] = "ArmAndToggleRecordConditional",
     ["R"] = "ArmAndToggleRecordNormal",
+    ["A"] = "GoToLastItemAndRecord",
     ["v"] = "SetModeVisualTimeline",
     ["<C-i>"] = "ZoomRedo",
     ["<C-o>"] = "ZoomUndo",
