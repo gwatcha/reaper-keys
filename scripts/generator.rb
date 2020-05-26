@@ -11,10 +11,10 @@ class Generator
 
   def format_shifted_letter(key_mod, letter)
     modifier_keys_excluding_shift = key_mod[/(.*)S/, 1]
-    key, key_name = '', ''
+    key = ''
+    key_name = "(#{key_mod}-#{letter})"
     if modifier_keys_excluding_shift == ''
       key = letter.upcase
-      key_name = letter.upcase
     else
       key = "<#{modifier_keys_excluding_shift}-#{letter.upcase}>"
       key_name = "(#{key_mod}-#{letter})"
