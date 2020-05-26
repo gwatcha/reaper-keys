@@ -11,27 +11,30 @@ class Generator
 
   def format_shifted_letter(key_mod, letter)
     modifier_keys_excluding_shift = key_mod[/(.*)S/, 1]
+    key, key_name = '', ''
     if modifier_keys_excluding_shift == ''
-      letter.upcase
+      key = letter.upcase
+      key_name = letter.upcase
     else
-      "<#{modifier_keys_excluding_shift}-#{letter.upcase}>"
+      key = "<#{modifier_keys_excluding_shift}-#{letter.upcase}>"
+      key_name = "(#{key_mod}-#{letter})"
     end
+    return key, key_name
   end
 
   def format_modded_key(key, key_name, key_table_name, key_mod)
     modded_key = "<#{key_mod}-#{key}>"
-    modded_key_name = "<#{key_mod}-#{key_name}>"
+    modded_key_name = "(#{key_mod}-#{key_name})"
 
-    key_name_has_surroundings = !key_name[/<(.*)>/, 1].nil?
-    if key_name_has_surroundings
-      key_name_without_surroundings = key_name[/<(.*)>/, 1]
-      modded_key = "<#{key_mod}-#{key_name_without_surroundings}>"
-      modded_key_name = modded_key
+    key_has_surroundings = !key[/<(.*)>/, 1].nil?
+    if key_has_surroundings
+      key_without_surroundings = key[/<(.*)>/, 1]
+      modded_key = "<#{key_mod}-#{key_without_surroundings}>"
+      modded_key_name = "(#{key_mod}-#{key_without_surroundings})"
     end
 
     if %i[S MS CS CMS].include?(key_mod) && (key_table_name == :letters)
-      modded_key = format_shifted_letter(key_mod, key)
-      modded_key_name = modded_key
+      modded_key, modded_key_name = format_shifted_letter(key_mod, key)
     end
 
     [modded_key, modded_key_name]
