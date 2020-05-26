@@ -71,7 +71,7 @@ class Generator
   def gen_key_script(key, context, path)
     key_script_header = ''"
 local info = debug.getinfo(1,'S');
-local root_path = info.source:match[[[^@]*reaper.keys/]]
+local root_path = info.source:match[[([^@]*reaper.keys[\\\\/])]]
 package.path = package.path .. ';' .. root_path .. '?.lua'
 
 local doInput = require('internal.reaper-keys')

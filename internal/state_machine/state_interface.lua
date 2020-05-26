@@ -1,13 +1,20 @@
 local state_interface= {}
 
 local info = debug.getinfo(1,'S');
-local root_path = info.source:match[[[^@]*reaper.keys/]]
-local state_file_path = root_path .. "internal/state_machine/state"
+local root_path = info.source:match[[(.*reaper.keys[\\/])]]:sub(2)
 
-local table_io = require('utils.table_io')
-local log = require('utils.log')
+local state_file_path = ""
+local windows_files = root_path:match("\\$")
+if windows_files then
+  state_file_path = root_path .. "internal\\state_machine\\state"
+else
+  state_file_path = root_path .. "internal/state_machine/state"
+end
 
-local state_machine_constants = require('state_machine.constants')
+local table_io = require('utils.table_io')
+local log = require('utils.log')
+
+local state_machine_constants = require('state_machine.constants')
 
 function state_interface.set(state)
   table_io.write(state_file_path, state)
