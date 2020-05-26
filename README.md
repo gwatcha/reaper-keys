@@ -1,6 +1,19 @@
-<p align="center">
-  <img src="img/reaper-keys.png" width="200" title="hover text">
-</p>
+
+# Table of Contents
+
+1.  [Reaper-Keys](#org959dd77)
+    1.  [Pros](#org8bb8ad6)
+    2.  [Features](#org65fe201)
+        1.  [Bind key sequences](#org6152342)
+        2.  [Compose actions](#orgbefb7a4)
+        3.  [Multi-modal](#org40a1d56)
+        4.  [Macros](#orga86ccfa)
+    3.  [Installation](#orgad99d12)
+    4.  [Help](#org94e98dd)
+    5.  [Configuration](#org70d5568)
+
+
+<a id="org959dd77"></a>
 
 # Reaper-Keys
 
@@ -9,7 +22,7 @@ mapping system based on key sequences instead of key chords. The system is
 similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal text editor, and by default comes with vim-like bindings. 
 
 
-<a id="org3bbee52"></a>
+<a id="org8bb8ad6"></a>
 
 ## Pros
 
@@ -17,31 +30,15 @@ similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal t
 -   Developing arthritis at 60 instead of 40
 -   Reduced mouse usage
 -   A more fluid experience
+-   Quick access to many key bindings
 
 
-<a id="org1beecdb"></a>
-
-
-## Table of Contents
-
-  1.  [Features](#org1beecdb)
-      1.  [Bind key sequences](#org5dd02dc)
-      2.  [Compose actions](#org5d1bd71)
-      3.  [Multi-modal](#orgb0be90d)
-      4.  [Macros](#org66c6504)
-  2.  [Installation](#org2214a60)
-  3.  [Configuration](#orgcb6d835)
-  4.  [Future Plans](#org7873430)
-
-
-
-<a id="org93a2df6"></a>
-
+<a id="org65fe201"></a>
 
 ## Features
 
 
-<a id="org5dd02dc"></a>
+<a id="org6152342"></a>
 
 ### Bind key sequences
 
@@ -55,7 +52,7 @@ is an example of navigating through the menu to render a project.
 ![img](img/save.gif)
 
 
-<a id="org5d1bd71"></a>
+<a id="orgbefb7a4"></a>
 
 ### Compose actions
 
@@ -77,7 +74,7 @@ brain, as you only need to know the `timeline_motions`, `timeline_operators`, an
 the fact that you can compose them. 
 
 
-<a id="orgb0be90d"></a>
+<a id="org40a1d56"></a>
 
 ### Multi-modal
 
@@ -91,7 +88,7 @@ time selection using motion commands.
 ![img](img/mode.gif)
 
 
-<a id="org66c6504"></a>
+<a id="orga86ccfa"></a>
 
 ### Macros
 
@@ -112,7 +109,7 @@ Here is an example of recording and playing a macro that deletes item parts acro
 two tracks in a ribbon style.
 
 
-<a id="org2214a60"></a>
+<a id="orgad99d12"></a>
 
 ## Installation
 
@@ -122,20 +119,18 @@ two tracks in a ribbon style.
 -   For all the actions to work, install the [SWS/S&M](https://sws-extension.org/)  extension for Reaper .
 
 
-<a id="orgcb6d835"></a>
+<a id="org94e98dd"></a>
+
+## Help
+
+Enter `<SPC>h` to print a list of available bindings, their action types, as well as the available
+action sequences for the current context and mode.
+
+
+<a id="org70d5568"></a>
 
 ## Configuration
 
 All you need to configure reaper-keys is under the <definitions/> directory.  
 Take a look at the <definitions/README.md> file for more details.
-
-
-<a id="org7873430"></a>
-
-## Future Plans
-
--   A GUI for adding new key bindings.
--   A GUI for the help window.
--   Registers for storing and retrieving all sorts of things such as fx chains,
-    track selections, items, snapshots.
 
