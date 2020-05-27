@@ -19,7 +19,9 @@ task :clean do
 end
 
 task :build do
-  `zip -r reaper-keys.zip * -x img/* img`
+  `rm -rf dist`
+  `mkdir dist`
+  `zip -r dist/reaper-keys.zip * -x dist img/* img`
 end
 
 task :generate do
