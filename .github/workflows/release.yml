@@ -1,11 +1,10 @@
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the master branch
   push:
     branches:
       - master
 
 jobs:
+  runs-on: self-hosted 
   release:
     steps:
       - name: Checkout
@@ -14,6 +13,9 @@ jobs:
         uses: cycjimmy/semantic-release-action@v2
         with:
           extra_plugins: |
+            @semantic-release/commit-analyzer,
+            @semantic-release/github,
+            @semantic-release/release-notes-generator,
             @semantic-release/changelog@3.0.0
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
