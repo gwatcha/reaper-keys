@@ -110,6 +110,12 @@ two tracks in a ribbon style.
 
 When you want to restore your old keymap, you must empty the `reaper-kb.ini` in your `REAPER` root directory and restart REAPER. Otherwise, there will likely be remnants from reaper-keys. 
 
+**Important Update:**
+There was a bug with windows and osx path names that has been fixed since Wednesday, May 27th. If you downloaded the library before then, you will need to update it!
+
+Follow the instructions for reverting your keymap, and just reimport the updated one. Just be sure you delete the `REAPER/reaper-kb.ini` file.
+
+
 <a id="org08b4794"></a>
 
 ## Help
