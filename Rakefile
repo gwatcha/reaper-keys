@@ -19,8 +19,8 @@ task :clean do
 end
 
 task :build do
-  `rm -rf dist`
-  `mkdir dist`
+  `mkdir -p dist`
+  `rm -rf dist/*`
   `zip -r dist/reaper-keys.zip * -x dist img/* img`
 end
 
