@@ -62,6 +62,7 @@ return {
             ["y"] = "CopyAndFitByLooping",
             ["s"] = "FitByStretching",
     }},
+    ["I"] = "InsertMidiItem",
   },
   timeline_selector = {
     ["s"] = "SelectedItems",

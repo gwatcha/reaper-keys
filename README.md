@@ -126,6 +126,9 @@ action sequences for the current context and mode.
 
 If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
 
+Remember to set `ToggleLoop` option (`<SPC>,d`) in case recording unexcpectedly starts
+from beginning.
+
 <a id="org1ecda81"></a>
 
 ## Configuration
