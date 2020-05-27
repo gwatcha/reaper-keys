@@ -30,6 +30,18 @@ function state_functions.checkIfConsistentState(state)
   return true
 end
 
+function state_functions.setVisualTrackPivotIndex(visual_track_pivot_i)
+  local state = state_interface.get()
+  state['visual_track_pivot_i'] = visual_track_pivot_i
+  state_interface.set(state)
+end
+
+function state_functions.getVisualTrackPivotIndex()
+  local state = state_interface.get()
+  local visual_track_pivot_i = state['visual_track_pivot_i']
+  return visual_track_pivot_i
+end
+
 function state_functions.setTimelineSelectionSide(left_or_right)
   local state = state_interface.get()
   state['timeline_selection_side'] = left_or_right

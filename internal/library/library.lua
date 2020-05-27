@@ -9,9 +9,22 @@ function library.setModeNormal()
 end
 
 function library.setModeVisualTrack()
+  local NextTrack = 40285
+  local PrevTrack = 40286
+
   local first_track = reaper.GetSelectedTrack(0, 0)
+  if not first_track then
+    -- get the implicitly selected track
+    reaper.Main_OnCommand(NextTrack, 0)
+    reaper.Main_OnCommand(PrevTrack, 0)
+  end
+  first_track =  reaper.GetSelectedTrack(0, 0)
   reaper.SetOnlyTrackSelected(first_track)
+
+  local visual_track_pivot_i = reaper.GetMediaTrackInfo_Value(first_track, "IP_TRACKNUMBER") - 1
+
   state_functions.setMode('visual_track')
+  state_functions.setVisualTrackPivotIndex(visual_track_pivot_i)
 end
 
 function library.setModeVisualTimeline()
