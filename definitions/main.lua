@@ -57,6 +57,7 @@ return {
     ["<"] = "GrowItemLeft",
     ["i"] = {"+selected items", {
             ["f"] = "FitByLoopingNoShift",
+            ["i"] = "InsertMidiItem",
             ["l"] = "FitByLooping",
             ["p"] = "FitByPadding",
             ["y"] = "CopyAndFitByLooping",
