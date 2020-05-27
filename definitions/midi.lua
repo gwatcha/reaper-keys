@@ -10,6 +10,8 @@ return {
     ["g"] = "JoinNotes",
     ["s"] = "SelectNotes",
     ["z"] = "MidiZoomTimeSelection",
+    [">"] = "GrowNoteRight",
+    ["<"] = "GrowNoteLeft",
   },
   timeline_motion = {
     ["w"] = "NextNoteStart",
