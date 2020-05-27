@@ -74,20 +74,11 @@ return {
       end
     },
     {
-      { 'timeline_operator' },
-      function(timeline_operator)
-        runner.runAction(timeline_operator)
-        state_functions.setModeToNormal()
-        local first_track = reaper.GetSelectedTrack(0, 0)
-        reaper.SetOnlyTrackSelected(first_track)
-      end
-    },
-    {
       { 'track_motion' },
       function(track_motion)
         local args = {track_motion, 1}
         local sel_function = runner.makeSelectionFromTrackMotion
-        runner.addToTrackSelection(sel_function, args)
+        runner.extendTrackSelection(sel_function, args)
       end
     },
     {
@@ -95,7 +86,7 @@ return {
       function(number, track_motion)
         local args = {track_motion, number}
         local sel_function = runner.makeSelectionFromTrackMotion
-        runner.addToTrackSelection(sel_function, args)
+        runner.extendTrackSelection(sel_function, args)
       end
     },
   }

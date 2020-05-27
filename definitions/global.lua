@@ -22,8 +22,8 @@ return {
     ["<M-l>"] = "Right10Pix",
     ["<M-H>"] = "Left40Pix",
     ["<M-L>"] = "Right40Pix",
-    ["h"] = "PrevBeat",
-    ["l"] = "NextBeat",
+    ["h"] = "LeftGridDivision",
+    ["l"] = "RightGridDivision",
     ["H"] = "PrevMeasure",
     ["L"] = "NextMeasure",
     ["<C-h>"] = "Prev4Beats",
@@ -32,16 +32,15 @@ return {
     ["<C-L>"] = "Next4Measures",
   },
   timeline_operator = {
+    ["<M-r>"] = "InsertRegion",
     ["r"] = "Record",
-    ["c"] = "Record",
     ["t"] = "PlayAndLoop",
   },
   timeline_selector = {
     ["v"] = "TimeSelection",
+    [";"] = "NextRegion",
+    [","] = "PrevRegion",
     ["!"] = "LoopSelection",
-    ["n"] = "NextRegion",
-    ["N"] = "PrevRegion",
-    ["p"] = "PrevRegion",
     ["i"] = {"+inner", {
                ["<M-w>"] = "AutomationItem",
                ["l"] = "AllTrackItems",
@@ -57,8 +56,7 @@ return {
   command = {
     ["<C-r>"] = "Redo",
     ["u"] = "Undo",
-    ["R"] = "ToggleRecord",
-    ["C"] = "ToggleRecordByChanging",
+    ["R"] = "RecordOrStop",
     ["T"] = "TransportPlay",
     ["F"] = "TransportPause",
     ["zt"] = "ScrollToPlayPosition",
@@ -84,13 +82,10 @@ return {
     ["dr"] = "RemoveRegion",
     ["mi"] = "MarkerInsert",
     ["di"] = "RemoveMarker",
+    ["!"] = "ToggleLoop",
     ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
       ["h"] = "ShowReaperKeysHelp",
-      ["v"] = { "+time/loop selection", {
-                  ["l"] = "ToggleLoop",
-                  ["f"] = "ToggleLoopSelectionFollowsTimeSelection",
-      }},
       ["m"] = { "+midi", {
                   ["x"] = "CloseWindow",
                   [","] = {"+options", {
@@ -197,6 +192,7 @@ return {
                   }},
       }},
       [","] = {"+options", {
+                 ["v"] = "ToggleLoopSelectionFollowsTimeSelection",
                  ["s"] = "ToggleSnap",
                  ["c"] = "CycleRippleEditMode",
                  ["m"] = "ToggleMetronome",
@@ -249,6 +245,34 @@ return {
                 ["d"] = "CloseProject",
                 ["x"] = "CleanProjectDirectory",
             }},
+    ["G"] = {"+grid",{
+            ["z"] = "GridSetTo1by1", -- low left hand
+            ["x"] = "GridSetTo1by2",
+            ["c"] = "GridSetTo1by3",
+            ["v"] = "GridSetTo1by4",
+            ["b"] = "GridSetTo1by5",
+
+            ["a"] = "GridSetTo1by6", -- mid left hand
+            ["s"] = "GridSetTo1by7",
+            ["d"] = "GridSetTo1by8",
+            ["f"] = "GridSetTo1by9",
+            ["g"] = "GridSetTo1by10",
+
+            ["q"] = "GridSetTo1by12", -- upper left hand
+            ["w"] = "GridSetTo1by16",
+            ["e"] = "GridSetTo1by18",
+            ["r"] = "GridSetTo1by24",
+            ["t"] = "GridSetTo1by32",
+
+            ["n"] = "GridSetTo1by48", -- lower right
+            ["m"] = "GridSetTo1by64",
+            [","] = "GridSetTo1by128",
+            ["."] = "GridSetTo2by1",
+            ["/"] = "GridSetTo2by3",
+
+            ["h"] = "GridSetTo3by1", -- mid right
+            ["j"] = "GridSetTo4by1",
+        }},
     }},
   },
 }

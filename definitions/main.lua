@@ -43,20 +43,19 @@ return {
       ["<M-c>"] = "ColorTrack",
   },
   timeline_operator = {
-    ["<M-i>"] = "InsertAutomationItem",
     ["s"] = "SelectItemsAndSplit",
-    ["<C-s>"] = "SelectItems",
     ["<M-s>"] = "SelectEnvelopePoints",
     ["d"] = "CutItems",
     ["y"] = "CopyItems",
     ["<M-d>"] = "CutEnvelopePoints",
     ["<M-y>"] = "CopyEnvelopePoints",
     ["<C-D>"] = "DeleteTimeline",
+    ["<M-i>"] = "InsertAutomationItem",
     ["g"] = "GlueItems",
     ["%"] = "HealSplits",
     ["#"] = "SetItemFadeBoundaries",
     ["z"] = "ZoomTimeSelection",
-    [";"] = {"+fitting", {
+    ["c"] = {"+change/fit selected", {
             ["f"] = "FitByLoopingNoShift",
             ["l"] = "FitByLooping",
             ["p"] = "FitByPadding",

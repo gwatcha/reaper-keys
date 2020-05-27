@@ -5,7 +5,7 @@ return {
   timeline_operator = {
     ["d"] = "CutNotes",
     ["y"] = "CopyNotes",
-    [";"] = "FitNotes",
+    ["c"] = "FitNotes",
     ["i"] = "InsertNote",
     ["g"] = "JoinNotes",
     ["s"] = "SelectNotes",

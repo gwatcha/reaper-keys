@@ -3,6 +3,7 @@ local format = require('utils.format')
 
 local reaper_util = {}
 
+
 function mergeItemPositionsLists(item_positions_list)
   local merged_list = {}
 
@@ -101,7 +102,6 @@ function reaper_util.lastTrack()
   local last_track = reaper.GetTrack(0, num_tracks-1)
   reaper.SetOnlyTrackSelected(last_track)
 end
-
 
 function reaper_util.selectInnerProjectTimeline()
   local project_end = getProjectEnd()
@@ -295,6 +295,13 @@ end
 function reaper_util.selectTrackByNumber()
   local _, number = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
   local track = reaper.GetTrack(0, number-1)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
+  end
+end
+
+function reaper_util.unselectAllButCurrentTrack()
+  local track = reaper.GetSelectedTrack(0, 0)
   if track then
     reaper.SetOnlyTrackSelected(track)
   end
