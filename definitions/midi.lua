@@ -9,7 +9,7 @@ return {
     ["n"] = "InsertNote",
     ["g"] = "JoinNotes",
     ["s"] = "SelectNotes",
-    ["z"] = "MidiZoomSelHorizontal",
+    ["z"] = "MidiZoomTimeSelection",
   },
   timeline_motion = {
     ["w"] = "NextNoteStart",

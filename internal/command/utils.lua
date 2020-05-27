@@ -95,7 +95,7 @@ end
 
 function utils.qualifiesAsRepeatableCommand(command)
   for _,action_type in ipairs(command.sequence) do
-    if action_type:find('command') then
+    if action_type:find('command') or action_type:find('operator') then
       return true
     end
   end
