@@ -229,16 +229,16 @@ end
 
 function moveToNextItemEnd(item_positions)
   local current_position = reaper.GetCursorPosition()
-  local next_postition = nil
+  local next_position = nil
   for _,item_position in pairs(item_positions) do
     if not next_position and item_position.right > current_position then
       next_position = item_position.right
-    end
-    if next_position and item_position.right < next_position and item_position.right > current_position then
+    elseif next_position and item_position.right < next_position and item_position.right > current_position then
       next_position = item_position.right
     end
   end
   if next_position then
+    log.user(next_position)
     reaper.SetEditCurPos(next_position, true, false)
   end
 end
