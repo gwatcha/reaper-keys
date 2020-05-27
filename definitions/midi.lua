@@ -23,7 +23,7 @@ return {
     ["-"] = "MidiZoomOutVert",
     ["<C-+>"] = "MidiZoomInHoriz",
     ["<C-->"] = "MidiZoomOutHoriz",
-    ["-"] = "MidiZoomOutVert",
+    ["-"] = "MidiZoomOutVert", -- dupl of abover?
     ["p"] = "MidiPaste",
     ["<ESC>"] = "CloseWindow",
     ["S"] = "ClearNoteSelection",
