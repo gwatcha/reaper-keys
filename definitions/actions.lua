@@ -105,6 +105,7 @@ return {
       InnerFolder = {"FolderParent", "SelectOnlyFoldersChildren"},
       InsertAutomationItem = 42082,
       InsertDefaultSizeNote = {40051, midiCommand=true},
+      InsertMidiItem = 40214, -- fill time sel ELSE at edit cursor
       InsertNote = {"InsertDefaultSizeNote", "FitNotes"},
       InsertRegion = 40174,
       InsertTrack = 40001,
