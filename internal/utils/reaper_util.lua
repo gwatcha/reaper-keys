@@ -238,7 +238,6 @@ function moveToNextItemEnd(item_positions)
     end
   end
   if next_position then
-    log.user(next_position)
     reaper.SetEditCurPos(next_position, true, false)
   end
 end
