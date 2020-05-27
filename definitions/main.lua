@@ -55,14 +55,14 @@ return {
     ["#"] = "SetItemFadeBoundaries",
     [">"] = "GrowItemRight",
     ["<"] = "GrowItemLeft",
-    ["i"] = {"+selected items", {
+    [";"] = {"+fitting", {
             ["f"] = "FitByLoopingNoShift",
             ["l"] = "FitByLooping",
             ["p"] = "FitByPadding",
             ["y"] = "CopyAndFitByLooping",
             ["s"] = "FitByStretching",
     }},
-    ["I"] = "InsertMidiItem",
+    ["i"] = "InsertOrExtendMidiItem",
   },
   timeline_selector = {
     ["s"] = "SelectedItems",
