@@ -102,8 +102,7 @@ function reaper_util.lastTrack()
   reaper.SetOnlyTrackSelected(last_track)
 end
 
-
-function reaper_util.selectInnerProject()
+function reaper_util.selectInnerProjectTimeline()
   local project_end = getProjectEnd()
   reaper.GetSet_LoopTimeRange(true, false, 0, project_end, false)
 end

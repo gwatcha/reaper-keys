@@ -31,7 +31,7 @@ action type section.
 
     timeline_operator = {
       ["c"] = "Change",
-      ["t"] = "LoopAndPlay",
+      ["t"] = "PlayAndLoop",
       ["d"] = "CutItems",
       ["y"] = "CopyItems",
     },
@@ -43,7 +43,7 @@ Actions may also be put into folders. To create a folder,  follow this format:
       ["<SPC>"] = "ShowActionList",
       ["h"] = "ShowReaperKeysHelp",
       ["r"] = {"+regions", {
-                  ["d"] = "DeleteRegion",
+                  ["d"] = "RemoveRegion",
       }},
     }}, -- be sure to close the folder
 
@@ -446,7 +446,7 @@ the actions used to trigger it.
 
 So in this case, if one types `tl`
 
-Reaper keys will find the entries "LoopAndPlay" and "NextBeat" in it's search in the definitions.
+Reaper keys will find the entries "PlayAndLoop" and "NextBeat" in it's search in the definitions.
 
     -- in definitoins/global.lua the
       timeline_operator = {
@@ -459,7 +459,7 @@ Reaper keys will find the entries "LoopAndPlay" and "NextBeat" in it's search in
 And find the value of the action in actions.lua
 
     -- in definitions/actions.lua
-    LoopAndPlay = {"SetLoopSelectionToTimeSelection", "LoopStart", "TransportPlay", setTimeSelection=true},
+    PlayAndLoop = {"SetLoopSelectionToTimeSelection", "LoopStart", "TransportPlay", setTimeSelection=true},
     NextBeat = 40841,
 
 and execute the function with
