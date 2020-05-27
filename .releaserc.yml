@@ -2,6 +2,6 @@ branches: master
 repositoryUrl: https://github.com/gwatcha/reaper-keys
 plugins: |
   @semantic-release/github
-  @semantic-release/release-notes-generator
   @semantic-release/changelog@3.0.0
-
+  @semantic-release/commit-analyzer
+  @semantic-release/release-notes-generator
