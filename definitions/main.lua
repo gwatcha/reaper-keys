@@ -57,12 +57,12 @@ return {
     ["<"] = "GrowItemLeft",
     ["i"] = {"+selected items", {
             ["f"] = "FitByLoopingNoShift",
-            ["i"] = "InsertMidiItem",
             ["l"] = "FitByLooping",
             ["p"] = "FitByPadding",
             ["y"] = "CopyAndFitByLooping",
             ["s"] = "FitByStretching",
     }},
+    ["I"] = "InsertMidiItem",
   },
   timeline_selector = {
     ["s"] = "SelectedItems",
