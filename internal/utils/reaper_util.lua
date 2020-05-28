@@ -308,7 +308,7 @@ end
 
 function selectRegion(id)
   local ok, is_region, start_pos, end_pos, _, got_id = reaper.EnumProjectMarkers(id)
-  if ok and is_region and got_id == id + 1 then
+  if ok and is_region  then
     reaper.GetSet_LoopTimeRange(true, false, start_pos, end_pos, false)
     return true
   end
@@ -319,38 +319,6 @@ function reaper_util.selectInnerRegion()
   local current_position = reaper.GetCursorPosition()
   _, region_id = reaper.GetLastMarkerAndCurRegion(0, current_position)
   selectRegion(region_id)
-end
-
-function reaper_util.selectNextRegion()
-  local current_position, _ = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
-  if not current_position then
-    current_position = reaper.GetCursorPosition()
-  end
-
-  _, region_id = reaper.GetLastMarkerAndCurRegion(0, current_position)
-  if selectRegion(region_id + 1) == false then
-    selectRegion(0)
-  end
-end
-
-function reaper_util.selectPrevRegion()
-  local current_position, _ = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
-  if not current_position then
-    current_position = reaper.GetCursorPosition()
-  end
-
-  _, region_id = reaper.GetLastMarkerAndCurRegion(0, current_position)
-  if region_id == 0 then
-    -- no convenient way to find the last region, so keep going until we get false
-    for i=1,100 do
-      if selectRegion(i) == false then
-        selectRegion(i-1)
-        return
-      end
-    end
-  end
-
-  selectRegion(region_id - 1)
 end
 
 return reaper_util
