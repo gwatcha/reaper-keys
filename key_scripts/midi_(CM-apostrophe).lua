@@ -5,4 +5,4 @@ package.path = package.path .. ';' .. root_path .. '?.lua'
 
 local doInput = require('internal.reaper-keys')
 
-doInput({['key'] = '<CM-'>', ['context'] = 'midi'})
+doInput({['key'] = '<CM-\'>', ['context'] = 'midi'})

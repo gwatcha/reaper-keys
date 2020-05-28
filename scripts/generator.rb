@@ -52,7 +52,7 @@ class Generator
         key_mod = key_mod[/([CM]+)S/, 1]
         modded_key = shifted_key
         if key_mod
-          modded_key, _ = format_modded_key(shifted_key, shifted_key, 'shifted', key_mod)
+          modded_key, = format_modded_key(shifted_key, shifted_key, 'shifted', key_mod)
         end
 
         if KeyDefinitions::MOD_DECREMENTED_KEYS.detect { |x| x == key }
@@ -99,8 +99,11 @@ package.path = package.path .. ';' .. root_path .. '?.lua'
 local doInput = require('internal.reaper-keys')
 
 "''
-    key = '\\' + key if (key == "'") || (key == '\\')
-    input_line = "doInput({['key'] = '#{key}', ['context'] = '#{context}'})"
+    safe_key = key
+    safe_key = key.gsub('\\', '\\\\\\') if key['\\']
+    safe_key = key.gsub("'", "\\\\'") if key["'"]
+
+    input_line = "doInput({['key'] = '#{safe_key}', ['context'] = '#{context}'})"
 
     key_script = key_script_header + input_line
     open(path, 'w') { |file| file.puts key_script }
