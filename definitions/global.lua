@@ -193,6 +193,7 @@ return {
                   }},
       }},
       [","] = {"+options", {
+                 ["p"] = "TogglePlaybackPreroll",
                  ["v"] = "ToggleLoopSelectionFollowsTimeSelection",
                  ["s"] = "ToggleSnap",
                  ["c"] = "CycleRippleEditMode",
