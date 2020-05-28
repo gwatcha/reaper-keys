@@ -1,8 +1,10 @@
 local state_functions = require('state_machine.state_functions')
-local reaper_util = require('utils.reaper_util')
+local custom_actions = require('custom_actions')
 local log = require('utils.log')
+local marks = require('library.marks')
 
 local library = {}
+library.marks = marks
 
 function library.setModeNormal()
   state_functions.setMode('normal')
@@ -52,7 +54,7 @@ end
 
 function library.matchTrackNameBackward()
   local _, name = reaper.GetUserInputs("Match Backward", 1, "Match String", "")
-  local track = reaper_util.matchTrackName(name, false)
+  local track = custom_actions.matchTrackName(name, false)
   if track then
     state_functions.setLastSearchedTrackNameAndDirection(name, false)
     reaper.SetOnlyTrackSelected(track)
@@ -64,7 +66,7 @@ end
 
 function library.matchTrackNameForward()
   local _, name = reaper.GetUserInputs("Match Forward", 1, "Match String", "")
-  local track = reaper_util.matchTrackName(name, true)
+  local track = custom_actions.matchTrackName(name, true)
   if track then
     state_functions.setLastSearchedTrackNameAndDirection(name, true)
     reaper.SetOnlyTrackSelected(track)
@@ -76,7 +78,7 @@ end
 
 function library.repeatTrackNameMatchForward()
   local last_matched, forward = state_functions.getLastSearchedTrackNameAndDirection()
-  local track = reaper_util.matchTrackName(last_matched, forward)
+  local track = custom_actions.matchTrackName(last_matched, forward)
   if track then
     reaper.SetOnlyTrackSelected(track)
   end
@@ -84,7 +86,7 @@ end
 
 function library.repeatTrackNameMatchBackward()
   local last_searched, forward = state_functions.getLastSearchedTrackNameAndDirection()
-  local track = reaper_util.matchTrackName(last_searched, not forward)
+  local track = custom_actions.matchTrackName(last_searched, not forward)
   if track then
     reaper.SetOnlyTrackSelected(track)
   end

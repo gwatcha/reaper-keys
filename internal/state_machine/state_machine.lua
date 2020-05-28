@@ -21,7 +21,7 @@ function handleCommand(state, command)
     new_state = meta_command.executeMetaCommand(state, command)
   else
     if state['macro_recording'] then
-      saved.macros.append(state['macro_register'], command)
+      saved.append('macros', state['macro_register'], command)
     end
     executor.executeCommand(command)
     -- internal commands may have changed the state

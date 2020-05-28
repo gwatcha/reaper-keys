@@ -1,4 +1,7 @@
 return {
+  register_action = {
+    ["m"] = "Mark",
+  },
   track_motion = {
     ["G"] = "LastTrack",
     ["gg"] = "FirstTrack",
@@ -39,7 +42,7 @@ return {
       ["a"] = "ArmTracks",
       ["s"] = "SelectTracks",
       ["S"] = "ToggleSolo",
-      ["m"] = "ToggleMute",
+      ["M"] = "ToggleMute",
       ["y"] = "CopyTrack",
       ["<M-C>"] = "ColorTrackGradient",
       ["<M-c>"] = "ColorTrack",

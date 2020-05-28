@@ -52,11 +52,11 @@ local commands = {
       return state
     end
 
-    local macro_commands = saved.macros.get(register)
+    local macro_commands = saved.get('macros', register)
     if macro_commands then
       executeMultipleCommandOrMetaCommands(state, command, macro_commands, repetitions)
       if state['macro_recording'] then
-        saved.macros.append(state['macro_register'], command)
+        saved.append('macros', state['macro_register'], command)
       end
     end
 
@@ -73,7 +73,7 @@ local commands = {
         return state
       end
 
-      saved.macros.clear(register)
+      saved.clear('macros', register)
       state['macro_register'] = register
       state['macro_recording'] = true
     else
@@ -94,7 +94,7 @@ local commands = {
     local last_command = state['last_command']
     executeCommandOrMetaCommand(state, last_command, repetitions)
     if state['macro_recording'] then
-      saved.macros.append(state['macro_register'], state['last_command'])
+      saved.append('macros', state['macro_register'], state['last_command'])
     end
 
     local new_state = state

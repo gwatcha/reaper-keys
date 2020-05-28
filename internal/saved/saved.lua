@@ -1,5 +1,7 @@
-local info = debug.getinfo(1,'S');
+local table_io = require('utils.table_io')
+local log = require('utils.log')
 
+local info = debug.getinfo(1,'S');
 local internal_root_path = info.source:match(".*reaper.keys[^\\/]*[\\/]internal[\\/]"):sub(2)
 
 local saved_data_dir = ""
@@ -10,46 +12,41 @@ else
   saved_data_dir = internal_root_path .. "/saved/data/"
 end
 
-local table_io = require('utils.table_io')
-local log = require('utils.log')
+local saved = {}
 
-local saved = {
-  macros = {}
-}
-
-function readSavedData(name)
+function saved.read(name)
   local ok, data = table_io.read(saved_data_dir .. name)
   if not ok then
-    log.error("Could not read data from file, it may have become corrupted.")
+    log.error("Could not read saved data '" .. name .. "' from file, it may have become corrupted.")
     return {}
   end
   return data
 end
 
-function writeSavedData(name, data)
+function saved.write(name, data)
   table_io.write(saved_data_dir .. name, data)
 end
 
-function saved.macros.append(register, command)
-  local macros = readSavedData('macros')
-  if macros[register] then
-    table.insert(macros[register], command)
+function saved.append(name, register, new_data)
+  local all_data = saved.read(name)
+  if all_data[register] then
+    table.insert(all_data[register], new_data)
   else
-    macros[register] = {command}
+    all_data[register] = {new_data}
   end
 
-  writeSavedData('macros', macros)
+  saved.write(name, all_data)
 end
 
-function saved.macros.clear(register)
-  local macros_table = readSavedData('macros')
-  macros_table[register] = nil
-  writeSavedData('macros', macros_table)
+function saved.clear(name, register)
+  local all_data = saved.read(name)
+  all_data[register] = nil
+  saved.write(name, all_data)
 end
 
-function saved.macros.get(register)
-  local macros = readSavedData('macros')
-  return macros[register]
+function saved.get(name, register)
+  local data = saved.read(name)
+  return data[register]
 end
 
 return saved
