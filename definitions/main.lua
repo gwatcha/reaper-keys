@@ -44,6 +44,7 @@ return {
   },
   timeline_operator = {
     ["s"] = "SelectItemsAndSplit",
+    ["<M-p>"] = "CopyAndFitByLooping",
     ["<M-s>"] = "SelectEnvelopePoints",
     ["d"] = "CutItems",
     ["y"] = "CopyItems",
@@ -59,7 +60,6 @@ return {
             ["f"] = "FitByLoopingNoShift",
             ["l"] = "FitByLooping",
             ["p"] = "FitByPadding",
-            ["y"] = "CopyAndFitByLooping",
             ["s"] = "FitByStretching",
     }},
     ["i"] = "InsertOrExtendMidiItem",

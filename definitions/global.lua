@@ -44,6 +44,7 @@ return {
     ["i"] = {"+inner", {
                ["<M-w>"] = "AutomationItem",
                ["l"] = "AllTrackItems",
+               ["r"] = "Region",
                ["p"] = "ProjectTimeline",
                ["w"] = "Item",
                ["W"] = "BigItem",
