@@ -40,7 +40,7 @@ return {
     ["v"] = "TimeSelection",
     [";"] = "NextRegion",
     [","] = "PrevRegion",
-    ["!"] = "LoopSelection",
+    ["!"] = "LoopSelection", -- this one toggles repeat?!
     ["i"] = {"+inner", {
                ["<M-w>"] = "AutomationItem",
                ["l"] = "AllTrackItems",

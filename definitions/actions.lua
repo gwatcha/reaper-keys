@@ -269,6 +269,8 @@ return {
       NextTrackMatchForward = {"RepeatTrackNameMatchForward", "ScrollToSelectedTracks"},
       NextTransientInItem = {"SaveItemSelection", "SelectItemsUnderEditCursor", "MoveEditCursorToNextTransientInSelectedItems", "RestoreItemSelection"},
       NoOp = 65535,
+      NudgeTrackPanLeft = 40283,
+      NudgeTrackPanRight = 40284,
       NudgeTrackVolumeDown = 40116, -- 0.05 dB
       NudgeTrackVolumeDownBy1Tenth = {"NudgeTrackVolumeDown", repetitions=2},
       NudgeTrackVolumeUp = 40115,

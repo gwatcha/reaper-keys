@@ -41,6 +41,12 @@ return {
       ["y"] = "CopyTrack",
       ["<M-C>"] = "ColorTrackGradient",
       ["<M-c>"] = "ColorTrack",
+      ["x"] = {"+mix tracks",{
+            ["d"] = "NudgeTrackPanLeft",
+            ["f"] = "NudgeTrackPanRight",
+            ["j"] = "NudgeTrackVolumeDownBy1Tenth",
+            ["k"] = "NudgeTrackVolumeUpBy1Tenth",
+      }},
   },
   timeline_operator = {
     ["s"] = "SelectItemsAndSplit",
