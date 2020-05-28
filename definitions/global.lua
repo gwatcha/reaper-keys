@@ -82,7 +82,7 @@ return {
     ["<M-N>"] = "FxShowPrevSel",
     ["dr"] = "RemoveRegion",
     ["mi"] = "MarkerInsert",
-    ["di"] = "RemoveMarker",
+    ["dm"] = "RemoveMarker",
     ["!"] = "ToggleLoop",
     ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
