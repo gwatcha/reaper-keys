@@ -321,4 +321,9 @@ function reaper_util.selectInnerRegion()
   selectRegion(region_id)
 end
 
+function reaper_util.clearTimeSelection()
+  local current_position = reaper.GetCursorPosition()
+  reaper.GetSet_LoopTimeRange(true, false, current_position, current_position, false)
+end
+
 return reaper_util

@@ -7,19 +7,25 @@
 -- under the terms of the MIT license. See LICENSE for details.
 --
 
+local config = require('definitions.config')
 local log = { _version = "0.1.0" }
 
 log.usecolor = false
 log.outfile = nil
-log.level = "user"
+
+if config['log_level'] then
+  log.level = config['log_level']
+else
+  log.level = "user"
+end
 
 local modes = {
   { name = "trace", color = "\27[34m", },
   { name = "debug", color = "\27[36m", },
   { name = "info",  color = "\27[32m", },
   { name = "warn",  color = "\27[33m", },
-  { name = "error", color = "\27[31m", },
   { name = "user", color = "\27[35m"},
+  { name = "error", color = "\27[31m", },
   { name = "fatal", color = "\27[35m", },
 }
 

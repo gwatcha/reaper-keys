@@ -144,8 +144,8 @@ function meta_command.executeMetaCommand(state, command)
   end
 
   if not commands[meta_command_name] then
-    log.fatal("Unknown meta command: " .. meta_command_name)
-    log.fatal("Available meta commands are: " .. format.line(commands))
+    log.error("Unknown meta command: " .. meta_command_name)
+    log.error("Available meta commands are: " .. format.line(commands))
   end
 
   local new_state = commands[meta_command_name](state, command)

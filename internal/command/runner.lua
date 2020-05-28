@@ -22,7 +22,7 @@ function runSubAction(id, midi_command)
 
     numeric_id = reaper.NamedCommandLookup(id)
     if numeric_id == 0 then
-      log.fatal("Could not find action in reaper or action list for: " .. id)
+      log.error("Could not find action in reaper or action list for: " .. id)
       return
     end
   end

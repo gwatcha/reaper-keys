@@ -1,5 +1,6 @@
 local runner = require('command.runner')
 local state_functions = require('state_machine.state_functions')
+local config = require('definitions.config')
 
 return {
   all_modes = {
@@ -63,8 +64,10 @@ return {
       function(track_operator)
         runner.runAction(track_operator)
         state_functions.setModeToNormal()
-        local first_track = reaper.GetSelectedTrack(0, 0)
-        reaper.SetOnlyTrackSelected(first_track)
+        if not config['persist_visual_track_selection'] then
+          local first_track = reaper.GetSelectedTrack(0, 0)
+          reaper.SetOnlyTrackSelected(first_track)
+        end
       end
     },
     {

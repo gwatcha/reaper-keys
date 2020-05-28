@@ -20,7 +20,7 @@ local saved = {
 function readSavedData(name)
   local ok, data = table_io.read(saved_data_dir .. name)
   if not ok then
-    log.warn("Could not read data from file, it may have become corrupted.")
+    log.error("Could not read data from file, it may have become corrupted.")
     return {}
   end
   return data

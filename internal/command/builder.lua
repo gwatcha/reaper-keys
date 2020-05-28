@@ -33,11 +33,6 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
 
         local action_name = utils.getEntryForKeySequence(sequence_for_action_type, entries[action_type])
         if action_name and not utils.isFolder(action_name) then
-          if not getAction(action_name) then
-            log.fatal("No definition for action '" .. action_name .. "'exists.")
-            return nil
-          end
-
           table.insert(command.sequence, action_type)
           table.insert(command.parts, action_name)
           break

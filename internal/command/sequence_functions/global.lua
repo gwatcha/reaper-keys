@@ -1,9 +1,10 @@
 local runner = require('command.runner')
 local log = require('utils.log')
 local state_functions = require('state_machine.state_functions')
+local config = require('definitions.config')
 
 function invalidSequenceCall(...)
-  log.error("An action sequence without a command function was called (likely contians a 'meta_command' type).")
+  log.error("An action sequence without a command function was called.")
   log.trace(debug.trace())
 end
 
@@ -93,6 +94,9 @@ return {
       function(timeline_operator)
         runner.runAction(timeline_operator)
         state_functions.setModeToNormal()
+        if not config['persist_visual_timeline_selection'] then
+          runner.runAction("ClearTimeSelection")
+        end
       end
     },
     {
