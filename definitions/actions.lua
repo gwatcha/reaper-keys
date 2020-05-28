@@ -269,6 +269,10 @@ return {
       NextTrackMatchForward = {"RepeatTrackNameMatchForward", "ScrollToSelectedTracks"},
       NextTransientInItem = {"SaveItemSelection", "SelectItemsUnderEditCursor", "MoveEditCursorToNextTransientInSelectedItems", "RestoreItemSelection"},
       NoOp = 65535,
+      NudgeTrackVolumeDown = 40116, -- 0.05 dB
+      NudgeTrackVolumeDownBy1Tenth = {"NudgeTrackVolumeDown", repetitions=2},
+      NudgeTrackVolumeUp = 40115,
+      NudgeTrackVolumeUpBy1Tenth = {"NudgeTrackVolumeUp", repetitions=2},
       OnlySelectItemsCrossingTimeAndTrackSelection = {"UnselectItems", "SelectItemsCrossingTimeAndTrackSelection"},
       OpenMidiEditor = 40153,
       OpenProject = 40025,
