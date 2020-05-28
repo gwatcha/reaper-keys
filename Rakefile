@@ -21,7 +21,7 @@ end
 task :build do
   `mkdir -p dist`
   `rm -rf dist/*`
-  `rsync -av --progress * dist/reaper-keys --exclude dist --exclude img`
+  `zip -r dist/reaper-keys.zip * -x dist img/* img`
 end
 
 task :generate do
