@@ -341,7 +341,7 @@ function reaper_util.selectPrevRegion()
 
   _, region_id = reaper.GetLastMarkerAndCurRegion(0, current_position)
   if region_id == 0 then
-    -- no convenient way to find the last region, so keep going until we get nil
+    -- no convenient way to find the last region, so keep going until we get false
     for i=1,100 do
       if selectRegion(i) == false then
         selectRegion(i-1)
