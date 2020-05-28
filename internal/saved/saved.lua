@@ -14,7 +14,8 @@ end
 
 local saved = {}
 
-function saved.read(name)
+
+function saved.getAll(name)
   local ok, data = table_io.read(saved_data_dir .. name)
   if not ok then
     log.error("Could not read saved data '" .. name .. "' from file, it may have become corrupted.")
@@ -23,30 +24,35 @@ function saved.read(name)
   return data
 end
 
-function saved.write(name, data)
+function saved.get(name, register)
+  local data = saved.getAll(name)
+  return data[register]
+end
+function saved.overwriteAll(name, data)
   table_io.write(saved_data_dir .. name, data)
 end
 
+function saved.overwrite(name, register, new_data)
+  local all_data = saved.getAll(name)
+  all_data[register] = {new_data}
+  saved.overwriteAll(name, all_data)
+end
+
 function saved.append(name, register, new_data)
-  local all_data = saved.read(name)
+  local all_data = saved.getAll(name)
   if all_data[register] then
     table.insert(all_data[register], new_data)
   else
     all_data[register] = {new_data}
   end
 
-  saved.write(name, all_data)
+  saved.overwriteAll(name, all_data)
 end
 
 function saved.clear(name, register)
-  local all_data = saved.read(name)
+  local all_data = saved.getAll(name)
   all_data[register] = nil
-  saved.write(name, all_data)
-end
-
-function saved.get(name, register)
-  local data = saved.read(name)
-  return data[register]
+  saved.overwriteAll(name, all_data)
 end
 
 return saved

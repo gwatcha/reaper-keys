@@ -1,5 +1,7 @@
 local state_functions = require('state_machine.state_functions')
 local custom_actions = require('custom_actions')
+local reaper_util = require('custom_actions.utils')
+
 local log = require('utils.log')
 local marks = require('library.marks')
 
@@ -20,7 +22,7 @@ function library.setModeVisualTrack()
     reaper.Main_OnCommand(NextTrack, 0)
     reaper.Main_OnCommand(PrevTrack, 0)
   end
-  first_track =  reaper.GetSelectedTrack(0, 0)
+  first_track = reaper.GetSelectedTrack(0, 0)
   reaper.SetOnlyTrackSelected(first_track)
 
   local visual_track_pivot_i = reaper.GetMediaTrackInfo_Value(first_track, "IP_TRACKNUMBER") - 1
@@ -54,7 +56,7 @@ end
 
 function library.matchTrackNameBackward()
   local _, name = reaper.GetUserInputs("Match Backward", 1, "Match String", "")
-  local track = custom_actions.matchTrackName(name, false)
+  local track = reaper_util.getMatchedTrack(name, false)
   if track then
     state_functions.setLastSearchedTrackNameAndDirection(name, false)
     reaper.SetOnlyTrackSelected(track)
@@ -66,7 +68,7 @@ end
 
 function library.matchTrackNameForward()
   local _, name = reaper.GetUserInputs("Match Forward", 1, "Match String", "")
-  local track = custom_actions.matchTrackName(name, true)
+  local track = reaper_util.getMatchedTrack(name, true)
   if track then
     state_functions.setLastSearchedTrackNameAndDirection(name, true)
     reaper.SetOnlyTrackSelected(track)
@@ -78,7 +80,7 @@ end
 
 function library.repeatTrackNameMatchForward()
   local last_matched, forward = state_functions.getLastSearchedTrackNameAndDirection()
-  local track = custom_actions.matchTrackName(last_matched, forward)
+  local track = reaper_util.getMatchedTrack(last_matched, forward)
   if track then
     reaper.SetOnlyTrackSelected(track)
   end
@@ -86,7 +88,7 @@ end
 
 function library.repeatTrackNameMatchBackward()
   local last_searched, forward = state_functions.getLastSearchedTrackNameAndDirection()
-  local track = custom_actions.matchTrackName(last_searched, not forward)
+  local track = reaper_util.getMatchedTrack(last_searched, not forward)
   if track then
     reaper.SetOnlyTrackSelected(track)
   end

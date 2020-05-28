@@ -105,47 +105,6 @@ function movement.nextItemEnd()
   moveToNextItemEnd(utils.getItemPositionsOnSelectedTracks())
 end
 
-function movement.matchedTrackName(search_name, forward)
-  if not search_name then
-    return nil
-  end
-
-  local current_track = reaper.GetSelectedTrack(0, 0)
-  local start_i = 0
-  if current_track then
-    start_i = reaper.GetMediaTrackInfo_Value(current_track, "IP_TRACKNUMBER") - 1
-  end
-
-  local num_tracks = reaper.GetNumTracks()
-  local tracks_searched = 1
-  local next_track_i = start_i
-  while tracks_searched < num_tracks do
-    if forward == true then
-      next_track_i = next_track_i + 1
-    else
-      next_track_i = next_track_i - 1
-    end
-
-    local track = reaper.GetTrack(0, next_track_i)
-    if not track then
-      if forward == true then
-        next_track_i = -1
-      else
-        next_track_i = num_tracks
-      end
-    else
-      local _, current_name = reaper.GetTrackName(track, "")
-      local has_no_name = current_name:match("Track ([0-9]+)", 1)
-      tracks_searched = tracks_searched + 1
-      if not has_no_name and current_name:match(search_name) then
-        return track
-      end
-    end
-  end
-
-  return nil
-end
-
 function movement.firstTrack()
   local first_track = reaper.GetTrack(0, 0)
   reaper.SetOnlyTrackSelected(first_track)
