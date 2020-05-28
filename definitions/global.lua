@@ -59,6 +59,7 @@ return {
     ["u"] = "Undo",
     ["R"] = "RecordOrStop",
     ["T"] = "TransportPlay",
+    ["tt"] = "PlayFromTimeSelectionStart",
     ["F"] = "TransportPause",
     ["zt"] = "ScrollToPlayPosition",
     ["<C-i>"] = "ZoomRedo",
@@ -81,12 +82,14 @@ return {
     ["<M-n>"] = "FxShowNextSel",
     ["<M-N>"] = "FxShowPrevSel",
     ["dr"] = "RemoveRegion",
-    ["mi"] = "MarkerInsert",
-    ["dm"] = "RemoveMarker",
     ["!"] = "ToggleLoop",
     ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
       ["h"] = "ShowReaperKeysHelp",
+      ["M"] = { "+markers", {
+                  ["i"] = "InsertMarker",
+                  ["d"] = "RemoveMarker",
+      }},
       ["m"] = { "+midi", {
                   ["x"] = "CloseWindow",
                   [","] = {"+options", {
@@ -216,10 +219,10 @@ return {
                              ["x"] = "FxCloseAll",
                              ["c"] = "ViewFxChainMaster",
                   }},
-                  ["t"] = { "+track", {
-                      ["e"] = { "+envelope", {
+                  ["e"] = { "+envelope", {
                               ["s"] = "ToggleShowAllEnvelopeGlobal",
-                      }},
+                  }},
+                  ["t"] = { "+track", {
                       ["s"] = "UnsoloAllTracks",
                       ["m"] = "UnmuteAllTracks",
                   }},
