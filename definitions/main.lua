@@ -27,6 +27,7 @@ return {
                ["F"] = "InnerFolderAndParent",
                ["g"] = "AllTracks",
     }},
+    ["c"] = "SelectFoldersChildren",
     ["F"] = "SelectFolderParent",
   },
   track_operator = {
@@ -89,7 +90,6 @@ return {
     ["D"] = "CutSelectedItems",
     ["Y"] = "CopySelectedItems",
     ["V"] = "SetModeVisualTrack",
-    ["Z"] = "CloseProject",
     ["<M-j>"] = "NextEnvelope",
     ["<M-k>"] = "PrevEnvelope",
     ["<C-+>"] = "ZoomInHoriz",

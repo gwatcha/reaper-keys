@@ -137,14 +137,6 @@ return {
                     ["u"] = "UnfreezeTrack",
                     ["s"] = "ShowTrackFreezeDetails",
                   }},
-                  ["e"] = { "+envelopes", {
-                              ["s"]  = "ToggleShowAllEnvelope",
-                              ["a"] = "ToggleArmAllEnvelopes",
-                              ["A"] = "UnarmAllEnvelopes",
-                              ["d"] = "ClearAllEnvelope",
-                              ["v"] = "ToggleVolumeEnvelope",
-                              ["p"] = "TogglePanEnvelope",
-                  }},
       }},
       ["a"] = { "+automation", {
                   ["r"] = "SetAutomationModeTrimRead",
@@ -156,18 +148,26 @@ return {
                   ["c"] = "SetAutomationModeTouchAndArm",
                   ["w"] = "SetAutomationModeWrite",
       }},
-      ["e"] = {"+envelope", {
+      ["e"] = {"+envelopes", {
+                 ["t"]  = "ToggleShowAllEnvelope",
+                 ["a"] = "ToggleArmAllEnvelopes",
+                 ["A"] = "UnarmAllEnvelopes",
+                 ["d"] = "ClearAllEnvelope",
+                 ["v"] = "ToggleVolumeEnvelope",
+                 ["p"] = "TogglePanEnvelope",
                  ["a"] = "ToggleArmEnvelope",
-                 ["d"] = "ClearEnvelope",
-                 ["y"] = "CopyEnvelope",
-                 ["t"] = "ToggleShowSelectedEnvelope",
-                 ["s"] = {"+shape", {
-                            ["b"] = "SetEnvelopeShapeBezier",
-                            ["e"] = "SetEnvelopeShapeFastEnd",
-                            ["f"] = "SetEnvelopeShapeFastStart",
-                            ["l"] = "SetEnvelopeShapeLinear",
-                            ["s"] = "SetEnvelopeShapeSlowStart",
-                            ["S"] = "SetEnvelopeShapeSquare",
+                 ["s"] = {"+selected", {
+                            ["d"] = "ClearEnvelope",
+                            ["y"] = "CopyEnvelope",
+                            ["t"] = "ToggleShowSelectedEnvelope",
+                            ["s"] = {"+shape", {
+                                       ["b"] = "SetEnvelopeShapeBezier",
+                                       ["e"] = "SetEnvelopeShapeFastEnd",
+                                       ["f"] = "SetEnvelopeShapeFastStart",
+                                       ["l"] = "SetEnvelopeShapeLinear",
+                                       ["s"] = "SetEnvelopeShapeSlowStart",
+                                       ["S"] = "SetEnvelopeShapeSquare",
+                            }},
                  }},
       }},
       ["f"] = { "+fx", {
