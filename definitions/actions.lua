@@ -328,6 +328,8 @@ return {
       SelectItems = "SelectItemsCrossingTimeAndTrackSelection",
       SelectItemsUnderEditCursor = "_XENAKIOS_SELITEMSUNDEDCURSELTX",
       SelectLastOfSelectedTracks = "_XENAKIOS_SELLASTOFSELTRAX",
+      SelectLastTouchedTrack = 40505,
+      SetFirstSelectedTrackAsLastTouchedTrack = 40914,
       SelectNextNote = {40413, midiCommand=true},
       SelectNextNoteSamePitch = {40428, midiCommand=true},
       SelectNoteClosestToEditCursor = {40426, midiCommand=true},

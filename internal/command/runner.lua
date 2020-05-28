@@ -110,7 +110,6 @@ function runner.extendTrackSelection(movement, args)
   movement(table.unpack(args))
   local end_pos = runner.getTrackPosition()
   local pivot_i = state_functions.getVisualTrackPivotIndex()
-  log.user("end: " .. end_pos .. "  pivot_i: " .. pivot_i)
 
   runner.runAction("UnselectTracks")
 
@@ -141,8 +140,8 @@ function runner.getTrackPosition()
   end
 
   runner.runAction("UnselectTracks")
-  runner.runAction("NextTrack")
-  runner.runAction("PrevTrack")
+  runner.runAction("SelectLastTouchedTrack")
+
   local track_at_index = reaper.GetSelectedTrack(0, 0)
   local index = reaper.GetMediaTrackInfo_Value(track_at_index, "IP_TRACKNUMBER") - 1
 
