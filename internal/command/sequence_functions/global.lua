@@ -5,14 +5,12 @@ local config = require('definitions.config')
 
 function invalidSequenceCall(...)
   log.error("An action sequence without a command function was called.")
-  log.trace(debug.trace())
+  log.trace(debug.traceback())
 end
 
 return {
   all_modes = {
-    {{ 'number', 'meta_command', 'register_location' }, invalidSequenceCall},
     {{ 'number', 'meta_command' }, invalidSequenceCall},
-    {{ 'meta_command', 'register_location' }, invalidSequenceCall},
     {{ 'meta_command'}, invalidSequenceCall},
     {
       { 'command' },
@@ -24,12 +22,6 @@ return {
       { 'number', 'command' },
       function(number, action)
         runner.runActionNTimes(action, number)
-      end
-    },
-    {
-      { 'register_action', 'register_location' },
-      function(register_action, register_location)
-        register_action(register_location)
       end
     },
   },

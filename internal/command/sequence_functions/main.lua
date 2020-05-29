@@ -65,8 +65,8 @@ return {
         runner.runAction(track_operator)
         state_functions.setModeToNormal()
         if not config['persist_visual_track_selection'] then
-          local first_track = reaper.GetSelectedTrack(0, 0)
-          reaper.SetOnlyTrackSelected(first_track)
+          local current_track = reaper.GetLastTouchedTrack()
+          reaper.SetOnlyTrackSelected(current_track)
         end
       end
     },

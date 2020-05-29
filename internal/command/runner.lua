@@ -1,12 +1,14 @@
 local definitions = require('utils.definitions')
+
 local getAction = require('utils.get_action')
 local log = require('utils.log')
 local format = require('utils.format')
+local reaper_utils = require('custom_actions.utils')
 local state_functions = require('state_machine.state_functions')
 
 local runner = {}
 
-function runSubAction(id, midi_command)
+function runActionPart(id, midi_command)
   if type(id) == "function" then
     id()
     return
@@ -34,31 +36,43 @@ function runSubAction(id, midi_command)
   end
 end
 
+function runRegisterAction(registerAction)
+  local register = registerAction['register']
+  if not register then
+    log.error("Tried to run a register action but no got no register!")
+    return
+  end
+
+  registerAction[1](register)
+end
+
 function runner.runAction(action)
-  local sub_actions = action
   if type(action) ~= 'table' then
-    runSubAction(action, false)
+    runActionPart(action, false)
     return
   end
 
   local repetitions = 1
-  if sub_actions['repetitions'] then
+  if action['repetitions'] then
     repetitions = action['repetitions']
   end
 
-  local midi_command = false
-  if sub_actions['midiCommand'] then
-    midi_command = sub_actions['midiCommand']
+  if action['registerAction'] then
+    runRegisterAction(action)
+    return
   end
 
-  log.trace("running action: " .. format.block(sub_actions))
+  midi_command = false
+  if action['midiCommand'] then
+    midi_command = true
+  end
 
   for i=1,repetitions do
-    for _, sub_action in ipairs(sub_actions) do
+    for _, sub_action in ipairs(action) do
       if type(sub_action) == 'table' then
         runner.runAction(sub_action)
       else
-        runSubAction(sub_action, midi_command)
+        runActionPart(sub_action, midi_command)
       end
     end
   end
@@ -108,7 +122,7 @@ end
 
 function runner.extendTrackSelection(movement, args)
   movement(table.unpack(args))
-  local end_pos = runner.getTrackPosition()
+  local end_pos = reaper_utils.getTrackPosition()
   local pivot_i = state_functions.getVisualTrackPivotIndex()
 
   runner.runAction("UnselectTracks")
@@ -129,35 +143,12 @@ function runner.extendTrackSelection(movement, args)
   reaper.SetTrackSelected(pivot_track, true)
 end
 
--- reaper provides no function to get the current 'track cursor' position but it
--- is implicitly contained in which track is selected when we do and up down
--- motion
-function runner.getTrackPosition()
-  local selected_tracks = {}
-  for i=0,reaper.CountSelectedTracks()-1 do
-    local track = reaper.GetSelectedTrack(0, i)
-    selected_tracks[i] = track
-  end
-
-  runner.runAction("UnselectTracks")
-  runner.runAction("SelectLastTouchedTrack")
-
-  local track_at_index = reaper.GetSelectedTrack(0, 0)
-  local index = reaper.GetMediaTrackInfo_Value(track_at_index, "IP_TRACKNUMBER") - 1
-
-  runner.runAction("UnselectTracks")
-  for _,track in ipairs(selected_tracks) do
-    reaper.SetTrackSelected(track, true)
-  end
-
-  return index
-end
-
 function runner.makeSelectionFromTrackMotion(track_motion, repetitions)
-  local first_index = runner.getTrackPosition()
+  local first_index = reaper_utils.getTrackPosition()
   runner.runActionNTimes(track_motion, repetitions)
   local end_track = reaper.GetSelectedTrack(0, 0)
   if not end_track then
+    local selected_tracks = reaper_utils.getSelectedTracks()
     return
   end
 

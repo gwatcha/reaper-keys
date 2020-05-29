@@ -5,7 +5,7 @@ local utils = require('command.utils')
 local format = require('utils.format')
 local saved = require('saved')
 local definitions = require('utils.definitions')
-
+local state_machine_constants = require('state_machine.constants')
 local getPossibleFutureEntries = require('command.completer')
 local sequences = require('command.sequences')
 local regex_match_entry_types = require('command.constants').regex_match_entry_types
@@ -24,7 +24,7 @@ function executeMultipleCommandOrMetaCommands(state, command, macro_commands, re
     end
   end
 
-  reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. utils.makeCommandDescription(command), 1)
+  reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. format.commandDescription(command), 1)
 end
 
 function executeCommandOrMetaCommand(state, command, repetitions)
@@ -33,7 +33,7 @@ function executeCommandOrMetaCommand(state, command, repetitions)
     for i=1,repetitions do
       meta_command.executeMetaCommand(state, command)
     end
-    reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. utils.makeCommandDescription(command), 1)
+    reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. format.commandDescription(command), 1)
   else
     executor.executeCommandMultipleTimes(command, repetitions)
   end
@@ -46,10 +46,10 @@ local commands = {
       repetitions = utils.getActionTypeValueInCommand(command, 'number')
     end
 
-    local register = utils.getActionTypeValueInCommand(command, 'register_location')
+    local register = command.parts[1].register
     if not register then
-      -- skip, we have probably triggered before the user has specified a register
-      return state
+      log.error("Did not get register for RecordMacro, but command was triggered!")
+      return state_machine_constants['reset_state']
     end
 
     local macro_commands = saved.get('macros', register)
@@ -67,10 +67,10 @@ local commands = {
   end,
   ["RecordMacro"] = function(state, command)
     if not state['macro_recording'] then
-      local register = utils.getActionTypeValueInCommand(command, 'register_location')
+      local register = command.parts[1].register
       if not register then
-        -- skip, we have probably triggered before the user has specified a register
-        return state
+        log.error("Did not get register for RecordMacro, but command was triggered!")
+        return state_machine_constants['reset_state']
       end
 
       saved.clear('macros', register)

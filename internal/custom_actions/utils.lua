@@ -1,3 +1,5 @@
+local log = require('utils.log')
+
 local utils = {}
 
 function mergeItemPositionsLists(item_positions_list)
@@ -156,5 +158,55 @@ function utils.getMatchedTrack(search_name, forward)
   return nil
 end
 
+function utils.getTrackPosition()
+  local last_touched_track = reaper.GetLastTouchedTrack()
+  local index = reaper.GetMediaTrackInfo_Value(last_touched_track, "IP_TRACKNUMBER") - 1
+  return index
+end
+
+function utils.getSelectedTracks()
+  local selected_tracks = {}
+  local n_tracks = reaper.CountSelectedTracks()
+  for i=0,reaper.CountSelectedTracks()-1 do
+    local track = reaper.GetSelectedTrack(0, i)
+    selected_tracks[i+1] = track
+  end
+  return selected_tracks
+end
+
+function utils.setLastTouchedTrack(index)
+  local selected = utils.getSelectedTracksIndices()
+  local track = reaper.GetTrack(0, index)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
+    local SetFirstSelectedAsLastTouched = 40914
+    reaper.Main_OnCommand(SetFirstSelectedAsLastTouched, 0)
+    utils.setTrackSelection(selected)
+  end
+end
+
+function utils.setTrackSelection(indices)
+  for _,track_index in ipairs(indices) do
+    local track = reaper.GetTrack(0, track_index)
+    if track then
+      reaper.SetTrackSelected(track, true)
+    end
+  end
+end
+
+function utils.getSelectedTrackIndices()
+  local selected_tracks = utils.getSelectedTracks()
+  local selected_track_indices = {}
+  for i,track in ipairs(selected_tracks) do
+    selected_track_indices[i] = reaper.GetMediaTrackInfo_Value(track, "IP_TRACKNUMBER") - 1
+  end
+  return selected_track_indices
+end
+
+function utils.unselectTracks()
+  for i,track in ipairs(utils.getSelectedTracks()) do
+    reaper.SetTrackSelected(track, false)
+  end
+end
 
 return utils

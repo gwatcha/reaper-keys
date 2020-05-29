@@ -1,7 +1,4 @@
 return {
-  register_action = {
-    ["m"] = "Mark",
-  },
   track_motion = {
     ["G"] = "LastTrack",
     ["gg"] = "FirstTrack",
@@ -16,6 +13,7 @@ return {
     ["k"] = "PrevTrack",
     ["<C-b>"] = "Prev10Track",
     ["<C-f>"] = "Next10Track",
+    ["`"] = "MoveToMark",
     ["<C-d>"] = "Next5Track",
     ["<C-u>"] = "Prev5Track",
   },
@@ -31,6 +29,7 @@ return {
                ["g"] = "AllTracks",
     }},
     ["F"] = "FolderParent",
+    ["'"] = "RecallMark",
     ["c"] = "FolderChildren",
     ["f"] = "Folder",
   },

@@ -31,7 +31,7 @@ function format.completions(entries)
       if value == '(number)' then
         pretty_key_seq = '(num)'
         pretty_value = '(times/select)'
-      elseif value == '(register_location)' then
+      elseif value == '(register)' then
         pretty_key_seq = '(key)'
         pretty_value = '(register location)'
       end
@@ -124,6 +124,23 @@ function format.actionSequences(action_sequences)
     formatted = formatted .. '  ' .. format.actionSequence(action_sequence) .. '\n'
   end
   return formatted
+end
+
+function format.commandDescription(command)
+  local desc = ""
+  for _, command_part  in pairs(command.parts) do
+    if type(command_part) == 'table' then
+      local name = command_part[1]
+      desc = desc .. '[' 
+      for _,additional_args in pairs(command_part) do
+        desc = desc .. ' ' .. additional_args
+      end
+      desc = desc .. ']'
+    else
+      desc = desc .. (command_part) .. " "
+    end
+  end
+  return desc
 end
 
 

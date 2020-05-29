@@ -28,13 +28,14 @@ function saved.get(name, register)
   local data = saved.getAll(name)
   return data[register]
 end
+
 function saved.overwriteAll(name, data)
   table_io.write(saved_data_dir .. name, data)
 end
 
 function saved.overwrite(name, register, new_data)
   local all_data = saved.getAll(name)
-  all_data[register] = {new_data}
+  all_data[register] = new_data
   saved.overwriteAll(name, all_data)
 end
 

@@ -1,6 +1,15 @@
 local str = require('string')
+local log = require('utils.log')
 
 local utils = {}
+
+function utils.checkIfActionIsRegisterAction(action_name)
+  local action = getAction(action_name)
+  if action and type(action) == 'table' and action['registerAction'] then
+    return true
+  end
+  return false
+end
 
 function utils.checkIfCommandsAreEqual(command1, command2)
   if #command1.sequence ~= #command2.sequence then return false end
@@ -19,14 +28,6 @@ function utils.getActionTypeValueInCommand(command, action_type)
     end
   end
   return nil
-end
-
-function utils.makeCommandDescription(command)
-  local desc = ""
-  for _, command_part  in pairs(command.parts) do
-    desc = desc .. command_part .. " "
-  end
-  return desc
 end
 
 function utils.getEntry(key_sequence, entries)
@@ -54,8 +55,11 @@ function utils.isFolder(entry_value)
   return false
 end
 
-function utils.splitFirstMatch(key_sequence, regex)
-  local match = str.match(key_sequence, "^" .. regex)
+function utils.splitFirstMatch(key_sequence, match_regex)
+  -- FIXME why is match_regex parameter nil when i can print it? this is
+  -- hardcoded for now so i don't lose my sanity
+  match_regex = '[1-9][0-9]*'
+  local match = str.match(key_sequence, match_regex)
   if match then
     local rest_of_sequence = str.sub(key_sequence, str.len(match) + 1)
     return match, rest_of_sequence

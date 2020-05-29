@@ -12,6 +12,8 @@ return {
     ["z"] = "MidiZoomTimeSelection",
   },
   timeline_motion = {
+    ["l"] = "RightMidiGridDivision",
+    ["h"] = "LeftMidiGridDivision",
     ["w"] = "NextNoteStart",
     ["b"] = "PrevNoteStart",
     ["W"] = "NextNoteSamePitchStart",

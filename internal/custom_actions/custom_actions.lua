@@ -13,7 +13,7 @@ function custom_actions.clearTimeSelection()
   reaper.GetSet_LoopTimeRange(true, false, current_position, current_position, false)
 end
 
-function custom_actions.setGridDivision()
+function getUserGridDivisionInput()
   local _, num_string = reaper.GetUserInputs("Set Grid Division", 1, "Fraction/Number", "")
   local first_num = num_string:match("[0-9.]+")
   local divider = num_string:match("/([0-9.]+)")
@@ -25,10 +25,24 @@ function custom_actions.setGridDivision()
     division = first_num
   else
     log.error("Could not parse specified grid division.")
-    return
+    return nil
   end
 
-  reaper.SetProjectGrid(0, division)
+  return division
+end
+
+function custom_actions.setMidiGridDivision()
+  local division = getUserGridDivisionInput()
+  if division then
+    reaper.SetMIDIEditorGrid(0, division)
+  end
+end
+
+function custom_actions.setGridDivision()
+  local division = getUserGridDivisionInput()
+  if division then
+    reaper.SetProjectGrid(0, division)
+  end
 end
 
 return custom_actions

@@ -3,11 +3,11 @@ local utils = require("custom_actions.utils")
 local movement = {}
 
 function movement.projectStart()
-  reaper.SetEditCurPos(0, false, false)
+  reaper.SetEditCurPos(0, true, false)
 end
 
 function movement.projectEnd()
-  reaper.SetEditCurPos(utils.getProjectEnd(), false, false)
+  reaper.SetEditCurPos(utils.getProjectEnd(), true, false)
 end
 
 function movement.lastItemEnd()

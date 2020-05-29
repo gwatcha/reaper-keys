@@ -7,16 +7,28 @@ local log = require('utils.log')
 
 local str = require('string')
 
+function formatActionIdentifier(action_name, rest_of_sequence)
+    if utils.checkIfActionIsRegisterAction(action_name) then
+    if rest_of_sequence == "" then
+      return nil
+    end
+    register_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
+    return {action_name, register = register_key}, rest_of_sequence
+  end
+  return action_name, rest_of_sequence
+end
+
 function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
   local command = {
     sequence = {},
     parts = {},
+    register = nil,
   }
 
   local rest_of_sequence = key_sequence
   for _, action_type in pairs(action_sequence) do
-    if regex_match_entry_types[action_type] then
-      local match_regex = regex_match_entry_types[action_type]
+    local match_regex = regex_match_entry_types[action_type]
+    if match_regex then
       match, rest_of_sequence = utils.splitFirstMatch(rest_of_sequence, match_regex)
       if match then
         table.insert(command.sequence, action_type)
@@ -33,8 +45,13 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
 
         local action_name = utils.getEntryForKeySequence(sequence_for_action_type, entries[action_type])
         if action_name and not utils.isFolder(action_name) then
+          action_identifier, rest_of_sequence = formatActionIdentifier(action_name, rest_of_sequence)
+          if not action_identifier then
+            return nil
+          end
+
           table.insert(command.sequence, action_type)
-          table.insert(command.parts, action_name)
+          table.insert(command.parts, action_identifier)
           break
         end
       end

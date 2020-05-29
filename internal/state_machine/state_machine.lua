@@ -35,7 +35,7 @@ function handleCommand(state, command)
     new_state['key_sequence'] = ""
   end
 
-  local command_description = utils.makeCommandDescription(command)
+  local command_description = format.commandDescription(command)
   return new_state, format.userInfo(new_state, command_description)
 end
 
@@ -82,6 +82,7 @@ function input(key_press)
   end
 
   log.user(message)
+  log.user("\n")
   log.info("new state: " .. format.block(new_state))
 
   state_interface.set(new_state)

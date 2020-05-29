@@ -1,5 +1,4 @@
 return {
-  register_action = {},
   meta_command = {
     ["."] = "RepeatLastCommand",
     ["@"] = "PlayMacro",
@@ -30,6 +29,8 @@ return {
     ["<C-l>"] = "Next4Beats",
     ["<C-H>"] = "Prev4Measures",
     ["<C-L>"] = "Next4Measures",
+    ["'"] = "RecallMark",
+    ["`"] = "MoveToMark",
   },
   timeline_operator = {
     ["<M-r>"] = "InsertRegion",
@@ -39,6 +40,7 @@ return {
   timeline_selector = {
     ["v"] = "TimeSelection",
     [";"] = "NextRegion",
+    ["'"] = "RecallMark",
     [","] = "PrevRegion",
     ["!"] = "LoopSelection",
     ["i"] = {"+inner", {
@@ -55,6 +57,8 @@ return {
     ["o"] = "SwitchTimelineSelectionSide",
   },
   command = {
+    ["m"] = "Mark",
+    ["<C-'>"] = "DeleteMark",
     ["<C-r>"] = "Redo",
     ["u"] = "Undo",
     ["R"] = "RecordOrStop",
@@ -86,15 +90,13 @@ return {
     ["<SPC>"] = { "+leader commands", {
       ["<SPC>"] = "ShowActionList",
       ["h"] = "ShowReaperKeysHelp",
-      ["M"] = { "+markers", {
-                  ["i"] = "InsertMarker",
-                  ["d"] = "RemoveMarker",
-      }},
       ["m"] = { "+midi", {
+                  ["g"] = "SetMidiGridDivision",
                   ["x"] = "CloseWindow",
                   [","] = {"+options", {
                              ["q"] = "Quantize",
                              ["s"] = "ToggleMidiSnap",
+
                   }},
       }},
       ["r"] = { "+recording", {
@@ -158,9 +160,9 @@ return {
                  ["d"] = "ClearAllEnvelope",
                  ["v"] = "ToggleVolumeEnvelope",
                  ["p"] = "TogglePanEnvelope",
-                 ["a"] = "ToggleArmEnvelope",
                  ["s"] = {"+selected", {
                             ["d"] = "ClearEnvelope",
+                            ["a"] = "ToggleArmEnvelope",
                             ["y"] = "CopyEnvelope",
                             ["t"] = "ToggleShowSelectedEnvelope",
                             ["s"] = {"+shape", {
@@ -199,6 +201,7 @@ return {
                  ["p"] = "TogglePlaybackPreroll",
                  ["v"] = "ToggleLoopSelectionFollowsTimeSelection",
                  ["s"] = "ToggleSnap",
+                 ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                  ["c"] = "CycleRippleEditMode",
                  ["m"] = "ToggleMetronome",
                  ["t"] = "ToggleStopAtEndOfTimeSelectionIfNoRepeat",
