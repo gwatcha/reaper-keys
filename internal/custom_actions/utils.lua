@@ -91,23 +91,6 @@ function utils.getBigItemPositionsOnSelectedTracks()
   return big_item_positions
 end
 
-function utils.getProjectEnd()
-  local all_tracks = {}
-  for i=0,reaper.GetNumTracks()-1 do
-    all_tracks[i] = reaper.GetTrack(0, i)
-  end
-
-  local all_items_positions = getItemPositionsOnTracks(all_tracks)
-  local furthest_item_end = 0
-  for _,item_position in ipairs(all_items_positions) do
-    if item_position.right > furthest_item_end then
-      furthest_item_end = item_position.right
-    end
-  end
-
-  return furthest_item_end
-end
-
 function utils.selectRegion(id)
   local ok, is_region, start_pos, end_pos, _, got_id = reaper.EnumProjectMarkers(id)
   if ok and is_region  then

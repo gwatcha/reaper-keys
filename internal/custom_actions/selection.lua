@@ -3,7 +3,7 @@ local utils = require("custom_actions.utils")
 local selection = {}
 
 function selection.innerProjectTimeline()
-  local project_end = utils.getProjectEnd()
+  local project_end = reaper.GetProjectLength(0)
   reaper.GetSet_LoopTimeRange(true, false, 0, project_end, false)
 end
 

@@ -7,7 +7,8 @@ function movement.projectStart()
 end
 
 function movement.projectEnd()
-  reaper.SetEditCurPos(utils.getProjectEnd(), true, false)
+  local project_end = reaper.GetProjectLength(0)
+  reaper.SetEditCurPos(project_end, true, false)
 end
 
 function movement.lastItemEnd()
