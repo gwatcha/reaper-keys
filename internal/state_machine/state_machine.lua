@@ -38,6 +38,7 @@ function input(key_press)
     new_state = state_machine_constants['reset_state']
     message = format.userInfo(new_state, err)
   else
+    log.info("New key sequence: " .. new_state['key_sequence'])
     local command = buildCommand(new_state)
     if command then
       log.trace("Command built: " .. format.block(command))

@@ -21,6 +21,8 @@ return {
     ["V"] = "SetModeNormal",
     ["<M-h>"] = "NudgeTrackPanLeft",
     ["<M-l>"] = "NudgeTrackPanRight",
+    ["<M-H>"] = "NudgeTrackPanLeft10Times",
+    ["<M-L>"] = "NudgeTrackPanRight10Times",
     ["<M-j>"] = "NudgeTrackVolumeDownBy1Tenth",
     ["<M-k>"] = "NudgeTrackVolumeUpBy1Tenth",
     ["<M-J>"] = "NudgeTrackVolumeDownBy1",
