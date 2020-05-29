@@ -23,6 +23,8 @@ return {
     ["<M-l>"] = "NudgeTrackPanRight",
     ["<M-j>"] = "NudgeTrackVolumeDownBy1Tenth",
     ["<M-k>"] = "NudgeTrackVolumeUpBy1Tenth",
+    ["<M-J>"] = "NudgeTrackVolumeDownBy1",
+    ["<M-K>"] = "NudgeTrackVolumeUpBy1",
   },
   track_selector = {
     ["V"] = "Selection",
@@ -61,6 +63,8 @@ return {
     ["<M-i>"] = "InsertAutomationItem",
     ["g"] = "GlueItems",
     ["%"] = "HealSplits",
+    [">"] = "GrowItemRight",
+    ["<"] = "GrowItemLeft",
     ["#"] = "SetItemFadeBoundaries",
     ["z"] = "ZoomTimeSelection",
     ["c"] = {"+change/fit selected", {
