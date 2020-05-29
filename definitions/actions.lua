@@ -177,6 +177,8 @@ return {
       MixerShowHideChildrenOfSelectedTrack = 41665,
       Mouse = 40514,
       MouseAndSnap = 40513,
+      AddPrevNoteToSelection = {40421, midiCommand=true},
+      AddNextNoteToSelection = {40422, midiCommand=true},
       MoveEditCursorToNextTransientInSelectedItems = 40375,
       MoveEditCursorToPrevTransientInSelectedItems = 40376,
       MoveNoteDownOctave= {40180, midiCommand=true},
