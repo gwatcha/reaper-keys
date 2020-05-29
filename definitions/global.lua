@@ -1,6 +1,4 @@
 return {
-  meta_command = {
-  },
   timeline_motion = {
     ["0"] = "ProjectStart",
     ["<C-$>"] = "ProjectEnd",
@@ -27,7 +25,6 @@ return {
     ["`"] = "MoveToMark",
   },
   timeline_operator = {
-    ["<M-r>"] = "InsertRegion",
     ["r"] = "Record",
     ["t"] = "PlayAndLoop",
   },
@@ -53,8 +50,8 @@ return {
   command = {
     ["."] = "RepeatLastCommand",
     ["@"] = "PlayMacro",
-    ["q"] = "RecordMacro",
     ["m"] = "Mark",
+    ["q"] = "RecordMacro",
     ["<C-'>"] = "DeleteMark",
     ["<C-r>"] = "Redo",
     ["u"] = "Undo",
@@ -88,10 +85,11 @@ return {
       ["<SPC>"] = "ShowActionList",
       ["h"] = "ShowReaperKeysHelp",
       ["m"] = { "+midi", {
-                  ["g"] = "SetMidiGridDivision",
                   ["x"] = "CloseWindow",
+                  ["g"] = "SetMidiGridDivision",
                   [","] = {"+options", {
                              ["q"] = "Quantize",
+                             ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                              ["s"] = "ToggleMidiSnap",
 
                   }},
@@ -105,7 +103,6 @@ return {
                   ["i"] = "SetTrackRecInput",
                   ["a"] = "SetTrackRecInput",
                   [","] = {"+options", {
-                             ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                              ["p"] = "ToggleRecordingPreroll",
                              ["z"] = "ToggleRecordingAutoScroll",
                              ["n"] = "SetRecordModeNormal",
