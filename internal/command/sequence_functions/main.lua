@@ -66,7 +66,9 @@ return {
         state_interface.setModeToNormal()
         if not config['persist_visual_track_selection'] then
           local current_track = reaper.GetLastTouchedTrack()
-          reaper.SetOnlyTrackSelected(current_track)
+          if current_track then
+            reaper.SetOnlyTrackSelected(current_track)
+          end
         end
       end
     },
