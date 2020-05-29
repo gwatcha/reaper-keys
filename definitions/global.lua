@@ -1,9 +1,5 @@
 return {
   meta_command = {
-    ["."] = "RepeatLastCommand",
-    ["@"] = "PlayMacro",
-    ["q"] = "RecordMacro",
-    ["<SPC>h"] = "ShowReaperKeysHelp",
   },
   timeline_motion = {
     ["0"] = "ProjectStart",
@@ -55,6 +51,10 @@ return {
     ["o"] = "SwitchTimelineSelectionSide",
   },
   command = {
+    ["."] = "RepeatLastCommand",
+    ["@"] = "PlayMacro",
+    ["q"] = "RecordMacro",
+    ["Q"] = "StopRecordMacro",
     ["m"] = "Mark",
     ["<C-'>"] = "DeleteMark",
     ["<C-r>"] = "Redo",

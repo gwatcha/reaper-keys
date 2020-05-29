@@ -1,5 +1,6 @@
 local str = require('string')
 local log = require('utils.log')
+local ser = require('serpent')
 
 local utils = {}
 
@@ -12,19 +13,16 @@ function utils.checkIfActionIsRegisterAction(action_name)
 end
 
 function utils.checkIfCommandsAreEqual(command1, command2)
-  if #command1.sequence ~= #command2.sequence then return false end
-  for i,action in pairs(command1.parts) do
-    if action ~= command2.parts[i] then
-      return false
-    end
+  if ser.block(command1, {comment=false}) == ser.block(command2, {comment=false}) then
+    return true
   end
-  return true
+  return false
 end
 
-function utils.getActionTypeValueInCommand(command, action_type)
+function utils.getActionTypeIndex(command, action_type)
   for i,current_action_type in pairs(command.sequence) do
     if current_action_type == action_type then
-      return command.parts[i]
+      return i
     end
   end
   return nil
@@ -95,16 +93,6 @@ function utils.getEntryForKeySequence(key_sequence, entries)
     return utils.getEntryForKeySequence(rest_of_key_sequence,  folder_table)
   end
   return nil
-end
-
-function utils.qualifiesAsRepeatableCommand(command)
-  for _,action_type in ipairs(command.sequence) do
-    if action_type:find('command') or action_type:find('operator') then
-      return true
-    end
-  end
-
-  return false
 end
 
 return utils

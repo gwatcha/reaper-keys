@@ -128,7 +128,7 @@ end
 
 function format.commandDescription(command)
   local desc = ""
-  for _, command_part  in pairs(command.parts) do
+  for _, command_part  in pairs(command.action_keys) do
     if type(command_part) == 'table' then
       local name = command_part[1]
       desc = desc .. '[' 

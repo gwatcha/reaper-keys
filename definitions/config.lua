@@ -4,4 +4,9 @@ return {
   persist_visual_track_selection = false,
   -- options in decreasing verbosity: [trace debug info warn user error fatal]
   log_level = 'trace',
+  repeatable_action_sequences_match = {
+    'command',
+    'operator',
+    'meta_command',
+  }
 }

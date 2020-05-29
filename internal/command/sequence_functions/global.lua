@@ -1,6 +1,6 @@
 local runner = require('command.runner')
 local log = require('utils.log')
-local state_functions = require('state_machine.state_functions')
+local state_interface = require('state_machine.state_interface')
 local config = require('definitions.config')
 
 function invalidSequenceCall(...)
@@ -10,8 +10,6 @@ end
 
 return {
   all_modes = {
-    {{ 'number', 'meta_command' }, invalidSequenceCall},
-    {{ 'meta_command'}, invalidSequenceCall},
     {
       { 'command' },
       function(action)
@@ -85,7 +83,7 @@ return {
       { 'timeline_operator' },
       function(timeline_operator)
         runner.runAction(timeline_operator)
-        state_functions.setModeToNormal()
+        state_interface.setModeToNormal()
         if not config['persist_visual_timeline_selection'] then
           runner.runAction("ClearTimeSelection")
         end

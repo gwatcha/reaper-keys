@@ -1,6 +1,6 @@
 local meta_command = {}
 
-local executor = require('command.executor')
+local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
 local saved = require('saved')
@@ -12,41 +12,37 @@ local regex_match_entry_types = require('command.constants').regex_match_entry_t
 
 local log = require('utils.log')
 
-function executeMultipleCommandOrMetaCommands(state, command, macro_commands, repetitions)
-  reaper.Undo_BeginBlock()
+function executeMacroCommands(state, command, macro_commands, repetitions)
   for i=1,repetitions do
     for i,macro_command in pairs(macro_commands) do
       if meta_command.isMetaCommand(macro_command) then
         meta_command.executeMetaCommand(state, macro_command)
       else
-        executor.dispatchCommand(macro_command, state['context'], state['mode'])
+        executeCommand(macro_command)
       end
     end
   end
-
-  reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. format.commandDescription(command), 1)
 end
 
 function executeCommandOrMetaCommand(state, command, repetitions)
-  if meta_command.isMetaCommand(command) then
-    reaper.Undo_BeginBlock()
-    for i=1,repetitions do
+  for i=1,repetitions do
+    if meta_command.isMetaCommand(command) then
       meta_command.executeMetaCommand(state, command)
+    else
+      executeCommand(command)
     end
-    reaper.Undo_EndBlock('reaper-keys: ' .. repetitions .. " * " .. format.commandDescription(command), 1)
-  else
-    executor.executeCommandMultipleTimes(command, repetitions)
   end
 end
 
 local commands = {
   ["PlayMacro"] = function(state, command)
     local repetitions = 1
-    if utils.getActionTypeValueInCommand(command, 'number') then
-      repetitions = utils.getActionTypeValueInCommand(command, 'number')
+    if utils.getActionTypeIndex(command, 'number') then
+      repetitions = utils.getActionTypeIndex(command, 'number')
     end
 
-    local register = command.parts[1].register
+    local register = command.action_keys[1].register
+
     if not register then
       log.error("Did not get register for RecordMacro, but command was triggered!")
       return state_machine_constants['reset_state']
@@ -54,7 +50,7 @@ local commands = {
 
     local macro_commands = saved.get('macros', register)
     if macro_commands then
-      executeMultipleCommandOrMetaCommands(state, command, macro_commands, repetitions)
+      executeMacroCommands(state, command, macro_commands, repetitions)
       if state['macro_recording'] then
         saved.append('macros', state['macro_register'], command)
       end
@@ -62,12 +58,11 @@ local commands = {
 
     local new_state = state
     new_state['last_command'] = command
-    new_state['key_sequence'] = ""
     return new_state
   end,
   ["RecordMacro"] = function(state, command)
     if not state['macro_recording'] then
-      local register = command.parts[1].register
+      local register = command.action_keys[1].register
       if not register then
         log.error("Did not get register for RecordMacro, but command was triggered!")
         return state_machine_constants['reset_state']
@@ -76,19 +71,27 @@ local commands = {
       saved.clear('macros', register)
       state['macro_register'] = register
       state['macro_recording'] = true
+    end
+
+    local new_state = state
+    return new_state
+  end,
+  ["StopRecordMacro"] = function(state, command)
+    if not state['macro_recording'] then
+      log.warn("No macro is recording.")
+      return
     else
       state['macro_recording'] = false
     end
 
     local new_state = state
-    new_state['last_command'] = command
-    new_state['key_sequence'] = ""
     return new_state
   end,
   ["RepeatLastCommand"] = function(state, command)
+    local num_i = utils.getActionTypeIndex(command, 'number')
     local repetitions = 1
-    if utils.getActionTypeValueInCommand(command, 'number') then
-      repetitions = utils.getActionTypeValueInCommand(command, 'number')
+    if num_i then
+      repetitions = command.action_values[num_i]
     end
 
     local last_command = state['last_command']
@@ -98,12 +101,11 @@ local commands = {
     end
 
     local new_state = state
-    new_state['key_sequence'] = ""
+    new_state['last_command'] = last_command
     return new_state
   end,
   ["ShowReaperKeysHelp"] = function(state, command)
     local new_state = state
-    new_state['key_sequence'] = ""
 
     local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
     log.user("Mode: " .. state['mode'] .. "   Context: " .. state['context'] .. '\n')
@@ -127,25 +129,28 @@ local commands = {
 }
 
 function meta_command.isMetaCommand(command)
-  for _, action_type in pairs(command.sequence) do
-    if action_type == "meta_command" then
-      return true
-    end
+  local i = utils.getActionTypeIndex(command, 'command')
+  local val = command.action_values[i]
+  if type(val) == 'table' and val['metaCommand'] then
+    return true
   end
   return false
 end
 
 function meta_command.executeMetaCommand(state, command)
   local meta_command_name = ""
-  for i,action_type in pairs(command.sequence) do
-    if action_type == 'meta_command' then
-      meta_command_name = command.parts[i]
-    end
+
+  local cmd_i = utils.getActionTypeIndex(command, 'command')
+  local meta_command_key = command.action_keys[cmd_i]
+
+  local meta_command_name = meta_command_key
+  if type(meta_command_key) ==  'table' then
+    meta_command_name = meta_command_key[1]
   end
 
   if not commands[meta_command_name] then
-    log.error("Unknown meta command: " .. meta_command_name)
-    log.error("Available meta commands are: " .. format.line(commands))
+    log.error('Unknown meta command: ' .. meta_command_name)
+    log.error('Available meta commands are: ' .. format.line(commands))
   end
 
   local new_state = commands[meta_command_name](state, command)

@@ -1,5 +1,5 @@
 local runner = require('command.runner')
-local state_functions = require('state_machine.state_functions')
+local state_interface = require('state_machine.state_interface')
 local config = require('definitions.config')
 
 return {
@@ -63,7 +63,7 @@ return {
       { 'track_operator' },
       function(track_operator)
         runner.runAction(track_operator)
-        state_functions.setModeToNormal()
+        state_interface.setModeToNormal()
         if not config['persist_visual_track_selection'] then
           local current_track = reaper.GetLastTouchedTrack()
           reaper.SetOnlyTrackSelected(current_track)

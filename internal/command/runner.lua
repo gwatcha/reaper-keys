@@ -4,7 +4,7 @@ local getAction = require('utils.get_action')
 local log = require('utils.log')
 local format = require('utils.format')
 local reaper_utils = require('custom_actions.utils')
-local state_functions = require('state_machine.state_functions')
+local state_interface = require('state_machine.state_interface')
 
 local runner = {}
 
@@ -103,16 +103,16 @@ function runner.extendTimelineSelection(movement, args)
   movement(table.unpack(args))
   local end_pos = reaper.GetCursorPosition()
 
-  if state_functions.getTimelineSelectionSide() == 'right' then
+  if state_interface.getTimelineSelectionSide() == 'right' then
     if end_pos <= left then
-      state_functions.setTimelineSelectionSide('left')
+      state_interface.setTimelineSelectionSide('left')
       reaper.GetSet_LoopTimeRange(true, false, end_pos, left, false)
     else
       reaper.GetSet_LoopTimeRange(true, false, left, end_pos, false)
     end
   else
     if end_pos >= right then
-      state_functions.setTimelineSelectionSide('right')
+      state_interface.setTimelineSelectionSide('right')
       reaper.GetSet_LoopTimeRange(true, false, right, end_pos, false)
     else
       reaper.GetSet_LoopTimeRange(true, false, end_pos, right, false)
@@ -123,7 +123,7 @@ end
 function runner.extendTrackSelection(movement, args)
   movement(table.unpack(args))
   local end_pos = reaper_utils.getTrackPosition()
-  local pivot_i = state_functions.getVisualTrackPivotIndex()
+  local pivot_i = state_interface.getVisualTrackPivotIndex()
 
   runner.runAction("UnselectTracks")
 

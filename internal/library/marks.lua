@@ -1,5 +1,5 @@
 local saved = require('saved')
-local state_functions = require('state_machine.state_functions')
+local state_interface = require('state_machine.state_interface')
 local reaper_utils = require('custom_actions.utils')
 local log = require('utils.log')
 local format = require('utils.format')
@@ -28,7 +28,7 @@ function marks.save(register)
   local mark = {}
 
   local current_position = reaper.GetCursorPosition()
-  local mode = state_functions.getMode()
+  local mode = state_interface.getMode()
   local track_position = reaper_utils.getTrackPosition()
 
   if mode == 'visual_timeline' then

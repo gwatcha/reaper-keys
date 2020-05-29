@@ -1,43 +1,14 @@
 local state_machine = {}
 
 local state_interface = require('state_machine.state_interface')
-local state_functions = require('state_machine.state_functions')
 local state_machine_constants = require('state_machine.constants')
-local meta_command = require('state_machine.meta_command')
 
-local executor = require('command.executor')
 local buildCommand = require('command.builder')
+local handleCommand = require('command.handler')
 local getPossibleFutureEntries = require('command.completer')
-local utils = require('command.utils')
 
-local saved = require('saved')
 local log = require('utils.log')
 local format = require('utils.format')
-
-function handleCommand(state, command)
-  local new_state = state
-
-  if meta_command.isMetaCommand(command) then
-    new_state = meta_command.executeMetaCommand(state, command)
-  else
-    if state['macro_recording'] then
-      saved.append('macros', state['macro_register'], command)
-    end
-    executor.executeCommand(command)
-    -- internal commands may have changed the state
-    if not state_functions.checkIfConsistentState(state) then
-      new_state = state_interface.get()
-    end
-
-    if utils.qualifiesAsRepeatableCommand(command) then
-      new_state['last_command'] = command
-    end
-    new_state['key_sequence'] = ""
-  end
-
-  local command_description = format.commandDescription(command)
-  return new_state, format.userInfo(new_state, command_description)
-end
 
 function updateWithKeyPress(state, key_press)
   local new_state = state
