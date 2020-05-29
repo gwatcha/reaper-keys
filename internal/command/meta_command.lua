@@ -1,5 +1,6 @@
 local meta_command = {}
 
+local command_constants = require('command.constants')
 local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
@@ -7,8 +8,10 @@ local saved = require('saved')
 local definitions = require('utils.definitions')
 local state_machine_constants = require('state_machine.constants')
 local sequences = require('command.sequences')
-
 local log = require('utils.log')
+
+
+local regex_match_entry_types = command_constants.regex_match_entry_types
 
 function executeMacroCommands(state, command, macro_commands, repetitions)
   for i=1,repetitions do

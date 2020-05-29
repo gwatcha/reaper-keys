@@ -3,7 +3,7 @@ return {
   persist_visual_timeline_selection = true,
   persist_visual_track_selection = false,
   -- options in decreasing verbosity: [trace debug info warn user error fatal]
-  log_level = 'user',
+  log_level = 'warn',
   repeatable_action_sequences_match = {
     'command',
     'operator',

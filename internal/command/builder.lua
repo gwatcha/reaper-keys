@@ -29,7 +29,6 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
   local command = {
     sequence = {},
     action_keys = {},
-    action_values = {},
   }
 
   local rest_of_sequence = key_sequence

@@ -160,8 +160,11 @@ end
 
 function utils.getTrackPosition()
   local last_touched_track = reaper.GetLastTouchedTrack()
-  local index = reaper.GetMediaTrackInfo_Value(last_touched_track, "IP_TRACKNUMBER") - 1
-  return index
+  if last_touched_track then
+    local index = reaper.GetMediaTrackInfo_Value(last_touched_track, "IP_TRACKNUMBER") - 1
+    return index
+  end
+  return nil
 end
 
 function utils.getSelectedTracks()
@@ -174,24 +177,53 @@ function utils.getSelectedTracks()
   return selected_tracks
 end
 
-function utils.setLastTouchedTrack(index)
-  local selected = utils.getSelectedTracksIndices()
+function utils.setTrackSelection(indices)
+  local ScrollToSelectedTracks = 40913
+  utils.unselectTracks()
+  if indices then
+    for _,track_index in ipairs(indices) do
+      local track = reaper.GetTrack(0, track_index)
+      if track then
+        reaper.SetTrackSelected(track, true)
+      end
+    end
+    reaper.Main_OnCommand(ScrollToSelectedTracks, 0)
+  end
+end
+
+function utils.scrollToPosition(pos)
+  local current_position = reaper.GetCursorPosition()
+  reaper.SetEditCurPos(pos, true, false)
+  reaper.SetEditCurPos(current_position, false, false)
+end
+
+function utils.setCurrentTrack(index)
+  local previously_selected = utils.getSelectedTrackIndices()
+  local previous_position = utils.getTrackPosition()
+
   local track = reaper.GetTrack(0, index)
   if track then
     reaper.SetOnlyTrackSelected(track)
     local SetFirstSelectedAsLastTouched = 40914
     reaper.Main_OnCommand(SetFirstSelectedAsLastTouched, 0)
-    utils.setTrackSelection(selected)
+
+    local new_selection = previously_selected
+    if previous_position and new_selection then
+      for i,selected_track_i in ipairs(new_selection) do
+        if selected_track_i == previous_position then
+          table.remove(new_selection, i)
+        end
+      end
+    end
+    table.insert(new_selection, index)
+    utils.setTrackSelection(new_selection)
   end
 end
 
-function utils.setTrackSelection(indices)
-  for _,track_index in ipairs(indices) do
-    local track = reaper.GetTrack(0, track_index)
-    if track then
-      reaper.SetTrackSelected(track, true)
-    end
-  end
+function utils.unselectAllButLastTouchedTrack()
+  local last_touched_i = utils.getTrackPosition()
+  local track = reaper.GetTrack(0, last_touched_i)
+  reaper.SetOnlyTrackSelected(track)
 end
 
 function utils.getSelectedTrackIndices()

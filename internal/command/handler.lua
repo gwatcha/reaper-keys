@@ -1,4 +1,4 @@
-local regex_match_entry_types = require('command.constants').regex_match_entry_types
+local command_constants = require('command.constants')
 local state_interface = require('state_machine.state_interface')
 local log = require('utils.log')
 local saved = require('saved')
@@ -7,6 +7,8 @@ local format = require('utils.format')
 local meta_command = require('command.meta_command')
 local executeCommand = require('command.executor')
 local config = require('definitions.config')
+
+local regex_match_entry_types = command_constants.regex_match_entry_types
 
 function utils.qualifiesAsRepeatableCommand(command)
   for _,action_type in ipairs(command.sequence) do

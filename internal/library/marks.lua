@@ -35,11 +35,15 @@ function marks.save(register)
     mark.type = 'region'
     mark.left, mark.right = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
     mark.position = mark.left
+    state_interface.setMode('normal')
+    reaper_utils.unselectAllButLastTouchedTrack()
   elseif mode == 'visual_track' then
     mark.type = 'track_selection'
     mark.position = current_position
     mark.track_position = track_position
     mark.track_selection = reaper_utils.getSelectedTrackIndices()
+    state_interface.setMode('normal')
+    reaper_utils.unselectAllButLastTouchedTrack()
   else
     mark.type = 'cursor_position'
     mark.position = current_position
@@ -56,7 +60,7 @@ function marks.moveTo(register)
   end
 
   if mark.type == 'track_selection' then
-    reaper_utils.setLastTouchedTrack(mark.track_position)
+    reaper_utils.setCurrentTrack(mark.track_position)
   else
     reaper.SetEditCurPos(mark.position, true, false)
   end
@@ -70,11 +74,10 @@ function marks.recall(register)
 
   if mark.type == 'region' then
     reaper.GetSet_LoopTimeRange(true, false, mark.left, mark.right, false)
-    mark.position = mark.left
-    mark.track_position = track_position
+    reaper_utils.scrollToPosition(mark.left)
     reaper.SetProjectMarker(mark.index, true, mark.left, mark.right, register)
   else
-    reaper_utils.setLastTouchedTrack(mark.track_position)
+    reaper_utils.setCurrentTrack(mark.track_position)
     if mark.type == 'track_selection' then
       reaper_utils.setTrackSelection(mark.track_selection)
     else

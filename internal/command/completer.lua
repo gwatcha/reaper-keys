@@ -1,10 +1,11 @@
 local sequences = require('command.sequences')
 local utils = require('command.utils')
 local definitions = require('utils.definitions')
-local regex_match_entry_types = require('command.constants').regex_match_entry_types
+local command_constants = require('command.constants')
 local log = require('utils.log')
-local getAction = require('utils.get_action')
 local format = require('utils.format')
+
+local regex_match_entry_types = command_constants.regex_match_entry_types
 
 function stripBegginingKeys(full_key_sequence, start_key_sequence)
   if #start_key_sequence >= #full_key_sequence then
