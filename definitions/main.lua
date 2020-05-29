@@ -18,7 +18,6 @@ return {
     ["<C-u>"] = "Prev5Track",
   },
   visual_track_command = {
-    ["o"] = "SwitchTrackSelectionSide",
     ["V"] = "SetModeNormal",
     ["<M-h>"] = "NudgeTrackPanLeft",
     ["<M-l>"] = "NudgeTrackPanRight",
