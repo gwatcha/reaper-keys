@@ -158,6 +158,7 @@ return {
       MidiPaste = {40011, midiCommand=true},
       MidiSaveNoteCCNames = 40410,
       MidiTimeSelectionEnd = {40881, midiCommand=true},
+      MidiTimeSelectionStart = {40880, midiCommand=true},
       MidiViewModeDrums = 40043,
       MidiViewModeEvent = 40056,
       MidiViewModeNotes = 40954,
@@ -462,7 +463,6 @@ return {
       TrimSelectedItemRightEdgeToEditCursor = 41311,
       TrimSelectedNoteLeftEdgeToEditCursor = 40790,
       TrimSelectedNoteRightEdgeToEditCursor = 40791,
-      =true},
       UnarmAllEnvelopes = 41163,
       UnarmSelectedTracks = "_XENAKIOS_SELTRAX_RECUNARMED",
       UncollapseFolder = "_SWS_UNCOLLAPSE",
@@ -493,6 +493,5 @@ return {
       ZoomTimeSelection = 40031,
       ZoomTrackSelection = "_SWS_VZOOMFITMIN",
       ZoomUndo = "_SWS_UNDOZOOM",
-      MidiTimeSelectionStart = {40880, midiCommand
       NudgeTrackVolumeDown = 40116, -- 0.05 dB
 }
