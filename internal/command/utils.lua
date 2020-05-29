@@ -80,10 +80,11 @@ end
 function utils.splitFirstKey(key_sequence)
   local first_char = str.sub(key_sequence, 1, 1)
   local first_key = first_char
-  if first_char == "<" then
+  if first_char == '<' then
     local control_key_regex = '(<[^(><)]*>)'
     local control_key = str.match(key_sequence, control_key_regex)
-    if control_key then
+    local second_char = str.sub(key_sequence, 2, 2)
+    if control_key and second_char ~= '<'then
       first_key = control_key
     end
   end
