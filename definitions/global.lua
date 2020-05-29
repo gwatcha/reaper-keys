@@ -105,6 +105,7 @@ return {
                   ["i"] = "SetTrackRecInput",
                   ["a"] = "SetTrackRecInput",
                   [","] = {"+options", {
+                             ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                              ["p"] = "ToggleRecordingPreroll",
                              ["z"] = "ToggleRecordingAutoScroll",
                              ["n"] = "SetRecordModeNormal",
@@ -198,7 +199,6 @@ return {
                  ["p"] = "TogglePlaybackPreroll",
                  ["v"] = "ToggleLoopSelectionFollowsTimeSelection",
                  ["s"] = "ToggleSnap",
-                 ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                  ["c"] = "CycleRippleEditMode",
                  ["m"] = "ToggleMetronome",
                  ["t"] = "ToggleStopAtEndOfTimeSelectionIfNoRepeat",
