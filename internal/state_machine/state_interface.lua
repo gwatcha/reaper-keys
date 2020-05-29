@@ -22,10 +22,9 @@ end
 function state_interface.get()
     local ok, state = table_io.read(state_file_path)
     if not ok then
-      log.error("Could not read state data from file, it may have become corrupted. Resetting.")
+      log.error("Could not read state data from file, got '" .. state .. "' instead. Resetting.")
       state = constants['reset_state']
     end
-
   return state
 end
 

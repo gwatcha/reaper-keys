@@ -6,9 +6,7 @@ local format = require('utils.format')
 local saved = require('saved')
 local definitions = require('utils.definitions')
 local state_machine_constants = require('state_machine.constants')
-local getPossibleFutureEntries = require('command.completer')
 local sequences = require('command.sequences')
-local regex_match_entry_types = require('command.constants').regex_match_entry_types
 
 local log = require('utils.log')
 
@@ -34,17 +32,19 @@ function executeCommandOrMetaCommand(state, command, repetitions)
   end
 end
 
-local commands = {
+local meta_commands = {
   ["PlayMacro"] = function(state, command)
     local repetitions = 1
-    if utils.getActionTypeIndex(command, 'number') then
-      repetitions = utils.getActionTypeIndex(command, 'number')
+    local num_i = utils.getActionTypeIndex(command, 'number')
+    if num_i then
+      repetitions = utils.getActionValue(command.action_keys[num_i], 'number')
     end
 
-    local register = command.action_keys[1].register
+    local cmd_i = utils.getActionTypeIndex(command, 'command')
+    local register = command.action_keys[cmd_i].register
 
     if not register then
-      log.error("Did not get register for RecordMacro, but command was triggered!")
+      log.error("Did not get register for PlayMacro, but command was triggered!")
       return state_machine_constants['reset_state']
     end
 
@@ -57,6 +57,7 @@ local commands = {
     end
 
     local new_state = state
+    new_state['key_sequence'] = ""
     new_state['last_command'] = command
     return new_state
   end,
@@ -64,34 +65,26 @@ local commands = {
     if not state['macro_recording'] then
       local register = command.action_keys[1].register
       if not register then
-        log.error("Did not get register for RecordMacro, but command was triggered!")
-        return state_machine_constants['reset_state']
+        -- may have triggered early, as this triggers with and without a
+        -- register appended
+        return state
       end
 
       saved.clear('macros', register)
       state['macro_register'] = register
       state['macro_recording'] = true
-    end
-
-    local new_state = state
-    return new_state
-  end,
-  ["StopRecordMacro"] = function(state, command)
-    if not state['macro_recording'] then
-      log.warn("No macro is recording.")
-      return
     else
       state['macro_recording'] = false
     end
 
-    local new_state = state
-    return new_state
+    state['key_sequence'] = ""
+    return state
   end,
   ["RepeatLastCommand"] = function(state, command)
-    local num_i = utils.getActionTypeIndex(command, 'number')
     local repetitions = 1
+    local num_i = utils.getActionTypeIndex(command, 'number')
     if num_i then
-      repetitions = command.action_values[num_i]
+      repetitions = utils.getActionValue(command.action_keys[num_i], 'number')
     end
 
     local last_command = state['last_command']
@@ -102,6 +95,7 @@ local commands = {
 
     local new_state = state
     new_state['last_command'] = last_command
+    new_state['key_sequence'] = ""
     return new_state
   end,
   ["ShowReaperKeysHelp"] = function(state, command)
@@ -124,36 +118,46 @@ local commands = {
       end
     end
 
+    new_state['key_sequence'] = ""
     return new_state
   end
 }
 
+function getMetaCommandFunctionForCommand(command)
+  local cmd_i = utils.getActionTypeIndex(command, 'command')
+  local command_key = command.action_keys[cmd_i]
+  if not command_key  then
+    return nil
+  end
+
+  local meta_command_name = command_key
+  if type(command_key) ==  'table' then
+    meta_command_name = command_key[1]
+  end
+
+  if not meta_commands[meta_command_name] then
+    return nil
+  end
+
+  return meta_commands[meta_command_name]
+end
+
+
 function meta_command.isMetaCommand(command)
-  local i = utils.getActionTypeIndex(command, 'command')
-  local val = command.action_values[i]
-  if type(val) == 'table' and val['metaCommand'] then
+  if getMetaCommandFunctionForCommand(command) then
     return true
   end
   return false
 end
 
 function meta_command.executeMetaCommand(state, command)
-  local meta_command_name = ""
-
-  local cmd_i = utils.getActionTypeIndex(command, 'command')
-  local meta_command_key = command.action_keys[cmd_i]
-
-  local meta_command_name = meta_command_key
-  if type(meta_command_key) ==  'table' then
-    meta_command_name = meta_command_key[1]
+  local meta_command_function = getMetaCommandFunctionForCommand(command)
+  if not meta_command_function then
+    log.warn('Unknown meta command: ' .. format.block(command))
+    log.warn('Available meta commands are: ' .. format.line(meta_commands))
   end
 
-  if not commands[meta_command_name] then
-    log.error('Unknown meta command: ' .. meta_command_name)
-    log.error('Available meta commands are: ' .. format.line(commands))
-  end
-
-  local new_state = commands[meta_command_name](state, command)
+  local new_state = meta_command_function(state, command)
   return new_state
 end
 

@@ -1,8 +1,19 @@
 local str = require('string')
 local log = require('utils.log')
 local ser = require('serpent')
+local command_constants = require('command.constants')
+local regex_match_entry_types = command_constants.regex_match_entry_types
+local regex_match_values = command_constants.regex_match_values
 
 local utils = {}
+
+function utils.checkIfActionIsRegisterOptional(action_name)
+  local action = getAction(action_name)
+  if action and type(action) == 'table' and action['registerOptional'] then
+    return true
+  end
+  return false
+end
 
 function utils.checkIfActionIsRegisterAction(action_name)
   local action = getAction(action_name)
@@ -93,6 +104,53 @@ function utils.getEntryForKeySequence(key_sequence, entries)
     return utils.getEntryForKeySequence(rest_of_key_sequence,  folder_table)
   end
   return nil
+end
+
+function table.shallow_copy(t)
+  local t2 = {}
+  for k,v in pairs(t) do
+    t2[k] = v
+  end
+  return t2
+end
+
+function utils.getActionValue(action_key, action_type)
+  if regex_match_entry_types[action_type] then
+    local matched = action_key
+    return regex_match_values[action_type](matched)
+  end
+
+  if type(action_key) ~= 'table' then
+    action_key = {action_key}
+  end
+
+  local action_name = action_key[1]
+  local action = getAction(action_name)
+  if not action then
+    log.error("Could not find action for " .. action_name)
+    return nil
+  end
+
+  local action_value = table.shallow_copy(action_key)
+  if type(action) == 'table' then
+    for k,v in pairs(action) do action_value[k] = v end
+  else
+    action_value[1] = action
+  end
+
+  return action_value
+end
+
+function utils.getActionValues(command)
+  local action_values = {}
+  for i,action_type in pairs(command.sequence) do
+      local action_value = utils.getActionValue(command.action_keys[i], action_type)
+      if not action_value then
+        return nil
+      end
+      table.insert(action_values, action_value)
+    end
+  return action_values
 end
 
 return utils

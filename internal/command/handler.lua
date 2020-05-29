@@ -39,9 +39,10 @@ function handleCommand(state, command)
     if new_state['macro_recording'] then
       saved.append('macros', state['macro_register'], command)
     end
+
+    new_state['key_sequence'] = ""
   end
 
-  new_state['key_sequence'] = ""
 
   reaper.Undo_EndBlock('reaper-keys: ' .. format.commandDescription(command), 1)
   local command_description = format.commandDescription(command)

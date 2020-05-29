@@ -39,7 +39,7 @@ end
 function runRegisterAction(registerAction)
   local register = registerAction['register']
   if not register then
-    log.error("Tried to run a register action but no got no register!")
+    log.error("Tried to run a register action but got no register!")
     return
   end
 

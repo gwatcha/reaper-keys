@@ -9,44 +9,15 @@ local log = require('utils.log')
 local str = require('string')
 
 local regex_match_entry_types = command_constants.regex_match_entry_types
-local regex_match_values = command_constants.regex_match_values
-
-function table.shallow_copy(t)
-  local t2 = {}
-  for k,v in pairs(t) do
-    t2[k] = v
-  end
-  return t2
-end
-
-function getActionValue(action_key)
-  local action_name = ""
-  if type(action_key) == 'table' then
-    action_name = action_key[1]
-  else
-    action_name = action_key
-  end
-
-  local action = getAction(action_name)
-  if not action then
-    log.error("Could not find action for " .. format.block(action_name))
-    return nil
-  end
-
-  if type(action_name) == 'table' then
-    local executable_action = table.shallow_copy(action_name)
-    for k,v in pairs(action) do executable_action[k] = v end
-    return executable_action
-  else
-    return action
-  end
-end
 
 function getActionKey(action_name, rest_of_sequence)
     if utils.checkIfActionIsRegisterAction(action_name) then
-    if rest_of_sequence == "" then
-      return nil
-    end
+      if rest_of_sequence == "" then
+        if utils.checkIfActionIsRegisterOptional(action_name) then
+          return action_name, rest_of_sequence
+        end
+        return nil
+      end
     register_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
     return {action_name, register = register_key}, rest_of_sequence
   end
@@ -69,7 +40,6 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
       if match then
         table.insert(command.sequence, action_type)
         table.insert(command.action_keys, match)
-        table.insert(command.action_values, regex_match_values[action_type](match))
       else
         return nil
       end
@@ -88,15 +58,9 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
             return nil
           end
 
-          local action_value = getActionValue(action_key)
-          if not action_value then
-            log.error('Failed to make action value for ' .. action_name)
-            return nil
-          end
 
           table.insert(command.sequence, action_type)
           table.insert(command.action_keys, action_key)
-          table.insert(command.action_values, action_value)
           break
         end
       end

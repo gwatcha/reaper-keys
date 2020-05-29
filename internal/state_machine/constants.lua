@@ -13,7 +13,7 @@ local constants = {
     last_command = {
       context = "main",
       mode = "normal",
-      parts = {
+      action_keys = {
         "NoOp"
       },
       sequence = {

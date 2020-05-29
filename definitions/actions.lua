@@ -252,7 +252,7 @@ return {
       Quantize = {40009, midiCommand=true},
       RecallMark = {lib.marks.recall, registerAction=true},
       RecordConditional = {"TransportStop", "ToggleRecordConditional"},
-      RecordMacro = {registerAction=true, metaCommand=true},
+      RecordMacro = {metaCommand=true, registerAction=true, registerOptional=true},
       StopRecordMacro = {metaCommand=true},
       RecordOrStop = "_SWS_RECTOGGLE",
       Record = {"SaveEditCursorPosition", "TimeSelectionStart", "RecordConditional", "RestoreEditCursorPosition", setTimeSelection=true},

@@ -54,7 +54,6 @@ return {
     ["."] = "RepeatLastCommand",
     ["@"] = "PlayMacro",
     ["q"] = "RecordMacro",
-    ["Q"] = "StopRecordMacro",
     ["m"] = "Mark",
     ["<C-'>"] = "DeleteMark",
     ["<C-r>"] = "Redo",
