@@ -87,8 +87,8 @@ return {
       ["m"] = { "+midi", {
                   ["x"] = "CloseWindow",
                   ["g"] = "SetMidiGridDivision",
+                  ["q"] = "Quantize",
                   [","] = {"+options", {
-                             ["q"] = "Quantize",
                              ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                              ["s"] = "ToggleMidiSnap",
 
