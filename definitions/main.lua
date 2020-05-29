@@ -20,17 +20,21 @@ return {
   visual_track_command = {
     ["o"] = "SwitchTrackSelectionSide",
     ["V"] = "SetModeNormal",
+    ["<M-h>"] = "NudgeTrackPanLeft",
+    ["<M-l>"] = "NudgeTrackPanRight",
+    ["<M-j>"] = "NudgeTrackVolumeDownBy1Tenth",
+    ["<M-k>"] = "NudgeTrackVolumeUpBy1Tenth",
   },
   track_selector = {
     ["V"] = "Selection",
     ["i"] = {"+inner", {
-               ["f"] = "InnerFolder",
-               ["F"] = "InnerFolderAndParent",
+               ["c"] = "InnerFolder",
+               ["f"] = "InnerFolderAndParent",
                ["g"] = "AllTracks",
     }},
-    ["F"] = "FolderParent",
     ["'"] = "RecallMark",
     ["c"] = "FolderChildren",
+    ["F"] = "FolderParent",
     ["f"] = "Folder",
   },
   track_operator = {

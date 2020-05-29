@@ -13,8 +13,6 @@ return {
     ["]"] = "LoopEnd",
     ["("] = "TimeSelectionStart",
     [")"] = "TimeSelectionEnd",
-    ["<left>"] = "PrevMarker",
-    ["<right>"] = "NextMarker",
     ["x"] = "MouseAndSnap",
     ["X"] = "Mouse",
     ["<M-h>"] = "Left10Pix",
