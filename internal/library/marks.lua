@@ -1,27 +1,47 @@
-local saved = require('saved')
+local project_io = require('utils.project_io')
 local state_interface = require('state_machine.state_interface')
 local reaper_utils = require('custom_actions.utils')
 local log = require('utils.log')
 local format = require('utils.format')
 
+local serpent = require('serpent')
+
 local marks = {}
 
+function countProjectMarkers()
+  local count = 0
+  local ok, num_markers, num_regions = reaper.CountProjectMarkers(0)
+  if ok and num_markers then
+    if num_markers then
+      count = count + num_markers
+    end
+    if num_regions then
+      count = count + num_regions
+    end
+  end
+  return count
+end
+
 function overwriteMark(mark, register)
-  local old_mark = saved.get('marks', register)
-  if old_mark and old_mark.type ~= 'track_selection' then
-    reaper.DeleteProjectMarkerByIndex(0, old_mark.index)
+  ok, old_mark = project_io.read('marks', register)
+  local next_marker_index = 0
+  if ok and old_mark and old_mark.type ~= 'track_selection' then
+      reaper.DeleteProjectMarkerByIndex(0, old_mark.index)
+      next_marker_index = old_mark.index
+  else
+    next_marker_index = countProjectMarkers()
   end
 
   if mark.type == 'region' then
     if not mark.left or not mark.right then
       return
     end
-    mark.index = reaper.AddProjectMarker(0, true, mark.left, mark.right, register, 0)
+    mark.index = reaper.AddProjectMarker(0, true, mark.left, mark.right, register, next_marker_index)
   elseif mark.type == 'cursor_position' then
-    mark.index = reaper.AddProjectMarker(0, false, mark.position, mark.position, register, 0)
+    mark.index = reaper.AddProjectMarker(0, false, mark.position, mark.position, register, next_marker_index)
   end
 
-  saved.overwrite('marks', register, mark)
+  project_io.write('marks', register, mark)
 end
 
 function marks.save(register)
@@ -54,8 +74,8 @@ function marks.save(register)
 end
 
 function marks.moveTo(register)
-  local mark = saved.get('marks', register)
-  if not mark then
+  local ok, mark = project_io.read('marks', register)
+  if not ok or not mark then
     return
   end
 
@@ -67,8 +87,8 @@ function marks.moveTo(register)
 end
 
 function marks.recall(register)
-  local mark = saved.get('marks', register)
-  if not mark then
+  local ok, mark = project_io.read('marks', register)
+  if not ok or not mark then
     return
   end
 
@@ -91,12 +111,12 @@ function marks.recall(register)
 end
 
 function marks.delete(register)
-  local old_mark = saved.get('marks', register)
-  if old_mark and old_mark.type ~= 'track_selection' then
+  local ok, old_mark = project_io.read('marks', register)
+  if ok and old_mark and old_mark.type ~= 'track_selection' then
     reaper.DeleteProjectMarkerByIndex(0, old_mark.index)
   end
 
-  saved.clear('marks', register)
+  project_io.clear('marks', register)
 end
 
 return marks
