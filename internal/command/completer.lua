@@ -81,7 +81,7 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
 
     local rest_of_sequence = stripBegginingKeys(entry_key_sequence, key_sequence)
     if rest_of_sequence then
-      possible_future_entries[rest_of_sequence] = entry_value
+      possible_future_entries[rest_of_sequence] = entry
     end
   end
 
