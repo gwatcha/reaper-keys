@@ -26,7 +26,7 @@ function makeExecutableAction(command_part)
 
   local action = getAction(action_name)
   if not action then
-    log.error("Could not find action for '" .. format.block(action_name) .. "'")
+    log.error("Could not find action for " .. format.block(action_name))
     return nil
   end
 
@@ -48,6 +48,9 @@ function makeExecutableCommandParts(command)
       table.insert(executable_command_parts, value)
     else
       local executable_action = makeExecutableAction(command.parts[i])
+      if not executable_action then
+        return nil
+      end
       table.insert(executable_command_parts, executable_action)
     end
   end

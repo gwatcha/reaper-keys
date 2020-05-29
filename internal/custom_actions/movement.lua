@@ -116,5 +116,13 @@ function movement.lastTrack()
   reaper.SetOnlyTrackSelected(last_track)
 end
 
+function movement.trackWithNumber()
+  local _, number = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
+  local track = reaper.GetTrack(0, number-1)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
+  end
+end
+
 
 return movement
