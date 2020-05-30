@@ -1,24 +1,24 @@
 
 # Table of Contents
 
-1.  [Configuration](#orgfc63f6f)
-    1.  [Key sequences / Bindings](#orgf26bbed)
-    2.  [Action Types](#orgd5b2d89)
-    3.  [Key Sequences](#org13f15b2)
-        1.  [All Modes](#org3d15c01)
-        2.  [Normal  Mode](#orgf5d0db4)
-        3.  [Visual Timeline Mode](#org45ef220)
-        4.  [Visual Track](#orgd655459)
-    4.  [Actions](#org556c866)
-    5.  [Advanced Configuration](#org85f92cc)
+1.  [Configuration](#org5964e2a)
+    1.  [Key sequences / Bindings](#orga280418)
+    2.  [Action Types](#org514f859)
+    3.  [Key Sequences](#org75c1f70)
+        1.  [All Modes](#org534ffad)
+        2.  [Normal  Mode](#orgb46f6ae)
+        3.  [Visual Timeline Mode](#org4d78eea)
+        4.  [Visual Track](#org9418a0e)
+    4.  [Actions](#orga214d7e)
+    5.  [Advanced Configuration](#orgaffcd37)
 
 
-<a id="orgfc63f6f"></a>
+<a id="org5964e2a"></a>
 
 # Configuration
 
 
-<a id="orgf26bbed"></a>
+<a id="orga280418"></a>
 
 ## Key sequences / Bindings
 
@@ -48,7 +48,7 @@ Actions may also be put into folders. To create a folder,  follow this format:
     }}, -- be sure to close the folder
 
 
-<a id="orgd5b2d89"></a>
+<a id="org514f859"></a>
 
 ## Action Types
 
@@ -130,7 +130,7 @@ Actions may also be put into folders. To create a folder,  follow this format:
 </table>
 
 
-<a id="org13f15b2"></a>
+<a id="org75c1f70"></a>
 
 ## Key Sequences
 
@@ -138,7 +138,7 @@ In which ways you may compose keys (i.e. the available key sequences) depends on
 Listed below are the valid action sequences in each mode.
 
 
-<a id="org3d15c01"></a>
+<a id="org534ffad"></a>
 
 ### All Modes
 
@@ -160,11 +160,6 @@ Listed below are the valid action sequences in each mode.
 
 
 <tr>
-<td class="org-left">`register_action`, `register_location`</td>
-</tr>
-
-
-<tr>
 <td class="org-left">`timeline_operator`, `timeline_selector`</td>
 </tr>
 
@@ -177,26 +172,11 @@ Listed below are the valid action sequences in each mode.
 <tr>
 <td class="org-left">`number`, `track_motion`</td>
 </tr>
-
-
-<tr>
-<td class="org-left">`number`, `meta_command`, `register_location`</td>
-</tr>
-
-
-<tr>
-<td class="org-left">`meta_command`, `register_location`</td>
-</tr>
-
-
-<tr>
-<td class="org-left">`meta_command`</td>
-</tr>
 </tbody>
 </table>
 
 
-<a id="orgf5d0db4"></a>
+<a id="orgb46f6ae"></a>
 
 ### Normal  Mode
 
@@ -251,7 +231,7 @@ Listed below are the valid action sequences in each mode.
 *return to normal mode via '<ESC'> by default*
 
 
-<a id="org45ef220"></a>
+<a id="org4d78eea"></a>
 
 ### Visual Timeline Mode
 
@@ -296,7 +276,7 @@ Listed below are the valid action sequences in each mode.
 *enter this mode by via 'v' by default.*
 
 
-<a id="orgd655459"></a>
+<a id="org9418a0e"></a>
 
 ### Visual Track
 
@@ -336,7 +316,7 @@ Listed below are the valid action sequences in each mode.
 *enter this mode via 'V' by default*
 
 
-<a id="org556c866"></a>
+<a id="orga214d7e"></a>
 
 ## Actions
 
@@ -406,7 +386,7 @@ The available options are:
 </table>
 
 
-<a id="org85f92cc"></a>
+<a id="orgaffcd37"></a>
 
 ## Advanced Configuration
 
