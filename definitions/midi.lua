@@ -6,7 +6,7 @@ return {
     ["d"] = "CutNotes",
     ["y"] = "CopyNotes",
     ["c"] = "FitNotes",
-    ["i"] = "InsertNote",
+    ["a"] = "InsertNote",
     ["g"] = "JoinNotes",
     ["s"] = "SelectNotes",
     ["z"] = "MidiZoomTimeSelection",

@@ -62,7 +62,6 @@ return {
     ["<M-d>"] = "CutEnvelopePoints",
     ["<M-y>"] = "CopyEnvelopePoints",
     ["<C-D>"] = "DeleteTimeline",
-    ["<M-i>"] = "InsertAutomationItem",
     ["g"] = "GlueItems",
     ["%"] = "HealSplits",
     [">"] = "GrowItemRight",
@@ -75,7 +74,8 @@ return {
             ["p"] = "FitByPadding",
             ["s"] = "FitByStretching",
     }},
-    ["i"] = "InsertOrExtendMidiItem",
+    ["a"] = "InsertOrExtendMidiItem",
+    ["<M-a>"] = "InsertAutomationItem",
   },
   timeline_selector = {
     ["s"] = "SelectedItems",
