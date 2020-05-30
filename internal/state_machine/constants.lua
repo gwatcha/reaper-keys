@@ -5,7 +5,6 @@ local constants = {
     mode = "normal",
     macro_recording = false,
     macro_register = "+",
-    macro_commands = {},
     timeline_selection_side = "left",
     last_searched_track_name = "^$",
     last_track_name_search_direction_was_forward = true,

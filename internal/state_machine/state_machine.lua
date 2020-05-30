@@ -35,7 +35,7 @@ function input(key_press)
   local message = ""
   local new_state, err = updateWithKeyPress(state, key_press)
   if err ~= nil then
-    new_state = state_machine_constants['reset_state']
+    new_state['key_sequence'] = ''
     message = format.userInfo(new_state, err)
   else
     log.info("New key sequence: " .. new_state['key_sequence'])
@@ -46,7 +46,8 @@ function input(key_press)
     else
       local future_entries = getPossibleFutureEntries(new_state)
       if not future_entries then
-        new_state, message = state_machine_constants['reset_state'], format.userInfo(state, "Undefined key sequence")
+        new_state['key_sequence'] = ''
+        message = format.userInfo(state, "Undefined key sequence")
       else
         message = format.userInfoWithCompletions(new_state, future_entries)
       end

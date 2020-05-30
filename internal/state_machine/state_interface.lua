@@ -97,8 +97,4 @@ function state_interface.setModeToNormal()
   state_interface.set(state)
 end
 
-function state_interface.resetFully()
-  state_interface.set(constants['reset_state'])
-end
-
 return state_interface
