@@ -1,6 +1,8 @@
 # Reaper-Keys
 
-<div style="text-align:center"><img src="img/reaper-keys.png" /></div>
+<p align="center">
+  <img width="460" height="300" src="img/reaper-keys.png">
+</p>
 
 Reaper-Keys is an extension for the [REAPER DAW](https://www.reaper.fm/), that provides a new action
 mapping system based on key sequences instead of key chords. The system is
