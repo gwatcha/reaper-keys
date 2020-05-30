@@ -1,7 +1,7 @@
 # Reaper-Keys
 
 <p align="center">
-  <img width="460" height="300" src="img/reaper-keys.png">
+  <img src="img/reaper-keys.png">
 </p>
 
 Reaper-Keys is an extension for the [REAPER DAW](https://www.reaper.fm/), that provides a new action
