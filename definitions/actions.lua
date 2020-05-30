@@ -446,6 +446,7 @@ return {
       ToggleMidiEditorUsesMainGridDivision = 42010,
       ToggleMidiSnap = {1014, midiCommand=true},
       ToggleMute = 6,
+      ToggleMuteItem = 40175,
       TogglePanEnvelope = 40407,
       TogglePlaybackAutoScroll = 40036,
       TogglePlaybackPreroll = 41818,

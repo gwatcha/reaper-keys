@@ -115,6 +115,7 @@ return {
                   ["co"] = "CycleItemFadeOutShape",
                   ["j"] = "NextTake",
                   ["k"] = "PrevTake",
+                  ["m"] = "ToggleMuteItem",
                   ["d"] = "DeleteActiveTake",
                   ["s"] = "CropToActiveTake",
                   ["e"] = "OpenMidiEditor",
