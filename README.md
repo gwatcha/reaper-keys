@@ -8,6 +8,8 @@ Reaper-Keys is an extension for the [REAPER DAW](https://www.reaper.fm/), that p
 mapping system based on key sequences instead of key chords. The system is
 similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal text editor, and by default comes with vim-like bindings.
 
+Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
+
 <a id="orgbaedca2"></a>
 
 ## Pros
