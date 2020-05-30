@@ -1,19 +1,6 @@
-# Table of Contents
-
-1.  [Reaper-Keys](#org3c1380e)
-    1.  [Pros](#orgbaedca2)
-    2.  [Features](#orga772014)
-        1.  [Bind key sequences](#orgba6e7da)
-        2.  [Compose actions](#org43150a4)
-        3.  [Multi-modal](#org67ec5f9)
-        4.  [Macros](#org00bfab6)
-    3.  [Installation](#orgc80dfd9)
-    4.  [Help](#org08b4794)
-    5.  [Configuration](#org1ecda81)
-
-<a id="org3c1380e"></a>
-
 # Reaper-Keys
+
+![img](img/reaper-keys.png)
 
 Reaper-Keys is an extension for the [REAPER DAW](https://www.reaper.fm/), that provides a new action
 mapping system based on key sequences instead of key chords. The system is
@@ -30,6 +17,20 @@ similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal t
 - Quick access to many key bindings
 
 <a id="orga772014"></a>
+
+# Table of Contents
+
+    1.  [Features](#orga772014)
+        1.  [Bind key sequences](#orgba6e7da)
+        2.  [Compose actions](#org43150a4)
+        3.  [Multi-modal](#org67ec5f9)
+        4.  [Macros](#org00bfab6)
+    2.  [Installation](#orgc80dfd9)
+    3.  [Help](#org08b4794)
+    4.  [Configuration](#org1ecda81)
+
+<a id="org3c1380e"></a>
+
 
 ## Features
 

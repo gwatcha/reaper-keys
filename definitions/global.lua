@@ -220,7 +220,7 @@ return {
                              ["c"] = "ViewFxChainMaster",
                   }},
                   ["e"] = { "+envelope", {
-                              ["s"] = "ToggleShowAllEnvelopeGlobal",
+                              ["t"] = "ToggleShowAllEnvelopeGlobal",
                   }},
                   ["t"] = { "+track", {
                       ["a"] = "ClearAllRecordArm",
