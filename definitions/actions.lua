@@ -424,6 +424,7 @@ return {
       SnapshotsSaveCurrent = "_SWSSNAPSHOT_SAVE",
       SplitAndSelectItemsInRegion = "_S&M_SPLIT11",
       SplitAtTimeSelection = 40061,
+      SplitItemsAtEditCursor = {40289, {"_XENAKIOS_SELITEMSUNDEDCURSELTX"},40757 ,40289},
       SplitItemsAtTimeSelection = custom.splitItemsAtTimeSelection,
       StartOfSel = {40440, midiCommand=true},
       StartStop = 40044,
