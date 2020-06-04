@@ -10,7 +10,6 @@ local state_machine_constants = require('state_machine.constants')
 local sequences = require('command.sequences')
 local log = require('utils.log')
 
-
 local regex_match_entry_types = command_constants.regex_match_entry_types
 
 function executeMacroCommands(state, command, macro_commands, repetitions)
@@ -144,7 +143,6 @@ function getMetaCommandFunctionForCommand(command)
 
   return meta_commands[meta_command_name]
 end
-
 
 function meta_command.isMetaCommand(command)
   if getMetaCommandFunctionForCommand(command) then

@@ -33,7 +33,6 @@ function mergeItemPositionsLists(item_positions_list)
   return merged_list
 end
 
-
 function getItemPositionsOnTracks(tracks)
   local item_positions_lists = {}
   for i=1,#tracks do

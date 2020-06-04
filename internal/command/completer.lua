@@ -92,7 +92,7 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   return possible_future_entries
 end
 
-function getFutureEntriesOnSequence(key_sequence, sequence, entries)
+function getFutureEntriesOnActionSequence(key_sequence, sequence, entries)
   if #sequence == 0 then return nil end
 
   local current_entry_type = sequence[1]
@@ -104,7 +104,7 @@ function getFutureEntriesOnSequence(key_sequence, sequence, entries)
     local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
     if match then
       table.remove(sequence, 1)
-      return getFutureEntriesOnSequence(rest_of_sequence, sequence, entries)
+      return getFutureEntriesOnActionSequence(rest_of_sequence, sequence, entries)
     end
   end
 
@@ -126,7 +126,7 @@ function getFutureEntriesOnSequence(key_sequence, sequence, entries)
 
     if entry then
       table.remove(sequence, 1)
-      return getFutureEntriesOnSequence(rest_of_sequence, sequence, entries)
+      return getFutureEntriesOnActionSequence(rest_of_sequence, sequence, entries)
     end
   end
 
@@ -142,7 +142,7 @@ function getPossibleFutureEntries(state)
   local future_entries = {}
   local future_entry_exists = false
   for _, sequence in pairs(sequences) do
-    local future_entries_on_sequence = getFutureEntriesOnSequence(state['key_sequence'], sequence, entries)
+    local future_entries_on_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], sequence, entries)
     if future_entries_on_sequence then
       future_entry_exists = true
       for key, entry in pairs(future_entries_on_sequence) do

@@ -143,5 +143,4 @@ function format.commandDescription(command)
   return desc
 end
 
-
 return format

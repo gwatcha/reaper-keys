@@ -45,11 +45,9 @@ function handleCommand(state, command)
     new_state['key_sequence'] = ""
   end
 
-
   reaper.Undo_EndBlock('reaper-keys: ' .. format.commandDescription(command), 1)
   local command_description = format.commandDescription(command)
   return new_state, format.userInfo(new_state, command_description)
 end
-
 
 return handleCommand

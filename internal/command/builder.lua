@@ -57,7 +57,6 @@ function buildCommandWithSequence(key_sequence, sequence, entries)
             return nil
           end
 
-
           table.insert(command.sequence, action_type)
           table.insert(command.action_keys, action_key)
           break
