@@ -14,12 +14,14 @@ end
 
 function library.setModeVisualTrack()
   local current_track = reaper.GetLastTouchedTrack()
-  reaper.SetOnlyTrackSelected(current_track)
+  if current_track then
+    reaper.SetOnlyTrackSelected(current_track)
 
-  local visual_track_pivot_i = reaper.GetMediaTrackInfo_Value(current_track, "IP_TRACKNUMBER") - 1
+    local visual_track_pivot_i = reaper.GetMediaTrackInfo_Value(current_track, "IP_TRACKNUMBER") - 1
 
-  state_interface.setMode('visual_track')
-  state_interface.setVisualTrackPivotIndex(visual_track_pivot_i)
+    state_interface.setMode('visual_track')
+    state_interface.setVisualTrackPivotIndex(visual_track_pivot_i)
+  end
 end
 
 function library.setModeVisualTimeline()
