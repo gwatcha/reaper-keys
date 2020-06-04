@@ -25,14 +25,14 @@ function getActionKey(action_name, rest_of_sequence)
 end
 
 -- FIXME long function
-function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
+function buildCommandWithSequence(key_sequence, sequence, entries)
   local command = {
     sequence = {},
     action_keys = {},
   }
 
   local rest_of_sequence = key_sequence
-  for _, action_type in pairs(action_sequence) do
+  for _, action_type in pairs(sequence) do
     local match_regex = regex_match_entry_types[action_type]
     if match_regex then
       match, rest_of_sequence = utils.splitFirstMatch(rest_of_sequence, match_regex)
@@ -66,7 +66,7 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
     end
   end
 
-  if #command.sequence ~= #action_sequence or #rest_of_sequence ~= 0 then
+  if #command.sequence ~= #sequence or #rest_of_sequence ~= 0 then
     return nil
   end
 
@@ -74,11 +74,11 @@ function buildCommandWithActionSequence(key_sequence, action_sequence, entries)
 end
 
 function buildCommand(state)
-  local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
+  local sequences = sequences.getPossibleSequences(state['context'], state['mode'])
   local entries = definitions.getPossibleEntries(state['context'])
 
-  for _, action_sequence in pairs(action_sequences) do
-    local command = buildCommandWithActionSequence(state['key_sequence'], action_sequence, entries)
+  for _, sequence in pairs(sequences) do
+    local command = buildCommandWithSequence(state['key_sequence'], sequence, entries)
     if command then
       command['mode'] = state['mode']
       command['context'] = state['context']

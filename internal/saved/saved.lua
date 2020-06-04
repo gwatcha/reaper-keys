@@ -14,7 +14,6 @@ end
 
 local saved = {}
 
-
 function saved.getAll(name)
   local ok, data = table_io.read(saved_data_dir .. name)
   if not ok then

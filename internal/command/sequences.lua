@@ -32,16 +32,16 @@ function getPossibleSequenceFunctionPairs(context, mode)
   return possible_sequence_function_pairs
 end
 
-function sequences.getPossibleActionSequences(context, mode)
+function sequences.getPossibleSequences(context, mode)
   local sequence_function_pairs = getPossibleSequenceFunctionPairs(context, mode)
 
-  local action_sequences = {}
+  local sequences = {}
   for _, sequence_function_pair in ipairs(sequence_function_pairs) do
-    local action_sequence = sequence_function_pair[1]
-    table.insert(action_sequences, action_sequence)
+    local sequence = sequence_function_pair[1]
+    table.insert(sequences, sequence)
   end
 
-  return action_sequences
+  return sequences
 end
 
 function checkIfSequencesAreEqual(seq1, seq2)
@@ -59,8 +59,8 @@ function sequences.getFunctionForCommand(command)
   local sequence_function_pairs = getPossibleSequenceFunctionPairs(command.context, command.mode)
 
   for _, sequence_function_pair in ipairs(sequence_function_pairs) do
-    local action_sequence = sequence_function_pair[1]
-    if checkIfSequencesAreEqual(command.sequence, action_sequence) then
+    local sequence = sequence_function_pair[1]
+    if checkIfSequencesAreEqual(command.sequence, sequence) then
       return sequence_function_pair[2]
     end
   end

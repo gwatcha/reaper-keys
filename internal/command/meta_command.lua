@@ -104,16 +104,16 @@ local meta_commands = {
   ["ShowReaperKeysHelp"] = function(state, command)
     local new_state = state
 
-    local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
+    local sequences = sequences.getPossibleSequences(state['context'], state['mode'])
     log.user("Mode: " .. state['mode'] .. "   Context: " .. state['context'] .. '\n')
 
-    log.user('Action sequences available: \n' .. format.actionSequences(action_sequences))
+    log.user('Action sequences available: \n' .. format.sequences(sequences))
 
     log.user('Bindings available for initial entry: \n')
     local entries = definitions.getPossibleEntries(state['context'])
     local types_seen = {}
-    for _,action_sequence in ipairs(action_sequences) do
-      local first_action_type = action_sequence[1]
+    for _,sequence in ipairs(sequences) do
+      local first_action_type = sequence[1]
       if not regex_match_entry_types[first_action_type] and not types_seen[first_action_type] then
         log.user('  >> ' .. first_action_type .. ':')
         log.user('  ' .. format.completions(entries[first_action_type]) .. '\n\n')

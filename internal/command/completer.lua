@@ -92,10 +92,10 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   return possible_future_entries
 end
 
-function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries)
-  if #action_sequence == 0 then return nil end
+function getFutureEntriesOnSequence(key_sequence, sequence, entries)
+  if #sequence == 0 then return nil end
 
-  local current_entry_type = action_sequence[1]
+  local current_entry_type = sequence[1]
 
   if regex_match_entry_types[current_entry_type] then
     if key_sequence == "" then
@@ -103,8 +103,8 @@ function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries
     end
     local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
     if match then
-      table.remove(action_sequence, 1)
-      return getFutureEntriesOnActionSequence(rest_of_sequence, action_sequence, entries)
+      table.remove(sequence, 1)
+      return getFutureEntriesOnSequence(rest_of_sequence, sequence, entries)
     end
   end
 
@@ -125,8 +125,8 @@ function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries
     local entry = utils.getEntryForKeySequence(sequence_to_try, entries_for_current_entry_type)
 
     if entry then
-      table.remove(action_sequence, 1)
-      return getFutureEntriesOnActionSequence(rest_of_sequence, action_sequence, entries)
+      table.remove(sequence, 1)
+      return getFutureEntriesOnSequence(rest_of_sequence, sequence, entries)
     end
   end
 
@@ -134,15 +134,15 @@ function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries
 end
 
 function getPossibleFutureEntries(state)
-  local action_sequences = sequences.getPossibleActionSequences(state['context'], state['mode'])
-  if not action_sequences then return nil end
+  local sequences = sequences.getPossibleSequences(state['context'], state['mode'])
+  if not sequences then return nil end
   local entries = definitions.getPossibleEntries(state['context'])
   if not entries then return nil end
 
   local future_entries = {}
   local future_entry_exists = false
-  for _, action_sequence in pairs(action_sequences) do
-    local future_entries_on_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], action_sequence, entries)
+  for _, sequence in pairs(sequences) do
+    local future_entries_on_sequence = getFutureEntriesOnSequence(state['key_sequence'], sequence, entries)
     if future_entries_on_sequence then
       future_entry_exists = true
       for key, entry in pairs(future_entries_on_sequence) do

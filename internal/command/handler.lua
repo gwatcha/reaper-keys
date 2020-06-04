@@ -12,7 +12,7 @@ local regex_match_entry_types = command_constants.regex_match_entry_types
 
 function utils.qualifiesAsRepeatableCommand(command)
   for _,action_type in ipairs(command.sequence) do
-    for _,action_type_match in ipairs(config.repeatable_action_sequences_match) do
+    for _,action_type_match in ipairs(config.repeatable_sequences_match) do
       if action_type:find(action_type_match) then
         return true
       end
