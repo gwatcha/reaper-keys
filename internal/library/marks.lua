@@ -43,9 +43,7 @@ function overwriteMark(mark, register)
   ok, old_mark = project_io.get('marks', register)
   local next_marker_index = 0
   if ok and old_mark and old_mark.type ~= 'track_selection' then
-      log.fatal("deleting old mark: " .. format.block(old_mark))
       if old_mark.index then
-        log.fatal("deleting old mark: " .. format.block(old_mark))
         if old_mark.type == 'region' then
           reaper.DeleteProjectMarker(0, old_mark.index, true)
         elseif old_mark.type == 'cursor_position' then
@@ -60,7 +58,6 @@ function overwriteMark(mark, register)
     mark.index = reaper.AddProjectMarker(0, false, mark.position, mark.position, register, -1)
   end
 
-  log.fatal("writing mark: " .. format.block(mark))
   project_io.overwrite('marks', register, mark)
 end
 
