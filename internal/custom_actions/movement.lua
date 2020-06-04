@@ -86,8 +86,9 @@ end
 function moveToNextItemEnd(item_positions)
   local current_position = reaper.GetCursorPosition()
   local next_position = nil
+  local tolerance = .002
   for _,item_position in pairs(item_positions) do
-    if not next_position and item_position.right > current_position then
+    if not next_position and item_position.right - tolerance > current_position then
       next_position = item_position.right
     elseif next_position and item_position.right < next_position and item_position.right > current_position then
       next_position = item_position.right

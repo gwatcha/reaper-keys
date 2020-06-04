@@ -45,4 +45,13 @@ function custom_actions.setGridDivision()
   end
 end
 
+-- this one avoids splitting all items across tracks in time selection, if no items are selected
+function custom_actions.splitItemsAtTimeSelection()
+  if reaper.CountSelectedMediaItems(0) == 0 then
+    return
+  end
+  local SplitAtTimeSelection = 40061
+  reaper.Main_OnCommand(SplitAtTimeSelection, 0)
+end
+
 return custom_actions
