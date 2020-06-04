@@ -120,5 +120,6 @@ return {
     ["P"] = "PasteAbove",
     ["yy"] = "CopyTrack",
     ["zz"] = "ScrollToSelectedTracks",
+    ["|"] = "SplitItemsAtEditCursor",
   },
 }

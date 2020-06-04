@@ -424,6 +424,8 @@ return {
       SnapshotsSaveCurrent = "_SWSSNAPSHOT_SAVE",
       SplitAndSelectItemsInRegion = "_S&M_SPLIT11",
       SplitAtTimeSelection = 40061,
+      SplitItemsAtEditCursor = {"UnselectItems", "SelectItemsUnderEditCursor", "SplitItemsUnderEditCursor", "UnselectItems"},
+      SplitItemsUnderEditCursor = 40757,
       SplitItemsAtTimeSelection = custom.splitItemsAtTimeSelection,
       StartOfSel = {40440, midiCommand=true},
       StartStop = 40044,
