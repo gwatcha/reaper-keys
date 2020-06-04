@@ -22,26 +22,46 @@ function countProjectMarkers()
   return count
 end
 
+function deleteMarksNotVisibleOnTimeline()
+  local ok, all_project_marks = project_io.getAll('marks')
+  if not ok then
+    return
+  end
+  for register,mark in pairs(all_project_marks) do
+    if mark.index then
+      local ok = reaper.EnumProjectMarkers(mark.index)
+      if not ok then
+        project_io.clear('marks', register)
+      end
+    end
+  end
+end
+
 function overwriteMark(mark, register)
-  ok, old_mark = project_io.read('marks', register)
+  deleteMarksNotVisibleOnTimeline()
+
+  ok, old_mark = project_io.get('marks', register)
   local next_marker_index = 0
   if ok and old_mark and old_mark.type ~= 'track_selection' then
-      reaper.DeleteProjectMarkerByIndex(0, old_mark.index)
-      next_marker_index = old_mark.index
-  else
-    next_marker_index = countProjectMarkers()
+      log.fatal("deleting old mark: " .. format.block(old_mark))
+      if old_mark.index then
+        log.fatal("deleting old mark: " .. format.block(old_mark))
+        if old_mark.type == 'region' then
+          reaper.DeleteProjectMarker(0, old_mark.index, true)
+        elseif old_mark.type == 'cursor_position' then
+          reaper.DeleteProjectMarker(0, old_mark.index, false)
+        end
+      end
   end
 
   if mark.type == 'region' then
-    if not mark.left or not mark.right then
-      return
-    end
-    mark.index = reaper.AddProjectMarker(0, true, mark.left, mark.right, register, next_marker_index)
+    mark.index = reaper.AddProjectMarker(0, true, mark.left, mark.right, register, -1)
   elseif mark.type == 'cursor_position' then
-    mark.index = reaper.AddProjectMarker(0, false, mark.position, mark.position, register, next_marker_index)
+    mark.index = reaper.AddProjectMarker(0, false, mark.position, mark.position, register, -1)
   end
 
-  project_io.write('marks', register, mark)
+  log.fatal("writing mark: " .. format.block(mark))
+  project_io.overwrite('marks', register, mark)
 end
 
 function marks.save(register)
@@ -56,7 +76,6 @@ function marks.save(register)
     mark.left, mark.right = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
     mark.position = mark.left
     state_interface.setMode('normal')
-    reaper_utils.unselectAllButLastTouchedTrack()
   elseif mode == 'visual_track' then
     mark.type = 'track_selection'
     mark.position = current_position
@@ -74,7 +93,7 @@ function marks.save(register)
 end
 
 function marks.moveTo(register)
-  local ok, mark = project_io.read('marks', register)
+  local ok, mark = project_io.get('marks', register)
   if not ok or not mark then
     return
   end
@@ -87,7 +106,7 @@ function marks.moveTo(register)
 end
 
 function marks.recall(register)
-  local ok, mark = project_io.read('marks', register)
+  local ok, mark = project_io.get('marks', register)
   if not ok or not mark then
     return
   end
@@ -111,9 +130,9 @@ function marks.recall(register)
 end
 
 function marks.delete(register)
-  local ok, old_mark = project_io.read('marks', register)
+  local ok, old_mark = project_io.get('marks', register)
   if ok and old_mark and old_mark.type ~= 'track_selection' then
-    reaper.DeleteProjectMarkerByIndex(0, old_mark.index)
+    reaper.DeleteProjectMarkerByIndex(0, old_mark.index - 1)
   end
 
   project_io.clear('marks', register)
