@@ -1,2 +1,3 @@
 internal/saved/data/*
+!/internal/saved/data/.gitkeep
 internal/state_machine/state.lua

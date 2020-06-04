@@ -10,7 +10,8 @@ end
 function selection.innerItem()
   local item_positions = utils.getItemPositionsOnSelectedTracks()
   local current_position = reaper.GetCursorPosition()
-  for i,item in pairs(item_positions) do
+  for i=#item_positions,1,-1 do
+    local item = item_positions[i]
     if item.left <= current_position and item.right >= current_position then
       reaper.GetSet_LoopTimeRange(true, false, item.left, item.right, false)
       break
@@ -21,7 +22,8 @@ end
 function selection.innerBigItem()
   local item_positions = utils.getBigItemPositionsOnSelectedTracks()
   local current_position = reaper.GetCursorPosition()
-  for i,item in pairs(item_positions) do
+  for i=#item_positions,1,-1 do
+    local item = item_positions[i]
     if item.left <= current_position and item.right >= current_position then
       reaper.GetSet_LoopTimeRange(true, false, item.left, item.right, false)
       break
