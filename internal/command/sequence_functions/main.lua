@@ -92,5 +92,21 @@ return {
         runner.extendTrackSelection(sel_function, args)
       end
     },
+    {
+      { 'timeline_motion' },
+      function(timeline_motion)
+        if config['allow_visual_track_timeline_movement'] then
+          runner.runAction(timeline_motion)
+        end
+      end
+    },
+    {
+      { 'number', 'timeline_motion' },
+      function(number, timeline_motion)
+        if config['allow_visual_track_timeline_movement'] then
+          runner.runActionNTimes(timeline_motion, number)
+        end
+      end
+    },
   }
 }
