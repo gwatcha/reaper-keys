@@ -214,6 +214,8 @@ return {
                              ["w"] = "ShowWiringDiagram",
                              ["t"] = "ShowTrackManager",
                              ["p"] = "Preferences",
+                             ["k"] = "ToggleRegionMarkerManager",
+                             ["j"] = "ProjectSettings",
                   }},
                   ["f"] = {"+fx", {
                              ["x"] = "FxCloseAll",
