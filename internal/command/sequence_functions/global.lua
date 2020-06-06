@@ -16,12 +16,6 @@ return {
         runner.runAction(action)
       end
     },
-    {
-      { 'number', 'command' },
-      function(number, action)
-        runner.runActionNTimes(action, number)
-      end
-    },
   },
   normal = {
     {
@@ -48,27 +42,9 @@ return {
       end
     },
     {
-      { 'timeline_operator', 'number', 'timeline_motion' },
-      function(timeline_operator, number, timeline_motion)
-        local start_sel, end_sel = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
-
-        runner.makeSelectionFromTimelineMotion(timeline_motion, number)
-        runner.runAction(timeline_operator)
-        if type(timeline_operator) ~= 'table' or not timeline_operator['setTimeSelection'] then
-          reaper.GetSet_LoopTimeRange(true, false, start_sel, end_sel, false)
-        end
-      end
-    },
-    {
       { 'timeline_motion' },
       function(timeline_motion)
         runner.runAction(timeline_motion)
-      end
-    },
-    {
-      { 'number', 'timeline_motion' },
-      function(number, timeline_motion)
-        runner.runActionNTimes(timeline_motion, number)
       end
     },
   },
@@ -100,14 +76,6 @@ return {
       function(timeline_motion)
         local args = {timeline_motion}
         local move_function = runner.runAction
-        runner.extendTimelineSelection(move_function, args)
-      end
-    },
-    {
-      { 'number', 'timeline_motion' },
-      function(number, timeline_motion)
-        local args = {timeline_motion, number}
-        local move_function = runner.runActionNTimes
         runner.extendTimelineSelection(move_function, args)
       end
     },

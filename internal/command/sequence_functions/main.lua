@@ -10,13 +10,7 @@ return {
       function(track_motion)
         runner.runAction(track_motion)
       end
-    },
-    {
-      { 'number', 'track_motion' },
-      function(number, track_motion)
-        runner.runActionNTimes(track_motion, number)
-      end
-    },
+    }
   },
   normal = {
     {
@@ -24,17 +18,6 @@ return {
       function(track_operator, track_motion)
         runner.runAction("SaveTrackSelection")
         runner.makeSelectionFromTrackMotion(track_motion, 1)
-        runner.runAction(track_operator)
-        if type(track_operator) ~= 'table' or not track_operator['setTrackSelection'] then
-          runner.runAction("RestoreTrackSelection")
-        end
-      end
-    },
-    {
-      { 'track_operator', 'number', 'track_motion' },
-      function(track_operator, number, track_motion)
-        runner.runAction("SaveTrackSelection")
-        runner.makeSelectionFromTrackMotion(track_motion, number)
         runner.runAction(track_operator)
         if type(track_operator) ~= 'table' or not track_operator['setTrackSelection'] then
           runner.runAction("RestoreTrackSelection")
@@ -85,26 +68,10 @@ return {
       end
     },
     {
-      { 'number', 'track_motion' },
-      function(number, track_motion)
-        local args = {track_motion, number}
-        local sel_function = runner.makeSelectionFromTrackMotion
-        runner.extendTrackSelection(sel_function, args)
-      end
-    },
-    {
       { 'timeline_motion' },
       function(timeline_motion)
         if config['allow_visual_track_timeline_movement'] then
           runner.runAction(timeline_motion)
-        end
-      end
-    },
-    {
-      { 'number', 'timeline_motion' },
-      function(number, timeline_motion)
-        if config['allow_visual_track_timeline_movement'] then
-          runner.runActionNTimes(timeline_motion, number)
         end
       end
     },

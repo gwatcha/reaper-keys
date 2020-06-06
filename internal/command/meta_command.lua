@@ -1,6 +1,5 @@
 local meta_command = {}
 
-local command_constants = require('command.constants')
 local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
@@ -9,8 +8,6 @@ local definitions = require('utils.definitions')
 local state_machine_constants = require('state_machine.constants')
 local sequences = require('command.sequences')
 local log = require('utils.log')
-
-local regex_match_entry_types = command_constants.regex_match_entry_types
 
 function executeMacroCommands(state, command, macro_commands, repetitions)
   for i=1,repetitions do
@@ -37,9 +34,8 @@ end
 local meta_commands = {
   ["PlayMacro"] = function(state, command)
     local repetitions = 1
-    local num_i = utils.getActionTypeIndex(command, 'number')
-    if num_i then
-      repetitions = utils.getActionValue(command.action_keys[num_i], 'number')
+    if command['prefixedRepetitions'] then
+      repetitions = command['prefixedRepetitions']
     end
 
     local cmd_i = utils.getActionTypeIndex(command, 'command')
@@ -64,29 +60,25 @@ local meta_commands = {
     return new_state
   end,
   ["RecordMacro"] = function(state, command)
-    if not state['macro_recording'] then
-      local register = command.action_keys[1].register
-      if not register then
-        -- may have triggered early, as this triggers with and without a
-        -- register appended
-        return state
-      end
-
-      saved.clear('macros', register)
-      state['macro_register'] = register
-      state['macro_recording'] = true
-    else
+    if state['macro_recording'] then
       state['macro_recording'] = false
+      state['key_sequence'] = ""
+    else
+      local register = command.action_keys[1]['register']
+      if register then
+        saved.clear('macros', register)
+        state['macro_register'] = register
+        state['macro_recording'] = true
+        state['key_sequence'] = ""
+      end
     end
 
-    state['key_sequence'] = ""
     return state
   end,
   ["RepeatLastCommand"] = function(state, command)
     local repetitions = 1
-    local num_i = utils.getActionTypeIndex(command, 'number')
-    if num_i then
-      repetitions = utils.getActionValue(command.action_keys[num_i], 'number')
+    if command['prefixedRepetitions'] then
+      repetitions = command['prefixedRepetitions']
     end
 
     local last_command = state['last_command']
@@ -113,7 +105,7 @@ local meta_commands = {
     local types_seen = {}
     for _,sequence in ipairs(sequences) do
       local first_action_type = sequence[1]
-      if not regex_match_entry_types[first_action_type] and not types_seen[first_action_type] then
+      if not types_seen[first_action_type] then
         log.user('  >> ' .. first_action_type .. ':')
         log.user('  ' .. format.completions(entries[first_action_type]) .. '\n\n')
         types_seen[first_action_type] = true
@@ -156,6 +148,7 @@ function meta_command.executeMetaCommand(state, command)
   if not meta_command_function then
     log.warn('Unknown meta command: ' .. format.block(command))
     log.warn('Available meta commands are: ' .. format.line(meta_commands))
+    return state_machine_constants['reset_state']
   end
 
   local new_state = meta_command_function(state, command)

@@ -1,23 +1,16 @@
 local str = require('string')
 local log = require('utils.log')
 local ser = require('serpent')
-local command_constants = require('command.constants')
-local regex_match_entry_types = command_constants.regex_match_entry_types
-local regex_match_values = command_constants.regex_match_values
 
 local utils = {}
 
-function utils.checkIfActionIsRegisterOptional(action_name)
-  local action = getAction(action_name)
-  if action and type(action) == 'table' and action['registerOptional'] then
-    return true
+function utils.checkIfActionHasOptionSet(action_name, parameter_name)
+  if utils.isFolder(action_name) then
+    return false
   end
-  return false
-end
 
-function utils.checkIfActionIsRegisterAction(action_name)
   local action = getAction(action_name)
-  if action and type(action) == 'table' and action['registerAction'] then
+  if action and type(action) == 'table' and action[parameter_name] then
     return true
   end
   return false
@@ -65,9 +58,6 @@ function utils.isFolder(entry_value)
 end
 
 function utils.splitFirstMatch(key_sequence, match_regex)
-  -- FIXME why is match_regex parameter nil when i can print it? this is
-  -- hardcoded for now so i don't lose my sanity
-  match_regex = '[1-9][0-9]*'
   local match = str.match(key_sequence, match_regex)
   if match then
     local rest_of_sequence = str.sub(key_sequence, str.len(match) + 1)
@@ -77,20 +67,34 @@ function utils.splitFirstMatch(key_sequence, match_regex)
   return nil, key_sequence
 end
 
-function utils.splitFirstKey(key_sequence)
-  local first_char = str.sub(key_sequence, 1, 1)
-  local first_key = first_char
-  if first_char == '<' then
-    local control_key_regex = '(<[^(><)]*>)'
-    local control_key = str.match(key_sequence, control_key_regex)
-    local second_char = str.sub(key_sequence, 2, 2)
-    if control_key and second_char ~= '<'then
-      first_key = control_key
+function utils.splitKeysIntoTable(key_sequence)
+  -- lua unfortunately has no '|' (or) operator in regex, so I make multiple and iterate
+  local key_capture_regex = {'(<[^<>]+>)', '(<[^<>]+[<>]>)', '.'}
+
+  local keys = {}
+  local i = 1
+  while i <= #key_sequence do
+    for _,capture_regex in ipairs(key_capture_regex) do
+      local next_key = string.match(key_sequence, capture_regex, i)
+      if next_key then
+        table.insert(keys, next_key)
+        i = i + #next_key
+        break
+      end
     end
   end
 
-  local rest_of_sequence = str.sub(key_sequence, str.len(first_key) + 1)
-  return first_key, rest_of_sequence
+  return keys
+end
+
+function utils.splitFirstKey(key_sequence)
+  local keys = utils.splitKeysIntoTable(key_sequence)
+  return keys[1], table.concat(keys, "", 2)
+end
+
+function utils.splitLastKey(key_sequence)
+  local keys = utils.splitKeysIntoTable(key_sequence)
+  return table.concat(keys, "", 1, #keys - 1), keys[#keys]
 end
 
 function utils.getEntryForKeySequence(key_sequence, entries)
@@ -116,11 +120,6 @@ function table.shallow_copy(t)
 end
 
 function utils.getActionValue(action_key, action_type)
-  if regex_match_entry_types[action_type] then
-    local matched = action_key
-    return regex_match_values[action_type](matched)
-  end
-
   if type(action_key) ~= 'table' then
     action_key = {action_key}
   end

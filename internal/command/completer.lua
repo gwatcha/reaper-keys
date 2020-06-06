@@ -1,11 +1,8 @@
 local sequences = require('command.sequences')
 local utils = require('command.utils')
 local definitions = require('utils.definitions')
-local command_constants = require('command.constants')
 local log = require('utils.log')
 local format = require('utils.format')
-
-local regex_match_entry_types = command_constants.regex_match_entry_types
 
 function stripBegginingKeys(full_key_sequence, start_key_sequence)
   if #start_key_sequence >= #full_key_sequence then
@@ -66,7 +63,7 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
 
   local entry = entries[key_sequence]
   if entry and not utils.isFolder(entry) then
-    if utils.checkIfActionIsRegisterAction(entry) then
+    if utils.checkIfActionHasOptionSet(action_name, 'registerAction') then
       return {"(register)"}
     end
     return nil
@@ -97,16 +94,17 @@ function getFutureEntriesOnActionSequence(key_sequence, sequence, entries)
 
   local current_entry_type = sequence[1]
 
-  if regex_match_entry_types[current_entry_type] then
-    if key_sequence == "" then
-      return {"(" .. current_entry_type .. ")"}
-    end
-    local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
-    if match then
-      table.remove(sequence, 1)
-      return getFutureEntriesOnActionSequence(rest_of_sequence, sequence, entries)
-    end
-  end
+  -- local match_regex = regex_match_action_types[current_entry_type]
+  -- if match_regex then
+  --   if key_sequence == "" then
+  --     return {"(" .. current_entry_type .. ")"}
+  --   end
+  --   local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
+  --   if match then
+  --     table.remove(sequence, 1)
+  --     return getFutureEntriesOnActionSequence(rest_of_sequence, sequence, entries)
+  --   end
+  -- end
 
   local entries_for_current_entry_type = entries[current_entry_type]
   if not entries_for_current_entry_type then return nil end
@@ -146,7 +144,9 @@ function getPossibleFutureEntries(state)
     if future_entries_on_sequence then
       future_entry_exists = true
       for key, entry in pairs(future_entries_on_sequence) do
-        future_entries[key] = entry
+        if not future_entries[key] then
+          future_entries[key] = entry
+        end
       end
     end
   end
