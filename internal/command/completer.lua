@@ -1,4 +1,4 @@
-local sequences = require('command.sequences')
+local action_sequences = require('command.action_sequences')
 local utils = require('command.utils')
 local definitions = require('utils.definitions')
 local log = require('utils.log')
@@ -34,7 +34,7 @@ function mergeEntries(t1, t2)
   end
   for key_seq,entry in pairs(t2) do
     if t1[key_seq] then
-      log.warn("Found key clash for sequence " .. key_seq .. " : " .. entryToString(t1[key_seq]) .. " and " .. entryToString(entry))
+      log.warn("Found key clash for action_sequence " .. key_seq .. " : " .. entryToString(t1[key_seq]) .. " and " .. entryToString(entry))
     end
     t1[key_seq] = entry
   end
@@ -89,10 +89,10 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
   return possible_future_entries
 end
 
-function getFutureEntriesOnActionSequence(key_sequence, sequence, entries)
+function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries)
   if #sequence == 0 then return nil end
 
-  local current_entry_type = sequence[1]
+  local current_entry_type = action_sequence[1]
 
   -- local match_regex = regex_match_action_types[current_entry_type]
   -- if match_regex then
@@ -101,8 +101,8 @@ function getFutureEntriesOnActionSequence(key_sequence, sequence, entries)
   --   end
   --   local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
   --   if match then
-  --     table.remove(sequence, 1)
-  --     return getFutureEntriesOnActionSequence(rest_of_sequence, sequence, entries)
+  --     table.remove(action_sequence, 1)
+  --     return getFutureEntriesOnActionSequence(rest_of_sequence, action_sequence, entries)
   --   end
   -- end
 
@@ -116,15 +116,15 @@ function getFutureEntriesOnActionSequence(key_sequence, sequence, entries)
   end
 
   local rest_of_sequence = key_sequence
-  local sequence_to_try = ""
+  local key_sequence_to_try = ""
   while #rest_of_sequence ~= 0 do
     first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
-    sequence_to_try = sequence_to_try .. first_key
-    local entry = utils.getEntryForKeySequence(sequence_to_try, entries_for_current_entry_type)
+    key_sequence_to_try = key_sequence_to_try .. first_key
+    local entry = utils.getEntryForKeySequence(key_sequence_to_try, entries_for_current_entry_type)
 
     if entry then
-      table.remove(sequence, 1)
-      return getFutureEntriesOnActionSequence(rest_of_sequence, sequence, entries)
+      table.remove(action_sequence, 1)
+      return getFutureEntriesOnActionSequence(rest_of_sequence, action_sequence, entries)
     end
   end
 
@@ -132,18 +132,18 @@ function getFutureEntriesOnActionSequence(key_sequence, sequence, entries)
 end
 
 function getPossibleFutureEntries(state)
-  local sequences = sequences.getPossibleSequences(state['context'], state['mode'])
-  if not sequences then return nil end
+  local action_sequences = action_sequences.getPossibleActionSequences(state['context'], state['mode'])
+  if not action_sequences then return nil end
   local entries = definitions.getPossibleEntries(state['context'])
   if not entries then return nil end
 
   local future_entries = {}
   local future_entry_exists = false
-  for _, sequence in pairs(sequences) do
-    local future_entries_on_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], sequence, entries)
+  for _, action_sequence in pairs(action_sequences) do
+    local future_entries_on_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], action_sequence, entries)
     if future_entries_on_sequence then
       future_entry_exists = true
-      for key, entry in pairs(future_entries_on_sequence) do
+      for key, entry in pairs(future_entries_on_action_sequence) do
         if not future_entries[key] then
           future_entries[key] = entry
         end

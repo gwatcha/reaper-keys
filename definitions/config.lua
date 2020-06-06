@@ -6,7 +6,7 @@ return {
   allow_visual_track_timeline_movement = true,
   -- options in decreasing verbosity: [trace debug info warn user error fatal]
   log_level = 'trace',
-  repeatable_sequences_match = {
+  repeatable_commands_action_type_match = {
     'command',
     'operator',
     'meta_command',

@@ -4,7 +4,7 @@ local state_interface = require('state_machine.state_interface')
 local config = require('definitions.config')
 
 function invalidSequenceCall(...)
-  log.error("An action sequence without a command function was called.")
+  log.error("An action action_sequence without a command function was called.")
   log.trace(debug.traceback())
 end
 

@@ -57,6 +57,11 @@ function runner.runAction(action)
     repetitions = action['repetitions']
   end
 
+  local prefixedRepetitions = 1
+  if action['prefixedRepetitions'] then
+    prefixedRepetitions = action['prefixedRepetitions']
+  end
+
   if action['registerAction'] then
     runRegisterAction(action)
     return
@@ -67,7 +72,7 @@ function runner.runAction(action)
     midi_command = true
   end
 
-  for i=1,repetitions do
+  for i=1,repetitions*prefixedRepetitions do
     for _, sub_action in ipairs(action) do
       if type(sub_action) == 'table' then
         runner.runAction(sub_action)

@@ -8,8 +8,8 @@ local executeCommand = require('command.executor')
 local config = require('definitions.config')
 
 function utils.qualifiesAsRepeatableCommand(command)
-  for _,action_type in ipairs(command.sequence) do
-    for _,action_type_match in ipairs(config.repeatable_sequences_match) do
+  for _,action_type in ipairs(command.action_sequence) do
+    for _,action_type_match in ipairs(config.repeatable_commands_action_type_match) do
       if action_type:find(action_type_match) then
         return true
       end

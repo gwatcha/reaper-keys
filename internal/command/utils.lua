@@ -24,7 +24,7 @@ function utils.checkIfCommandsAreEqual(command1, command2)
 end
 
 function utils.getActionTypeIndex(command, action_type)
-  for i,current_action_type in pairs(command.sequence) do
+  for i,current_action_type in pairs(command.action_sequence) do
     if current_action_type == action_type then
       return i
     end
@@ -143,7 +143,7 @@ end
 
 function utils.getActionValues(command)
   local action_values = {}
-  for i,action_type in pairs(command.sequence) do
+  for i,action_type in pairs(command.action_sequence) do
       local action_value = utils.getActionValue(command.action_keys[i], action_type)
       if not action_value then
         return nil

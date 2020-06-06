@@ -110,18 +110,18 @@ function format.userInfo(state, message)
   return str.format("%s\n%s", pretty_mode_bar, info_line)
 end
 
-function format.sequence(sequence)
+function format.actionSequence(action_sequence)
   local formatted = ''
-  for _,action in ipairs(sequence) do
+  for _,action in ipairs(action_sequence) do
     formatted = formatted .. action .. ' '
   end
   return formatted
 end
 
-function format.sequences(sequences)
+function format.actionSequences(action_sequences)
   local formatted = ''
-  for i,sequence in ipairs(sequences) do
-    formatted = formatted .. '  ' .. format.sequence(sequence) .. '\n'
+  for i,action_sequence in ipairs(action_sequences) do
+    formatted = formatted .. '  ' .. format.actionSequence(action_sequence) .. '\n'
   end
   return formatted
 end

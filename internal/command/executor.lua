@@ -1,6 +1,6 @@
 local log = require('utils.log')
 local format = require('utils.format')
-local sequences = require('command.sequences')
+local action_sequences = require('command.action_sequences')
 local utils = require('command.utils')
 
 function executeCommand(command)
@@ -10,9 +10,9 @@ function executeCommand(command)
     return
   end
 
-  local functionForCommand = sequences.getFunctionForCommand(command)
+  local functionForCommand = action_sequences.getFunctionForCommand(command)
   if not functionForCommand then
-    log.error('Did not find an associated action sequence function to execute for the command.')
+    log.error('Did not find an associated action action_sequence function to execute for the command.')
     return
   end
 

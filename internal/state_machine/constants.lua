@@ -15,7 +15,7 @@ local constants = {
       action_keys = {
         "NoOp"
       },
-      sequence = {
+      action_sequence = {
         "command"
       }
     }

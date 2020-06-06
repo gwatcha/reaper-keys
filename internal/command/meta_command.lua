@@ -6,7 +6,7 @@ local format = require('utils.format')
 local saved = require('saved')
 local definitions = require('utils.definitions')
 local state_machine_constants = require('state_machine.constants')
-local sequences = require('command.sequences')
+local action_sequences = require('command.action_sequences')
 local log = require('utils.log')
 
 function executeMacroCommands(state, command, macro_commands, repetitions)
@@ -33,17 +33,16 @@ end
 
 local meta_commands = {
   ["PlayMacro"] = function(state, command)
-    local repetitions = 1
-    if command['prefixedRepetitions'] then
-      repetitions = command['prefixedRepetitions']
-    end
-
     local cmd_i = utils.getActionTypeIndex(command, 'command')
-    local register = command.action_keys[cmd_i].register
-
+    local register = command.action_keys[cmd_i]['register']
     if not register then
       log.error("Did not get register for PlayMacro, but command was triggered!")
       return state_machine_constants['reset_state']
+    end
+
+    local repetitions = 1
+    if command.action_keys[cmd_i]['prefixedRepetitions'] then
+      repetitions = command.action_keys[cmd_i]['prefixedRepetitions']
     end
 
     local macro_commands = saved.get('macros', register)
@@ -95,16 +94,16 @@ local meta_commands = {
   ["ShowReaperKeysHelp"] = function(state, command)
     local new_state = state
 
-    local sequences = sequences.getPossibleSequences(state['context'], state['mode'])
+    local action_sequences = action_sequences.getPossibleActionSequences(state['context'], state['mode'])
     log.user("Mode: " .. state['mode'] .. "   Context: " .. state['context'] .. '\n')
 
-    log.user('Action sequences available: \n' .. format.sequences(sequences))
+    log.user('Action sequences available: \n' .. format.actionSequences(action_sequences))
 
     log.user('Bindings available for initial entry: \n')
     local entries = definitions.getPossibleEntries(state['context'])
     local types_seen = {}
-    for _,sequence in ipairs(sequences) do
-      local first_action_type = sequence[1]
+    for _,action_sequence in ipairs(action_sequences) do
+      local first_action_type = action_sequence[1]
       if not types_seen[first_action_type] then
         log.user('  >> ' .. first_action_type .. ':')
         log.user('  ' .. format.completions(entries[first_action_type]) .. '\n\n')
