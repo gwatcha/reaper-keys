@@ -75,9 +75,10 @@ local meta_commands = {
     return state
   end,
   ["RepeatLastCommand"] = function(state, command)
+    local cmd_i = utils.getActionTypeIndex(command, 'command')
     local repetitions = 1
-    if command['prefixedRepetitions'] then
-      repetitions = command['prefixedRepetitions']
+    if command.action_keys[cmd_i]['prefixedRepetitions'] then
+      repetitions = command.action_keys[cmd_i]['prefixedRepetitions']
     end
 
     local last_command = state['last_command']
