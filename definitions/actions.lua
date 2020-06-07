@@ -278,7 +278,7 @@ return {
       PrevTransientInItem = {"SaveItemSelection", "SelectItemsUnderEditCursor", "MoveEditCursorToPrevTransientInSelectedItems", "RestoreItemSelection"},
       ProjectEnd = custom.move.projectEnd,
       ProjectStart = custom.move.projectStart,
-      ProjectSettings = 40021,
+      ShowProjectSettings = 40021,
       ProjectTimeline = custom.select.innerProjectTimeline,
       Quantize = {40009, midiCommand=true},
       RecallMark = {lib.marks.recall, registerAction=true},

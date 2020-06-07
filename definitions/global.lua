@@ -215,7 +215,6 @@ return {
                              ["t"] = "ShowTrackManager",
                              ["p"] = "Preferences",
                              ["k"] = "ToggleRegionMarkerManager",
-                             ["j"] = "ProjectSettings",
                   }},
                   ["f"] = {"+fx", {
                              ["x"] = "FxCloseAll",
@@ -245,7 +244,7 @@ return {
                             ["r"] = "RenderProject",
                         }},
                 ["n"] = "NextTab",
-                ["p"] = "PrevTab",
+                ["p"] = "ShowProjectSettings",
                 ["N"] = "PrevTab",
                 ["s"] = "SaveProject",
                 ["o"] = "OpenProject",
