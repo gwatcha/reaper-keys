@@ -21,17 +21,16 @@ return {
     ["<C-l>"] = "Next4Beats",
     ["<C-H>"] = "Prev4Measures",
     ["<C-L>"] = "Next4Measures",
-    ["'"] = "RecallMark",
-    ["`"] = "MoveToMark",
+    ["`"] = "MarkedTimelinePosition",
   },
   timeline_operator = {
     ["r"] = "Record",
     ["t"] = "PlayAndLoop",
   },
   timeline_selector = {
+    ["~"] = "MarkedRegion",
     ["v"] = "TimeSelection",
     [";"] = "NextRegion",
-    ["'"] = "RecallMark",
     [","] = "PrevRegion",
     ["!"] = "LoopSelection",
     ["i"] = {"+inner", {
@@ -50,8 +49,8 @@ return {
   command = {
     ["."] = "RepeatLastCommand",
     ["@"] = "PlayMacro",
-    ["m"] = "Mark",
     ["q"] = "RecordMacro",
+    ["m"] = "Mark",
     ["<C-'>"] = "DeleteMark",
     ["<C-r>"] = "Redo",
     ["u"] = "Undo",

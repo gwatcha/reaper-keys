@@ -43,6 +43,10 @@ function runRegisterAction(registerAction)
     return
   end
 
+  if not type(registerAction[1]) == 'function' then
+    log.error("Did not get passed a proper function for the register action. Got " .. registerAction[1] .. " instead.")
+  end
+
   registerAction[1](register)
 end
 

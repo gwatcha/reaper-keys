@@ -13,7 +13,6 @@ return {
     ["k"] = "PrevTrack",
     ["<C-b>"] = "Prev10Track",
     ["<C-f>"] = "Next10Track",
-    ["`"] = "MoveToMark",
     ["<C-d>"] = "Next5Track",
     ["<C-u>"] = "Prev5Track",
   },
@@ -29,13 +28,13 @@ return {
     ["<M-K>"] = "NudgeTrackVolumeUpBy1",
   },
   track_selector = {
+    ["'"] = "MarkedTracks",
     ["V"] = "Selection",
     ["i"] = {"+inner", {
                ["c"] = "InnerFolder",
                ["f"] = "InnerFolderAndParent",
                ["g"] = "AllTracks",
     }},
-    ["'"] = "RecallMark",
     ["c"] = "FolderChildren",
     ["F"] = "FolderParent",
     ["f"] = "Folder",
