@@ -4,13 +4,22 @@ local ser = require('serpent')
 
 local utils = {}
 
-function utils.checkIfActionHasOptionSet(action_name, parameter_name)
+function utils.checkIfActionHasOptionsSet(action_name, option_names)
+  for _, option_name in ipairs(option_names) do
+    if not utils.checkIfActionHasOptionSet(action_name, option_name) then
+      return false
+    end
+  end
+  return true
+end
+
+function utils.checkIfActionHasOptionSet(action_name, option_name)
   if utils.isFolder(action_name) then
     return false
   end
 
   local action = getAction(action_name)
-  if action and type(action) == 'table' and action[parameter_name] then
+  if action and type(action) == 'table' and action[option_name] then
     return true
   end
   return false

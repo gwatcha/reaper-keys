@@ -44,8 +44,7 @@ function input(key_press)
       log.trace("Command built: " .. format.block(command))
       new_state, message = handleCommand(new_state, command)
     else
-      -- local future_entries = getPossibleFutureEntries(new_state)
-      local future_entries = {}
+      local future_entries = getPossibleFutureEntries(new_state)
       if not future_entries then
         new_state['key_sequence'] = ''
         message = format.userInfo(state, "Undefined key sequence")

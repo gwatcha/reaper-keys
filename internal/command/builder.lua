@@ -20,7 +20,7 @@ end
 function getActionKeyWithNumberPrefix(key_sequence, number_prefix, entries)
   local action_name = utils.getEntryForKeySequence(key_sequence, entries)
   if action_name and not utils.isFolder(action_name) then
-    if utils.checkIfActionHasOptionSet(action_name, 'prefixRepetitionCount') then
+    if utils.checkIfActionHasOptionSet(action_name, 'prefixRepetitionCount') and not utils.checkIfActionHasOptionSet(action_name, 'registerAction') then
       return {action_name, prefixedRepetitions = number_prefix}
     end
   end
@@ -28,8 +28,11 @@ function getActionKeyWithNumberPrefix(key_sequence, number_prefix, entries)
   local key_sequence, possible_register = utils.splitLastKey(key_sequence)
   local action_key = getActionKeyWithRegisterPostfix(key_sequence, possible_register, entries)
   if action_key then
-    action_key['prefixedRepetitions'] = number_prefix
-    return action_key
+    action_name = action_key[1]
+    if utils.checkIfActionHasOptionSet(action_name, 'prefixRepetitionCount') then
+      action_key['prefixedRepetitions'] = number_prefix
+      return action_key
+    end
   end
 
   return nil

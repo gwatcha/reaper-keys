@@ -9,6 +9,10 @@ function stripBegginingKeys(full_key_sequence, start_key_sequence)
     return nil
   end
 
+  if #start_key_sequence == 0 then
+    return full_key_sequence
+  end
+
   rest_of_sequence = ""
   for i=1,#start_key_sequence do
     next_key, rest_of_sequence = utils.splitFirstKey(full_key_sequence)
@@ -28,15 +32,44 @@ function entryToString(entry)
   return entry
 end
 
+function noNextTableEntry(t1)
+  if next(t1) == nil then
+    return true
+  end
+  return false
+end
+
+function filterEntries(options, entries)
+  local filtered_entries = {}
+  for key_seq,entry_val in pairs(entries) do
+    if utils.isFolder(entry_val) then
+      local folder = entry_val
+      local folder_name = folder[1]
+      local folder_table = folder[2]
+      local filtered_entries_for_folder = filterEntries(options, folder_table)
+      if not noNextTableEntry(filtered_entries_for_folder) then
+        filtered_entries[key_seq] = {folder_name, filtered_entries_for_folder}
+      end
+    else
+      local action_name = entry_val
+      if utils.checkIfActionHasOptionsSet(action_name, options) then
+        filtered_entries[key_seq] = entry_val
+      end
+    end
+  end
+
+  return filtered_entries
+end
+
 function mergeEntries(t1, t2)
   if not t2 then
     return t1
   end
-  for key_seq,entry in pairs(t2) do
+  for key_seq,entry_val in pairs(t2) do
     if t1[key_seq] then
-      log.warn("Found key clash for action_sequence " .. key_seq .. " : " .. entryToString(t1[key_seq]) .. " and " .. entryToString(entry))
+      log.warn("Found key clash for action_sequence " .. key_seq .. " : " .. entryToString(t1[key_seq]) .. " and " .. entryToString(entry_val))
     end
-    t1[key_seq] = entry
+    t1[key_seq] = entry_val
   end
 end
 
@@ -61,24 +94,28 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
 
   if key_sequence == "" then return entries end
 
-  local entry = entries[key_sequence]
-  if entry and not utils.isFolder(entry) then
-    if utils.checkIfActionHasOptionSet(action_name, 'registerAction') then
-      return {"(register)"}
-    end
-    return nil
-  end
-
   local possible_future_entries = {}
 
-  for entry_key_sequence,entry in pairs(entries) do
-    if utils.isFolder(entry) then
-      mergeFutureEntriesWithFolder(possible_future_entries, key_sequence, entry_key_sequence,  entry)
-    end
+  local number_match, key_sequence_no_number = utils.splitFirstMatch(key_sequence, '[1-9][0-9]*')
+  if number_match then
+    local number_prefix_entries = filterEntries({"prefixRepetitionCount"}, entries)
+    local possible_future_entries_if_number_prefix = getPossibleFutureEntriesForKeySequence(key_sequence_no_number, number_prefix_entries)
+    mergeEntries(possible_future_entries, possible_future_entries_if_number_prefix)
+  end
 
-    local rest_of_sequence = stripBegginingKeys(entry_key_sequence, key_sequence)
-    if rest_of_sequence then
-      possible_future_entries[rest_of_sequence] = entry
+  for entry_key_sequence,entry_val in pairs(entries) do
+    local completion_sequence = stripBegginingKeys(entry_key_sequence, key_sequence)
+    if completion_sequence then
+      possible_future_entries[completion_sequence] = entry_val
+    end
+    if utils.isFolder(entry_val) then
+      local folder = entry_val
+      mergeFutureEntriesWithFolder(possible_future_entries, key_sequence, entry_key_sequence, folder)
+    else
+      local action_name = entry_val
+      if key_sequence == entry_key_sequence and utils.checkIfActionHasOptionSet(action_name, 'registerAction') then
+        possible_future_entries["(key)"] = "(register)"
+      end
     end
   end
 
@@ -90,27 +127,15 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
 end
 
 function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries)
-  if #sequence == 0 then return nil end
+  if #action_sequence == 0 then return nil end
 
-  local current_entry_type = action_sequence[1]
+  local current_action_type = action_sequence[1]
 
-  -- local match_regex = regex_match_action_types[current_entry_type]
-  -- if match_regex then
-  --   if key_sequence == "" then
-  --     return {"(" .. current_entry_type .. ")"}
-  --   end
-  --   local match, rest_of_sequence = utils.splitFirstMatch(key_sequence, match_regex)
-  --   if match then
-  --     table.remove(action_sequence, 1)
-  --     return getFutureEntriesOnActionSequence(rest_of_sequence, action_sequence, entries)
-  --   end
-  -- end
+  local entries_for_current_action_type = entries[current_action_type]
+  if not entries_for_current_action_type then return nil end
+  if key_sequence == "" then return entries_for_current_action_type end
 
-  local entries_for_current_entry_type = entries[current_entry_type]
-  if not entries_for_current_entry_type then return nil end
-  if key_sequence == "" then return entries_for_current_entry_type end
-
-  local completions = getPossibleFutureEntriesForKeySequence(key_sequence, entries_for_current_entry_type)
+  local completions = getPossibleFutureEntriesForKeySequence(key_sequence, entries_for_current_action_type)
   if completions then
     return completions
   end
@@ -120,7 +145,7 @@ function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries
   while #rest_of_sequence ~= 0 do
     first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
     key_sequence_to_try = key_sequence_to_try .. first_key
-    local entry = utils.getEntryForKeySequence(key_sequence_to_try, entries_for_current_entry_type)
+    local entry = utils.getEntryForKeySequence(key_sequence_to_try, entries_for_current_action_type)
 
     if entry then
       table.remove(action_sequence, 1)
@@ -140,8 +165,8 @@ function getPossibleFutureEntries(state)
   local future_entries = {}
   local future_entry_exists = false
   for _, action_sequence in pairs(action_sequences) do
-    local future_entries_on_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], action_sequence, entries)
-    if future_entries_on_sequence then
+    local future_entries_on_action_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], action_sequence, entries)
+    if future_entries_on_action_sequence then
       future_entry_exists = true
       for key, entry in pairs(future_entries_on_action_sequence) do
         if not future_entries[key] then
