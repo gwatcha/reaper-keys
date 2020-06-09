@@ -213,6 +213,7 @@ return {
                              ["w"] = "ShowWiringDiagram",
                              ["t"] = "ShowTrackManager",
                              ["p"] = "Preferences",
+                             ["m"] = "ToggleRegionMarkerManager",
                   }},
                   ["f"] = {"+fx", {
                              ["x"] = "FxCloseAll",
@@ -242,8 +243,9 @@ return {
                             ["r"] = "RenderProject",
                         }},
                 ["n"] = "NextTab",
-                ["p"] = "PrevTab",
+                [","] = "ShowProjectSettings",
                 ["N"] = "PrevTab",
+                ["p"] = "PrevTab",
                 ["s"] = "SaveProject",
                 ["o"] = "OpenProject",
                 ["c"] = "NewProjectTab",
