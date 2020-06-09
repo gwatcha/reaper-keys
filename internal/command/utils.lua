@@ -4,6 +4,49 @@ local ser = require('serpent')
 
 local utils = {}
 
+function utils.stripBegginingKeys(full_key_sequence, start_key_sequence)
+  if #start_key_sequence >= #full_key_sequence then
+    return nil
+  end
+
+  if #start_key_sequence == 0 then
+    return full_key_sequence
+  end
+
+  rest_of_sequence = ""
+  for i=1,#start_key_sequence do
+    next_key, rest_of_sequence = utils.splitFirstKey(full_key_sequence)
+    next_key_in_start = utils.splitFirstKey(start_key_sequence)
+    if next_key_in_start ~= next_key then
+      return nil
+    end
+  end
+
+  return rest_of_sequence
+end
+
+function utils.filterEntries(options, entries)
+  local filtered_entries = {}
+  for key_seq,entry_val in pairs(entries) do
+    if utils.isFolder(entry_val) then
+      local folder = entry_val
+      local folder_name = folder[1]
+      local folder_table = folder[2]
+      local filtered_entries_for_folder = utils.filterEntries(options, folder_table)
+      if not noNextTableEntry(filtered_entries_for_folder) then
+        filtered_entries[key_seq] = {folder_name, filtered_entries_for_folder}
+      end
+    else
+      local action_name = entry_val
+      if utils.checkIfActionHasOptionsSet(action_name, options) then
+        filtered_entries[key_seq] = entry_val
+      end
+    end
+  end
+
+  return filtered_entries
+end
+
 function utils.checkIfActionHasOptionsSet(action_name, option_names)
   for _, option_name in ipairs(option_names) do
     if not utils.checkIfActionHasOptionSet(action_name, option_name) then
@@ -78,7 +121,7 @@ end
 
 function utils.splitKeysIntoTable(key_sequence)
   -- lua unfortunately has no '|' (or) operator in regex, so I make multiple and iterate
-  local key_capture_regex = {'(<[^<>]+>)', '(<[^<>]+[<>]>)', '.'}
+  local key_capture_regex = {'^(<[^<>]+>)', '^(<[^<>]+[<>]>)', '^.'}
 
   local keys = {}
   local i = 1

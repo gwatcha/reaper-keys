@@ -7,37 +7,6 @@ local log = require('utils.log')
 
 local str = require('string')
 
-function getActionKeyWithRegisterPostfix(key_sequence, register, entries)
-  local action_name = utils.getEntryForKeySequence(key_sequence, entries)
-  if action_name and not utils.isFolder(action_name) then
-    if utils.checkIfActionHasOptionSet(action_name, 'registerAction') or utils.checkIfActionHasOptionSet(action_name, 'registerOptional') then
-      return {action_name, register = register}
-    end
-  end
-  return nil
-end
-
-function getActionKeyWithNumberPrefix(key_sequence, number_prefix, entries)
-  local action_name = utils.getEntryForKeySequence(key_sequence, entries)
-  if action_name and not utils.isFolder(action_name) then
-    if utils.checkIfActionHasOptionSet(action_name, 'prefixRepetitionCount') and not utils.checkIfActionHasOptionSet(action_name, 'registerAction') then
-      return {action_name, prefixedRepetitions = number_prefix}
-    end
-  end
-
-  local key_sequence, possible_register = utils.splitLastKey(key_sequence)
-  local action_key = getActionKeyWithRegisterPostfix(key_sequence, possible_register, entries)
-  if action_key then
-    action_name = action_key[1]
-    if utils.checkIfActionHasOptionSet(action_name, 'prefixRepetitionCount') then
-      action_key['prefixedRepetitions'] = number_prefix
-      return action_key
-    end
-  end
-
-  return nil
-end
-
 function getActionKey(key_sequence, entries)
   local action_name = utils.getEntryForKeySequence(key_sequence, entries)
   if action_name and not utils.isFolder(action_name) and not utils.checkIfActionHasOptionSet(action_name, 'registerAction') then
@@ -46,12 +15,21 @@ function getActionKey(key_sequence, entries)
 
   local number_match, rest_of_key_sequence = utils.splitFirstMatch(key_sequence, '[1-9][0-9]*')
   if number_match then
-    return getActionKeyWithNumberPrefix(rest_of_key_sequence, tonumber(number_match), entries)
+    local num_prefix_entries = utils.filterEntries({"prefixRepetitionCount"}, entries)
+    local action_key = getActionKey(rest_of_key_sequence, num_prefix_entries)
+    if action_key then
+      if type(action_key) ~= 'table' then action_key = {action_key} end
+      action_key['prefixedRepetitions'] = tonumber(number_match)
+      return action_key
+    end
   end
 
-  local rest_of_key_sequence, possible_register = utils.splitLastKey(key_sequence)
-  local action_key = getActionKeyWithRegisterPostfix(rest_of_key_sequence, possible_register, entries)
-  if action_key then
+  local start_of_key_sequence, possible_register = utils.splitLastKey(key_sequence)
+  local reg_postfix_entries = utils.filterEntries({"registerAction"}, entries)
+  local register_action_name = utils.getEntryForKeySequence(start_of_key_sequence, reg_postfix_entries)
+  if register_action_name and not utils.isFolder(register_action_name) then
+    local action_key = {register_action_name}
+    action_key['register'] = possible_register
     return action_key
   end
 

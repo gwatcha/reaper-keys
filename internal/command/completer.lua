@@ -4,27 +4,6 @@ local definitions = require('utils.definitions')
 local log = require('utils.log')
 local format = require('utils.format')
 
-function stripBegginingKeys(full_key_sequence, start_key_sequence)
-  if #start_key_sequence >= #full_key_sequence then
-    return nil
-  end
-
-  if #start_key_sequence == 0 then
-    return full_key_sequence
-  end
-
-  rest_of_sequence = ""
-  for i=1,#start_key_sequence do
-    next_key, rest_of_sequence = utils.splitFirstKey(full_key_sequence)
-    next_key_in_start = utils.splitFirstKey(start_key_sequence)
-    if next_key_in_start ~= next_key then
-      return nil
-    end
-  end
-
-  return rest_of_sequence
-end
-
 function entryToString(entry)
   if utils.isFolder(entry) then
     return entry[1]
@@ -37,28 +16,6 @@ function noNextTableEntry(t1)
     return true
   end
   return false
-end
-
-function filterEntries(options, entries)
-  local filtered_entries = {}
-  for key_seq,entry_val in pairs(entries) do
-    if utils.isFolder(entry_val) then
-      local folder = entry_val
-      local folder_name = folder[1]
-      local folder_table = folder[2]
-      local filtered_entries_for_folder = filterEntries(options, folder_table)
-      if not noNextTableEntry(filtered_entries_for_folder) then
-        filtered_entries[key_seq] = {folder_name, filtered_entries_for_folder}
-      end
-    else
-      local action_name = entry_val
-      if utils.checkIfActionHasOptionsSet(action_name, options) then
-        filtered_entries[key_seq] = entry_val
-      end
-    end
-  end
-
-  return filtered_entries
 end
 
 function mergeEntries(t1, t2)
@@ -98,13 +55,13 @@ function getPossibleFutureEntriesForKeySequence(key_sequence, entries)
 
   local number_match, key_sequence_no_number = utils.splitFirstMatch(key_sequence, '[1-9][0-9]*')
   if number_match then
-    local number_prefix_entries = filterEntries({"prefixRepetitionCount"}, entries)
+    local number_prefix_entries = utils.filterEntries({"prefixRepetitionCount"}, entries)
     local possible_future_entries_if_number_prefix = getPossibleFutureEntriesForKeySequence(key_sequence_no_number, number_prefix_entries)
     mergeEntries(possible_future_entries, possible_future_entries_if_number_prefix)
   end
 
   for entry_key_sequence,entry_val in pairs(entries) do
-    local completion_sequence = stripBegginingKeys(entry_key_sequence, key_sequence)
+    local completion_sequence = utils.stripBegginingKeys(entry_key_sequence, key_sequence)
     if completion_sequence then
       possible_future_entries[completion_sequence] = entry_val
     end
