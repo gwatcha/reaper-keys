@@ -208,11 +208,11 @@ return {
       ["g"] = { "+global", {
                   ["g"] = "SetGridDivision",
                   ["dr"] = "ResetControlDevices",
+                  [","] = "ShowPreferences",
                   ["s"] = {"+show", {
                              ["x"] = "ShowRoutingMatrix",
                              ["w"] = "ShowWiringDiagram",
                              ["t"] = "ShowTrackManager",
-                             ["p"] = "Preferences",
                              ["m"] = "ToggleRegionMarkerManager",
                   }},
                   ["f"] = {"+fx", {
