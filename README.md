@@ -10,6 +10,7 @@ similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal t
 
 Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
 
+
 <a id="orgbaedca2"></a>
 
 ## Pros
@@ -132,12 +133,9 @@ action sequences for the current context and mode.
 
 If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
 
-Remember to set `ToggleLoop` option (`<SPC>,d`) in case recording unexcpectedly starts
-from beginning.
-
 <a id="org1ecda81"></a>
 
-## Configuration
 
-All you need to configure reaper-keys is under the `definitions` directory.  
-Take a look at the README file in there for more details.
+## Further Information
+
+Check out the [documentation](https://gwatcha.github.io/reaper-keys) to learn more.
