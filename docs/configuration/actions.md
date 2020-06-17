@@ -24,7 +24,7 @@ SelectFoldersChildren = "_SWS_SELCHILDREN2",
 Reaper-keys actions may also be a sequence of command id's, reaper-key
 action names, provided 'lib' functions, provided 'custom' functions, or any combination of them. 
 
-Here are more examples of action definitions.
+Here is a variety of action definitions that demonstrate this functionality.
 
 ``` lua
 SelectOnlyCurrentTrack = custom.select.onlyCurrentTrack,
@@ -45,13 +45,13 @@ You may have noticed that this action had an option set:
 UnselectAllEvents = {40214, midiCommand=true},
 ```
 
-There are various other options one can use as well.
+There are various other options one can use as well. 
 
 | Option                | Use                                                                                                  |
 | ------                | ---                                                                                                  |
 | repetitions           | Specifies the number of times to run the action                                                      |
-| midiCommand           | Indicates that the action id is from Reaper's 'MidiEditor' section                                   |
+| prefixRepetitionCount | Indicates a number may prefix the actions key binding which will indicate repetitions.               |
 | setTimeSelection      | Used with timeline operator actions to indicate it to keep the time selection it operated on, not restore the previous. |
 | setTrackSelection     | Used with track operator actions to indicate it to keep the track selection it operated on, not restore the previous. |
-| prefixRepetitionCount | Indicates a number may prefix the actions key binding which will indicate repetitions.               |
+| midiCommand           | Indicates that the action id is from Reaper's 'MidiEditor' section                                   |
 

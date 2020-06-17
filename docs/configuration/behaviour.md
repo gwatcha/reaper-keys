@@ -11,3 +11,8 @@ parent: Configuration
         └── config.lua
 
 The `config` file has entries that tweak reaper-keys behaviour. One example is how verbose it's logging should be.
+
+  ``` lua
+  -- options in decreasing verbosity: [trace debug info warn user error fatal]
+  log_level = 'warn',
+  ```

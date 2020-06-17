@@ -4,7 +4,13 @@ title: Action Composition
 
 # Action Composition
 
-In Reaper-Keys, actions have a type associated with them. 
+The main feature reaper-keys provides is the ability to compose actions of different types to create new commands. 
+
+How one can compose action types (i.e. the available _action sequences_) and their behaviour when joined is dependant on the [mode](modes) of reaper-keys. 
+
+Take as an example the `timeline motion` type as well as the `timeline operator` type. In normal mode, any `timeline motion` may precede any `timeline operator`. When this action sequence is entered, it will result in the `timeline operator` being called on the timeline section between the cursor position before the motion and after the motion.
+
+So one could enter <kbd>sL</kbd>, to create `(s = "SelectItems", L = "NextMeasure")`, and select the items up to the next measure.
 
 ## Action Types
 
@@ -19,4 +25,5 @@ In Reaper-Keys, actions have a type associated with them.
 | `track operator` | Executes a command that operates on a track selection |
 | `visual timeline command` | A command only available in visual timeline mode |
 | `visual track command` | A command only available in visual track mode |
+
 

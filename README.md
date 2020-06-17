@@ -57,10 +57,10 @@ is an example of navigating through the menu to render a project.
 ### Compose actions
 
 Reaper-keys lets one compose actions of different types to create new commands.
-For example, any `timeline motion` action can follow any `timeline operator`
-action, and any `number` can prefix a `timeline motion`.
 
-If one enters `c2L` it would compose into `(c = "Change", 2, L = "NextMeasure")`,
+For example, in normal mode, any action with `timeline motion` type can follow any one with `timeline operator` type. Also, most `timeline motion` types allow one to prefix a number to indicate repetitions.
+
+So if one enters `c2L` it would compose into `(c = "Change", L = [2, "NextMeasure"])`,
 and trigger a command to set up a record loop and record over the next 2 measures.
 
 ![img](img/change.gif)
