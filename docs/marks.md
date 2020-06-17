@@ -15,7 +15,7 @@ There are four actions that make use of stored marks.
 
 | Key            | Action Name            | Action Type         | Function                     |
 |----------------|------------------------|---------------------|------------------------------|
-| `\`` | MarkedTimelinePosition | `timeline motion`   | Recalls edit cursor position |
+| \` | MarkedTimelinePosition | `timeline motion`   | Recalls edit cursor position |
 | `'`   | MarkedTracks           | `track selector`    | Recalls selected tracks      |
 | `~` | MarkedRegion           | `timeline selector` | Recalls timeline selection   |
 | `<C-'>` | DeleteMark             | `command`           | Deletes a stored mark        |

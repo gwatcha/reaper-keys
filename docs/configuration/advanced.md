@@ -95,12 +95,16 @@ populate it with entries alike the above.
 
 ## Custom Actions
 
+### Relevant Files
+
     internal
     ├── custom_actions
     │   ├── custom_actions.lua
     │   ├── movement.lua
     │   ├── selection.lua
     │   └── utils.lua
+
+### Configuration
 
 To create a custom action, follow the examples in the `custom_actions` directory. This directory contains all the actions available via the `custom` import in the `actions` file. 
 
