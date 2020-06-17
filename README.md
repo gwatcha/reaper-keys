@@ -17,9 +17,8 @@ Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
 
 - Saving a couple minutes per hour
 - Developing arthritis at 60 instead of 40
-- Reduced mouse usage
-- A more fluid experience
-- Quick access to many key bindings
+- Ability to reduce mouse usage
+- Increased maximum bandwidth between your brain and the track your mixing
 
 <a id="orga772014"></a>
 
