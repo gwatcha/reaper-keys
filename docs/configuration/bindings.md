@@ -7,18 +7,24 @@ parent: Configuration
 
 # Bindings
 
+## Relevant Files
+
     ├── definitions
         ├── global.lua
         ├── main.lua
         └── midi.lua
 
+
+## Configuration
+
 The `global`, `main`, and `midi` files contain binding definitions (i.e. 'key sequence -> action' mappings)
+
 
 You may define or change key sequences for a specific context (in `main` or `midi`) or for all contexts (in `global`).
 
 The entries in these files are organized by `action type`.
 
-Here is an example snippet that declares some bindings in the `timeline_operators`
+Here is an example snippet that declares some bindings in the `timeline operator`
 action type section.
 
 ```lua

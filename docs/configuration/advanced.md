@@ -6,12 +6,15 @@ parent: Configuration
 ---
 
 # Advanced Configuration
+{: .no_toc}
 
 1. TOC
 {:toc}
 
 
 ## Action Sequences and Modes
+
+### Relevant Files
 
     internal
     ├── command
@@ -20,6 +23,8 @@ parent: Configuration
     │   │   ├── main.lua
     │   │   └── midi.lua
 
+
+### Configuration
 
 If you are interested in changing or creating modes, action types, or action action sequences, take a look at `action_sequence_functions` directory.
 
@@ -33,23 +38,19 @@ timeline_motion'`, with the accompanying 'glue' function that composes the actio
 -- in global.lua
 normal = {
   {
-    { 'timeline_operator', 'timeline_motion' },
-    function(timeline_operator, timeline_motion)
-      -- check out this link for the reaper api definitions
-      -- https://www.reaper.fm/sdk/reascript/reascripthelp.html
-      -- this gets the current time selection
+    { 'timeline_operator', 'timeline_selector' },
+    function(timeline_operator, timeline_selector)
       local start_sel, end_sel = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
-      -- runner provides utility functions to execute actions, and do other things
-      runner.makeSelectionFromTimelineMotion(timeline_motion, 1)
+      runner.runAction(timeline_selector)
       runner.runAction(timeline_operator)
+
       -- check if we were passed a table so we don't break when checking an option
       if type(timeline_operator) ~= 'table' or not timeline_operator['setTimeSelection'] then
-        -- revert the time selection because we were not specified not to
         reaper.GetSet_LoopTimeRange(true, false, start_sel, end_sel, false)
       end
     end
   },
-},
+  -- ... more action sequence functions
 ```
 
 When a key binding sequence triggers the action, it will be passed the values of
@@ -60,7 +61,7 @@ So in this case, if one types `tl`
 Reaper keys will find the entries "PlayAndLoop" and "NextBeat" in it's search in the definitions.
 
 ``` lua
--- in definitoins/global.lua the
+-- in definitions/global.lua the
   timeline_operator = {
     ["t"] = "Play",
   },

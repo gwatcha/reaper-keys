@@ -7,9 +7,13 @@ parent: Configuration
 
 # Actions
 
+## Relevant Files
+
     ├── definitions
         └── actions.lua
 
+
+## Configuration
 
 The `actions` file contains reaper-keys action definitions.
 

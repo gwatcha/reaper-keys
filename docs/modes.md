@@ -38,12 +38,12 @@ Return to normal mode via <kbd>ESC</kbd> by default.
 
 Enter this mode by via <kbd>v</kbd> by default.
 
-In this mode, `timeline_motion` and `timeline_selection` action types extend or set the current timeline selection.
+In this mode, `timeline motion` and `timeline selection` action types extend or set the current timeline selection.
 
-Also the `timeline_operator` type does not require a `timeline_motion` or `timeline_selector` to come before, as in normal mode, and instead operates immediately
+Also the `timeline operator` type does not require a `timeline motion` or `timeline selector` to come before, as in normal mode, and instead operates immediately
 on the current timeline selection and then exits visual timeline mode.
 
-It also allows for the execution of `visual_track_command` types.
+It also allows for the execution of `visual track command` types.
 
 ### Available Action Sequences
 
