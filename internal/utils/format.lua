@@ -5,6 +5,32 @@ local log = require('utils.log')
 
 local format = {}
 
+function pairsByKeys(t, f)
+  local a = {}
+  for n in pairs(t) do
+    table.insert(a, n)
+  end
+  table.sort(a, f)
+  local i = 0
+  local iter = function ()
+    i = i + 1
+    if a[i] == nil then
+      return nil
+    else
+      return a[i], t[a[i]]
+    end
+  end
+  return iter
+end
+
+function sortTableAlphabetically(table_to_sort)
+  local t = {}
+  for title,value in pairsByKeys(table_to_sort) do
+    table.insert(t, { title = title, value = value })
+  end
+  return t
+end
+
 function format.line(data)
   return ser.line(data, {comment=false})
 end
@@ -24,28 +50,32 @@ function format.completions(entries)
   local collapsed_entries = {}
   local entries_string = ""
 
-  for key_seq, value in pairs(entries) do
-    local pretty_key_seq = ""
-    local pretty_value = ""
-    if type(key_seq) == 'number' then
-      if value == '(number)' then
-        pretty_key_seq = '(num)'
-        pretty_value = '(times/select)'
-      elseif value == '(register)' then
-        pretty_key_seq = '(key)'
-        pretty_value = '(register location)'
-      end
-    else
-      pretty_key_seq = format.keySequence(key_seq, false)
-      pretty_value = value
-      if utils.isFolder(value) then
-        local folder_name = value[1]
-        pretty_value = folder_name
-      end
-    end
+  local sorted_entries = sortTableAlphabetically(entries)
+  for _, entry in ipairs(sorted_entries) do
+    local key_seq = entry['title']
+    local value = entry['value']
 
-    entry_string = str.format("%" .. max_seq_length + 1 .. "s -> %s", pretty_key_seq, pretty_value)
-    entries_string = entries_string .. "\n" .. entry_string
+      local pretty_key_seq = ""
+      local pretty_value = ""
+      if type(key_seq) == 'number' then
+        if value == '(number)' then
+          pretty_key_seq = '(num)'
+          pretty_value = '(times/select)'
+        elseif value == '(register)' then
+          pretty_key_seq = '(key)'
+          pretty_value = '(register location)'
+        end
+      else
+        pretty_key_seq = format.keySequence(key_seq, false)
+        pretty_value = value
+        if utils.isFolder(value) then
+          local folder_name = value[1]
+          pretty_value = folder_name
+        end
+      end
+
+      entry_string = str.format("%" .. max_seq_length + 1 .. "s -> %s", pretty_key_seq, pretty_value)
+      entries_string = entries_string .. "\n" .. entry_string
   end
 
   return entries_string
@@ -131,7 +161,7 @@ function format.commandDescription(command)
   for _, command_part  in pairs(command.action_keys) do
     if type(command_part) == 'table' then
       local name = command_part[1]
-      desc = desc .. '[' 
+      desc = desc .. '['
       for _,additional_args in pairs(command_part) do
         desc = desc .. ' ' .. additional_args
       end
