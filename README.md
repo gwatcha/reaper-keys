@@ -10,9 +10,6 @@ similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal t
 
 Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
 
-
-<a id="orgbaedca2"></a>
-
 ## Pros
 
 - Saving a couple minutes per hour
@@ -20,26 +17,19 @@ Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
 - Ability to reduce mouse usage
 - Increased maximum bandwidth between your brain and the track your mixing
 
-<a id="orga772014"></a>
-
 # Table of Contents
 
-1.  [Reaper-Keys](#org3c1380e)
-    1.  [Pros](#orgbaedca2)
-    2.  [Features](#orga772014)
-        1.  [Bind key sequences](#orgba6e7da)
-        2.  [Compose actions](#org43150a4)
-        3.  [Multi-modal](#org67ec5f9)
-        4.  [Macros](#org00bfab6)
-    3.  [Installation](#orgc80dfd9)
-    4.  [Help](#org08b4794)
-    5.  [Configuration](#org1ecda81)
+  1.  [Features](#Features)
+      1.  [Bind key sequences](#Bind key sequences)
+      2.  [Compose actions](#Compose actions)
+      3.  [Multi-modal](#Multi-modal)
+      4.  [Macros](#Macros)
+  3.  [Installation](#Installation)
+  4.  [Help](#Help)
+  5.  [Further Information](#Further Information)
 
-<a id="org3c1380e"></a>
 
 ## Features
-
-<a id="orgba6e7da"></a>
 
 ### Bind key sequences
 
@@ -51,8 +41,6 @@ A completion/feedback window is provided to assist with command completion. Here
 is an example of navigating through the menu to render a project.
 
 ![img](img/save.gif)
-
-<a id="org43150a4"></a>
 
 ### Compose actions
 
@@ -73,8 +61,6 @@ This grows the number of available actions exponentially but still preserves you
 brain, as you only need to know the `timeline_motions`, `timeline_operators`, and
 the fact that you can compose them.
 
-<a id="org67ec5f9"></a>
-
 ### Multi-modal
 
 Changing modes changes the way keys compose. By default, it is in `normal` mode, but you could for example go into `visual timeline` mode by pressing `v`.
@@ -84,8 +70,6 @@ visual feedback before executing a timeline action, or just want to extend the
 time selection using motion commands.
 
 ![img](img/mode.gif)
-
-<a id="org00bfab6"></a>
 
 ### Macros
 
@@ -105,8 +89,6 @@ Optionally, prefix it with a number to indicate the number of repetitions.
 Here is an example of recording and playing a macro that deletes item parts across
 two tracks in a ribbon style.
 
-<a id="orgc80dfd9"></a>
-
 ## Installation
 
 - Clone this repository or download it via the 'releases' tab (download the file 'reaper-keys.zip').
@@ -122,18 +104,12 @@ When you want to restore your old keymap, you must empty the `reaper-kb.ini` in 
 There was a bug with windows and osx path names that has been fixed since Wednesday, May 27th. If you downloaded the library before then, you will need to update it!
 Follow the instructions for reverting your keymap, and just reimport the updated one. Just be sure you delete the `REAPER/reaper-kb.ini` file.
 
-
-<a id="org08b4794"></a>
-
 ## Help
 
 Enter `<SPC>h` to print a list of available bindings, their action types, as well as the available
 action sequences for the current context and mode.
 
 If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
-
-<a id="org1ecda81"></a>
-
 
 ## Further Information
 
