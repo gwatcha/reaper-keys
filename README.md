@@ -20,8 +20,8 @@ Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
 # Table of Contents
 
   1.  [Features](#Features)
-      1.  [Bind key sequences](#Bind key sequences)
-      2.  [Compose actions](#Compose actions)
+      1.  [Bind key sequences](#Bind-key-sequences)
+      2.  [Compose actions](#Compose-actions)
       3.  [Multi-modal](#Multi-modal)
       4.  [Macros](#Macros)
   3.  [Installation](#Installation)
