@@ -3,11 +3,12 @@ title: Modes
 nav_order: 2
 ---
 
+# Modes
+{: .no_toc}
+
 #### Table of Contents
 1. TOC
 {:toc}
-
-# Modes
 
 
 Reaper-keys has multiple modes. Depending on the mode one is in, the available action sequences may change. The behaviour of action sequences may change as well.
