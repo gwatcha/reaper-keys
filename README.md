@@ -26,7 +26,7 @@ Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
       4.  [Macros](#Macros)
   3.  [Installation](#Installation)
   4.  [Help](#Help)
-  5.  [Further Information](#Further Information)
+  5.  [Further Information](#Further-Information)
 
 
 ## Features
