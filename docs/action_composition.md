@@ -13,6 +13,8 @@ Take as an example the `timeline motion` type as well as the `timeline operator`
 
 So one could enter <kbd>sL</kbd>, to create `(s = "SelectItems", L = "NextMeasure")`, and select the items up to the next measure.
 
+There are various action types in reaper-keys.
+
 ## Action Types
 
 | Action Type | Description |
@@ -28,3 +30,4 @@ So one could enter <kbd>sL</kbd>, to create `(s = "SelectItems", L = "NextMeasur
 | `visual track command` | A command only available in visual track mode |
 
 
+Check out the [modes](modes) documentation to learn about how these types compose together.

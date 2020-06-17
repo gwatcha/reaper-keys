@@ -96,13 +96,7 @@ two tracks in a ribbon style.
 - Back up your key map by exporting it, then import the provided keymap `reaper-keys.ReaperKeyMap` via the `import` button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
 - For all the actions to work, install the [SWS/S&M](https://sws-extension.org/) extension for Reaper.
 
-When you want to restore your old keymap, you must empty the `reaper-kb.ini` in your `REAPER` root directory and restart REAPER. Otherwise, there will likely be remnants from reaper-keys. 
-
-
-**Important Update:**
-
-There was a bug with windows and osx path names that has been fixed since Wednesday, May 27th. If you downloaded the library before then, you will need to update it!
-Follow the instructions for reverting your keymap, and just reimport the updated one. Just be sure you delete the `REAPER/reaper-kb.ini` file.
+When you restore your old keymap, you may want to empty the `reaper-kb.ini` in your `REAPER` root directory and restart REAPER. Otherwise, there will likely be remnants from reaper-keys.
 
 ## Help
 

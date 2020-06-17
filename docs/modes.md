@@ -34,6 +34,7 @@ Return to normal mode via <kbd>ESC</kbd> by default.
 | `track operator`->`track motion` | Executes the operator on the tracks between the start and end points of the motion |
 | `track operator`->`track selector` | Executes the operator on the selection specified by the selector |
 
+
 ## Visual Timeline Mode
 
 Enter this mode by via <kbd>v</kbd> by default.

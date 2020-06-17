@@ -108,6 +108,6 @@ populate it with entries alike the above.
 
 To create a custom action, follow the examples in the `custom_actions` directory. This directory contains all the actions available via the `custom` import in the `actions` file. 
 
-`reaper` is a global which provides access too the [reaper api](https://www.reaper.fm/sdk/reascript/reascripthelp.html#l)
+`reaper` is a global which provides access to the [reaper api](https://www.reaper.fm/sdk/reascript/reascripthelp.html#l)
 
 
