@@ -1,5 +1,4 @@
 ---
-layout: default
 title: Modes
 nav_order: 2
 has_children: true

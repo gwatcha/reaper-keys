@@ -1,6 +1,5 @@
 ---
 title: Action Composition
-layout: default
 ---
 
 # Action Composition
