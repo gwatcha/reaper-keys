@@ -13,11 +13,12 @@ If you are in visual track mode, the mark does not create anything apart from th
 
 There are four actions that make use of stored marks.
 
+
 | Key            | Action Name            | Action Type         | Function                     |
-|----------------|------------------------|---------------------|------------------------------|
-| \` | MarkedTimelinePosition | `timeline motion`   | Recalls edit cursor position |
-| `'`   | MarkedTracks           | `track selector`    | Recalls selected tracks      |
-| `~` | MarkedRegion           | `timeline selector` | Recalls timeline selection   |
-| `<C-'>` | DeleteMark             | `command`           | Deletes a stored mark        |
+| -------------- | ---------------------- | ------------------- | ---------------------------- |
+| ```````     | MarkedTimelinePosition | `timeline motion`   | Recalls edit cursor position |
+| `'`            | MarkedTracks           | `track selector`    | Recalls selected tracks      |
+| `~`            | MarkedRegion           | `timeline selector` | Recalls timeline selection   |
+| `<C-'>`        | DeleteMark             | `command`           | Deletes a stored mark        |
 
 These actions compose just like any other actions of their type. 
