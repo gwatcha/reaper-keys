@@ -120,5 +120,7 @@ return {
     ["yy"] = "CopyTrack",
     ["zz"] = "ScrollToSelectedTracks",
     ["|"] = "SplitItemsAtEditCursor",
+    ["'"] = "MarkedTracks",
+    ["~"] = "MarkedRegion",
   },
 }
