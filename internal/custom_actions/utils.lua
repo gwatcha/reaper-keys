@@ -130,8 +130,9 @@ function utils.getMatchedTrack(search_name, forward)
     else
       local _, current_name = reaper.GetTrackName(track, "")
       local has_no_name = current_name:match("Track ([0-9]+)", 1)
+      current_name = current_name:lower()
       tracks_searched = tracks_searched + 1
-      if not has_no_name and current_name:match(search_name) then
+      if not has_no_name and current_name:match(search_name:lower()) then
         return track
       end
     end
