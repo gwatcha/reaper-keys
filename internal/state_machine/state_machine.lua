@@ -12,12 +12,10 @@ local format = require('utils.format')
 
 function updateWithKeyPress(state, key_press)
   local new_state = state
-  local error_message = nil
   if state['key_sequence'] == "" then
     new_state['context'] = key_press['context']
   elseif state['context'] ~= key_press['context'] then
-    err = 'Undefined key sequence. Next key is in different context.'
-    return nil, err
+    return nil, 'Undefined key sequence. Next key is in different context.'
   end
 
   local new_key_sequence = state['key_sequence'] .. key_press['key']
