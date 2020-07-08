@@ -172,17 +172,17 @@ return {
                             }},
                  }},
       }},
+      ["c"] = {"+chain", {
+                 ["s"] = "FxChainToggleShow",
+                 ["i"] = "ViewFxChainInputCurrentTrack",
+                 ["di"] = "ClearFxChainInputCurrentTrack",
+                 ["d"] = "ClearFxChainCurrentTrack",
+                 ["y"] = "CopyFxChain",
+                 ["p"] = "PasteFxChain",
+      }},
       ["f"] = { "+fx", {
                   ["a"] = "FxAdd",
                   ["b"] = "TrackToggleFXBypass",
-                  ["c"] = {"+chain", {
-                            ["s"] = "FxChainToggleShow",
-                            ["i"] = "ViewFxChainInputCurrentTrack",
-                            ["di"] = "ClearFxChainInputCurrentTrack",
-                            ["d"] = "ClearFxChainCurrentTrack",
-                            ["y"] = "CopyFxChain",
-                            ["p"] = "PasteFxChain",
-                  }},
                   ["s"] = {"+show", {
                              ["1"] = "FxToggleShow1",
                              ["2"] = "FxToggleShow2",
