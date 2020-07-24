@@ -33,6 +33,7 @@ function input(key_press)
   local message = ""
   local new_state, err = updateWithKeyPress(state, key_press)
   if err ~= nil then
+    new_state = state
     new_state['key_sequence'] = ''
     message = format.userInfo(new_state, err)
   else
