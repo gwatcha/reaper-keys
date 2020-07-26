@@ -68,14 +68,14 @@ return {
     ["#"] = "SetItemFadeBoundaries",
     ["z"] = "ZoomTimeSelection",
     ["Z"] = "ZoomTimeAndTrackSelection",
-    ["c"] = {"+change/fit selected", {
-            ["f"] = "FitByLoopingNoShift",
-            ["l"] = "FitByLooping",
-            ["p"] = "FitByPadding",
-            ["s"] = "FitByStretching",
-    }},
     ["a"] = "InsertOrExtendMidiItem",
     ["<M-a>"] = "InsertAutomationItem",
+    ["c"] = {"+change/fit", {
+               ["f"] = "FitByLoopingNoShift",
+               ["l"] = "FitByLooping",
+               ["p"] = "FitByPadding",
+               ["s"] = "FitByStretching",
+    }},
   },
   timeline_selector = {
     ["s"] = "SelectedItems",
