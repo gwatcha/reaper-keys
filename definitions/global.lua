@@ -3,6 +3,7 @@ return {
     ["0"] = "ProjectStart",
     ["<C-$>"] = "ProjectEnd",
     ["f"] = "PlayPosition",
+    ["F"] = "PlayPositionAndSnap",
     ["["] = "LoopStart",
     ["]"] = "LoopEnd",
     ["x"] = "MouseAndSnap",
@@ -92,7 +93,6 @@ return {
                   [","] = {"+options", {
                              ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                              ["s"] = "ToggleMidiSnap",
-
                   }},
       }},
       ["r"] = { "+recording", {
@@ -121,6 +121,11 @@ return {
                   ["n"] = "ItemNormalize",
                   ["r"] = "ItemApplyFX",
                   ["g"] = "GroupItems",
+                  ["t"] = { "+timebase", {
+                              ["t"] = "SetItemsTimebaseToTime",
+                              ["b"] = "SetItemsTimebaseToBeatsPos",
+                              ["r"] = "SetItemsTimebaseToBeatsPosLengthAndRate",
+                  }},
       }},
       ["t"] = { "+track", {
                   ["n"] = "ResetTrackToNormal",
@@ -194,7 +199,7 @@ return {
                              ["8"] = "FxToggleShow8",
                   }},
       }},
-      [","] = {"+options", {
+      [","] = {"+general options", {
                  ["p"] = "TogglePlaybackPreroll",
                  ["v"] = "ToggleLoopSelectionFollowsTimeSelection",
                  ["s"] = "ToggleSnap",
@@ -204,6 +209,11 @@ return {
                  ["i"] = "ToggleAutoCrossfade",
                  ["zt"] = "TogglePlaybackAutoScroll",
                  ["e"] = "ToggleEnvelopePointsMoveWithItems",
+                 ["t"] = { "+timebase", {
+                             ["t"] = "SetProjectTimebaseToTime",
+                             ["b"] = "SetProjectTimebaseToBeatsPos",
+                             ["r"] = "SetProjectTimebaseToBeatsPosLengthAndRate",
+                 }},
       }},
       ["g"] = { "+global", {
                   ["g"] = "SetGridDivision",
@@ -241,7 +251,7 @@ return {
                 ["r"] = { "+render", {
                             ["."] = "RenderProjectWithLastSetting",
                             ["r"] = "RenderProject",
-                        }},
+                }},
                 ["n"] = "NextTab",
                 [","] = "ShowProjectSettings",
                 ["N"] = "PrevTab",
