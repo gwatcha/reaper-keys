@@ -1,5 +1,6 @@
 local meta_command = {}
 
+local action_list = require('gui.action_list')
 local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
@@ -112,6 +113,12 @@ local meta_commands = {
       end
     end
 
+    new_state['key_sequence'] = ""
+    return new_state
+  end,
+  ["ShowReaperKeysActionList"] = function(state, command)
+    action_list.open(state)
+    local new_state = state
     new_state['key_sequence'] = ""
     return new_state
   end

@@ -31,4 +31,8 @@ function definitions.getPossibleEntries(context)
   return concatEntryTables(definition_tables['global'], definition_tables[context])
 end
 
+function definitions.getAllEntries()
+  return definition_tables
+end
+
 return definitions

@@ -115,6 +115,11 @@ function format.userInfoWithCompletions(state, future_entries)
 end
 
 function format.userInfo(state, message)
+  if not state then
+    log.error("Could not print state information, state is nil!")
+    log.error(debug.traceback())
+  end
+
   local chars_for_modes = {
     normal = "·",
     visual_timeline = "»",

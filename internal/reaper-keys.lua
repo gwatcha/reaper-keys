@@ -9,11 +9,13 @@ if windows_files then
   package.path = package.path .. ";" .. internal_root_path .. "?\\?.lua"
   package.path = package.path .. ";" .. internal_root_path .. "vendor\\share\\lua\\5.3\\?.lua"
   package.path = package.path .. ";" .. internal_root_path .. "vendor\\share\\lua\\5.3\\?\\init.lua"
+  package.path = package.path .. ";" .. internal_root_path .. "vendor\\scythe\\?.lua"
 else
   package.path = package.path .. ";" .. internal_root_path .. "../definitions/?.lua"
   package.path = package.path .. ";" .. internal_root_path .. "?/?.lua"
   package.path = package.path .. ";" .. internal_root_path .. "vendor/share/lua/5.3/?.lua"
   package.path = package.path .. ";" .. internal_root_path .. "vendor/share/lua/5.3/?/init.lua"
+  package.path = package.path .. ";" .. internal_root_path .. "vendor/scythe/?.lua"
 end
 
 local input = require('state_machine')

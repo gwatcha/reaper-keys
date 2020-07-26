@@ -84,7 +84,8 @@ return {
     ["dr"] = "RemoveRegion",
     ["!"] = "ToggleLoop",
     ["<SPC>"] = { "+leader commands", {
-      ["<SPC>"] = "ShowActionList",
+      ["<SPC>"] = "ShowReaperKeysActionList",
+      ["<C-SPC>"] = "ShowActionList",
       ["h"] = "ShowReaperKeysHelp",
       ["m"] = { "+midi", {
                   ["x"] = "CloseWindow",

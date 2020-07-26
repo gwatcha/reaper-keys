@@ -18,6 +18,13 @@ local constants = {
       action_sequence = {
         "command"
       }
+    },
+    action_list_window = {
+      w = 600,
+      h = 850,
+      x = 1000,
+      y = 200,
+      dock = 0,
     }
   }
 }

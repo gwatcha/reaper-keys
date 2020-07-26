@@ -19,6 +19,17 @@ function state_interface.set(state)
   table_io.write(state_file_path, state)
 end
 
+function state_interface.setField(field, value)
+  local state = state_interface.get()
+  state[field] = value
+  state_interface.set(state)
+end
+
+function state_interface.getField(field)
+  local state = state_interface.get()
+  return state[field]
+end
+
 function state_interface.get()
     local ok, state = table_io.read(state_file_path)
     if not ok then
