@@ -9,7 +9,7 @@ local str = require('string')
 
 function getActionKey(key_sequence, entries)
   local action_name = utils.getEntryForKeySequence(key_sequence, entries)
-  if action_name and not utils.isFolder(action_name) and not utils.checkIfActionHasOptionSet(action_name, 'registerAction') then
+  if action_name and not utils.isFolder(action_name) and (not utils.checkIfActionHasOptionSet(action_name, 'registerAction') or utils.checkIfActionHasOptionSet(action_name, 'registerOptional')) then
     return action_name
   end
 
