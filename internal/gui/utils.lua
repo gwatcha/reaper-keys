@@ -1,4 +1,4 @@
-local config = require('definitions.config')
+local config = require('definitions.gui_config')
 
 local gui_utils = {}
 

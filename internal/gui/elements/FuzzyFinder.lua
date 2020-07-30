@@ -1,5 +1,4 @@
-local format = require('utils.format')
-local log = require('utils.log')
+local gui_utils = require('gui.utils')
 
 local Buffer = require("public.buffer")
 local Font = require("public.font")
@@ -17,27 +16,27 @@ FuzzyFinder.type = "FuzzyFinder"
 FuzzyFinder.name = "fuzzyfinder"
 
 function FuzzyFinder:drawText()
-  Font.set(self.textFont)
-
   gfx.x, gfx.y = self.x + self.pad, self.y + self.pad
   local r = gfx.x + self.w - 2*self.pad
   local b = gfx.y + self.h - 2*self.pad
 
+  Font.set(self.textFont)
+  local _, main_font_h = gfx.measurestr("_")
+
   local outputText = {}
   for i = self.windowY, math.min(self:windowBottom() - 1, #self.list) do
-    local current_row = self.list[i]
 
-    -- log.user(format.block(current_row))
+    local current_row = self.list[i]
 
     local action_name = current_row.action_name
 
     local index = 1
     for char in action_name:gmatch"." do
-      Color.set(self.color)
+      Color.set(self.colors.action_name)
 
       for _,matched_index in ipairs(current_row.matched_indices) do
         if index == matched_index then
-          Color.set(self.match_color)
+          Color.set(self.colors.matched_key)
           break
         end
       end
@@ -47,40 +46,50 @@ function FuzzyFinder:drawText()
       index = index + 1
     end
 
-    if current_row.main_key_binding or current_row.midi_key_binding then
-      Color.set(self.color)
+    local binding = current_row.binding
+    if binding then
+      Color.set(self.colors.action_name)
       gfx.drawstr(" (")
 
-      local main_key_binding = current_row.main_key_binding
-      local midi_key_binding = current_row.midi_key_binding
-      if main_key_binding and midi_key_binding and main_key_binding == midi_key_binding then
-        Color.set(self.global_key_binding_color)
-        gfx.drawstr(self:formatOutput(main_key_binding))
-      elseif main_key_binding and midi_key_binding then
-        Color.set(self.main_key_binding_color)
-        gfx.drawstr("")
-        gfx.drawstr(self:formatOutput(main_key_binding))
-        gfx.drawstr(" ")
-
-        Color.set(self.midi_key_binding_color)
-        gfx.drawstr("")
-        gfx.drawstr(self:formatOutput(midi_key_binding))
-        gfx.drawstr("")
-      elseif main_key_binding then
-        Color.set(self.main_key_binding_color)
-        gfx.drawstr(self:formatOutput(main_key_binding))
+      if current_row.context == 'global' then
+        Color.set(self.colors.global_binding)
+        gfx.drawstr(self:formatOutput(binding))
+      elseif current_row.context == 'midi' then
+        Color.set(self.colors.midi_binding)
+        gfx.drawstr(self:formatOutput(binding))
       else
-        Color.set(self.midi_key_binding_color)
-        gfx.drawstr(self:formatOutput(midi_key_binding))
+        Color.set(self.colors.main_binding)
+        gfx.drawstr(self:formatOutput(binding))
       end
 
-      Color.set(self.color)
-      gfx.drawstr(")")
+      Color.set(self.colors.action_name)
+      gfx.drawstr(")  ")
     end
+
+    Font.set(self.aux_font)
+    local action_type_color = self.colors.action_type[current_row.action_type]
+    if action_type_color then
+      Color.set(action_type_color)
+    end
+
+    local str_w,str_h = gfx.measurestr(current_row.action_type)
+    local action_type_text_pos = self.w - str_w
+    if action_type_text_pos > gfx.x then
+      gfx.x = self.w - str_w
+    else
+      gfx.x = gfx.x + 5
+    end
+
+    local old_y = gfx.y
+    gfx.y = gfx.y + (main_font_h - str_h) / 2
+    gfx.drawstr(current_row.action_type)
+    gfx.y = old_y
 
     -- outputText[#outputText + 1] = self:formatOutput(str)
     gfx.x = self.x + self.pad
-    gfx.y = gfx.y + self.charH
+
+    Font.set(self.textFont)
+    gfx.y = gfx.y + main_font_h
   end
 
 end

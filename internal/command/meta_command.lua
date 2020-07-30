@@ -117,7 +117,7 @@ local meta_commands = {
     return new_state
   end,
   ["ShowReaperKeysActionList"] = function(state, command)
-    action_list.open(state)
+    action_list.open()
     local new_state = state
     new_state['key_sequence'] = ""
     return new_state

@@ -3,7 +3,7 @@ local utils = require('command.utils')
 local definitions = require('utils.definitions')
 local state_interface = require('state_machine.state_interface')
 local state_machine_constants = require('state_machine.constants')
-local config = require('definitions.config')
+local config = require('definitions.gui_config')
 local log = require('utils.log')
 local format = require('utils.format')
 local fuzzy_match = require('fuzzy_match').fuzzy_match
@@ -24,25 +24,6 @@ local action_list = {}
 
 local window = nil
 
--- this reverses the keys and values by 'extracting' from folders
-function getActionBindings(entries)
-  local action_bindings = {}
-  for entry_key,entry_value in pairs(entries) do
-    if utils.isFolder(entry_value) then
-      local folder_table = entry_value[2]
-      local folder_action_bindings = getActionBindings(folder_table)
-
-      for action_name_from_folder,action_binding_from_folder in pairs(folder_action_bindings) do
-        action_bindings[action_name_from_folder] = entry_key .. action_binding_from_folder
-      end
-    else
-      action_bindings[entry_value] = entry_key
-    end
-  end
-
-  return action_bindings
-end
-
 function saveWindowState()
   local new_window_state = {
     w = window.state.currentW,
@@ -52,20 +33,32 @@ function saveWindowState()
   local action_list_window = state_interface.setField("action_list_window", new_window_state)
 end
 
+function addFont(font, preset_name)
+  local font_name = font[1]
+  local font_size = font[2]
+  font_size = gui_utils.scale(font_size)
+  font[2] = font_size
+
+  if Font.exists(font_name) ~= true then
+    log.warn("Font '" .. font_name .. "' does not exist! Please specify a different font in the configuration file.")
+    font_name = "Liberation Mono"
+    if Font.exists(font.name) ~= true then
+      log.error("Default Font '" .. font_name .. "' does not exist! I dont know how to write text.")
+    end
+  end
+
+  local font_preset = {}
+  font_preset[preset_name] = font
+  Font.addFonts(font_preset)
+end
+
+
 function action_list.open(state)
   local action_list_window = state_interface.getField("action_list_window")
 
   if not action_list_window then
     action_list_window = state_machine_constants.reset_state.action_list_window
   end
-
-  local font = config.action_list.font
-  if Font.exists(font) ~= true then
-    log.warn("Font '" .. font .. "' does not exist! Please specify a different font in the configuration file.")
-    font = "Liberation Mono"
-  end
-
-  Font.addFonts({action_list_font = {font, scale(config.action_list.font_size)}})
 
   window = GUI.createWindow({
       name = "Reaper Keys Action List",
@@ -82,37 +75,33 @@ function action_list.open(state)
 
   local layer = GUI.createLayer({name = "Layer1"})
 
-  local query_state = state
-  query_state['key_sequence'] = ""
-
-  local global_entries
-
-  query_state['context'] = "main"
-  local main_entries = getPossibleFutureEntries(query_state)
-  local main_action_bindings = getActionBindings(main_entries)
-
-  query_state['context'] = "midi"
-  local midi_entries = getPossibleFutureEntries(query_state)
-  local midi_action_bindings = getActionBindings(midi_entries)
+  local bindings = definitions.getBindings()
 
   local action_list_data = {}
-  for action_name,action_value in pairs(actions) do
-    local row = {}
+  for context,context_bindings in pairs(bindings) do
+    for action_type,action_type_bindings in pairs(context_bindings) do
+      for action_name,action_binding in pairs(action_type_bindings) do
+        local row = {}
 
-    row.action_name = action_name
-    row.matched_indices = {}
-    row.match_score = 1
-    row.main_key_binding = main_action_bindings[action_name]
-    row.midi_key_binding = midi_action_bindings[action_name]
+        row.context = context
+        row.action_type = action_type
+        row.action_name = action_name
+        row.binding = action_binding
 
-    table.insert(action_list_data, row)
+        row.matched_indices = {}
+        row.match_score = 1
+
+        table.insert(action_list_data, row)
+      end
+    end
   end
 
   local function updateFinder(query)
     local action_list_data = GUI.findElementByName("finder").list
 
     for _,row in ipairs(action_list_data) do
-      local _, score, indices = fuzzy_match(query, row.action_name)
+      local sequential_match, score, indices = fuzzy_match(query, row.action_name)
+      row.sequential_match = sequential_match
       row.match_score = score
       row.matched_indices = indices
     end
@@ -125,6 +114,11 @@ function action_list.open(state)
     return true
   end
 
+  local main_font_preset_name = "action_list_main"
+  addFont(config.action_list.main_font, main_font_preset_name)
+  local aux_font_preset_name = "action_list_aux"
+  addFont(config.action_list.aux_font, aux_font_preset_name)
+
   layer:addElements( GUI.createElements(
                        {
                          name = "search",
@@ -133,10 +127,9 @@ function action_list.open(state)
                          w = scale(250),
                          pad = scale(20),
                          h = scale(30),
+                         textFont = main_font_preset_name,
                          y = scale(5),
                          caption = "",
-                         textFont = "action_list_font",
-                         captionFont = "action_list_font",
                          validator = updateFinder,
                          validateOnType = true
                        },
@@ -148,14 +141,11 @@ function action_list.open(state)
                          h = window.h - scale(100),
                          w = window.w * 18 / 20,
                          list = action_list_data,
+                         textFont = main_font_preset_name,
+                         aux_font = aux_font_preset_name,
                          pad = scale(20),
-                         match_color = {0.8, 0.22, 0, 1},
-                         main_key_binding_color = {0.81, 0.64, 0.79, 1},
-                         midi_key_binding_color = {0.29, 0.74, 0.69, 1},
-                         global_key_binding_color = {0.49, 0.7, 0.49, 1},
+                         colors = config.action_list.colors,
                          caption = "",
-                         textFont = "action_list_font",
-                         captionFont = "action_list_font"
                        }
   ))
 

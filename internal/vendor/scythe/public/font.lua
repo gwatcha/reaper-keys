@@ -1,5 +1,4 @@
 --- @module Font
-
 local Font = {}
 
 Font.fonts = {}
