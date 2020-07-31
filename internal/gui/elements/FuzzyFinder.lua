@@ -48,7 +48,7 @@ FuzzyFinder.defaultProps = {
   charW = nil,
   charH = nil,
 
-  blink = 0,
+  blink = 1,
   shadow = true,
 }
 
@@ -222,6 +222,9 @@ FuzzyFinder.processKey = {
     end
     self:updateList()
   end,
+  [Const.chars.RETURN] = function(self)
+    self.command_executed = true
+  end,
 }
 
 function FuzzyFinder:drawSelection()
@@ -232,7 +235,7 @@ function FuzzyFinder:drawSelection()
   local w = self.w - 2 * self.pad
   local itemY
 
-  Color.set("highlight")
+  Color.set(self.colors.selection)
   gfx.a = 0.5
   gfx.mode = 1
 
@@ -252,9 +255,6 @@ function FuzzyFinder:draw()
   -- Some values can't be set in :init() because the window isn't
   -- open yet - text measurements won't work.
   if not self.windowH then self:recalculateWindow() end
-
-  -- Draw the caption
-  if self.caption and self.caption ~= "" then self:drawCaption() end
 
   -- Draw the background and frame
   gfx.blit(self.buffer, 1, 0, 0, 0, self.w, self.h, self.x, self.y)
@@ -309,9 +309,11 @@ end
 --- Update internal values for the window size. If you change the listbox's
 -- `w`, `h`, `pad`, or `textFont`, this method should be called afterward.
 function FuzzyFinder:recalculateWindow()
+  -- FuzzyFinder:init()
+
   Font.set(self.main_font)
   self.charW, self.charH = gfx.measurestr("_")
-  self.windowH = math.floor((self.h - 2*self.pad) / self.charH)
+  self.windowH = math.floor(((self.h - 2*self.pad - 1/20 * self.h) / self.charH))
   self.windowW = math.floor(self.w / self.charW)
 end
 
@@ -322,27 +324,6 @@ end
 
 function FuzzyFinder:windowRight()
   return self.windowPosition + self.windowW
-end
-
-
--- See if a given position is in the visible window
--- If so, adjust it from absolute to window-relative
--- If not, returns nil
-function FuzzyFinder:adjustToWindow(x)
-
-  return ( Math.clamp(self.windowPosition, x, self:windowRight() - 1) == x )
-    and x - self.windowPosition
-    or nil
-
-end
-
-
-function FuzzyFinder:setWindowToCaret()
-  if self.caret < self.windowPosition + 1 then
-    self.windowPosition = math.max(0, self.caret - 1)
-  elseif self.caret > (self:windowRight() - 2) then
-    self.windowPosition = self.caret + 2 - self.windowW
-  end
 end
 
 
@@ -478,7 +459,6 @@ function FuzzyFinder:onType(state)
 
     self:insertChar(char)
   end
-  self:setWindowToCaret()
 
   -- Make sure no functions crash because they got a type==number
   self.query = tostring(self.query)

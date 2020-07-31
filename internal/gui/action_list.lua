@@ -2,6 +2,7 @@ local actions = require('definitions.actions')
 local utils = require('command.utils')
 local definitions = require('utils.definitions')
 local state_interface = require('state_machine.state_interface')
+local runner = require('command.runner')
 local state_machine_constants = require('state_machine.constants')
 local config = require('definitions.gui_config')
 local log = require('utils.log')
@@ -121,18 +122,30 @@ function action_list.open(state)
 
   window:addLayers(layer)
 
+  local finder = GUI.findElementByName("finder")
+
   local function main()
     if window.state.resized then
       window.state.resized = false
-      -- FIXME crashes :(
-      -- FuzzyFinder:recalculateWindow()
+      finder.w = window.state.currentW
+      finder.h = window.state.currentH
+      finder:recalculateWindow()
+      finder:redraw()
       saveWindowState()
+    end
+
+    if finder.command_executed then
+      local selected_row_i = finder.selected_row
+      runner.runAction(finder.list[selected_row_i].action_name)
+      window:close()
+      return
     end
   end
 
   -- Open the script window and initialize a few things
   window:open()
 
+  window.state.focusedElm = finder
 
   -- Tell the GUI library to run Main on each update loop
   -- Individual elements are updated first, then GUI.func is run, then the GUI is redrawn
@@ -140,9 +153,6 @@ function action_list.open(state)
 
   -- How often (in seconds) to run GUI.func. 0 = every loop.
   GUI.funcTime = 0
-
-  local finder = GUI.findElementByName("finder")
-  window.state.focusedElm = finder
 
   -- Start the main loop
   GUI.Main()
