@@ -5,6 +5,7 @@ return {
   action_list = {
     main_font = {"Fira Mono", 18},
     aux_font = {"Liberation Mono", 12, "bi"},
+    seperator_size = 30,
     -- RGBA
     colors = {
       action_type = {
@@ -18,6 +19,7 @@ return {
         timeline_operator = {0.8, 0.51, 0.5, 1},
         visual_timeline_command = {0.7, 0.8, 0.58, 1},
       },
+      query = {0.6, 1, 0.85, 1},
       action_name = {0.75, 0.75, 0.75, 1},
       -- matched_key = {0.8, 0.22, 0, .8},
       matched_key = {1, 0.3, 0.3, 1},

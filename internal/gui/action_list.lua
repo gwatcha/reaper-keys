@@ -96,24 +96,6 @@ function action_list.open(state)
     end
   end
 
-  local function updateFinder(query)
-    local action_list_data = GUI.findElementByName("finder").list
-
-    for _,row in ipairs(action_list_data) do
-      local sequential_match, score, indices = fuzzy_match(query, row.action_name)
-      row.sequential_match = sequential_match
-      row.match_score = score
-      row.matched_indices = indices
-    end
-
-    local sort_function = function(a, b)
-      return a.match_score > b.match_score
-    end
-    table.sort(action_list_data, sort_function)
-
-    return true
-  end
-
   local main_font_preset_name = "action_list_main"
   addFont(config.action_list.main_font, main_font_preset_name)
   local aux_font_preset_name = "action_list_aux"
@@ -121,31 +103,19 @@ function action_list.open(state)
 
   layer:addElements( GUI.createElements(
                        {
-                         name = "search",
-                         type = "Textbox",
-                         x = (window.w / 2) - scale(200),
-                         w = scale(250),
-                         pad = scale(20),
-                         h = scale(30),
-                         textFont = main_font_preset_name,
-                         y = scale(5),
-                         caption = "",
-                         validator = updateFinder,
-                         validateOnType = true
-                       },
-                       {
-                         name = "finder",
                          type = "FuzzyFinder",
-                         x = window.w * 1 / 20,
-                         y = scale(50),
-                         h = window.h - scale(100),
-                         w = window.w * 18 / 20,
+                         name = "finder",
+                         seperator_size = config.action_list.seperator_size,
                          list = action_list_data,
-                         textFont = main_font_preset_name,
+                         query_font = main_font_preset_name,
+                         main_font = main_font_preset_name,
                          aux_font = aux_font_preset_name,
-                         pad = scale(20),
                          colors = config.action_list.colors,
-                         caption = "",
+                         x = 0,
+                         y = 0,
+                         h = window.h,
+                         w = window.w,
+                         pad = scale(20),
                        }
   ))
 
@@ -163,6 +133,7 @@ function action_list.open(state)
   -- Open the script window and initialize a few things
   window:open()
 
+
   -- Tell the GUI library to run Main on each update loop
   -- Individual elements are updated first, then GUI.func is run, then the GUI is redrawn
   GUI.func = main
@@ -170,10 +141,12 @@ function action_list.open(state)
   -- How often (in seconds) to run GUI.func. 0 = every loop.
   GUI.funcTime = 0
 
-  GUI.findElementByName("search").focus = true
+  local finder = GUI.findElementByName("finder")
+  window.state.focusedElm = finder
 
   -- Start the main loop
   GUI.Main()
 end
+
 
 return action_list
