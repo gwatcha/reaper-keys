@@ -484,7 +484,7 @@ return {
       UnarmAllEnvelopes = 41163,
       UnarmSelectedTracks = "_XENAKIOS_SELTRAX_RECUNARMED",
       UncollapseFolder = "_SWS_UNCOLLAPSE",
-      Undo = 40029,
+      Undo = {40029, prefixRepetitionCount=true},
       UndoMove = "_SWS_EDITCURUNDO",
       UnfreezeTrack = 41644,
       UnmuteAllTracks = 40339,
