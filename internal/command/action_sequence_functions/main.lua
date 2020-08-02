@@ -50,7 +50,6 @@ return {
         state_interface.setModeToNormal()
         if not config['persist_visual_track_selection'] and (type(track_operator) ~= 'table' or not track_operator['setTrackSelection']) then
           reaper_utils.unselectAllButLastTouchedTrack()
-          runner.runAction("RestoreTrackSelection")
         end
       end
     },
