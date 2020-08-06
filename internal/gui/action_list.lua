@@ -20,31 +20,25 @@ local Text = require('public.text')
 local gui_utils = require('gui.utils')
 local scale = gui_utils.scale
 
-local action_list = {}
-
-local window = nil
+local action_list = {
+  window = nil
+}
 
 local max_w = 2048
 local max_h = 1610
 
-function saveWindowState()
-  local new_window_state = {
-    w = window.state.currentW,
-    h = window.state.currentH,
-  }
-  local action_list_window = state_interface.setField("action_list_window", new_window_state)
+function saveWindowState(state)
+  state_interface.setField("action_list_window", state)
 end
 
 
 function action_list.open(state)
   local action_list_window = state_interface.getField("action_list_window")
-
   if not action_list_window then
     action_list_window = state_machine_constants.reset_state.action_list_window
   end
 
-
-  window = GUI.createWindow({
+  action_list.window = GUI.createWindow({
       name = "Reaper Keys Action List",
       w = (action_list_window.w < max_w) and action_list_window.w or max_w,
       h = (action_list_window.h < max_h) and action_list_window.h or max_h,
@@ -80,6 +74,8 @@ function action_list.open(state)
     end
   end
 
+  local window = action_list.window
+
   local main_font_preset_name = "action_list_main"
   gui_utils.addFont(config.action_list.main_font, main_font_preset_name)
   local aux_font_preset_name = "action_list_aux"
@@ -107,19 +103,16 @@ function action_list.open(state)
 
   local finder = GUI.findElementByName("finder")
 
-  local function main()
+  local function updateLoop()
     if window.state.resized then
       window.state.resized = false
-
-      if window.state.currentW < max_w then
-        finder.w = window.state.currentW
-        saveWindowState()
-      end
-      if window.state.currentH < max_h then
-        finder.h = window.state.currentH
-        saveWindowState()
-      end
-
+      local w = window.state.currentW
+      local h = window.state.currentH
+      local new_w = (w < max_w) and w or max_w
+      local new_h = (h < max_h) and h or max_h
+      finder.w = new_w
+      finder.h = new_h
+      saveWindowState({w = new_w, h = new_h})
       finder:recalculateWindow()
       finder:redraw()
     end
@@ -139,7 +132,7 @@ function action_list.open(state)
 
   -- Tell the GUI library to run Main on each update loop
   -- Individual elements are updated first, then GUI.func is run, then the GUI is redrawn
-  GUI.func = main
+  GUI.func = updateLoop
 
   -- How often (in seconds) to run GUI.func. 0 = every loop.
   GUI.funcTime = 0
