@@ -1,7 +1,4 @@
 return {
-  shortcuts = {
-    ["<M-p>"] = "<SPC>fsp",
-  },
   timeline_motion = {
     ["0"] = "ProjectStart",
     ["<C-$>"] = "ProjectEnd",
