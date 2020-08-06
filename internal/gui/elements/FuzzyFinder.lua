@@ -121,7 +121,7 @@ function FuzzyFinder:drawText()
   local _, main_font_h = gfx.measurestr("_")
 
   local outputText = {}
-  for i = self.windowY, math.min(self:windowBottom() - 1, #self.list) do
+  for i = self.windowY, math.min(self:windowBottom(), #self.list) do
 
     local current_row = self.list[i]
 
@@ -309,17 +309,17 @@ end
 --- Update internal values for the window size. If you change the listbox's
 -- `w`, `h`, `pad`, or `textFont`, this method should be called afterward.
 function FuzzyFinder:recalculateWindow()
-  -- FuzzyFinder:init()
-
+  Font.set(self.query_font)
+  _, self.query_char_h = gfx.measurestr("_")
   Font.set(self.main_font)
   self.charW, self.charH = gfx.measurestr("_")
-  self.windowH = math.floor(((self.h - 2*self.pad - 1/20 * self.h) / self.charH))
+  self.windowH = math.floor((self.h - 2*self.pad - self.seperator_size - self.query_char_h) / self.charH)
   self.windowW = math.floor(self.w / self.charW)
 end
 
 -- Get the bottom edge of the window (in rows)
 function FuzzyFinder:windowBottom()
-  return self.windowY + self.windowH
+  return self.windowH + self.windowY
 end
 
 function FuzzyFinder:windowRight()

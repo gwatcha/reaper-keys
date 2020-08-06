@@ -14,7 +14,6 @@ local GUI = require('gui.core')
 local Textbox = require('gui.elements.Textbox')
 local TextEditor = require('gui.elements.TextEditor')
 local Color = require('public.color')
-local Font = require('public.font')
 local FuzzyFinder = require('gui.elements.FuzzyFinder')
 local Text = require('public.text')
 
@@ -25,32 +24,15 @@ local action_list = {}
 
 local window = nil
 
+local max_w = 2048
+local max_h = 1610
+
 function saveWindowState()
   local new_window_state = {
     w = window.state.currentW,
     h = window.state.currentH,
-    dock = window.dock,
   }
   local action_list_window = state_interface.setField("action_list_window", new_window_state)
-end
-
-function addFont(font, preset_name)
-  local font_name = font[1]
-  local font_size = font[2]
-  font_size = gui_utils.scale(font_size)
-  font[2] = font_size
-
-  if Font.exists(font_name) ~= true then
-    log.warn("Font '" .. font_name .. "' does not exist! Please specify a different font in the configuration file.")
-    font_name = "Liberation Mono"
-    if Font.exists(font.name) ~= true then
-      log.error("Default Font '" .. font_name .. "' does not exist! I dont know how to write text.")
-    end
-  end
-
-  local font_preset = {}
-  font_preset[preset_name] = font
-  Font.addFonts(font_preset)
 end
 
 
@@ -61,11 +43,12 @@ function action_list.open(state)
     action_list_window = state_machine_constants.reset_state.action_list_window
   end
 
+
   window = GUI.createWindow({
       name = "Reaper Keys Action List",
-      w = action_list_window.w,
-      h = action_list_window.h,
-      dock = action_list_window.dock,
+      w = (action_list_window.w < max_w) and action_list_window.w or max_w,
+      h = (action_list_window.h < max_h) and action_list_window.h or max_h,
+      dock = 0,
       anchor = config.action_list.anchor,
       corner = config.action_list.corner,
   })
@@ -98,9 +81,9 @@ function action_list.open(state)
   end
 
   local main_font_preset_name = "action_list_main"
-  addFont(config.action_list.main_font, main_font_preset_name)
+  gui_utils.addFont(config.action_list.main_font, main_font_preset_name)
   local aux_font_preset_name = "action_list_aux"
-  addFont(config.action_list.aux_font, aux_font_preset_name)
+  gui_utils.addFont(config.action_list.aux_font, aux_font_preset_name)
 
   layer:addElements( GUI.createElements(
                        {
@@ -127,11 +110,18 @@ function action_list.open(state)
   local function main()
     if window.state.resized then
       window.state.resized = false
-      finder.w = window.state.currentW
-      finder.h = window.state.currentH
+
+      if window.state.currentW < max_w then
+        finder.w = window.state.currentW
+        saveWindowState()
+      end
+      if window.state.currentH < max_h then
+        finder.h = window.state.currentH
+        saveWindowState()
+      end
+
       finder:recalculateWindow()
       finder:redraw()
-      saveWindowState()
     end
 
     if finder.command_executed then
