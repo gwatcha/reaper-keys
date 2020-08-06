@@ -30,14 +30,14 @@ return {
   track_selector = {
     ["'"] = "MarkedTracks",
     ["V"] = "Selection",
+    ["c"] = "FolderChildren",
+    ["F"] = "FolderParent",
+    ["f"] = "Folder",
     ["i"] = {"+inner", {
                ["c"] = "InnerFolder",
                ["f"] = "InnerFolderAndParent",
                ["g"] = "AllTracks",
     }},
-    ["c"] = "FolderChildren",
-    ["F"] = "FolderParent",
-    ["f"] = "Folder",
   },
   track_operator = {
       ["z"] = "ZoomTrackSelection",
