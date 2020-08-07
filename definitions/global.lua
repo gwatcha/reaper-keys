@@ -85,7 +85,7 @@ return {
     ["<M-M>"] = "ModulateLastTouchedFxParam",
     --
     ["<SPC>"] = { "+leader commands", {
-      ["<SPC>"] = "ShowReaperKeysActionList",
+      ["<SPC>"] = "ShowBindingList",
       ["<C-SPC>"] = "ShowActionList",
       ["h"] = "ShowReaperKeysHelp",
       ["m"] = { "+midi", {

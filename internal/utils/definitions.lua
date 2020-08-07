@@ -40,12 +40,12 @@ function definitions.getPossibleEntries(context)
 end
 
 -- this reverses the keys and values by 'extracting' from folders
-function getBindings(entries)
+function definitions.getBindings(entries)
   local bindings = {}
   for entry_key,entry_value in pairs(entries) do
     if utils.isFolder(entry_value) then
       local folder_table = entry_value[2]
-      local folder_bindings = getBindings(folder_table)
+      local folder_bindings = definitions.getBindings(folder_table)
 
       for action_name_from_folder,binding_from_folder in pairs(folder_bindings) do
         bindings[action_name_from_folder] = entry_key .. binding_from_folder
@@ -58,13 +58,13 @@ function getBindings(entries)
   return bindings
 end
 
-function definitions.getBindings()
+function definitions.getAllBindings()
   local bindings = {}
   for context,context_definitions in pairs(definition_tables) do
     bindings[context] = {}
 
     for action_type,action_type_definitions in pairs(context_definitions) do
-      bindings[context][action_type] = getBindings(action_type_definitions)
+      bindings[context][action_type] = definitions.getBindings(action_type_definitions)
     end
 
   end

@@ -67,6 +67,7 @@ Textbox.defaultProps = {
   charW = nil,
   charH = nil,
 
+  displayFocus = true,
   focus = false,
   blink = 0,
   shadow = true,
@@ -127,8 +128,8 @@ function Textbox:draw()
   if self.caption and self.caption ~= "" then self:drawCaption() end
 
   -- Blit the textbox frame, and make it brighter if focused.
-  gfx.blit(self.buffer, 1, 0, (self.focus and self.w or 0), 0,
-           self.w, self.h, self.x, self.y)
+  gfx.blit(self.buffer, 1, 0, ((self.displayFocus and self.focus) and self.w or 0), 0,
+            self.w, self.h, self.x, self.y)
 
   if self.retval ~= "" then self:drawText() end
 

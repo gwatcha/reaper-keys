@@ -39,7 +39,7 @@ Actions may also be put into folders. To create a folder,  follow this format:
 ``` lua
 command = {
   ["<SPC>"] = { "+leader commands", {
-    ["<SPC>"] = "ShowActionList",
+    ["<SPC>"] = "ShowBindingList",
     ["h"] = "ShowReaperKeysHelp",
     ["m"] = { "+midi", {
                 ["x"] = "CloseWindow",

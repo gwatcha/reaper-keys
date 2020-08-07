@@ -19,12 +19,14 @@ local constants = {
         "command"
       }
     },
-    action_list_window = {
+    binding_list = {
       w = 600,
       h = 850,
-      x = 1000,
-      y = 200,
-      dock = 0,
+      state_filter_active = true,
+      context_filter_active = false,
+      context_filter = 1,
+      type_filter_active = false,
+      type_filter = 1,
     }
   }
 }

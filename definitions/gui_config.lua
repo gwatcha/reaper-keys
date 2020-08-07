@@ -1,8 +1,8 @@
 return {
-  -- the factor to scale all gui elements (font size, element sizes...) 
+  -- the factor to scale all gui elements (font size, element sizes...)
   -- will be multiplied by 2 if HiDPI mode is detected
   gui_scale = 1,
-  action_list = {
+  binding_list = {
     main_font = {"Fira Mono", 18},
     aux_font = {"Liberation Mono", 14, "bi"},
     seperator_size = 30,
@@ -20,12 +20,15 @@ return {
         visual_timeline_command = {0.7, 0.8, 0.58, 1},
       },
       selection = {0.09, 0.26, 0.09, 1},
+      count = {0.65, 0.8, 0.8, 1},
       query = {0.6, 1, 0.85, 1},
       action_name = {0.75, 0.75, 0.75, 1},
       matched_key = {.8, 0.3, 0.3, 1},
-      main_binding = {0.81, 0.64, 0.79, 1},
-      midi_binding = {0.29, 0.74, 0.69, 1},
-      global_binding = {0.49, 0.7, 0.49, 1},
+      bindings = {
+        main = {0.81, 0.64, 0.79, 1},
+        midi = {0.29, 0.74, 0.69, 1},
+        global = {0.49, 0.65, 0.4, 1},
+      }
     },
     -- the position the action list relative to, can be "screen" or "mouse"
     anchor = "screen",

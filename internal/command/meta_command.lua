@@ -1,6 +1,6 @@
 local meta_command = {}
 
-local action_list = require('gui.action_list')
+local BindingList = require('gui.binding_list')
 local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
@@ -93,31 +93,9 @@ local meta_commands = {
     new_state['key_sequence'] = ""
     return new_state
   end,
-  ["ShowReaperKeysHelp"] = function(state, command)
-    local new_state = state
-
-    local action_sequences = action_sequences.getPossibleActionSequences(state['context'], state['mode'])
-    log.user("Mode: " .. state['mode'] .. "   Context: " .. state['context'] .. '\n')
-
-    log.user('Action sequences available: \n' .. format.actionSequences(action_sequences))
-
-    log.user('Bindings available for initial entry: \n')
-    local entries = definitions.getPossibleEntries(state['context'])
-    local types_seen = {}
-    for _,action_sequence in ipairs(action_sequences) do
-      local first_action_type = action_sequence[1]
-      if not types_seen[first_action_type] then
-        log.user('  >> ' .. first_action_type .. ':')
-        log.user('  ' .. format.completions(entries[first_action_type]) .. '\n\n')
-        types_seen[first_action_type] = true
-      end
-    end
-
-    new_state['key_sequence'] = ""
-    return new_state
-  end,
-  ["ShowReaperKeysActionList"] = function(state, command)
-    action_list.open()
+  ["ShowBindingList"] = function(state, command)
+    local list = BindingList:new(state)
+    list:open()
     local new_state = state
     new_state['key_sequence'] = ""
     return new_state
