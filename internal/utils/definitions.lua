@@ -9,18 +9,22 @@ function concatEntries(t1, t2)
   end
 
   for key_sequence,t2_value in pairs(t2) do
-    local t1_value = merged_entries[key_sequence]
     local merged_value = t2_value
+    if t2_value == "" then
+      merged_value = nil
+    end
+
+    local t1_value = merged_entries[key_sequence]
     if utils.isFolder(t2_value) and utils.isFolder(t1_value) and t1_value[1] == t2_value[1] then
         local folder_1_entries = t1_value[2]
         local folder_2_entries = t2_value[2]
-        merged_entries[key_sequence] = {
+        merged_value = {
           t2_value[1],
           concatEntries(folder_1_entries, folder_2_entries),
         }
-    else
-      merged_entries[key_sequence] = t2_value
     end
+
+    merged_entries[key_sequence] = merged_value
   end
 
   return merged_entries
