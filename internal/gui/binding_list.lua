@@ -114,7 +114,7 @@ function getActionTypes()
 end
 
 function makeBindingListWindow()
-  local prev_binding_list = state_interface.getField("binding_list")
+  local prev_binding_list = state_interface.getField("binding_list_window")
   if not prev_binding_list then
     prev_binding_list = state_machine_constants.reset_state.binding_list
   end
@@ -334,7 +334,7 @@ function BindingList:saveState()
     type_filter_active = self.values.type_filter_active,
     type_filter = self.values.type_filter
   }
-  state_interface.setField("binding_list", binding_list_state)
+  state_interface.setField("binding_list_window", binding_list_state)
 end
 
 function BindingList:new(state)
@@ -385,7 +385,7 @@ function tablelength(T)
 end
 
 function BindingList:rowIsFiltered(row)
-  if self.values.query ~= "" and row.match_score < 0 then
+  if self.values.query ~= "" and row.match_score < -3 then
     return true
   end
 
