@@ -4,7 +4,7 @@ return {
   gui_scale = 1,
   binding_list = {
     main_font = {"Fira Mono", 18},
-    aux_font = {"Liberation Mono", 14, "bi"},
+    label_font = {"Hack", 14},
     seperator_size = 30,
     -- RGBA
     colors = {

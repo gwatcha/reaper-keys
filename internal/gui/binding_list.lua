@@ -63,7 +63,7 @@ function setupListBox(list_box)
         gfx.drawstr(")  ")
       end
 
-      Font.set(config.aux_font)
+      Font.set(config.label_font)
       local action_type_color = config.colors.action_type[current_row.action_type]
       if action_type_color then
         Color.set(action_type_color)
@@ -88,7 +88,7 @@ function setupListBox(list_box)
       gfx.y = gfx.y + main_font_h
     end
 
-    Font.set(config.aux_font)
+    Font.set(config.label_font)
     Color.set(config.colors.count)
     gfx.y = gfx.y + self.pad / 2
     gfx.drawstr(#self.list)
@@ -132,19 +132,19 @@ function makeBindingListWindow()
 
   local main_font_preset_name = "binding_list_main"
   gui_utils.addFont(config.main_font, main_font_preset_name)
-  local aux_font_preset_name = "binding_list_aux"
-  gui_utils.addFont(config.aux_font, aux_font_preset_name)
+  local label_font_preset_name = "binding_list_aux"
+  gui_utils.addFont(config.label_font, label_font_preset_name)
 
   Font.set(main_font_preset_name)
   local _, char_h = gfx.measurestr("i")
-  Font.set(aux_font_preset_name)
+  Font.set(label_font_preset_name)
   local _, aux_char_h = gfx.measurestr("i")
 
   local top_pad = scale(5)
-  local bottom_pad = scale(5)
+  local bottom_pad = scale(5) + aux_char_h
   local side_pad = scale(20)
   local top_bar_element_h = char_h + scale(5)
-  local top_bar_h = top_pad + top_bar_element_h + bottom_pad
+  local top_bar_h = top_pad + top_bar_element_h + scale(5)
 
 
   local captions = {"Valid In State", "Context", "Type"}
@@ -175,14 +175,14 @@ function makeBindingListWindow()
                          focus = true,
                          caption = "",
                          textFont = main_font_preset_name,
-                         captionFont = aux_font_preset_name,
+                         captionFont = label_font_preset_name,
                        },
                        {
                          name = "state_label",
                          type = "Label",
                          x = filters_x,
-                         font = aux_font_preset_name,
-                         y = top_pad + aux_char_h / 2 + scale(2),
+                         font = label_font_preset_name,
+                         y = top_pad + aux_char_h / 2,
                          caption = captions[1]
                        },
                        {
@@ -209,10 +209,10 @@ function makeBindingListWindow()
                          frame = false,
                          optionSize = scale(20),
                          retval = prev_binding_list.context_filter,
-                         textFont = aux_font_preset_name,
-                         captionFont = aux_font_preset_name,
+                         textFont = label_font_preset_name,
+                         captionFont = label_font_preset_name,
                          caption = captions[2],
-                         auxFont = aux_font_preset_name,
+                         auxFont = label_font_preset_name,
                          options = {"global", "main", "midi"},
                          pad = scale(5),
                        },
@@ -240,8 +240,8 @@ function makeBindingListWindow()
                          retval = prev_binding_list.type_filter,
                          frame = false,
                          optionSize = scale(20),
-                         textFont = aux_font_preset_name,
-                         captionFont = aux_font_preset_name,
+                         textFont = label_font_preset_name,
+                         captionFont = label_font_preset_name,
                          caption = captions[3],
                          options = getActionTypes(),
                          pad = scale(5),

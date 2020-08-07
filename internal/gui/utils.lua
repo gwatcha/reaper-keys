@@ -1,4 +1,5 @@
 local config = require('definitions.gui_config')
+local log = require('utils.log')
 local Font = require('public.font')
 
 local gui_utils = {}
@@ -31,6 +32,7 @@ function gui_utils.scale(normal_size)
   return normal_size * scale
 end
 
+
 function gui_utils.addFont(font, preset_name)
   local font_name = font[1]
   local font_size = font[2]
@@ -38,11 +40,7 @@ function gui_utils.addFont(font, preset_name)
   font[2] = font_size
 
   if Font.exists(font_name) ~= true then
-    log.warn("Font '" .. font_name .. "' does not exist! Please specify a different font in the configuration file.")
-    font_name = "Liberation Mono"
-    if Font.exists(font.name) ~= true then
-      log.error("Default Font '" .. font_name .. "' does not exist! I dont know how to write text.")
-    end
+    log.warn("Font '" .. font_name .. "' does not exist, using default font instead. Please specify a different font in the gui_config file.")
   end
 
   local font_preset = {}
