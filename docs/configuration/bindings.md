@@ -40,7 +40,7 @@ Actions may also be put into folders. To create a folder,  follow this format:
 command = {
   ["<SPC>"] = { "+leader commands", {
     ["<SPC>"] = "ShowBindingList",
-    ["h"] = "ShowReaperKeysHelp",
+    ["b"] = "ShowBindingList",
     ["m"] = { "+midi", {
                 ["x"] = "CloseWindow",
                 ["g"] = "SetMidiGridDivision",

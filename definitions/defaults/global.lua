@@ -79,15 +79,14 @@ return {
     ["<M-N>"] = "ShowPrevFx",
     ["<M-g>"] = "FocusMain",
     ["<M-f>"] = "ToggleShowFx",
-    ["<M-x>"] = "CloseFx",
+    ["<M-F>"] = "CloseFx",
     ["<C-s>"] = "ToggleSnap",
     ["<M-m>"] = "MidiLearnLastTouchedFxParam",
     ["<M-M>"] = "ModulateLastTouchedFxParam",
-    --
+    ["<M-x>"] = "ShowBindingList",
     ["<SPC>"] = { "+leader commands", {
-      ["<SPC>"] = "ShowBindingList",
-      ["<C-SPC>"] = "ShowActionList",
-      ["h"] = "ShowReaperKeysHelp",
+      ["b"] = "ShowBindingList",
+      ["<SPC>"] = "ShowActionList",
       ["m"] = { "+midi", {
                   ["x"] = "CloseWindow",
                   ["g"] = "SetMidiGridDivision",
