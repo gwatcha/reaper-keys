@@ -2,25 +2,42 @@ local utils = require('command.utils')
 
 local definitions = {}
 
+function concatEntries(t1, t2)
+  local merged_entries = {}
+  for key_sequence,entry_value in pairs(t1) do
+    merged_entries[key_sequence] = entry_value
+  end
+
+  for key_sequence,entry_value in pairs(t2) do
+    local merged_value = t2[key_sequence]
+    if utils.isFolder(t2[key_sequence]) and utils.isFolder(merged_entries[key_sequence]) then
+      local folder_2_name = t2[key_sequence][1]
+      local folder_2_entries = t2[key_sequence][2]
+      local folder_1_entries = merged_entries[key_sequence][2]
+      merged_entries[key_sequence] = {
+        folder_2_name,
+        concatEntries(folder_1_entries, folder_2_entries),
+      }
+    else
+      merged_entries[key_sequence] = entry_value
+    end
+  end
+
+  return merged_entries
+end
+
 
 function concatEntryTables(t1,t2)
   local merged_tables = {}
   for action_type, entries in pairs(t1) do
-    merged_tables[action_type] = entries
-
     if t2[action_type] then
-      for key_sequence,action in pairs(t2[action_type]) do
-        merged_tables[action_type][key_sequence] = action
-      end
+      merged_tables[action_type] = concatEntries(t1[action_type], t2[action_type])
     end
   end
 
   for action_type, entries in pairs(t2) do
     if not merged_tables[action_type] then
-      merged_tables[action_type] = {}
-      for key_sequence,action in pairs(entries) do
-        merged_tables[action_type][key_sequence] = action
-      end
+      merged_tables[action_type] = entries
     end
   end
 
