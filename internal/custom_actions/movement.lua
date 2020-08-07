@@ -126,4 +126,10 @@ function movement.trackWithNumber()
   end
 end
 
+function movement.snap()
+  local pos = reaper.GetCursorPosition()
+  local snapped_pos = reaper.SnapToGrid(0, pos)
+  reaper.SetEditCurPos(snapped_pos, false, false)
+end
+
 return movement

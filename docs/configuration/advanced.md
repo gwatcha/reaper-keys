@@ -74,14 +74,14 @@ And find the value of the action in actions.lua
 
 ``` lua
 -- in definitions/actions.lua
-PlayAndLoop = {"SetLoopSelectionToTimeSelection", "LoopStart", "TransportPlay", setTimeSelection=true},
+PlayAndLoop = {"SetLoopSelectionToTimeSelection", "LoopStart", "Play", setTimeSelection=true},
 NextBeat = 40841,
 ```
 
 and execute the function with
 
 ``` lua
-function({"SetLoopSelectionToTimeSelection", "LoopStart", "TransportPlay", setTimeSelection=true}, 40841)
+function({"SetLoopSelectionToTimeSelection", "LoopStart", "Play", setTimeSelection=true}, 40841)
 ```
 
 Reaper keys prioritizes entries in order of  context, then index in the list.
