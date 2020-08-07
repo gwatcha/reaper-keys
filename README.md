@@ -100,8 +100,7 @@ When you restore your old keymap, you may want to empty the `reaper-kb.ini` in y
 
 ## Help
 
-Enter `<SPC>h` to print a list of available bindings, their action types, as well as the available
-action sequences for the current context and mode.
+Enter `<SPC>b` or `<M-x>` to show a list of available bindings you can search through.
 
 If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
 
