@@ -8,18 +8,18 @@ function concatEntries(t1, t2)
     merged_entries[key_sequence] = entry_value
   end
 
-  for key_sequence,entry_value in pairs(t2) do
-    local merged_value = t2[key_sequence]
-    if utils.isFolder(t2[key_sequence]) and utils.isFolder(merged_entries[key_sequence]) then
-      local folder_2_name = t2[key_sequence][1]
-      local folder_2_entries = t2[key_sequence][2]
-      local folder_1_entries = merged_entries[key_sequence][2]
-      merged_entries[key_sequence] = {
-        folder_2_name,
-        concatEntries(folder_1_entries, folder_2_entries),
-      }
+  for key_sequence,t2_value in pairs(t2) do
+    local t1_value = merged_entries[key_sequence]
+    local merged_value = t2_value
+    if utils.isFolder(t2_value) and utils.isFolder(t1_value) and t1_value[1] == t2_value[1] then
+        local folder_1_entries = t1_value[2]
+        local folder_2_entries = t2_value[2]
+        merged_entries[key_sequence] = {
+          t2_value[1],
+          concatEntries(folder_1_entries, folder_2_entries),
+        }
     else
-      merged_entries[key_sequence] = entry_value
+      merged_entries[key_sequence] = t2_value
     end
   end
 
