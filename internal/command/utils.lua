@@ -25,6 +25,13 @@ function utils.stripBegginingKeys(full_key_sequence, start_key_sequence)
   return rest_of_sequence
 end
 
+function noNextTableEntry(t1)
+  if next(t1) == nil then
+    return true
+  end
+  return false
+end
+
 function utils.filterEntries(options, entries)
   local filtered_entries = {}
   for key_seq,entry_val in pairs(entries) do

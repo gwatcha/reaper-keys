@@ -11,13 +11,6 @@ function entryToString(entry)
   return entry
 end
 
-function noNextTableEntry(t1)
-  if next(t1) == nil then
-    return true
-  end
-  return false
-end
-
 function mergeEntries(t1, t2)
   if not t2 then
     return t1
