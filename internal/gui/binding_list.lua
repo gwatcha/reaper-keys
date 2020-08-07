@@ -1,6 +1,7 @@
 local definitions = require('utils.definitions')
 local state_interface = require('state_machine.state_interface')
-local config = require('definitions.gui_config').binding_list
+local config = require('definitions.gui_config')
+local list_config = config.binding_list
 local runner = require('command.runner')
 local state_machine_constants = require('state_machine.constants')
 local fuzzy_match = require('fuzzy_match').fuzzy_match
@@ -29,7 +30,7 @@ function setupListBox(list_box)
     local r = gfx.x + self.w - 2*self.pad
     local b = gfx.y + self.h - 2*self.pad
 
-    Font.set(config.main_font)
+    Font.set(list_config.main_font)
     local _, main_font_h = gfx.measurestr("_")
 
     local outputText = {}
@@ -40,10 +41,10 @@ function setupListBox(list_box)
 
       local index = 1
       for char in action_name:gmatch"." do
-        Color.set(config.colors.action_name)
+        Color.set(list_config.colors.action_name)
         for _,matched_index in ipairs(current_row.matched_indices) do
           if index == matched_index then
-            Color.set(config.colors.matched_key)
+            Color.set(list_config.colors.matched_key)
             break
           end
         end
@@ -55,16 +56,16 @@ function setupListBox(list_box)
 
       local binding = current_row.action_binding
       if binding then
-        Color.set(config.colors.action_name)
+        Color.set(list_config.colors.action_name)
         gfx.drawstr(" (")
-        Color.set(config.colors.bindings[current_row.context])
+        Color.set(list_config.colors.bindings[current_row.context])
         gfx.drawstr(self:formatOutput(binding))
-        Color.set(config.colors.action_name)
+        Color.set(list_config.colors.action_name)
         gfx.drawstr(")  ")
       end
 
-      Font.set(config.label_font)
-      local action_type_color = config.colors.action_type[current_row.action_type]
+      Font.set(list_config.label_font)
+      local action_type_color = config.action_type_colors[current_row.action_type]
       if action_type_color then
         Color.set(action_type_color)
       end
@@ -84,12 +85,12 @@ function setupListBox(list_box)
 
       gfx.x = self.x + self.pad
 
-      Font.set(config.main_font)
+      Font.set(list_config.main_font)
       gfx.y = gfx.y + main_font_h
     end
 
-    Font.set(config.label_font)
-    Color.set(config.colors.count)
+    Font.set(list_config.label_font)
+    Color.set(list_config.colors.count)
     gfx.y = gfx.y + self.pad / 2
     gfx.drawstr(#self.list)
     gfx.drawstr(" bindings")
@@ -124,16 +125,16 @@ function makeBindingListWindow()
       w = (prev_binding_list.w < MAX_W) and prev_binding_list.w or MAX_W,
       h = (prev_binding_list.h < MAX_H) and prev_binding_list.h or MAX_H,
       dock = 0,
-      anchor = config.anchor,
-      corner = config.corner,
+      anchor = list_config.anchor,
+      corner = list_config.corner,
   })
 
   local layer = GUI.createLayer({name = "MainLayer"})
 
   local main_font_preset_name = "binding_list_main"
-  gui_utils.addFont(config.main_font, main_font_preset_name)
+  gui_utils.addFont(list_config.main_font, main_font_preset_name)
   local label_font_preset_name = "binding_list_aux"
-  gui_utils.addFont(config.label_font, label_font_preset_name)
+  gui_utils.addFont(list_config.label_font, label_font_preset_name)
 
   Font.set(main_font_preset_name)
   local _, char_h = gfx.measurestr("i")
@@ -145,7 +146,6 @@ function makeBindingListWindow()
   local side_pad = scale(20)
   local top_bar_element_h = char_h + scale(5)
   local top_bar_h = top_pad + top_bar_element_h + scale(5)
-
 
   local captions = {"Valid In State", "Context", "Type"}
   if gfx.measurestr("ContextType") > window.w / 10 then
@@ -423,10 +423,24 @@ function BindingList:updateDisplayedList()
     end
   end
 
-  local sort_function = function(a, b)
+  local fuzzy_sort = function(a, b)
     return a.match_score > b.match_score
   end
-  table.sort(displayed_list, sort_function)
+
+  local alphabetical_sort = function(a, b)
+    if a.action_type == b.action_type then
+      return a.action_name < b.action_name
+    else
+      return a.action_type > b.action_type
+    end
+  end
+
+  if self.values.query ~= "" then
+    table.sort(displayed_list, fuzzy_sort)
+  else
+    table.sort(displayed_list, alphabetical_sort)
+  end
+
 
   GUI.findElementByName("list_box").list = displayed_list
 end
