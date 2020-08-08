@@ -66,6 +66,10 @@ end
 -- this reverses the keys and values by 'extracting' from folders
 function definitions.getBindings(entries)
   local bindings = {}
+  if not entries then
+    return bindings
+  end
+
   for entry_key,entry_value in pairs(entries) do
     if utils.isFolder(entry_value) then
       local folder_table = entry_value[2]
