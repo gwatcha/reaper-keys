@@ -85,8 +85,8 @@ return {
     ["<M-M>"] = "ModulateLastTouchedFxParam",
     ["<M-x>"] = "ShowBindingList",
     ["<SPC>"] = { "+leader commands", {
-      ["b"] = "ShowBindingList",
-      ["<SPC>"] = "ShowActionList",
+      ["<SPC>"] = "ShowBindingList",
+      ["<C-SPC>"] = "ShowActionList",
       ["m"] = { "+midi", {
                   ["x"] = "CloseWindow",
                   ["g"] = "SetMidiGridDivision",
@@ -182,7 +182,7 @@ return {
                             }},
                  }},
       }},
-      ["f"] = { "+Fx", {
+      ["f"] = { "+fx", {
                   ["a"] = "AddFx",
                   ["c"] = "ToggleShowFxChain",
                   ["x"] = "CloseFx",
