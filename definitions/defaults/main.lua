@@ -121,6 +121,7 @@ return {
     ["zz"] = "ScrollToSelectedTracks",
     ["|"] = "SplitItemsAtEditCursor",
     ["'"] = "MarkedTracks",
-    ["~"] = "MarkedRegion",
+    [";"] = "MoveItemToEditCursor",
+    [","] = "MoveItemContentToEditCursor"
   },
 }
