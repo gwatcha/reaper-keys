@@ -32,8 +32,8 @@ return {
     ["<C-<>"] = "PrevRegion",
     ["v"] = "TimeSelection",
     ["!"] = "LoopSelection",
-    ["<S-right>"] = "ShiftTimeSelectionRight",
-    ["<S-left>"] = "ShiftTimeSelectionLeft",
+    ["<S-right>"] = "TimeSelectionShiftedRight",
+    ["<S-left>"] = "TimeSelectionShiftedLeft",
     ["i"] = {"+inner", {
                ["<M-w>"] = "AutomationItem",
                ["l"] = "AllTrackItems",
@@ -227,6 +227,7 @@ return {
                  ["x"] = "ToggleAutoCrossfade",
                  ["e"] = "ToggleEnvelopePointsMoveWithItems",
                  ["c"] = "CycleRippleEditMode",
+                 ["f"] = "ResetFeedbackWindow",
       }},
       ["g"] = { "+global", {
                   ["g"] = "SetGridDivision",

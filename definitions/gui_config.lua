@@ -25,7 +25,7 @@ return {
     visual_timeline_command = {0.7, 0.8, 0.58, 1},
   },
   feedback = {
-    dock = 0,
+    dock = 1,
     elements = {
       padding = 5,
       mode_line_h = 10,

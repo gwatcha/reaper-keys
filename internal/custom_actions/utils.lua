@@ -147,7 +147,7 @@ function utils.getTrackPosition()
     local index = reaper.GetMediaTrackInfo_Value(last_touched_track, "IP_TRACKNUMBER") - 1
     return index
   end
-  return nil
+  return 0
 end
 
 function utils.getSelectedTracks()
