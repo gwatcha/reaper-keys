@@ -17,6 +17,22 @@ local GUI = require('gui.core')
 
 View = {}
 
+function createMeasurements(props)
+  Font.set("feedback_main")
+  local _, char_h = gfx.measurestr("i")
+  local pad = scale(props.elements.padding)
+  local message_h = char_h + 2 * pad
+  local mode_line_h  = scale(props.elements.mode_line_h)
+  local height_no_completions = mode_line_h + message_h 
+  return {
+    char_h = char_h,
+    pad = pad,
+    message_h = message_h,
+    height_no_completions = height_no_completions,
+    mode_line_h = mode_line_h
+  }
+end
+
 function View:updateElementDimensions()
   local m = createMeasurements(self.props)
   local window = self.window
@@ -28,11 +44,11 @@ function View:updateElementDimensions()
   elements.completions.w = window.w
 
   elements.modeline.h = m.mode_line_h
-  elements.modeline.y = completions_height + m.pad
+  elements.modeline.y = completions_height 
   elements.modeline.w = window.w
   elements.modeline.pad = m.pad
 
-  elements.message.y = completions_height + m.mode_line_h + m.pad
+  elements.message.y = completions_height + m.mode_line_h 
   elements.message.h = m.message_h
   elements.message.w = window.w
   elements.message.pad = m.pad
@@ -84,7 +100,7 @@ function createWindow(props)
       x = window_settings.x,
       h = window_settings.h,
       y = window_settings.y,
-      dock = props.ock,
+      dock = props.dock,
       corner = "TL"
   })
 
@@ -114,22 +130,6 @@ function View:new()
   self:updateElementDimensions()
 
   return view
-end
-
-function createMeasurements(props)
-  Font.set("feedback_main")
-  local _, char_h = gfx.measurestr("i")
-  local pad = scale(props.elements.padding)
-  local message_h = char_h + 2 * pad
-  local mode_line_h  = scale(props.elements.mode_line_h)
-  local height_no_completions = mode_line_h + message_h + 2 * pad
-  return {
-    char_h = char_h,
-    pad = pad,
-    message_h = message_h,
-    height_no_completions = height_no_completions,
-    mode_line_h = mode_line_h
-  }
 end
 
 function View:update(model)

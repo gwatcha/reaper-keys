@@ -1,5 +1,6 @@
 local config = require('definitions.gui_config')
 local log = require('utils.log')
+local Color = require('public.color')
 local Font = require('public.font')
 local gui_constants = require('gui.constants')
 
@@ -77,6 +78,12 @@ function gui_utils.getWindowSettings()
       w = current_w,
       h = current_h,
   }
+end
+
+function gui_utils.styled_draw(text, text_preset, color)
+  Font.set(text_preset)
+  Color.set(color)
+  gfx.drawstr(text)
 end
 
 return gui_utils

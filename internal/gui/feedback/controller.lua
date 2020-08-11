@@ -1,4 +1,5 @@
 local utils = require('command.utils')
+local str = require('string')
 local model_interface = require('gui.feedback.model_interface')
 
 local feedback = {}
@@ -63,6 +64,18 @@ end
 function feedback.displayMessage(message)
   model_interface.write({
       message= message
+  })
+end
+
+function feedback.displayState(state)
+  local right_text = ""
+  if state['macro_recording'] then
+    right_text = str.format("(rec %s..)", state['macro_register'])
+  end
+
+  model_interface.write({
+      right_text = right_text,
+      mode = state['mode']
   })
 end
 

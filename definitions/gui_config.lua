@@ -19,15 +19,17 @@ return {
     track_selector = {0.85, 0.6, 0.8, 1},
     track_operator = {0.8, 0.51, 0.8, 1},
     visual_track_command = {0.65, 0.8, 0.8, 1},
-    timeline_motion = {0.7, 0.51, 0.47, .8},
+    timeline_motion = {0.8, 0.6, 0.47, 1},
     timeline_selector = {0.85, 0.6, 0.47, 1},
     timeline_operator = {0.8, 0.51, 0.5, 1},
     visual_timeline_command = {0.7, 0.8, 0.58, 1},
   },
   feedback = {
-    dock = 1,
+    dock = 0,
     elements = {
-      padding = 5,
+      column_padding = 20,
+      row_padding = 0,
+      padding = 10,
       mode_line_h = 10,
     },
     fonts  ={
@@ -53,17 +55,6 @@ return {
     },
     -- RGBA
     colors = {
-      action_type = {
-        command = {.4, 0.8, 0.5, 1},
-        track_motion = {0.7, 0.51, 0.8, .8},
-        track_selector = {0.85, 0.6, 0.8, 1},
-        track_operator = {0.8, 0.51, 0.8, 1},
-        visual_track_command = {0.65, 0.8, 0.8, 1},
-        timeline_motion = {0.7, 0.51, 0.47, .8},
-        timeline_selector = {0.85, 0.6, 0.47, 1},
-        timeline_operator = {0.8, 0.51, 0.5, 1},
-        visual_timeline_command = {0.7, 0.8, 0.58, 1},
-      },
       selection = {0.09, 0.26, 0.09, 1},
       count = {0.65, 0.8, 0.8, 1},
       query = {0.6, 1, 0.85, 1},

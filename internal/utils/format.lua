@@ -39,48 +39,6 @@ function format.block(data)
   return ser.block(data, {comment=false})
 end
 
-function format.completions(entries)
-  local max_seq_length = 6
-  for key_seq,_ in pairs(entries) do
-    if type(key_seq) == 'string' and #key_seq > max_seq_length then
-      max_seq_length = #key_seq
-    end
-  end
-
-  local collapsed_entries = {}
-  local entries_string = ""
-
-  local sorted_entries = sortTableAlphabetically(entries)
-  for _, entry in ipairs(sorted_entries) do
-    local key_seq = entry['title']
-    local value = entry['value']
-
-      local pretty_key_seq = ""
-      local pretty_value = ""
-      if type(key_seq) == 'number' then
-        if value == '(number)' then
-          pretty_key_seq = '(num)'
-          pretty_value = '(times/select)'
-        elseif value == '(register)' then
-          pretty_key_seq = '(key)'
-          pretty_value = '(register location)'
-        end
-      else
-        pretty_key_seq = format.keySequence(key_seq, false)
-        pretty_value = value
-        if utils.isFolder(value) then
-          local folder_name = value[1]
-          pretty_value = folder_name
-        end
-      end
-
-      entry_string = str.format("%" .. max_seq_length + 1 .. "s -> %s", pretty_key_seq, pretty_value)
-      entries_string = entries_string .. "\n" .. entry_string
-  end
-
-  return entries_string
-end
-
 function removeUglyBrackets(key)
   local pretty_key = key
   if str.sub(key, 1, 1) == "<" and str.sub(key, #key, #key) == ">" then
@@ -103,46 +61,6 @@ function format.keySequence(key_sequence, spacing)
   end
 
   return key_sequence_string
-end
-
-function format.userInfoWithCompletions(state, future_entries)
-  local key_sequence_string = format.keySequence(state['key_sequence'], true)
-  key_sequence_string = key_sequence_string .. "-"
-  local completions = format.completions(future_entries)
-  local mode_line_and_info_line = format.userInfo(state, key_sequence_string)
-
-  return str.format("%s\n%s", completions, mode_line_and_info_line)
-end
-
-function format.userInfo(state, message)
-  if not state then
-    log.error("Could not print state information, state is nil!")
-    log.error(debug.traceback())
-  end
-
-  local chars_for_modes = {
-    normal = "·",
-    visual_timeline = "»",
-    visual_track = "¬",
-  }
-
-  local right_text = ""
-  if state['macro_recording'] then
-    right_text = str.format("(rec %s..)", state['macro_register'])
-  end
-
-  local min_width = 35
-  local width = min_width
-  if #message + #right_text + 3 > min_width then
-    width = #message + #right_text
-  end
-
-  info_line = str.format("%s%" .. width - #message .. "s", message, right_text)
-
-  local pretty_mode_bar = ""
-  for i=1,width do pretty_mode_bar = pretty_mode_bar .. chars_for_modes[state['mode']] end
-
-  return str.format("%s\n%s", pretty_mode_bar, info_line)
 end
 
 function format.actionSequence(action_sequence)

@@ -3,67 +3,92 @@ local log = require('utils.log')
 local format = require('utils.format')
 local scale = gui_utils.scale
 
-local Font = require("public.font")
-local Color = require("public.color")
+local Font = require('public.font')
+local Color = require('public.color')
+local Text = require('public.text')
+
+function getMaxKeyWidth(completions)
+  local max_key_width = 0
+  for i,completion in pairs(completions) do
+    local key_width = Text.getTextWidth(completion.key_sequence, "feedback_key")
+    if key_width > max_key_width then
+      max_key_width = key_width
+    end
+  end
+
+  return max_key_width
+end
+
+function table.slice(t, first, last)
+  local sliced = {}
+
+  local adjusted_last = last
+  if not last or last > #t then
+      adjusted_last = #t
+  end
+
+  for i = first or 1, adjusted_last, 1 do
+    sliced[#sliced+1] = t[i]
+  end
+
+  return sliced
+end
 
 function drawCompletions(self)
-  if type(self.completions) == 'string' then
+  local completions = self.completions
+  if type(completions) == 'string' then
     return
   end
 
-  local column_pad = scale(20)
-  local row_pad = 0
-
   Font.set("feedback_main")
   local _, char_h = gfx.measurestr("i")
-  gfx.x, gfx.y = self.pad + 1, self.pad + 1
 
-  local current_row = 0
-  local num_rows = self.h / (char_h + row_pad) - 1
+  gfx.x = self.pad
+
+  local row_pad = self.props.elements.row_padding
+  local num_rows = math.floor((self.h - 2*self.pad) / (char_h + row_pad) - 1, 0)
+
+  local num_cols = tonumber(#completions / num_rows)
+  if #self.completions % num_rows > 0 then
+    num_cols = num_cols + 1
+  end
 
   local column_width = 0
-  local column_key_width = 0
-  local column_x = gfx.x
-  for i,completion in pairs(self.completions) do
-    gfx.x = column_x
-    gfx.y = current_row * (char_h + row_pad)
+  local column_pad = self.props.elements.column_padding
+  local column_x = gfx.x - column_pad
 
-    Font.set("feedback_key")
-    Color.set(self.props.colors.key)
-    gfx.drawstr(completion.key_sequence)
+  for i=1,num_cols,1 do
+    local start_i = (i-1)*num_rows + 1
 
-    local key_width = gfx.x - column_x
-    if key_width > column_key_width then
-      column_key_width = key_width
-    end
+    local column_completions = table.slice(completions, start_i, start_i + num_rows)
+    local column_max_key_width = getMaxKeyWidth(column_completions)
 
-    Font.set("feedback_arrow")
-    Color.set(self.props.colors.arrow)
+    column_x = column_x + column_width + column_pad
+    column_width = 0
 
-    gfx.drawstr(" -> ")
+    for current_row,completion in pairs(column_completions) do
+      gfx.y = (current_row - 1) * (char_h + row_pad) + self.pad
+      gfx.x = column_x
 
-    Font.set("feedback_main")
-    local action_type_color = self.props.action_type_colors[completion.action_type]
-    Color.set(action_type_color)
-    if completion.folder == true then
-      Font.set("feedback_folder")
-      Color.set(self.props.colors.folder)
-    end
+      local key_width = Text.getTextWidth(completion.key_sequence, "feedback_key")
+      while gfx.x - column_x < column_max_key_width - key_width do
+        gfx.drawstr(" ")
+      end
+      gui_utils.styled_draw(completion.key_sequence, "feedback_key", self.props.colors.key)
 
-    gfx.drawstr(completion.value)
+      gui_utils.styled_draw(" -> ", "feedback_arrow", self.props.colors.arrow)
 
-    current_row = current_row + 1
+      if completion.folder == true then
+        gui_utils.styled_draw(completion.value, "feedback_folder", self.props.colors.folder)
+      else
+        local action_type_color = self.props.action_type_colors[completion.action_type]
+        gui_utils.styled_draw(completion.value, "feedback_main", action_type_color)
+      end
 
-    local row_width = gfx.x - column_x
-    if row_width > column_width then
-      column_width = row_width
-    end
-
-    if current_row >= num_rows then
-      column_x = column_x + column_width + column_pad
-      column_width = 0
-      key_width = 0
-      current_row = 0
+      local row_width = gfx.x - column_x
+      if row_width > column_width then
+        column_width = row_width
+      end
     end
   end
 end

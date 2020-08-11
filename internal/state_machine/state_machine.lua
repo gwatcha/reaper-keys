@@ -31,7 +31,6 @@ function step(state, key_press)
   if err ~= nil then
     new_state = state
     new_state['key_sequence'] = ''
-    -- message = format.userInfo(new_state, err)
     feedback.displayMessage(err)
     return new_state
   end
@@ -48,12 +47,15 @@ function step(state, key_press)
   local future_entries = getPossibleFutureEntries(new_state)
   if not future_entries then
     new_state['key_sequence'] = ''
-    -- message = format.userInfo(state, "Undefined key sequence")
     feedback.displayMessage("Undefined key sequence")
     return new_state
   end
 
+  local message = format.keySequence(state['key_sequence'], true)
+  message = message .. "-"
+  feedback.displayMessage(message)
   feedback.displayCompletions(future_entries)
+
   return new_state
 end
 
@@ -65,6 +67,7 @@ function input(key_press)
   local new_state = step(state, key_press)
   state_interface.set(new_state)
 
+  feedback.displayState(state)
   feedback.update()
 
   log.info("new state: " .. format.block(new_state))
