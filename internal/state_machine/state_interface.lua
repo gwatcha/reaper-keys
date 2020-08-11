@@ -39,6 +39,8 @@ function state_interface.get()
   return state
 end
 
+-- FIXME reduntant functions
+
 function state_interface.getLastSearchedTrackNameAndDirection()
   local state = state_interface.get()
   return state['last_searched_track_name'], state['last_track_name_search_direction_was_forward']

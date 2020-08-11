@@ -1,3 +1,4 @@
+-- TODO rename this file to reset and just return reset state
 local constants = {
   reset_state = {
     key_sequence = "",
@@ -22,12 +23,15 @@ local constants = {
     binding_list = {
       w = 600,
       h = 850,
+      x = 0,
+      y = 0,
+      dock = 0,
       state_filter_active = true,
       context_filter_active = false,
       context_filter = 1,
       type_filter_active = false,
       type_filter = 1,
-    }
+    },
   }
 }
 

@@ -83,18 +83,20 @@ function getFutureEntriesOnActionSequence(key_sequence, action_sequence, entries
 
   local entries_for_current_action_type = entries[current_action_type]
   if not entries_for_current_action_type then return nil end
-  if key_sequence == "" then return entries_for_current_action_type end
+  if key_sequence == "" then
+    return current_action_type, entries_for_current_action_type
+  end
 
   local completions = getPossibleFutureEntriesForKeySequence(key_sequence, entries_for_current_action_type)
   if completions then
-    return completions
+    return current_action_type, completions
   end
 
   local rest_of_sequence = key_sequence
   local key_sequence_to_try = ""
   while #rest_of_sequence ~= 0 do
-    first_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
-    key_sequence_to_try = key_sequence_to_try .. first_key
+    next_key, rest_of_sequence = utils.splitFirstKey(rest_of_sequence)
+    key_sequence_to_try = key_sequence_to_try .. next_key
     local entry = utils.getEntryForKeySequence(key_sequence_to_try, entries_for_current_action_type)
 
     if entry then
@@ -115,12 +117,15 @@ function getPossibleFutureEntries(state)
   local future_entries = {}
   local future_entry_exists = false
   for _, action_sequence in pairs(action_sequences) do
-    local future_entries_on_action_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], action_sequence, entries)
-    if future_entries_on_action_sequence then
+    local next_action_type_for_sequence,entries_for_sequence = getFutureEntriesOnActionSequence(state['key_sequence'], action_sequence, entries)
+
+    if entries_for_sequence then
       future_entry_exists = true
-      for key, entry in pairs(future_entries_on_action_sequence) do
-        if not future_entries[key] then
-          future_entries[key] = entry
+      if not future_entries[next_action_type_for_sequence] then
+        future_entries[next_action_type_for_sequence] = entries_for_sequence
+      else
+        for key,entry in pairs(entries_for_sequence) do
+          future_entries[next_action_type_for_sequence][key] = entry
         end
       end
     end

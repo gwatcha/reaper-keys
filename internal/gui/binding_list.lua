@@ -4,6 +4,7 @@ local config = require('definitions.gui_config')
 local list_config = config.binding_list
 local runner = require('command.runner')
 local state_machine_constants = require('state_machine.constants')
+local gui_constants = require('gui.constants')
 local fuzzy_match = require('fuzzy_match').fuzzy_match
 local log = require('utils.log')
 local format = require('utils.format')
@@ -19,9 +20,6 @@ local Text = require('public.text')
 local gui_utils = require('gui.utils')
 local scale = gui_utils.scale
 
-local MAX_W = 2048
-local MAX_H = 1610
-
 BindingList = {}
 
 function setupListBox(list_box)
@@ -30,7 +28,7 @@ function setupListBox(list_box)
     local r = gfx.x + self.w - 2*self.pad
     local b = gfx.y + self.h - 2*self.pad
 
-    Font.set(list_config.main_font)
+    Font.set(list_config.fonts.main)
     local _, main_font_h = gfx.measurestr("_")
 
     local outputText = {}
@@ -64,7 +62,7 @@ function setupListBox(list_box)
         gfx.drawstr(")  ")
       end
 
-      Font.set(list_config.label_font)
+      Font.set(list_config.fonts.label)
       local action_type_color = config.action_type_colors[current_row.action_type]
       if action_type_color then
         Color.set(action_type_color)
@@ -85,11 +83,11 @@ function setupListBox(list_box)
 
       gfx.x = self.x + self.pad
 
-      Font.set(list_config.main_font)
+      Font.set(list_config.fonts.main)
       gfx.y = gfx.y + main_font_h
     end
 
-    Font.set(list_config.label_font)
+    Font.set(list_config.fonts.label)
     Color.set(list_config.colors.count)
     gfx.y = gfx.y + self.pad / 2
     gfx.drawstr(#self.list)
@@ -114,27 +112,28 @@ function getActionTypes()
   return action_types
 end
 
-function makeBindingListWindow()
-  local prev_binding_list = state_interface.getField("binding_list_window")
+function createBindingListWindow()
+  local prev_binding_list = state_interface.getField("binding_list")
   if not prev_binding_list then
     prev_binding_list = state_machine_constants.reset_state.binding_list
   end
 
   local window = GUI.createWindow({
-      name = "Reaper Keys Action List",
-      w = (prev_binding_list.w < MAX_W) and prev_binding_list.w or MAX_W,
-      h = (prev_binding_list.h < MAX_H) and prev_binding_list.h or MAX_H,
-      dock = 0,
-      anchor = list_config.anchor,
-      corner = list_config.corner,
+      name = "Reaper Keys Binding List",
+      w = prev_binding_list.w,
+      h = prev_binding_list.h,
+      x = prev_binding_list.x,
+      y = prev_binding_list.y,
+      dock = list_config.dock,
+      corner = "TL"
   })
 
   local layer = GUI.createLayer({name = "MainLayer"})
 
   local main_font_preset_name = "binding_list_main"
-  gui_utils.addFont(list_config.main_font, main_font_preset_name)
+  gui_utils.addFont(list_config.fonts.main, main_font_preset_name)
   local label_font_preset_name = "binding_list_aux"
-  gui_utils.addFont(list_config.label_font, label_font_preset_name)
+  gui_utils.addFont(list_config.fonts.label, label_font_preset_name)
 
   Font.set(main_font_preset_name)
   local _, char_h = gfx.measurestr("i")
@@ -324,26 +323,13 @@ function makeBindingListData(state)
   return data
 end
 
-function BindingList:saveState()
-  local binding_list_state = {
-    w = (self.window.state.currentW < MAX_W) and self.window.state.currentW or MAX_W,
-    h = (self.window.state.currentH < MAX_H) and self.window.state.currentH or MAX_H,
-    state_filter_active = self.values.state_filter_active,
-    context_filter_active = self.values.context_filter_active,
-    context_filter = self.values.context_filter,
-    type_filter_active = self.values.type_filter_active,
-    type_filter = self.values.type_filter
-  }
-  state_interface.setField("binding_list_window", binding_list_state)
-end
-
 function BindingList:new(state)
   local binding_list = {}
   setmetatable(binding_list, self)
   self.__index = self
   self.list = makeBindingListData(state)
 
-  self.window = makeBindingListWindow()
+  self.window = createBindingListWindow()
 
   self.values = getElementValues()
 
@@ -458,6 +444,16 @@ function getElementValues()
   }
 end
 
+function BindingList:saveState()
+  local state = gui_utils.getWindowSettings()
+  state.state_filter_active = self.values.state_filter_active
+  state.context_filter_active = self.values.context_filter_active
+  state.context_filter = self.values.context_filter
+  state.type_filter_active = self.values.type_filter_active
+  state.type_filter = self.values.type_filter
+  state_interface.setField("binding_list", state)
+end
+
 function BindingList:open()
   local function updateLoop()
     local element_values = getElementValues()
@@ -471,14 +467,18 @@ function BindingList:open()
 
     if update_list then
       self:updateDisplayedList()
-      self:saveState()
     end
 
     if self.window.state.resized then
       self.window.state.resized = false
-      self:saveState()
+      -- FIXME recalculate window
     end
   end
+
+  local function exit()
+    self:saveState()
+  end
+  reaper.atexit(exit)
 
   self.window:open()
   self.window.state.focusedElm = GUI.findElementByName("query")

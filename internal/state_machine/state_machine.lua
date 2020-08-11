@@ -9,6 +9,7 @@ local getPossibleFutureEntries = require('command.completer')
 
 local log = require('utils.log')
 local format = require('utils.format')
+local feedback = require('gui.feedback.controller')
 
 function updateWithKeyPress(state, key_press)
   local new_state = state
@@ -24,40 +25,49 @@ function updateWithKeyPress(state, key_press)
   return new_state, nil
 end
 
-function input(key_press)
-  reaper.ClearConsole()
-  log.user("")
-
-  local state = state_interface.get()
-
+function step(state, key_press)
   local message = ""
   local new_state, err = updateWithKeyPress(state, key_press)
   if err ~= nil then
     new_state = state
     new_state['key_sequence'] = ''
-    message = format.userInfo(new_state, err)
-  else
-    log.info("New key sequence: " .. new_state['key_sequence'])
-    local command = buildCommand(new_state)
-    if command then
-      log.trace("Command built: " .. format.block(command))
-      new_state, message = handleCommand(new_state, command)
-    else
-      local future_entries = getPossibleFutureEntries(new_state)
-      if not future_entries then
-        new_state['key_sequence'] = ''
-        message = format.userInfo(state, "Undefined key sequence")
-      else
-        message = format.userInfoWithCompletions(new_state, future_entries)
-      end
-    end
+    -- message = format.userInfo(new_state, err)
+    feedback.displayMessage(err)
+    return new_state
   end
 
-  log.user(message)
-  log.user("\n")
-  log.info("new state: " .. format.block(new_state))
+  log.info("New key sequence: " .. new_state['key_sequence'])
+  local command = buildCommand(new_state)
+  if command then
+    log.trace("Command built: " .. format.block(command))
+    new_state, message = handleCommand(new_state, command)
+    feedback.displayMessage(message)
+    return new_state
+  end
 
+  local future_entries = getPossibleFutureEntries(new_state)
+  if not future_entries then
+    new_state['key_sequence'] = ''
+    -- message = format.userInfo(state, "Undefined key sequence")
+    feedback.displayMessage("Undefined key sequence")
+    return new_state
+  end
+
+  feedback.displayCompletions(future_entries)
+  return new_state
+end
+
+function input(key_press)
+  log.info("\n++++\ninput: " .. format.line(key_press))
+  feedback.clear()
+
+  local state = state_interface.get()
+  local new_state = step(state, key_press)
   state_interface.set(new_state)
+
+  feedback.update()
+
+  log.info("new state: " .. format.block(new_state))
 end
 
 return input

@@ -40,7 +40,7 @@ function project_io.get(ext, key)
       return false, lua_table
     end
 
-    if lua_table['cleared']  then
+    if lua_table['deleted']  then
       return false, lua_table
     end
 
@@ -50,12 +50,12 @@ function project_io.get(ext, key)
   return false, 'Does not exist'
 end
 
-function project_io.clear(ext, key)
-  -- reaper has the function 'DeleteExtState', but it dosen't work, so I
-  -- introduce a 'cleared' variable to indicate deletion
+function project_io.delete(ext, key)
+  -- reaper has the function 'DeleteExtState', but it dosen't work for project
+  -- state, so I introduce a 'deleted' key to indicate deletion
   local ok, val = project_io.get(ext, key)
-  if ok and not val['cleared'] then
-    val['cleared'] = true
+  if ok and not val['deleted'] then
+    val['deleted'] = true
     project_io.overwrite(ext, key, val)
   end
 end

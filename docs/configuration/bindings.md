@@ -17,7 +17,25 @@ parent: Configuration
 
 ## Configuration
 
-The `global`, `main`, and `midi` files contain binding definitions (i.e. 'key sequence -> action' mappings)
+```lua
+-- add a binding by specifying a key sequence and an action name
+
+-- remove a binding by specifying an action with no name
+["<SPC>"] = "",
+
+-- overwrite an entire folder by changing the name
+["<SPC>"] = { "+new folder name", {
+                ["<C-b>"] = "ShowBindingList"
+}},
+
+-- overwrite or add a binding in a folder by keeping the name the same
+["<SPC>"] = { "+leader commannds", {
+                ["<C-b>"] = "ShowBindingList"
+                ["b"] = "",
+}},
+```
+
+The `global`, `main`, and `midi` files contain default binding definitions (i.e. 'key sequence -> action' mappings)
 
 
 You may define or change key sequences for a specific context (in `main` or `midi`) or for all contexts (in `global`).

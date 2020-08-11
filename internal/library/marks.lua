@@ -65,7 +65,7 @@ function marks.delete(register)
     deleteMarkIndications(old_mark)
   end
 
-  project_io.clear('marks', register)
+  project_io.delete('marks', register)
 end
 
 function marks.recallMarkedTimelinePosition(register)
