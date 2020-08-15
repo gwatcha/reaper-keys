@@ -1,16 +1,13 @@
 local gui_utils = require('gui.utils')
-local log = require('utils.log')
-local format = require('utils.format')
 local scale = gui_utils.scale
 
 local Font = require('public.font')
-local Color = require('public.color')
-local Text = require('public.text')
 
 function getMaxKeyWidth(completions)
   local max_key_width = 0
   for i,completion in pairs(completions) do
-    local key_width = Text.getTextWidth(completion.key_sequence, "feedback_key")
+    Font.set("feedback_key")
+    local key_width = gfx.measurestr(completion.key_sequence)
     if key_width > max_key_width then
       max_key_width = key_width
     end
@@ -37,6 +34,9 @@ end
 function drawCompletions(self)
   local completions = self.completions
   if type(completions) == 'string' then
+    return
+  end
+  if not completions then
     return
   end
 
@@ -73,7 +73,8 @@ function drawCompletions(self)
       gfx.y = (current_row - 1) * (char_h + row_pad) + self.pad
       gfx.x = column_x
 
-      local key_width = Text.getTextWidth(completion.key_sequence, "feedback_key")
+      Font.set("feedback_key")
+      local key_width = gfx.measurestr(completion.key_sequence)
       while gfx.x - column_x < column_max_key_width - key_width do
         gfx.drawstr(" ")
       end
@@ -106,10 +107,10 @@ function valCompletions(self, completions)
   end
 end
 
-function makeCompletionsElement(frame_element, props)
+function createCompletionsElement(frame_element, props)
   frame_element.props = props
   frame_element.drawText = drawCompletions
   frame_element.val = valCompletions
 end
 
-return makeCompletionsElement
+return createCompletionsElement

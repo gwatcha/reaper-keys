@@ -21,8 +21,13 @@ end
 local input = require('state_machine')
 local log = require('utils.log')
 
+function errorHandler(err)
+  log.error(err)
+  log.error(debug.traceback())
+end
+
 function doInput(key_press)
-  input(key_press)
+  xpcall(input, errorHandler, key_press)
 end
 
 return doInput

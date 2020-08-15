@@ -2,12 +2,10 @@ local config = require('definitions.gui_config')
 local log = require('utils.log')
 local Color = require('public.color')
 local Font = require('public.font')
-local gui_constants = require('gui.constants')
 
 local gui_utils = {}
 
 local hiDPIMode
-
 
 function queryHiDPIMode()
   -- need to set to 1 in order for reaper to set the variable
@@ -64,19 +62,12 @@ end
 
 function gui_utils.getWindowSettings()
   local current_dock,current_x,current_y,current_w,current_h = gfx.dock(-1,0,0,0,0)
-  if current_w > gui_constants.max_w then
-    current_w = gui_constants.max_w
-  end
-  if current_h > gui_constants.max_h then
-    current_h = gui_constants.max_h
-  end
-
   return {
-      dock = current_dock,
       x = current_x,
       y = current_y,
       w = current_w,
       h = current_h,
+      dock = current_dock,
   }
 end
 

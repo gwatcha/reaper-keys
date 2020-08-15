@@ -1,10 +1,9 @@
 -- TODO change colors to RGBA and use preset name similar to Font
+local log = require('utils.log')
 
 local config = require('definitions.gui_config')
 local gui_utils = require('gui.utils')
 local scale = gui_utils.scale
-local log = require('utils.log')
-local format = require('utils.format')
 local createCompletionsElement = require('gui.feedback.completions')
 local model = require('gui.feedback.model')
 
@@ -15,41 +14,32 @@ local GUI = require('gui.core')
 
 View = {}
 
-function createMeasurements(props)
+function View:updateElementDimensions()
   Font.set("feedback_main")
   local _, char_h = gfx.measurestr("i")
+  local props = self.props
   local pad = scale(props.elements.padding)
   local message_h = char_h + 2 * pad
   local mode_line_h  = scale(props.elements.mode_line_h)
-  local height_no_completions = mode_line_h + message_h 
-  return {
-    char_h = char_h,
-    pad = pad,
-    message_h = message_h,
-    height_no_completions = height_no_completions,
-    mode_line_h = mode_line_h
-  }
-end
+  local height_no_completions = mode_line_h + message_h
 
-function View:updateElementDimensions()
-  local m = createMeasurements(self.props)
   local window = self.window
-  local completions_height = window.h - m.height_no_completions
+  local completions_height = window.h - height_no_completions
   local elements = self.elements
 
   elements.completions.h = completions_height
-  elements.completions.pad = m.pad
+  elements.completions.pad = pad
   elements.completions.w = window.w
 
-  elements.modeline.h = m.mode_line_h
+  elements.modeline.h = mode_line_h
   elements.modeline.y = completions_height
   elements.modeline.w = window.w
-  elements.modeline.pad = m.pad
+  elements.modeline.pad = pad
 
-  elements.message.y = completions_height + m.mode_line_h 
-  elements.message.h = m.message_h
+  elements.message.y = completions_height + mode_line_h
+  elements.message.h = message_h
   elements.message.w = window.w
-  elements.message.pad = m.pad
+  elements.message.pad = pad
 end
 
 function createElements()
@@ -86,7 +76,6 @@ function getWindowSettings(measurements)
     x = scale(500),
     y = scale(500),
     h = scale(50),
-    dock = 0,
   }
   return default_window_settings
 end
@@ -132,9 +121,9 @@ function View:new()
 end
 
 function View:update(model)
-  for element_name,element in pairs(self.elements) do
-    element:val(model[element_name])
-  end
+  self.elements.completions:val(model.completions)
+  self.elements.modeline:val(model.mode)
+  self.elements.message:val(model.message .. "   " .. model.right_text)
 end
 
 function View:open()
@@ -144,11 +133,7 @@ function View:open()
 
     if self.window.state.resized then
       self.window.state.resized = false
-      self.window.h = self.window.state.currentH
-      self.window.w = self.window.state.currentW
-      self.window:reopen(self.getWindowSettings())
-      self:updateElementDimensions()
-      self:update(model_data)
+      self:redraw()
     end
 
     if model_data.update_number ~= update_number then
@@ -165,6 +150,17 @@ end
 
 function View:getWindowSettings()
    return gui_utils.getWindowSettings()
+end
+
+function View:redraw()
+  self.window.h = self.window.state.currentH
+  self.window.w = self.window.state.currentW
+  self.window:reopen()
+  self:updateElementDimensions()
+  for _,element in pairs(self.elements) do
+    element:init()
+    element:redraw()
+  end
 end
 
 return View

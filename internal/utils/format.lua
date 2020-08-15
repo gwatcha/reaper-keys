@@ -1,6 +1,6 @@
 local utils = require('command.utils')
 local ser = require('serpent')
-local str = require('string')
+local string_util = require('string')
 local log = require('utils.log')
 
 local format = {}
@@ -41,8 +41,8 @@ end
 
 function removeUglyBrackets(key)
   local pretty_key = key
-  if str.sub(key, 1, 1) == "<" and str.sub(key, #key, #key) == ">" then
-    pretty_key = str.sub(key, 2, #key - 1)
+  if string_util.sub(key, 1, 1) == "<" and string_util.sub(key, #key, #key) == ">" then
+    pretty_key = string_util.sub(key, 2, #key - 1)
   end
 
   return pretty_key

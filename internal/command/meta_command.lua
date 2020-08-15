@@ -1,6 +1,6 @@
 local meta_command = {}
 
-local BindingList = require('gui.binding_list')
+local binding_list = require('gui.binding_list.controller')
 local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
@@ -94,11 +94,11 @@ local meta_commands = {
     new_state['key_sequence'] = ""
     return new_state
   end,
+  -- TODO make me accessible from any state
   ["ShowBindingList"] = function(state, command)
-    local list = BindingList:new(state)
-    list:open()
     local new_state = state
     new_state['key_sequence'] = ""
+    local list = binding_list.open(new_state)
     return new_state
   end
 }

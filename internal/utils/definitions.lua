@@ -63,7 +63,7 @@ function definitions.getPossibleEntries(context)
   return merged_table
 end
 
--- this reverses the keys and values by 'extracting' from folders
+-- this reverses the keys and values of entries
 function definitions.getBindings(entries)
   local bindings = {}
   if not entries then
@@ -97,7 +97,6 @@ function definitions.getAllBindings()
     end
   end
 
-  -- make suer user definitions are prioritized
   local user_bindings = {}
   for context,context_definitions in pairs(user_definitions) do
     user_bindings[context] = {}

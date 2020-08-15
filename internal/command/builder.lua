@@ -5,8 +5,6 @@ local getAction = require('utils.get_action')
 local format = require('utils.format')
 local log = require('utils.log')
 
-local str = require('string')
-
 function getActionKey(key_sequence, entries)
   local action_name = utils.getEntryForKeySequence(key_sequence, entries)
   if action_name and not utils.isFolder(action_name) and (not utils.checkIfActionHasOptionSet(action_name, 'registerAction') or utils.checkIfActionHasOptionSet(action_name, 'registerOptional')) then

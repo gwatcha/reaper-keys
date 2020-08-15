@@ -1,4 +1,4 @@
-local str = require('string')
+local string_util = require('string')
 local log = require('utils.log')
 local ser = require('serpent')
 
@@ -97,7 +97,7 @@ function utils.getEntry(key_sequence, entries)
   end
   for k, sub_command_name in pairs(entries) do
     if actions[sub_command_name]['format'] then
-      local match = str.match(key_sequence, k)
+      local match = string_util.match(key_sequence, k)
       if match then
       end
     end
@@ -117,9 +117,9 @@ function utils.isFolder(entry_value)
 end
 
 function utils.splitFirstMatch(key_sequence, match_regex)
-  local match = str.match(key_sequence, match_regex)
+  local match = string_util.match(key_sequence, match_regex)
   if match then
-    local rest_of_sequence = str.sub(key_sequence, str.len(match) + 1)
+    local rest_of_sequence = string_util.sub(key_sequence, string_util.len(match) + 1)
     return match, rest_of_sequence
   end
 

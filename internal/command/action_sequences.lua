@@ -68,4 +68,25 @@ function action_sequences.getFunctionForCommand(command)
   return nil
 end
 
+function action_sequences.getActionTypes()
+  local action_types = {}
+  local seen_types = {}
+  for _,context_definitions in pairs(action_sequence_definitions) do
+    for _,mode_definitions in pairs(context_definitions) do
+      for _,action_sequence_function_pair in pairs(mode_definitions) do
+        local action_sequence = action_sequence_function_pair[1]
+        for _,action_type in pairs(action_sequence) do
+          if not seen_types[action_type] then
+            seen_types[action_type] = true
+            table.insert(action_types, action_type)
+          end
+        end
+      end
+    end
+  end
+
+  table.sort(action_types)
+  return action_types
+end
+
 return action_sequences

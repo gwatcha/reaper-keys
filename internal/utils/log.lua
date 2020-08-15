@@ -76,7 +76,7 @@ for i, x in ipairs(modes) do
     if nameupper == "USER" then
       reaper.ShowConsoleMsg(string.format("%s\n", msg))
     else
-      reaper.ShowConsoleMsg(string.format("Keys[%s]: %s\n", nameupper, msg))
+      reaper.ShowConsoleMsg(string.format("Reaper-Keys[%s]: %s\n", nameupper, msg))
     end
 
 

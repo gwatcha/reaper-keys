@@ -25,14 +25,14 @@ return {
     visual_timeline_command = {0.7, 0.8, 0.58, 1},
   },
   feedback = {
-    dock = 0,
+    dock = 1,
     elements = {
       column_padding = 20,
       row_padding = 0,
       padding = 10,
       mode_line_h = 10,
     },
-    fonts  ={
+    fonts = {
       feedback_main = {default_font, 18},
       feedback_key = {default_font, 18},
       feedback_arrow = {default_font, 20},
@@ -49,9 +49,9 @@ return {
   },
   binding_list = {
     dock = 0,
-    fonts  ={
-      main = {default_font, 18},
-      label = {default_font, 14},
+    fonts = {
+      binding_list_main = {default_font, 18},
+      binding_list_label = {default_font, 14},
     },
     -- RGBA
     colors = {
