@@ -105,7 +105,7 @@ function Window:reopen(params)
   local currentDock,currentX,currentY,currentW,currentH = gfx.dock(-1,0,0,0,0)
 
   self:clearTooltip()
-  gfx.quit()
+  -- gfx.quit()
   gfx.init(
     self.name,
     (params and params.w) or currentW,

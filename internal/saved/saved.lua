@@ -1,35 +1,18 @@
-local table_io = require('utils.table_io')
+local reaper_state = require('utils.reaper_state')
 local log = require('utils.log')
-
-local info = debug.getinfo(1,'S');
-local internal_root_path = info.source:match(".*reaper.keys[^\\/]*[\\/]internal[\\/]"):sub(2)
-
-local saved_data_dir = ""
-local windows_files = internal_root_path:match("\\$")
-if windows_files then
-  saved_data_dir = internal_root_path .. "\\saved\\data\\"
-else
-  saved_data_dir = internal_root_path .. "/saved/data/"
-end
 
 local saved = {}
 
 function saved.getAll(name)
-  local ok, data = table_io.read(saved_data_dir .. name)
-  if not ok then
-    log.error("Could not read saved data '" .. name .. "' from file, it may have become corrupted.")
-    return {}
-  end
-  return data
+  return reaper_state.get(name)
 end
 
 function saved.get(name, register)
-  local data = saved.getAll(name)
-  return data[register]
+  return reaper_state.getKey(name, register)
 end
 
 function saved.overwriteAll(name, data)
-  table_io.write(saved_data_dir .. name, data)
+  reaper_state.set(name, data)
 end
 
 function saved.overwrite(name, register, new_data)

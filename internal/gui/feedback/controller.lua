@@ -1,6 +1,10 @@
 local utils = require('command.utils')
 local str = require('string')
-local model_interface = require('gui.feedback.model_interface')
+local log = require('utils.log')
+local format = require('utils.format')
+local FeedbackView = require('gui.feedback.View')
+local reaper_state = require('utils.reaper_state')
+local model = require('gui.feedback.model')
 
 local feedback = {}
 
@@ -47,24 +51,34 @@ function feedback.displayCompletions(future_entries)
     end
     table.sort(completions, alphabetical_sort)
 
-    model_interface.write({completions = completions})
+    model.setKeys({completions = completions})
   end
 end
 
 function feedback.update()
-  local model = model_interface.read()
-  if not model.update_number or model.update_number > 20 then
-    model.update_number = 0
+  local feedback_view_open = model.getKey("open")
+  if not feedback_view_open or reaper_state.clearJustOpenedFlag() then
+    local feedback_view = FeedbackView:new()
+    feedback_view:open()
+
+    model.setKeys({open = true})
+
+    reaper.atexit(function()
+        model.setKeys({open  = false})
+        local window_settings = feedback_view:getWindowSettings()
+        model.setKeys({window_settings  = window_settings})
+    end)
   end
-  model_interface.write({
-      update_number = model.update_number + 1
-  })
+
+  local update_number = model.getKey("update_number")
+  if not update_number or update_number > 20 then
+    update_number = 0
+  end
+  model.setKeys({update_number = update_number + 1})
 end
 
 function feedback.displayMessage(message)
-  model_interface.write({
-      message= message
-  })
+  model.setKeys({message = message})
 end
 
 function feedback.displayState(state)
@@ -73,14 +87,11 @@ function feedback.displayState(state)
     right_text = str.format("(rec %s..)", state['macro_register'])
   end
 
-  model_interface.write({
-      right_text = right_text,
-      mode = state['mode']
-  })
+  model.setKeys({right_text = right_text, mode = state['mode']})
 end
 
 function feedback.clear()
-  model_interface.write({
+  model.setKeys({
       message = "",
       completions = "",
       mode = "",

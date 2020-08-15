@@ -1,27 +1,18 @@
-local table_io = require('utils.table_io')
+local reaper_state = require('utils.reaper_state')
 local log = require('utils.log')
 local constants = require('state_machine.constants')
 local utils = require('command.utils')
 
 local state_interface= {}
-
-local info = debug.getinfo(1,'S');
-local root_path = info.source:match[[(.*reaper.keys[^\\/]*[\\/])]]:sub(2)
-local state_file_path = ""
-local windows_files = root_path:match("\\$")
-if windows_files then
-  state_file_path = root_path .. "internal\\state_machine\\state"
-else
-  state_file_path = root_path .. "internal/state_machine/state"
-end
+local state_table_name = "state"
 
 function state_interface.set(state)
-  table_io.write(state_file_path, state)
+  reaper_state.set(state_table_name, state)
 end
 
-function state_interface.setField(field, value)
+function state_interface.setKey(key, value)
   local state = state_interface.get()
-  state[field] = value
+  state[key] = value
   state_interface.set(state)
 end
 
@@ -31,9 +22,9 @@ function state_interface.getField(field)
 end
 
 function state_interface.get()
-    local ok, state = table_io.read(state_file_path)
-    if not ok then
-      log.error("Could not read state data from file, got '" .. state .. "' instead. Resetting.")
+    local state = reaper_state.get(state_table_name)
+    if not state then
+      log.info("Could not read state data. Returning reset state.")
       state = constants['reset_state']
     end
   return state

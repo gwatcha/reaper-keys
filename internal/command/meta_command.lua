@@ -9,6 +9,7 @@ local definitions = require('utils.definitions')
 local state_machine_constants = require('state_machine.constants')
 local action_sequences = require('command.action_sequences')
 local log = require('utils.log')
+local reaper_state = require('utils.reaper_state')
 
 function executeMacroCommands(state, command, macro_commands, repetitions)
   for i=1,repetitions do
@@ -46,7 +47,7 @@ local meta_commands = {
       repetitions = command.action_keys[cmd_i]['prefixedRepetitions']
     end
 
-    local macro_commands = saved.get('macros', register)
+    local macro_commands = reaper_state.getKey('macros', register)
     if macro_commands then
       executeMacroCommands(state, command, macro_commands, repetitions)
       if state['macro_recording'] then
@@ -66,7 +67,7 @@ local meta_commands = {
     else
       local register = command.action_keys[1]['register']
       if register then
-        saved.clear('macros', register)
+        reaper_state.setKeys('macros', {register = {}})
         state['macro_register'] = register
         state['macro_recording'] = true
         state['key_sequence'] = ""
@@ -85,7 +86,7 @@ local meta_commands = {
     local last_command = state['last_command']
     executeCommandOrMetaCommand(state, last_command, repetitions)
     if state['macro_recording'] then
-      saved.append('macros', state['macro_register'], state['last_command'])
+      reaper_state.append('macros', state['macro_register'], state['last_command'])
     end
 
     local new_state = state

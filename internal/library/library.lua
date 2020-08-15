@@ -1,7 +1,7 @@
 local state_interface = require('state_machine.state_interface')
 local reaper_utils = require('custom_actions.utils')
 
-local reaper_io = require('utils.reaper_io')
+local reaper_state = require('utils.reaper_state')
 local log = require('utils.log')
 local marks = require('library.marks')
 local state = require('library.state')
@@ -51,7 +51,7 @@ function library.repeatTrackNameMatchBackward()
 end
 
 function library.ResetFeedbackWindow()
-  reaper_io.set("feedback", "open", {false}, false)
+  reaper_state.setKeys("feedback", {open = false})
 end
 
 return library

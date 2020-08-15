@@ -451,7 +451,7 @@ function BindingList:saveState()
   state.context_filter = self.values.context_filter
   state.type_filter_active = self.values.type_filter_active
   state.type_filter = self.values.type_filter
-  state_interface.setField("binding_list", state)
+  state_interface.setKey("binding_list", state)
 end
 
 function BindingList:open()

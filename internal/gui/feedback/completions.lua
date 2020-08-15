@@ -47,6 +47,9 @@ function drawCompletions(self)
 
   local row_pad = self.props.elements.row_padding
   local num_rows = math.floor((self.h - 2*self.pad) / (char_h + row_pad) - 1, 0)
+  if num_rows == 0 then
+    return
+  end
 
   local num_cols = tonumber(#completions / num_rows)
   if #self.completions % num_rows > 0 then

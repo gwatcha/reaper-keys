@@ -1,4 +1,5 @@
 local state_interface = require('state_machine.state_interface')
+local reaper_state = require('utils.reaper_state')
 local log = require('utils.log')
 local saved = require('saved')
 local utils = require('command.utils')
@@ -36,7 +37,7 @@ function handleCommand(state, command)
     end
 
     if new_state['macro_recording'] then
-      saved.append('macros', state['macro_register'], command)
+      reaper_state.append('macros', state['macro_register'], command)
     end
 
     new_state['key_sequence'] = ""

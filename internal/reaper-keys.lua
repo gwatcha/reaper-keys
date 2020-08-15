@@ -20,16 +20,8 @@ end
 
 local input = require('state_machine')
 local log = require('utils.log')
-local FeedbackView = require('gui.feedback.View')
-local reaper_io = require('utils.reaper_io')
 
 function doInput(key_press)
-  local exists,feedback_view_open = reaper_io.get("feedback", "open")
-  if not exists or not feedback_view_open[1] then
-    local feedback_view = FeedbackView:new()
-    feedback_view:open()
-  end
-
   input(key_press)
 end
 

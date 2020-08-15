@@ -1,19 +1,17 @@
 -- TODO change colors to RGBA and use preset name similar to Font
 
 local config = require('definitions.gui_config')
-local reaper_io = require('utils.reaper_io')
 local gui_utils = require('gui.utils')
 local scale = gui_utils.scale
 local log = require('utils.log')
 local format = require('utils.format')
-local model_interface = require('gui.feedback.model_interface')
 local createCompletionsElement = require('gui.feedback.completions')
+local model = require('gui.feedback.model')
 
 local scythe = require('scythe')
 local Font = require("public.font")
 local Color = require("public.color")
 local GUI = require('gui.core')
-
 
 View = {}
 
@@ -44,7 +42,7 @@ function View:updateElementDimensions()
   elements.completions.w = window.w
 
   elements.modeline.h = m.mode_line_h
-  elements.modeline.y = completions_height 
+  elements.modeline.y = completions_height
   elements.modeline.w = window.w
   elements.modeline.pad = m.pad
 
@@ -78,18 +76,19 @@ function createElements()
 end
 
 function getWindowSettings(measurements)
-  local exists,prev_window_settings = reaper_io.get("feedback", "window_settings")
-  if exists then
+  local prev_window_settings = model.getKey("window_settings")
+  if prev_window_settings then
     return prev_window_settings
   end
 
-  return {
+  local default_window_settings =  {
     w = scale(800),
     x = scale(500),
     y = scale(500),
     h = scale(50),
     dock = 0,
   }
+  return default_window_settings
 end
 
 function createWindow(props)
@@ -140,37 +139,32 @@ end
 
 function View:open()
   local update_number = 0
-  reaper_io.set("feedback", "open", {true}, false)
-
   local function main()
-    local model = model_interface.read()
+    local model_data = model.get()
 
     if self.window.state.resized then
       self.window.state.resized = false
       self.window.h = self.window.state.currentH
       self.window.w = self.window.state.currentW
-      self.window:reopen({w = self.window.state.currentW, h = self.window.state.currentH})
+      self.window:reopen(self.getWindowSettings())
       self:updateElementDimensions()
-      self:update(model)
+      self:update(model_data)
     end
 
-    if model.update_number ~= update_number then
-      self:update(model)
-      update_number = model.update_number
+    if model_data.update_number ~= update_number then
+      self:update(model_data)
+      update_number = model_data.update_number
     end
   end
-
-  local function exit()
-    reaper_io.set("feedback", "open", {false}, false)
-    local window_settings = gui_utils.getWindowSettings()
-    reaper_io.set("feedback", "window_settings", window_settings, true)
-  end
-  reaper.atexit(exit)
 
   self.window:open()
   GUI.func = main
   GUI.funcTime = 0
   GUI.Main()
+end
+
+function View:getWindowSettings()
+   return gui_utils.getWindowSettings()
 end
 
 return View
