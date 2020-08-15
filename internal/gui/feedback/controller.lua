@@ -1,7 +1,5 @@
 local utils = require('command.utils')
-local str = require('string')
-local log = require('utils.log')
-local format = require('utils.format')
+local string_util = require('string')
 local FeedbackView = require('gui.feedback.View')
 local reaper_state = require('utils.reaper_state')
 local model = require('gui.feedback.model')
@@ -43,10 +41,14 @@ function feedback.displayCompletions(future_entries)
     end
 
     local alphabetical_sort = function(a, b)
-      if a.action_type == b.action_type then
-        return a.value < b.value
-      else
+      if a.folder and not b.folder then
+        return true
+      elseif not a.folder and b.folder then
+        return false
+      elseif not a.folder and not b.folder then
         return a.action_type > b.action_type
+      else
+        return a.value < b.value
       end
     end
     table.sort(completions, alphabetical_sort)
@@ -84,7 +86,7 @@ end
 function feedback.displayState(state)
   local right_text = ""
   if state['macro_recording'] then
-    right_text = str.format("(rec %s..)", state['macro_register'])
+    right_text = string_util.format("(rec %s..)", state['macro_register'])
   end
 
   model.setKeys({right_text = right_text, mode = state['mode']})
