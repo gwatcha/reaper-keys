@@ -18,14 +18,10 @@ return {
   },
   visual_track_command = {
     ["V"] = "SetModeNormal",
-    ["<M-h>"] = "NudgeTrackPanLeft",
-    ["<M-l>"] = "NudgeTrackPanRight",
-    ["<M-H>"] = "NudgeTrackPanLeft10Times",
-    ["<M-L>"] = "NudgeTrackPanRight10Times",
-    ["<M-j>"] = "NudgeTrackVolumeDownBy1Tenth",
-    ["<M-k>"] = "NudgeTrackVolumeUpBy1Tenth",
-    ["<M-J>"] = "NudgeTrackVolumeDownBy1",
-    ["<M-K>"] = "NudgeTrackVolumeUpBy1",
+    ["<C-h>"] = "NudgeTrackPanLeft",
+    ["<C-l>"] = "NudgeTrackPanRight",
+    ["<C-H>"] = "NudgeTrackPanLeft10Times",
+    ["<C-L>"] = "NudgeTrackPanRight10Times",
   },
   track_selector = {
     ["'"] = "MarkedTracks",
@@ -98,7 +94,6 @@ return {
     [")"] = "TimeSelectionEnd",
   },
   command = {
-    ["<M-S>"] = "SelectItemsUnderEditCursor",
     ["<TAB>"] = "CycleFolderCollapsedState",
     ["zp"] = "ZoomProject",
     ["D"] = "CutSelectedItems",
@@ -122,6 +117,15 @@ return {
     ["|"] = "SplitItemsAtEditCursor",
     ["'"] = "MarkedTracks",
     [";"] = "MoveItemToEditCursor",
-    [","] = "MoveItemContentToEditCursor"
+    [","] = "MoveItemContentToEditCursor",
+    ["<C-j>"] = "NudgeTrackVolumeDownBy1Tenth",
+    ["<C-k>"] = "NudgeTrackVolumeUpBy1Tenth",
+    ["<C-J>"] = "NudgeTrackVolumeDownBy1",
+    ["<C-K>"] = "NudgeTrackVolumeUpBy1",
+    ["<M-i>"] = "Insert4EnvelopePointsAtTimeSelection",
+    ["<CM-j>"] = "ShiftEnvelopePointsDownATinyBit",
+    ["<CM-k>"] = "ShiftEnvelopePointsUpATinyBit",
+    ["<CM-J>"] = "ShiftEnvelopePointsDown",
+    ["<CM-K>"] = "ShiftEnvelopePointsUp",
   },
 }
