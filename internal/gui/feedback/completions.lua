@@ -46,7 +46,7 @@ function drawCompletions(self)
   gfx.x = self.pad
 
   local row_pad = self.props.elements.row_padding
-  local num_rows = math.floor((self.h - 2*self.pad) / (char_h + row_pad) - 1, 0)
+  local num_rows = math.floor((self.h - 2*self.pad) / (char_h + row_pad), 0)
   if num_rows == 0 then
     return
   end
@@ -61,9 +61,9 @@ function drawCompletions(self)
   local column_x = gfx.x - column_pad
 
   for i=1,num_cols,1 do
-    local start_i = (i-1)*num_rows + 1
+    local start_i = (i - 1) * num_rows + 1
 
-    local column_completions = table.slice(completions, start_i, start_i + num_rows)
+    local column_completions = table.slice(completions, start_i, start_i + num_rows - 1)
     local column_max_key_width = getMaxKeyWidth(column_completions)
 
     column_x = column_x + column_width + column_pad
