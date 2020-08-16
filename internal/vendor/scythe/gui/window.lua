@@ -105,15 +105,19 @@ function Window:reopen(params)
   local currentDock,currentX,currentY,currentW,currentH = gfx.dock(-1,0,0,0,0)
 
   self:clearTooltip()
-  -- gfx.quit()
   gfx.init(
-    self.name,
+    "",
     (params and params.w) or currentW,
     (params and params.h) or currentH,
     (params and params.dock) or currentDock,
     (params and params.x) or currentX,
     (params and params.y) or currentY
   )
+
+  self.w = (params and params.w) or self.w
+  self.h = (params and params.h) or self.h
+  self.x = (params and params.x) or self.x
+  self.y = (params and params.y) or self.y
 
   self.currentW = gfx.w
   self.currentH = gfx.h

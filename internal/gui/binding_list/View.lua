@@ -106,10 +106,6 @@ end
 
 
 function createBindingListWindow(props)
-  if not props then
-    props = {}
-  end
-
   local window_settings = {
     name = "Reaper Keys Binding List",
     corner = "TL"
@@ -214,13 +210,15 @@ function View:new(props)
   query.processKey[Const.chars.DOWN] = function()
     if self.selected_i < #self.elements.binding_list_box.list then
       self.selected_i = self.selected_i + 1
-      self.elements.binding_list_box:val(self.selected_i - 1)
+      self.elements.binding_list_box:val(self.selected_i)
+      self.elements.binding_list_box:redraw()
     end
   end
   query.processKey[Const.chars.UP] = function()
     if self.selected_i > 1 then
       self.selected_i = self.selected_i - 1
       self.elements.binding_list_box:val(self.selected_i)
+      self.elements.binding_list_box:redraw()
     end
   end
   query.processKey[Const.chars.RETURN] = function()

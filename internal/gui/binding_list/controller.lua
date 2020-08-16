@@ -102,6 +102,12 @@ end
 
 function binding_list.open(state)
   local saved_props = reaper_state.get("binding_list")
+  if not saved_props then
+    saved_props = {
+      window = {},
+      element_values = {}
+    }
+  end
   local view = BindingListView:new(saved_props)
   local element_values = {}
   local full_binding_list = createBindingList(state)

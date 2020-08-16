@@ -25,7 +25,7 @@ return {
     visual_timeline_command = {0.7, 0.8, 0.58, 1},
   },
   feedback = {
-    dock = 1,
+    dock = 0,
     elements = {
       column_padding = 20,
       row_padding = 0,

@@ -5,7 +5,7 @@ local config = require('definitions.gui_config')
 local gui_utils = require('gui.utils')
 local scale = gui_utils.scale
 local createCompletionsElement = require('gui.feedback.completions')
-local model = require('gui.feedback.model')
+local model_interface = require('gui.feedback.model')
 
 local scythe = require('scythe')
 local Font = require("public.font")
@@ -19,12 +19,14 @@ function View:updateElementDimensions()
   local _, char_h = gfx.measurestr("i")
   local props = self.props
   local pad = scale(props.elements.padding)
+
   local message_h = char_h + 2 * pad
   local mode_line_h  = scale(props.elements.mode_line_h)
-  local height_no_completions = mode_line_h + message_h
+  local base_height = mode_line_h + message_h
+  self.base_height = base_height
 
   local window = self.window
-  local completions_height = window.h - height_no_completions
+  local completions_height = window.h - base_height
   local elements = self.elements
 
   elements.completions.h = completions_height
@@ -66,7 +68,7 @@ function createElements()
 end
 
 function getWindowSettings(measurements)
-  local prev_window_settings = model.getKey("window_settings")
+  local prev_window_settings = model_interface.getKey("window_settings")
   if prev_window_settings then
     return prev_window_settings
   end
@@ -120,25 +122,33 @@ function View:new()
   return view
 end
 
+function View:adjustWindow()
+  local completions_h = self.elements.completions:getRequiredHeight()
+  local new_h = self.base_height + completions_h
+  if new_h ~= self.window.h then
+    self:redraw({h = new_h})
+  end
+end
+
 function View:update(model)
   self.elements.completions:val(model.completions)
   self.elements.modeline:val(model.mode)
   self.elements.message:val(model.message .. "   " .. model.right_text)
+  self:adjustWindow()
 end
 
 function View:open()
   local update_number = 0
   local function main()
-    local model_data = model.get()
+    local model = model_interface.get()
+    if model.update_number ~= update_number then
+      update_number = model.update_number
+      self:update(model)
+    end
 
     if self.window.state.resized then
       self.window.state.resized = false
       self:redraw()
-    end
-
-    if model_data.update_number ~= update_number then
-      self:update(model_data)
-      update_number = model_data.update_number
     end
   end
 
@@ -152,12 +162,13 @@ function View:getWindowSettings()
    return gui_utils.getWindowSettings()
 end
 
-function View:redraw()
-  self.window.h = self.window.state.currentH
-  self.window.w = self.window.state.currentW
-  self.window:reopen()
+function View:redraw(params)
+  self.window:reopen(params)
   self:updateElementDimensions()
   for _,element in pairs(self.elements) do
+    if element.recalculateWindow then
+      element:recalculateWindow()
+    end
     element:init()
     element:redraw()
   end

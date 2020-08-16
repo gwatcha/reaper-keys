@@ -46,9 +46,11 @@ function feedback.displayCompletions(future_entries)
       elseif not a.folder and b.folder then
         return false
       elseif not a.folder and not b.folder then
-        return a.action_type > b.action_type
-      else
-        return a.value < b.value
+        if a.action_type ~= b.action_type then
+          return a.action_type > b.action_type
+        else
+          return a.value < b.value
+        end
       end
     end
     table.sort(completions, alphabetical_sort)
@@ -70,13 +72,13 @@ function feedback.update()
         local window_settings = feedback_view:getWindowSettings()
         model.setKeys({window_settings  = window_settings})
     end)
+  else
+    local update_number = model.getKey("update_number")
+    if not update_number or update_number > 20 then
+      update_number = 0
+    end
+    model.setKeys({update_number = update_number + 1})
   end
-
-  local update_number = model.getKey("update_number")
-  if not update_number or update_number > 20 then
-    update_number = 0
-  end
-  model.setKeys({update_number = update_number + 1})
 end
 
 function feedback.displayMessage(message)
