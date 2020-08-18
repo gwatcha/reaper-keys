@@ -59,17 +59,13 @@ end
 
 function getWindowSettings(measurements)
   local prev_window_settings = model_interface.getKey("window_settings")
+  log.user(format.line(prev_window_settings))
+
   if prev_window_settings then
     return prev_window_settings
   end
 
-  local default_window_settings =  {
-    w = scale(800),
-    x = scale(500),
-    y = scale(500),
-    h = scale(50),
-  }
-  return default_window_settings
+  return {}
 end
 
 function createWindow(props)
