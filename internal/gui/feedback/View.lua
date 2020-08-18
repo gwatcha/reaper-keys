@@ -59,7 +59,6 @@ end
 
 function getWindowSettings(measurements)
   local prev_window_settings = model_interface.getKey("window_settings")
-  log.user(format.line(prev_window_settings))
 
   if prev_window_settings then
     return prev_window_settings
