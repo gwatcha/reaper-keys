@@ -45,13 +45,11 @@ function feedback.displayCompletions(future_entries)
         return true
       elseif not a.folder and b.folder then
         return false
-      elseif not a.folder and not b.folder then
-        if a.action_type ~= b.action_type then
-          return a.action_type > b.action_type
-        else
-          return a.value < b.value
-        end
+      elseif not a.folder and not b.folder and a.action_type ~= b.action_type then
+        return a.action_type > b.action_type
       end
+
+      return a.value < b.value
     end
     table.sort(completions, alphabetical_sort)
 

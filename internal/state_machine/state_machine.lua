@@ -67,7 +67,7 @@ function input(key_press)
   local new_state = step(state, key_press)
   state_interface.set(new_state)
 
-  feedback.displayState(state)
+  feedback.displayState(new_state)
   feedback.update()
 
   log.info("new state: " .. format.block(new_state))

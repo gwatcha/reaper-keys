@@ -614,7 +614,7 @@ function Window:drawVersion()
   gfx.x = gfx.w - strWidth - 6
   gfx.y = gfx.h - strHeight - 4
 
-  gfx.drawstr(str)
+  -- gfx.drawstr(str)
 
 end
 

@@ -25,7 +25,7 @@ return {
     visual_timeline_command = {0.7, 0.8, 0.58, 1},
   },
   feedback = {
-    dock = 0,
+    idle_time_until_show = 1,
     elements = {
       column_padding = 20,
       row_padding = 0,
@@ -40,15 +40,14 @@ return {
     },
     colors = {
       visual_timeline = {0.7, 0.8, 0.58, 1},
+      extra_info = {1, 1, 1, .4},
       visual_track = {0.65, 0.8, 0.8, 1},
-      normal = {0.6, 1, 0.85, 1},
       key = {0.7, 0.51, 0.8, 1},
       arrow = {0.3, 0.51, 0.8, 1},
       folder = {0.6, 1, 0.85, .6},
     },
   },
   binding_list = {
-    dock = 0,
     fonts = {
       binding_list_main = {default_font, 18},
       binding_list_label = {default_font, 14},
