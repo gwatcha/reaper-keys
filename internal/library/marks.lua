@@ -1,4 +1,4 @@
-local project_io = require('utils.project_io')
+local project_state = require('utils.project_state')
 local state_interface = require('state_machine.state_interface')
 local reaper_utils = require('custom_actions.utils')
 local log = require('utils.log')
@@ -33,15 +33,15 @@ function overwriteMark(mark, register)
   mark['register'] = register
   mark['time'] = os.time()
 
-  local ok, old_mark = project_io.get('marks', register)
+  local ok, old_mark = project_state.get('marks', register)
   if ok and old_mark then
     deleteMarkIndications(old_mark)
   end
 
-  project_io.overwrite('marks', register, mark)
+  project_state.overwrite('marks', register, mark)
   state_interface.setMode('normal')
 
-  local _, all_project_marks = project_io.getAll('marks')
+  local _, all_project_marks = project_state.getAll('marks')
   log.trace("New Marks State: " .. format.block(all_project_marks))
 end
 
@@ -60,16 +60,16 @@ function marks.save(register)
 end
 
 function marks.delete(register)
-  local ok, old_mark = project_io.get('marks', register)
+  local ok, old_mark = project_state.get('marks', register)
   if ok and old_mark then
     deleteMarkIndications(old_mark)
   end
 
-  project_io.delete('marks', register)
+  project_state.delete('marks', register)
 end
 
 function marks.recallMarkedTimelinePosition(register)
-  local ok, mark = project_io.get('marks', register)
+  local ok, mark = project_state.get('marks', register)
   if not ok or not mark then
     return
   end
@@ -83,7 +83,7 @@ function marks.recallMarkedTimelinePosition(register)
 end
 
 function marks.recallMarkedRegion(register)
-  local ok, mark = project_io.get('marks', register)
+  local ok, mark = project_state.get('marks', register)
   if not ok or not mark then
     return
   end
@@ -93,7 +93,7 @@ function marks.recallMarkedRegion(register)
 end
 
 function marks.recallMarkedTracks(register)
-  local ok, mark = project_io.get('marks', register)
+  local ok, mark = project_state.get('marks', register)
   if not ok or not mark then
     return
   end

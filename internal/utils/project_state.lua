@@ -1,15 +1,15 @@
 local log = require('utils.log')
 local serpent = require('serpent')
 
-local project_io = {}
+local project_state = {}
 
-function project_io.overwrite(ext, key, lua_table)
+function project_state.overwrite(ext, key, lua_table)
   local current_project, _ = reaper.EnumProjects(-1, "")
   local lua_table_string = serpent.block(lua_table, { comment = false })
   reaper.SetProjExtState(current_project, ext, key, lua_table_string)
 end
 
-function project_io.getAll(ext)
+function project_state.getAll(ext)
   local keys = {}
   local max_keys = 5000
   local exists = false
@@ -31,7 +31,7 @@ function project_io.getAll(ext)
   return exists, keys
 end
 
-function project_io.get(ext, key)
+function project_state.get(ext, key)
   local current_project, _ = reaper.EnumProjects(-1, "")
   local exists, value = reaper.GetProjExtState(project, ext, key)
   if exists and value then
@@ -50,14 +50,14 @@ function project_io.get(ext, key)
   return false, 'Does not exist'
 end
 
-function project_io.delete(ext, key)
+function project_state.delete(ext, key)
   -- reaper has the function 'DeleteExtState', but it dosen't work for project
   -- state, so I introduce a 'deleted' key to indicate deletion
-  local ok, val = project_io.get(ext, key)
+  local ok, val = project_state.get(ext, key)
   if ok and not val['deleted'] then
     val['deleted'] = true
-    project_io.overwrite(ext, key, val)
+    project_state.overwrite(ext, key, val)
   end
 end
 
-return project_io
+return project_state
