@@ -246,7 +246,6 @@ function View:redraw()
   if self.window.state then
     self.window.h = self.window.state.currentH
     self.window.w = self.window.state.currentW
-    self.window:reopen()
   end
 
   self:updateElementDimensions()

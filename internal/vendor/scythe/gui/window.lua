@@ -114,11 +114,6 @@ function Window:reopen(params)
     (params and params.y) or currentY
   )
 
-  self.w = (params and params.w) or self.w
-  self.h = (params and params.h) or self.h
-  self.x = (params and params.x) or self.x
-  self.y = (params and params.y) or self.y
-
   self.currentW = gfx.w
   self.currentH = gfx.h
 end
