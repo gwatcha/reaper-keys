@@ -11,7 +11,7 @@ function reaper_state.delete(table_name)
 end
 
 function reaper_state.set(table_name, lua_table)
-  local lua_table_string = serpent.block(lua_table, { comment = false })
+  local lua_table_string = serpent.line(lua_table, { comment = false })
   reaper.SetExtState(namespace, table_name, lua_table_string, true)
 end
 
