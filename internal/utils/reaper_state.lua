@@ -11,7 +11,7 @@ function reaper_state.delete(table_name)
 end
 
 function reaper_state.set(table_name, lua_table)
-  local lua_table_string = serpent.line(lua_table, { comment = false })
+  local lua_table_string = serpent.dump(lua_table, { comment = false })
   reaper.SetExtState(namespace, table_name, lua_table_string, true)
 end
 
@@ -19,7 +19,11 @@ function reaper_state.get(table_name)
   local string_value = reaper.GetExtState(namespace, table_name)
   if string_value then
     local ok, ext_value = serpent.load(string_value)
-    if not ok or not ext_value then
+    if not ok or not ext_value or not type(ext_value) == 'table' then
+      return nil
+    end
+
+    if type(ext_value) ~= 'table' then
       return nil
     end
 
@@ -44,6 +48,7 @@ function reaper_state.setKeys(table_name, new_data)
   if not saved_table then
     saved_table = {}
   end
+
   for key,value in pairs(new_data) do
     saved_table[key] = value
   end
