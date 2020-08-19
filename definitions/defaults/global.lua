@@ -85,9 +85,9 @@ return {
     ["<C-s>"] = "ToggleSnap",
     ["<M-m>"] = "MidiLearnLastTouchedFxParam",
     ["<M-M>"] = "ModulateLastTouchedFxParam",
-    ["<M-x>"] = "ShowActionList",
+    ["<M-x>"] = "ShowBindingList",
     ["<SPC>"] = { "+leader commands", {
-      ["<SPC>"] = "ShowBindingList",
+      ["<SPC>"] = "ShowActionList",
       ["m"] = { "+midi", {
                   ["x"] = "CloseWindow",
                   ["g"] = "SetMidiGridDivision",
