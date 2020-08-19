@@ -32,10 +32,11 @@ end
 
 
 function concatEntryTables(t1,t2)
-  local merged_tables = {}
+  local merged_tables = t1
   for action_type, entries in pairs(t1) do
     if t2[action_type] then
-      merged_tables[action_type] = concatEntries(t1[action_type], t2[action_type])
+      local merged = concatEntries(t1[action_type], t2[action_type])
+      merged_tables[action_type] = merged
     end
   end
 
@@ -60,6 +61,7 @@ function definitions.getPossibleEntries(context)
   local merged_table = {}
   merged_table = concatEntryTables(merged_table, definition_tables['global'])
   merged_table = concatEntryTables(merged_table, definition_tables[context])
+
   return merged_table
 end
 
