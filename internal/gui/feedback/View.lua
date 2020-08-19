@@ -31,8 +31,9 @@ function View:updateElementDimensions()
   elements.completions.h = completions_height
   elements.completions.pad = pad
   elements.completions.w = window.w
+  elements.completions.y = message_h
 
-  elements.message.y = completions_height
+  elements.message.y = 0
   elements.message.h = message_h
   elements.message.w = window.w
   elements.message.pad = pad
@@ -43,15 +44,15 @@ function createElements()
   layer:addElements( GUI.createElements(
                        {
                          type = "Frame",
+                         name = "message",
+                         font = "feedback_main",
+                       },
+                       {
+                         type = "Frame",
                          name = "completions",
                          font = "feedback_main",
                          bg = "backgroundDarkest",
                          completions = {},
-                       },
-                       {
-                         type = "Frame",
-                         name = "message",
-                         font = "feedback_main",
                        }
   ))
   return layer
