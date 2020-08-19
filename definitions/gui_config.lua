@@ -26,7 +26,6 @@ return {
   },
   feedback = {
     idle_time_until_show = 1,
-    expand_upward = true,
     elements = {
       column_padding = 20,
       row_padding = 0,
