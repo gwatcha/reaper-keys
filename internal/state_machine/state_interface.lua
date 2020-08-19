@@ -16,9 +16,9 @@ function state_interface.setKey(key, value)
   state_interface.set(state)
 end
 
-function state_interface.getField(field)
+function state_interface.getKey(key)
   local state = state_interface.get()
-  return state[field]
+  return state[key]
 end
 
 function state_interface.get()

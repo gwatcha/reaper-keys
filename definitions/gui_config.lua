@@ -29,7 +29,7 @@ return {
     elements = {
       column_padding = 20,
       row_padding = 0,
-      padding = 10,
+      padding = 5,
       mode_line_h = 10,
     },
     fonts = {
