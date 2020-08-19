@@ -67,7 +67,9 @@ local meta_commands = {
     else
       local register = command.action_keys[1]['register']
       if register then
-        reaper_state.setKeys('macros', {register = {}})
+        local blank_macro = {}
+        blank_macro[register] = {}
+        reaper_state.setKeys('macros', blank_macro)
         state['macro_register'] = register
         state['macro_recording'] = true
         state['key_sequence'] = ""
