@@ -132,7 +132,7 @@ function View:open()
   local update_number = 0
   local idle_time_until_show = self.props.idle_time_until_show
   local completions_triggered = false
-  local command_begin_time = reaper.time_precise()
+  local update_time = reaper.time_precise()
   local command_end = true
 
   local function main()
@@ -140,23 +140,18 @@ function View:open()
     local completions = model.completions
 
     if model.update_number ~= update_number then
-      if command_end then
-        command_end = false
-        command_begin_time = reaper.time_precise()
-      end
-
+      update_time = reaper.time_precise()
       update_number = model.update_number
       self:updateMessage(model)
 
       if completions_triggered then
         self:updateCompletions(completions)
         if not completions or #completions == 0 then
-          command_end = true
           completions_triggered = false
         end
       end
     else
-      if not command_end and completions and #completions > 0 and not completions_triggered and idle_time_until_show <= reaper.time_precise() - command_begin_time  then
+      if completions and #completions > 0 and not completions_triggered and idle_time_until_show <= reaper.time_precise() - update_time  then
         completions_triggered = true
         self:updateCompletions(completions)
       end
