@@ -37,6 +37,11 @@ function View:updateElementDimensions()
   elements.message.h = message_h
   elements.message.w = window.w
   elements.message.pad = pad
+
+  if props.expand_upward then
+    elements.completions.y = 0
+    elements.message.y = completions_height
+  end
 end
 
 function createElements()
@@ -113,9 +118,15 @@ end
 function View:adjustWindow()
   local completions_h = self.elements.completions:getRequiredHeight()
   local new_h = self.message_h + completions_h
-  if new_h ~= self.window.h then
-    -- TODO updating the window y does not work, only adjusting width and height works
-    self:redraw({h = new_h})
+  local _,_,current_y,_,current_h = gfx.dock(-1,0,0,0,0)
+  if new_h ~= current_h then
+    local new_y
+    if self.props.expand_upward then
+      new_y = current_y + (current_h - new_h)
+    else
+      new_y = current_y
+    end
+    self:redraw({h = new_h, y = new_y})
   end
 end
 
