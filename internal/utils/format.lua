@@ -63,22 +63,6 @@ function format.keySequence(key_sequence, spacing)
   return key_sequence_string
 end
 
-function format.actionSequence(action_sequence)
-  local formatted = ''
-  for _,action in ipairs(action_sequence) do
-    formatted = formatted .. action .. ' '
-  end
-  return formatted
-end
-
-function format.actionSequences(action_sequences)
-  local formatted = ''
-  for i,action_sequence in ipairs(action_sequences) do
-    formatted = formatted .. '  ' .. format.actionSequence(action_sequence) .. '\n'
-  end
-  return formatted
-end
-
 function format.commandDescription(command)
   local desc = ""
   for _, command_part  in pairs(command.action_keys) do
@@ -88,7 +72,7 @@ function format.commandDescription(command)
       for _,additional_args in pairs(command_part) do
         desc = desc .. ' ' .. additional_args
       end
-      desc = desc .. ']'
+      desc = desc .. ' ]'
     else
       desc = desc .. (command_part) .. " "
     end
