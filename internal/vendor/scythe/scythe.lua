@@ -17,7 +17,7 @@ Scythe.args = args and args[1] or {}
 
 Scythe.libPath = reaper.GetExtState("Scythe v3", "libPath")
 if not Scythe.libPath or Scythe.libPath == "" then
-    reaper.MB("Couldn't find the Scythe library. Please run 'Set Scythe library path' in your Action List.", "Whoops!", 0) -- luacheck: ignore 631
+    -- reaper.MB("Couldn't find the Scythe library. Please run 'Set Scythe library path' in your Action List.", "Whoops!", 0) -- luacheck: ignore 631
     return
 end
 

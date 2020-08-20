@@ -177,9 +177,9 @@ function View:redraw(params)
   if self.window.state then
     self.window.h = self.window.state.currentH
     self.window.w = self.window.state.currentW
+    self.window:reopen(params)
   end
 
-  self.window:reopen(params)
   self:updateElementDimensions()
   for _,element in pairs(self.elements) do
     if element.recalculateWindow then

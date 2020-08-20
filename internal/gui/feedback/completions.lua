@@ -147,26 +147,16 @@ function getRequiredHeight(self)
 
   local row_size = char_h + row_pad
   local num_rows = 1
-
-  local max_width = self.w
-  local positions
-  repeat
-    num_rows = num_rows * 2
-    local test_h = num_rows * row_size + self.pad * 2
-    self.h = test_h
-    _, required_w = self:getCompletionPositions()
-  until( required_w < max_width )
-
-  repeat
-    num_rows = num_rows - 1
-    local test_h = num_rows * row_size + self.pad * 2
-    self.h = test_h
-    _, required_w = self:getCompletionPositions()
-  until( required_w > max_width or required_w == 0)
-  num_rows = num_rows + 1
-
+  self.h = 100000
+  local _, required_w = self:getCompletionPositions()
   self.h = current_h
-  return num_rows * row_size + self.pad * 2
+  local max_column_width = required_w
+  local num_columns = math.floor(self.w / max_column_width)
+
+  local required_rows = math.ceil(#self.completions / num_columns)
+  local required_height = required_rows * row_size + self.pad * 2
+
+  return required_height
 end
 
 function createCompletionsElement(frame_element, props)
