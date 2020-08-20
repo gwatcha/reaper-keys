@@ -207,7 +207,9 @@ function utils.unselectAllButLastTouchedTrack()
   local last_touched_i = utils.getTrackPosition()
   if last_touched_i then
     local track = reaper.GetTrack(0, last_touched_i)
-    reaper.SetOnlyTrackSelected(track)
+    if track then
+      reaper.SetOnlyTrackSelected(track)
+    end
   end
 end
 
