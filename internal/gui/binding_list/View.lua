@@ -148,7 +148,7 @@ function createBindingListWindow(props)
                          name = "context_filter",
                          type =  "Menubox",
                          frame = false,
-                         retval = element_values.context_filter,
+                         retval = element_values.context_i,
                          textFont = "binding_list_label",
                          captionFont = "binding_list_label",
                          labelFont = "binding_list_label",
@@ -165,7 +165,7 @@ function createBindingListWindow(props)
                        {
                          name = "action_type_filter",
                          type =  "Menubox",
-                         retval = element_values.action_type_filter,
+                         retval = element_values.action_type_i,
                          frame = false,
                          textFont = "binding_list_label",
                          captionFont = "binding_list_label",
@@ -203,7 +203,7 @@ function View:new(props)
 
   self.window = createBindingListWindow(props)
 
-  self.selected_i = 1
+  self.selected_i = 0
   self.action_executed = false
 
   local query = GUI.findElementByName("query")
@@ -238,6 +238,7 @@ function View:new(props)
 
   self:updateElementDimensions()
   self:redraw()
+
 
   return binding_list
 end

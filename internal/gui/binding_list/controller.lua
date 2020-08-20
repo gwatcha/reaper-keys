@@ -58,7 +58,7 @@ function rowIsFiltered(row, element_values)
 end
 
 function getElementValues(view)
-  local context_filter_i, context = view.elements.context_filter:val()
+  local context_i, context = view.elements.context_filter:val()
   local action_type_i, action_type = view.elements.action_type_filter:val()
   return {
     binding_list_box = view.elements.binding_list_box:val(),
@@ -69,7 +69,7 @@ function getElementValues(view)
     context_i = context_i,
     action_type_filter_active = view.elements.action_type_filter_active:val(nil, true),
     action_type = action_type,
-    action_i = action_type_i,
+    action_type_i = action_type_i,
     query = view.elements.query:val(),
   }
 end
