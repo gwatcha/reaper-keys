@@ -51,11 +51,9 @@ For example, in normal mode, any action with `timeline motion` type can follow a
 So if one enters `c2L` it would compose into `(c = "Change", L = [2, "NextMeasure"])`,
 and trigger a command to set up a record loop and record over the next 2 measures.
 
-![img](img/change.gif)
-
 To select the items in the next 2 measures, one could enter `s2L`.
 
-![img](img/select.gif)
+![img](img/composition.gif)
 
 This grows the number of available actions exponentially but still preserves your
 brain, as you only need to know the `timeline_motions`, `timeline_operators`, and
@@ -101,6 +99,8 @@ When you restore your old keymap, you may want to empty the `reaper-kb.ini` in y
 ## Help
 
 Enter `<M-x>` to show a list of available bindings you can search and filter.
+
+![img](img/binding_list.gif)
 
 If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
 
