@@ -40,7 +40,7 @@ or 'a' for arming.
 A completion/feedback window is provided to assist with command completion. Here
 is an example of navigating through the menu to render a project.
 
-![img](img/save.gif)
+![img](img/menu.gif)
 
 ### Compose actions
 
@@ -67,7 +67,7 @@ In this mode, `timeline motions` extend the current time selection, and `timelin
 visual feedback before executing a timeline action, or just want to extend the
 time selection using motion commands.
 
-![img](img/mode.gif)
+![img](img/visual_mode.gif)
 
 ### Macros
 
@@ -77,12 +77,12 @@ To record a macro, enter `q` and an arbitrary character to specify the `register
 the macro will save into. Then, perform a series of actions, and finish
 recording by pressing `q`.
 
-![img](img/rec_macro.gif)
+![img](img/macro_rec.gif)
 
 You may play it back by entering `@` and the character you specified earlier.
 Optionally, prefix it with a number to indicate the number of repetitions.
 
-![img](img/play_macro.gif)
+![img](img/macro_play.gif)
 
 Here is an example of recording and playing a macro that deletes item parts across
 two tracks in a ribbon style.
