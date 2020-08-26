@@ -12,10 +12,11 @@ Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
 
 ## Pros
 
-- Saving a couple minutes per hour
-- Developing arthritis at 60 instead of 40
-- Ability to reduce mouse usage
-- Increased maximum bandwidth between your brain and the track your mixing
+- Save a couple minutes per hour
+- Develop arthritis at 60 instead of 40
+- Reduce mouse usage
+- Increase maximum bandwidth between your brain and your project
+- A structure for reapers giant bag of actions
 
 # Table of Contents
 
@@ -34,26 +35,23 @@ Click [here](https://youtu.be/ChuZswEfQuo) for a demo video.
 ### Bind key sequences
 
 With reaper-keys, you may bind key sequences to actions, rather then singular
-key presses. This allows one to make use of mnemonics, such as 't' for track,
-or 'a' for arming.
+key presses. This allows one to hierarchically organize many keybindings for easy access to many keybindings.
 
-A completion/feedback window is provided to assist with command completion. Here
-is an example of navigating through the menu to render a project.
+A completion/feedback window is provided to assist with command completion. 
 
-![img](img/menu.gif)
+![img](img/completions.gif)
 
 ### Compose actions
 
 Reaper-keys lets one compose actions of different types to create new commands.
 
-For example, in normal mode, any action with `timeline motion` type can follow any one with `timeline operator` type. Also, most `timeline motion` types allow one to prefix a number to indicate repetitions.
+For example, in normal mode, any action with `timeline motion` type can follow any one with `timeline operator` type.
 
-So if one enters `c2L` it would compose into `(c = "Change", L = [2, "NextMeasure"])`,
-and trigger a command to set up a record loop and record over the next 2 measures.
+So if one enters `tL`, it would compose into `(t -> "PlayAndLoop", L -> "NextMeasure")`, and play and loop the next measure.
 
-To select the items in the next 2 measures, one could enter `s2L`.
+Other example `timeline operator` bindings are `s` -> "SelectItemsAndSplit" , or `z` -> "ZoomTimeSelection".
 
-![img](img/composition.gif)
+![img](img/compose.gif)
 
 This grows the number of available actions exponentially but still preserves your
 brain, as you only need to know the `timeline_motions`, `timeline_operators`, and
@@ -83,9 +81,6 @@ You may play it back by entering `@` and the character you specified earlier.
 Optionally, prefix it with a number to indicate the number of repetitions.
 
 ![img](img/macro_play.gif)
-
-Here is an example of recording and playing a macro that deletes item parts across
-two tracks in a ribbon style.
 
 ## Installation
 
