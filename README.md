@@ -49,7 +49,7 @@ For example, in normal mode, any action with `timeline motion` type can follow a
 
 So if one enters `tL`, it would compose into `(t -> "PlayAndLoop", L -> "NextMeasure")`, and play and loop the next measure.
 
-Other example `timeline operator` bindings are `s` -> "SelectItemsAndSplit" , or `z` -> "ZoomTimeSelection".
+Other example `timeline operator` bindings are `s` -> "SelectItemsAndSplit" , or `z` -> "ZoomTimeSelection", so you could also enter `sL` or `zL`.
 
 ![img](img/compose.gif)
 
