@@ -73,7 +73,11 @@ end
 
 function gui_utils.styled_draw(text, text_preset, color)
   Font.set(text_preset)
-  Color.set(color)
+  if color then
+    Color.set(color)
+    log.warn("No color passed for styled draw when drawing: " .. text)
+  end
+
   gfx.drawstr(text)
 end
 
