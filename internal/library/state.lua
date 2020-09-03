@@ -6,6 +6,19 @@ function state.setModeNormal()
   state_interface.setMode('normal')
 end
 
+function state.setModeRecord()
+  state_interface.setMode('record')
+end
+
+function state.toggleRecordMode()
+  local mode = state_interface.getMode()
+  if mode == 'record' then
+    state.setModeNormal()
+  else
+    state.setModeRecord()
+  end
+end
+
 function state.setModeVisualTrack()
   local current_track = reaper.GetLastTouchedTrack()
   if current_track then
