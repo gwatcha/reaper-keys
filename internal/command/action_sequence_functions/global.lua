@@ -79,5 +79,13 @@ return {
         runner.extendTimelineSelection(move_function, args)
       end
     },
-  }
+  },
+  record = {
+    {
+      { 'record_action' },
+      function(action)
+        runner.runAction(action)
+      end
+    }
+  },
 }
