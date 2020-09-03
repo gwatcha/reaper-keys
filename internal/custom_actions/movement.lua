@@ -120,24 +120,9 @@ end
 
 function movement.trackWithNumber()
   local _, number = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
-  if type(number) ~= 'number' then
-    return
-  end
-
   local track = reaper.GetTrack(0, number-1)
   if track then
     reaper.SetOnlyTrackSelected(track)
-  end
-end
-
-function movement.firstTrackWithItem()
-  local num_tracks = reaper.GetNumTracks()
-  for i=0,num_tracks-1 do
-    local track = reaper.GetTrack(0, i)
-    if reaper.GetTrackNumMediaItems(track) > 0 then
-      reaper.SetOnlyTrackSelected(track)
-      return
-    end
   end
 end
 

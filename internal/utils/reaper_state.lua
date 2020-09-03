@@ -63,9 +63,9 @@ function reaper_state.getKey(table_name, key)
   return saved_table[key]
 end
 
+local is_open = reaper.GetExtState(namespace, "reaper_started")
 function reaper_state.clearJustOpenedFlag()
-  local is_open = reaper.GetExtState(namespace, "reaper_started")
-  if is_open == "open" then
+  if is_open then
     return false
   end
 

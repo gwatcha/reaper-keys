@@ -5,7 +5,6 @@ local feedback = require('gui.feedback.controller')
 
 local library = {
   marks = require('library.marks'),
-  register = require('library.register'),
   state = require('library.state')
 }
 
@@ -17,7 +16,7 @@ function library.matchTrackNameBackward()
     reaper.SetOnlyTrackSelected(track)
   else
     state_interface.setLastSearchedTrackNameAndDirection("^$", true)
-    feedback.displayMessage("No match for " .. name)
+    log.user("No match for " .. name)
   end
 end
 

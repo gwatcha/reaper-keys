@@ -38,12 +38,12 @@ end
 function module.fuzzy_match(pattern, str)
    
 	-- Score consts
-	local adjacency_bonus = 20                -- bonus for adjacent matches
+	local adjacency_bonus = 5                -- bonus for adjacent matches
 	local separator_bonus = 10               -- bonus if match occurs after a separator
 	local camel_bonus = 10                   -- bonus if match is uppercase and prev is lower
-	local leading_letter_penalty = -1        -- penalty applied for every letter in str before the first match
-	local max_leading_letter_penalty = -3    -- maximum penalty for leading letters
-	local unmatched_letter_penalty = 0      -- penalty for every letter that doesn't matter
+	local leading_letter_penalty = -3        -- penalty applied for every letter in str before the first match
+	local max_leading_letter_penalty = -9    -- maximum penalty for leading letters
+	local unmatched_letter_penalty = -1      -- penalty for every letter that doesn't matter
 
 	-- Loop localiables
 	local score = 0

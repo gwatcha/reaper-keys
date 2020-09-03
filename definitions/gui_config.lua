@@ -23,10 +23,9 @@ return {
     timeline_selector = {0.85, 0.6, 0.47, 1},
     timeline_operator = {0.8, 0.51, 0.5, 1},
     visual_timeline_command = {0.7, 0.8, 0.58, 1},
-    record_action = {1, 0.22, 0.23, 1},
   },
   feedback = {
-    idle_time_until_show = .2,
+    idle_time_until_show = 1,
     elements = {
       column_padding = 20,
       row_padding = 0,
@@ -43,7 +42,6 @@ return {
       visual_timeline = {0.7, 0.8, 0.58, 1},
       extra_info = {1, 1, 1, .4},
       visual_track = {0.65, 0.8, 0.8, 1},
-      record = {1, 0.22, 0.23, 1},
       key = {0.7, 0.51, 0.8, 1},
       arrow = {0.3, 0.51, 0.8, 1},
       folder = {0.6, 1, 0.85, .6},
