@@ -5,7 +5,6 @@ local feedback = require('gui.feedback.controller')
 
 local library = {
   marks = require('library.marks'),
-  register = require('library.register'),
   state = require('library.state')
 }
 

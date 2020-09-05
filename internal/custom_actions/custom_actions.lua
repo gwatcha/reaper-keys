@@ -3,8 +3,7 @@ local format = require('utils.format')
 
 local custom_actions = {
   move = require('custom_actions.movement'),
-  select = require('custom_actions.selection'),
-  record = require('custom_actions.recording')
+  select = require('custom_actions.selection')
 }
 
 function custom_actions.clearTimeSelection()
@@ -51,10 +50,6 @@ function custom_actions.splitItemsAtTimeSelection()
   end
   local SplitAtTimeSelection = 40061
   reaper.Main_OnCommand(SplitAtTimeSelection, 0)
-end
-
-function custom_actions.addFx()
-  -- integer reaper.GetNumAudioInputs()
 end
 
 return custom_actions
