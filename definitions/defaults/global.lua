@@ -132,7 +132,6 @@ return {
                   ["e"] = "ScrollToEditCursor",
       }},
       ["m"] = { "+midi", {
-                  ["x"] = "CloseWindow",
                   ["g"] = "SetMidiGridDivision",
                   ["q"] = "Quantize",
                   [","] = {"+options", {
@@ -171,14 +170,14 @@ return {
                   ["m"] = "ToggleMuteItem",
                   ["d"] = "DeleteActiveTake",
                   ["c"] = "CropToActiveTake",
-                  ["w"] = "OpenMidiEditor",
+                  ["o"] = "OpenInMidiEditor",
                   ["n"] = "ItemNormalize",
                   ["g"] = "GroupItems",
                   ["q"] = "QuantizeItems",
                   ["h"] = "HealItemsSplits",
                   ["s"] = "ToggleSoloItem",
                   ["b"] = "MoveItemContentToEditCursor",
-                  ["x"] = {"+explode", {
+                  ["x"] = {"+explode takes", {
                              ["p"] = "ExplodeTakesInPlace",
                              ["o"] = "ExplodeTakesInOrder",
                              ["a"] = "ExplodeTakesInAcrossTracks"
