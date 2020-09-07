@@ -293,8 +293,6 @@ return {
                              ["d"] = "CutInputFxChain",
                   }},
                   ["s"] = {"+show", {
-                             ["n"] = "ShowNextFx",
-                             ["p"] = "ShowPrevFx",
                              ["1"] = "ToggleShowFx1",
                              ["2"] = "ToggleShowFx2",
                              ["3"] = "ToggleShowFx3",
@@ -305,7 +303,7 @@ return {
                              ["8"] = "ToggleShowFx8"
                   }},
       }},
-      ["%"] = { "+tempo", {
+      ["T"] = { "+timeline", {
                   ["e"] = "EditTimeSignatureMarker",
                   ["d"] = "DeleteTimeSignatureMarker",
                   ["s"] = "ToggleShowTempoEnvelope"
@@ -336,7 +334,7 @@ return {
                             ["s"] = "UnsoloAllTracks",
                             ["m"] = "UnmuteAllTracks",
                   }},
-                  ["a"] = { "+automation/mode", {
+                  ["a"] = { "+automation", {
                               ["r"] = "SetGlobalAutomationModeTrimRead",
                               ["l"] = "SetGlobalAutomationModeLatch",
                               ["p"] = "SetGlobalAutomationModeLatchPreview",
