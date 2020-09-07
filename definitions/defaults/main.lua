@@ -25,7 +25,6 @@ return {
   },
   track_selector = {
     ["'"] = "MarkedTracks",
-    ["V"] = "Selection",
     ["c"] = "FolderChildren",
     ["F"] = "FolderParent",
     ["F"] = "Folder",

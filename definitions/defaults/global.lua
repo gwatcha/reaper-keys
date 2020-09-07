@@ -35,7 +35,6 @@ return {
   },
   timeline_selector = {
     ["~"] = "MarkedRegion",
-    ["v"] = "TimeSelection",
     ["!"] = "LoopSelection",
     ["<S-right>"] = "NextRegion",
     ["<S-left>"] = "PrevRegion",
@@ -76,6 +75,7 @@ return {
     ["<C-z>"] = "ZoomUndo",
     ["<C-Z>"] = "ZoomRedo",
     ["v"] = "SetModeVisualTimeline",
+    ["<M-v>"] = "ClearTimelineSelectionAndSetModeVisualTimeline",
     ["<C-SPC>"] = "ToggleViewMixer",
     ["<ESC>"] = "Reset",
     ["<return>"] = "StartStop",

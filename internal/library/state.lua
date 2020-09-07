@@ -1,4 +1,5 @@
 local state_interface = require('state_machine.state_interface')
+local config = require('definitions.config')
 
 local state = {}
 
@@ -19,10 +20,7 @@ function state.setModeVisualTrack()
 end
 
 function state.setModeVisualTimeline()
-  local current_position = reaper.GetCursorPosition()
-  reaper.GetSet_LoopTimeRange(true, false, current_position, current_position, false)
   state_interface.setMode('visual_timeline')
-
   if state_interface.getTimelineSelectionSide() == 'left' then
     state_interface.setTimelineSelectionSide('right')
   end

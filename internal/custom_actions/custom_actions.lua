@@ -36,6 +36,11 @@ function custom_actions.setMidiGridDivision()
   end
 end
 
+function custom_actions.clearSelectedTimeline()
+  local current_position = reaper.GetCursorPosition()
+  reaper.GetSet_LoopTimeRange(true, false, current_position, current_position, false)
+end
+
 function custom_actions.setGridDivision()
   local division = getUserGridDivisionInput()
   if division then

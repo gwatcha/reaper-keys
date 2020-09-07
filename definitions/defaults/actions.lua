@@ -431,6 +431,8 @@ return {
       SetModeNormal = lib.state.setModeNormal,
       PasteItemFxChain = {"_S&M_COPYFXCHAIN9", prefixRepetitionCount=true},
       SetModeVisualTimeline = lib.state.setModeVisualTimeline,
+      ClearSelectedTimeline = custom.clearSelectedTimeline,
+      ClearTimelineSelectionAndSetModeVisualTimeline = {"ClearSelectedTimeline", "SetModeVisualTimeline"},
       SetModeVisualTrack = lib.state.setModeVisualTrack,
       SetModeRecord = lib.state.setModeRecord,
       SetProjectTimebaseToBeatsPosLengthAndRate = "_SWS_AWTBASEBEATALL",
