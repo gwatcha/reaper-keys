@@ -9,11 +9,15 @@ parent: Configuration
 
 ## Relevant Files
 
+        
     ├── definitions
-        ├── global.lua
-        ├── main.lua
-        └── midi.lua
-
+        ├── bindings.lua
+        └── defaults
+            ├── global.lua
+            ├── main.lua
+            └── midi.lua
+        
+        
 
 ## Configuration
 

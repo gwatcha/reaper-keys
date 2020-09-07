@@ -9,8 +9,10 @@ parent: Configuration
 
 ## Relevant Files
 
-    ├── definitions
-        └── actions.lua
+      ├── definitions
+          ├── actions.lua
+          └── defaults
+              └── actions.lua
 
 
 ## Configuration
