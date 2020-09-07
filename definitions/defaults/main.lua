@@ -36,6 +36,11 @@ return {
     }},
   },
   track_operator = {
+    ['"'] = {"+snapshots", {
+        ['s'] = "SaveTracksToCurrentSnapshot",
+        ["c"] = "CreateNewSnapshotWithTracks",
+        ["d"] = "DeleteTracksFromCurrentSnapshot",
+    }},
     ["z"] = "ZoomTrackSelection",
     ["<TAB>"] = "MakeFolder",
     ["d"] = "CutTrack",
