@@ -124,6 +124,7 @@ return {
                   ["m"] = "ToggleMuteItem",
                   ["d"] = "DeleteActiveTake",
                   ["s"] = "CropToActiveTake",
+                  ["S"] = "UnselectItems",
                   ["e"] = "OpenMidiEditor",
                   ["n"] = "ItemNormalize",
                   ["f"] = "ItemApplyFx",
@@ -234,6 +235,7 @@ return {
                  ["f"] = "ResetFeedbackWindow",
       }},
       ["g"] = { "+global", {
+                  ["Q"] = "Quit",
                   ["g"] = "SetGridDivision",
                   ["dr"] = "ResetControlDevices",
                   [","] = "ShowPreferences",
