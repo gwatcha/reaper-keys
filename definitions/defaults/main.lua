@@ -65,6 +65,7 @@ return {
     ["z"] = "ZoomTimeSelection",
     ["Z"] = "ZoomTimeAndTrackSelection",
     ["a"] = "InsertOrExtendMidiItem",
+    ["A"] = "InsertEmptyItem",
     ["<M-a>"] = "InsertAutomationItem",
     ["c"] = {"+change/fit", {
                ["f"] = "FitByLoopingNoShift",

@@ -2,6 +2,7 @@ return {
   timeline_motion = {
     ["0"] = "ProjectStart",
     ["<C-$>"] = "ProjectEnd",
+
     ["f"] = "PlayPosition",
     ["x"] = "MousePosition",
     ["["] = "LoopStart",
@@ -56,7 +57,7 @@ return {
     ["<C-'>"] = "DeleteMark",
     ["<C-r>"] = "Redo",
     ["u"] = "Undo",
-    ["R"] = "RecordOrStop",
+    ["R"] = "RecordToggle",
     ["T"] = "Play",
     ["<M-t>"] = "PlayFromMousePosition",
     ["tt"] = "PlayFromTimeSelectionStart",
@@ -92,6 +93,7 @@ return {
                   ["x"] = "CloseWindow",
                   ["g"] = "SetMidiGridDivision",
                   ["q"] = "Quantize",
+                  ["Q"] = "ToggleInputQuantize",
                   [","] = {"+options", {
                              ["g"] = "ToggleMidiEditorUsesMainGridDivision",
                              ["s"] = "ToggleMidiSnap",
@@ -122,6 +124,7 @@ return {
                   ["m"] = "ToggleMuteItem",
                   ["d"] = "DeleteActiveTake",
                   ["s"] = "CropToActiveTake",
+                  ["S"] = "UnselectItems",
                   ["e"] = "OpenMidiEditor",
                   ["n"] = "ItemNormalize",
                   ["f"] = "ItemApplyFx",
@@ -142,10 +145,13 @@ return {
                   ["n"] = "ResetTrackToNormal",
                   ["R"] = "RenderTrack",
                   ["i"] = "AddTrackVirtualInstrument",
+                  ["I"] = "InsertTrackFromTrackTemplate",
+                  ["W"] = "SaveTrackTempFromSelected",
                   ["r"] = "RenameTrack",
                   ["z"] = "MinimizeTracks",
                   ["M"] = "CycleRecordMonitor",
                   ["f"] = "CycleFolderState",
+                  ["S"] = "ShowTrackRecordingSettings",
                   ["x"] = {"+routing", {
                             ["i"] = "TrackSetInputToMatchFirstSelected",
                             ["p"] = "TrackToggleSendToParent",
@@ -229,6 +235,7 @@ return {
                  ["f"] = "ResetFeedbackWindow",
       }},
       ["g"] = { "+global", {
+                  ["Q"] = "Quit",
                   ["g"] = "SetGridDivision",
                   ["dr"] = "ResetControlDevices",
                   [","] = "ShowPreferences",
@@ -265,6 +272,7 @@ return {
                   ["n"] = "NextTab",
                   ["p"] = "PrevTab",
                   ["s"] = "SaveProject",
+                  ["S"] = "SaveProjectAs",
                   ["o"] = "OpenProject",
                   ["c"] = "NewProjectTab",
                   ["x"] = "CloseProject",
