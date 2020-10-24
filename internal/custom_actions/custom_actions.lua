@@ -54,4 +54,14 @@ function custom_actions.splitItemsAtTimeSelection()
   reaper.Main_OnCommand(SplitAtTimeSelection, 0)
 end
 
+function custom_actions.changeNamesOfSelectedTracks()
+  local num_sel = reaper.CountSelectedTracks(0)
+  if num_sel == 0 then return end
+  local _, new_name_string = reaper.GetUserInputs("Change track name", 1, "Track name:", "")
+  for i = 1, num_sel do
+    local track = reaper.GetSelectedTrack(0, i - 1)
+    local _, str = reaper.GetSetMediaTrackInfo_String(track, "P_NAME", new_name_string, 1);
+  end
+end
+
 return custom_actions

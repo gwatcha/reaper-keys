@@ -27,6 +27,8 @@ return {
     ["N"] = "AddPrevNoteToSelection",
     ["+"] = "MidiZoomInHoriz",
     ["-"] = "MidiZoomOutHoriz",
+    -- ["gg"] = "TopNote",
+    -- ["G"] = "BottomNote",
     ["<C-+>"] = "MidiZoomInVert",
     ["<C-->"] = "MidiZoomOutVert",
     ["Z"] = "CloseWindow",
