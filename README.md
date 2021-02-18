@@ -99,6 +99,10 @@ Enter `<M-x>` to show a list of available bindings you can search and filter.
 
 If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
 
+Also,
+If your key press is not being detected, try unfocusing the feedback window.
+If a dialog opens saying 'script is already running in the background' just click 'remember' and 'new instance'.
+
 ## Further Information
 
 Check out the [documentation](https://gwatcha.github.io/reaper-keys) to learn more.
