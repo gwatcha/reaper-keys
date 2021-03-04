@@ -171,7 +171,6 @@ return {
             ["k"] = "PrevTake",
             ["m"] = "ToggleMuteItem",
             ["d"] = "DeleteActiveTake",
-            ["s"] = "CropToActiveTake", -- this is duplicate belw
             ["S"] = "UnselectItems",
             ["e"] = "OpenMidiEditor",
             ["T"] = "OpenEmptyItemNoteEditor",
@@ -181,7 +180,7 @@ return {
             ["g"] = "GroupItems",
             ["q"] = "QuantizeItems",
             ["h"] = "HealItemsSplits",
-            ["s"] = "ToggleSoloItem", -- duplicate
+            ["s"] = "ToggleSoloItem",
             ["b"] = "MoveItemContentToEditCursor",
             ["x"] = {"+explode takes", {
                 ["p"] = "ExplodeTakesInPlace",
