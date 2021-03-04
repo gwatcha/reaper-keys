@@ -259,12 +259,8 @@ return {
       NudgeTrackVolumeUpBy1 = {"NudgeTrackVolumeUp", repetitions=20, prefixRepetitionCount=true,},
       NudgeTrackVolumeUpBy1Tenth = {"NudgeTrackVolumeUp", repetitions=2, prefixRepetitionCount=true},
       OnlySelectItemsCrossingTimeAndTrackSelection = {"UnselectItems", "SelectItemsCrossingTimeAndTrackSelection"},
-<<<<<<< HEAD
       OpenMidiEditor = 40153,
       OpenEmptyItemNoteEditor = 40850,
-=======
-      OpenInMidiEditor = 40153,
->>>>>>> upstream/master
       OpenProject = 40025,
       PasteAbove = {"PrevTrack", "Paste", prefixRepetitionCount=true},
       PasteFxChain = {"_S&M_SMART_PST_FXCHAIN", prefixRepetitionCount=true},
@@ -304,16 +300,12 @@ return {
       PrevTab = {40862, prefixRepetitionCount=true},
       PrevTake = {40126, prefixRepetitionCount=true},
       PrevTrack = {40286, prefixRepetitionCount=true},
-<<<<<<< HEAD
-      PrevTransientInItem = {"SaveItemSelection", "SelectItemsUnderEditCursor", "MoveEditCursorToPrevTransientInSelectedItems", "RestoreItemSelection", prefixRepetitionCount=true},
       ProjectBayForceRefresh = 1582,
-=======
       PrevTransientInItem = {"SaveItemSelection", "SelectItemsUnderEditCursor", "PrevTransientInSelectedItems", "RestoreItemSelection", prefixRepetitionCount=true},
       NextTransientInItemMinusFadeTime = {"SaveItemSelection", "SelectItemsUnderEditCursor", "NextTransientInSelectedItemsMinusFadeTime", "RestoreItemSelection", prefixRepetitionCount=true},
       PrevTransientInItemMinusFadeTime = {"SaveItemSelection", "SelectItemsUnderEditCursor", "PrevTransientInSelectedItemsMinusFadeTime", "RestoreItemSelection", prefixRepetitionCount=true},
       NextTransientInSelectedItemsMinusFadeTime = "_XENAKIOS_MOVECURNEXT_TRANSMINUSFADE",
       PrevTransientInSelectedItemsMinusFadeTime = "_XENAKIOS_MOVECURPREV_TRANSMINUSFADE",
->>>>>>> upstream/master
       ProjectEnd = custom.move.projectEnd,
       ProjectStart = custom.move.projectStart,
       ProjectTimeline = custom.select.innerProjectTimeline,
@@ -365,11 +357,7 @@ return {
       SaveLiveOutputToDisc = 40017,
       SaveLoopSelection = "_SWS_SAVELOOP5",
       SaveProject = 40026,
-<<<<<<< HEAD
-      SaveProjectAs = 40022,
-=======
       SaveProjectWithNewVersion = 41895,
->>>>>>> upstream/master
       SaveTimeSelection = "_SWS_SAVETIME5",
       SaveTrackSelection = "_SWS_SAVESEL",
       SaveTrackTempFromSelected = 40392,
@@ -492,16 +480,9 @@ return {
       ShowRecordPath2 = 40028,
       ShowRoutingMatrix = 40251,
       ShowTrackFreezeDetails = 41654,
-<<<<<<< HEAD
-      ShowTrackManager = 40906,
-      ShowTrackRecordingSettings = 40604,
-      ShowTrackRouting = 40293,
-      ShowWiringDiagram = 42031,
-=======
       ToggleShowTrackManager = 40906,
       ToggleShowTrackRouting = 40293,
       ToggleShowWiringDiagram = 42031,
->>>>>>> upstream/master
       SnappedPosition = custom.move.snap,
       AddAndNameSnapshot = "_SWSSNAPSHOT_NEWEDIT",
       CopyCurrentSnapshot = "_SWSSNAPSHOT_COPY",
@@ -554,13 +535,8 @@ return {
       ToggleEnvelopePointsMoveWithItems = 40070,
       ToggleFloatingWindows = 41074,
       ToggleFxBypass = 8,
-<<<<<<< HEAD
-      ToggleItemGroupingOverride = 1156,
-      ToggleLocking = 1135,
-=======
       ToggleTakeFxBypass = "_S&M_TGL_TAKEFX_BYP",
       ToggleEnvelopeBypass = 40883,
->>>>>>> upstream/master
       ToggleLoop = 1068,
       ToggleLoopSelectionFollowsTimeSelection = 40621,
       ToggleMasterFXBypass = 16,
@@ -575,13 +551,9 @@ return {
       TogglePanEnvelope = 40407,
       TogglePlaybackAutoScroll = 40036,
       TogglePlaybackPreroll = 41818,
-<<<<<<< HEAD
       ToggleInputQuantize = 42033,
-      ToggleRecord = 1013,
-=======
       ToggleRecord = {"SetRecordModeNormal", 1013},
       StopRecord = {"StartStop", "SetModeNormal"},
->>>>>>> upstream/master
       ToggleRecordConditional = "_SWS_AWRECORDCOND",
       ToggleRecordingAutoScroll = 40262,
       ToggleRecordingPreroll = 41819,
