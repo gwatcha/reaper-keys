@@ -25,7 +25,7 @@ return {
     visual_timeline_command = {0.7, 0.8, 0.58, 1},
   },
   feedback = {
-    idle_time_until_show = 1,
+    idle_time_until_show = .2,
     elements = {
       column_padding = 20,
       row_padding = 0,

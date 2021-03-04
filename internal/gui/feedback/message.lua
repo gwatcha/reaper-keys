@@ -20,7 +20,8 @@ function drawMessage(self)
   if self.mode ~= "normal" then
     local mode_str_w = gfx.measurestr(self.mode)
     gfx.x = self.w - mode_str_w - self.pad
-    gui_utils.styled_draw(self.mode, "feedback_main", self.props.colors[self.mode])
+    local mode_color = self.props.colors[self.mode]
+    gui_utils.styled_draw(self.mode, "feedback_main", mode_color)
   end
 end
 

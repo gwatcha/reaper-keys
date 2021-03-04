@@ -1,12 +1,10 @@
 local log = require('utils.log')
 local format = require('utils.format')
 
-local custom_actions = {}
-
-local movement = require('custom_actions.movement')
-local selection = require('custom_actions.selection')
-custom_actions.move = movement
-custom_actions.select = selection
+local custom_actions = {
+  move = require('custom_actions.movement'),
+  select = require('custom_actions.selection')
+}
 
 function custom_actions.clearTimeSelection()
   local current_position = reaper.GetCursorPosition()
@@ -36,6 +34,11 @@ function custom_actions.setMidiGridDivision()
   if division then
     reaper.SetMIDIEditorGrid(0, division)
   end
+end
+
+function custom_actions.clearSelectedTimeline()
+  local current_position = reaper.GetCursorPosition()
+  reaper.GetSet_LoopTimeRange(true, false, current_position, current_position, false)
 end
 
 function custom_actions.setGridDivision()

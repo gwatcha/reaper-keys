@@ -59,7 +59,9 @@ end
 
 function feedback.update()
   local feedback_view_open = model.getKey("open")
-  if not feedback_view_open or reaper_state.clearJustOpenedFlag() then
+  local just_opened = reaper_state.clearJustOpenedFlag()
+
+  if not feedback_view_open or just_opened then
     local feedback_view = FeedbackView:new()
     feedback_view:open()
 
@@ -68,7 +70,7 @@ function feedback.update()
     reaper.atexit(function()
         model.setKeys({open  = false})
         local window_settings = feedback_view:getWindowSettings()
-        model.setKeys({window_settings  = window_settings})
+        model.setKeys({window_settings = window_settings})
     end)
   else
     local update_number = model.getKey("update_number")
