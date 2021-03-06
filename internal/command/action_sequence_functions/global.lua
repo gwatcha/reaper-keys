@@ -79,5 +79,13 @@ return {
         runner.extendTimelineSelection(move_function, args)
       end
     },
-  }
+  },
+  vkb = {
+    {
+      { 'vkb_command' },
+      function(action)
+        runner.runAction(action)
+      end
+    },
+  },
 }

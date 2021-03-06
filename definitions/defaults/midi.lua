@@ -40,6 +40,7 @@ return {
     ["j"] = "PitchDown",
     ["K"] = "PitchUpOctave",
     ["zp"] = "MidiZoomContent",
+    -- [";"] = "MoveNotesToEditCursor", -- !!!!!!!!!!
     ["J"] = "PitchDownOctave",
     ["<C-b>"] = "PitchUpOctave",
     ["<C-f>"] = "PitchDownOctave",
@@ -50,8 +51,10 @@ return {
     ["<M-j>"] = "MoveNoteDownSemitone",
     ["<M-K>"] = "MoveNoteUpOctave",
     ["<M-J>"] = "MoveNoteDownOctave",
-    ["<M-l>"] = "MoveNoteRight",
-    ["<M-h>"] = "MoveNoteLeft",
+    ["<M-l>"] = "MoveNoteRight", -- move edit cursos only | needs to be fixed!!
+    ["<M-h>"] = "MoveNoteLeft", -- move edit cursor only
+    -- ["<M-L>"] = "MoveNoteRight", -- move note selection
+    -- ["<M-H>"] = "MoveNoteLeft",  -- move note selection
   },
 }
 

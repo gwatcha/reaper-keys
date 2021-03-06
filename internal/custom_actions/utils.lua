@@ -141,6 +141,34 @@ function utils.getMatchedTrack(search_name, forward)
   return nil
 end
 
+-- TODO
+--
+-- tr, tr_index // move this to RK main util???
+--
+-- or should there maybe be a `track` file under lib/ where we'd put
+-- any kind of base track functions.
+function utils.getGUIDByTrack(tr)
+  for i = 0, reaper.CountTracks(0) - 1 do
+    local GUID = reaper.GetTrackGUID( tr )
+    if GUID ~= nil or GUID ~= "" then return GUID end
+  end
+  return false
+end
+
+
+-- add return track name also??
+function utils.getTrackByGUID(search_guid)
+  -- local tr = reaper.BR_GetMediaTrackByGUID( 0, search_guid )
+  -- if type(tr) == 'userdata' then return tr else return false end
+  -- or just nil >> but it is really nice to get idx together with guid sometimes..
+  for i = 0, reaper.CountTracks(0) - 1 do
+    local tr = reaper.GetTrack(0,i)
+    local GUID = reaper.GetTrackGUID( tr )
+    if GUID == search_guid then return tr, i end
+  end
+  return false
+end
+
 function utils.getTrackPosition()
   local last_touched_track = reaper.GetLastTouchedTrack()
   if last_touched_track then
@@ -158,6 +186,16 @@ function utils.getSelectedTracks()
     selected_tracks[i+1] = track
   end
   return selected_tracks
+end
+
+function utils.getSelectedTracksGUIDs()
+  local t = {}
+  for i = 1, reaper.CountSelectedTracks(0) do
+    local tr = reaper.GetSelectedTrack(0,i-1)
+    local _, current_name = reaper.GetTrackName(tr)
+    t[#t+1] = { name = current_name, guid = reaper.GetTrackGUID( tr ) }
+  end
+  return t
 end
 
 function utils.setTrackSelection(indices)
@@ -213,6 +251,7 @@ function utils.unselectAllButLastTouchedTrack()
   end
 end
 
+-- why not use tr GUIDs instead???
 function utils.getSelectedTrackIndices()
   local selected_tracks = utils.getSelectedTracks()
   local selected_track_indices = {}

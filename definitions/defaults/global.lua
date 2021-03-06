@@ -76,6 +76,7 @@ return {
     ["<C-z>"] = "ZoomUndo",
     ["<C-Z>"] = "ZoomRedo",
     ["v"] = "SetModeVisualTimeline",
+    ["<CM-M>"] = "SetModeVKB",
     ["<M-v>"] = "ClearTimelineSelectionAndSetModeVisualTimeline",
     ["<C-SPC>"] = "ToggleViewMixer",
     ["<ESC>"] = "Reset",
@@ -128,6 +129,12 @@ return {
     }},
     ["<SPC>"] = { "+leader commands", {
         ["<SPC>"] = "ShowActionList",
+        ["i"] = { "+i/o device", {
+          ["q"] = "TrackInSet_MIDI_QMK",
+          ["g"] = "TrackInSet_MIDI_GRAND_ROLAND",
+          ["v"] = "TrackInSet_MIDI_VIRTUAL",
+          ["d"] = "TrackInSet_MIDI_DEFAULT",
+        }},
         ["z"] = { "+zoom/scroll", {
             ["t"] = "ScrollToPlayPosition",
             ["e"] = "ScrollToEditCursor",
@@ -157,6 +164,22 @@ return {
                 ["t"] = "ToggleRecordToTapeMode",
             }},
         }},
+        ["R"] = { "+routing", {
+            -- ["o"] = "SetRecordMidiOutput",
+            -- ["d"] = "SetRecordMidiOverdub",
+            -- ["t"] = "SetRecordMidiTouchReplace",
+            -- ["R"] = "SetRecordMidiReplace",
+            -- ["v"] = "SetRecordMonitorOnly",
+            -- ["r"] = "SetRecordInput",
+            -- [","] = {"+options", {
+            --     ["n"] = "SetRecordModeNormal",
+            --     ["s"] = "SetRecordModeItemSelectionAutoPunch",
+            --     ["v"] = "SetRecordModeTimeSelectionAutoPunch",
+            --     ["p"] = "ToggleRecordingPreroll",
+            --     ["z"] = "ToggleRecordingAutoScroll",
+            --     ["t"] = "ToggleRecordToTapeMode",
+            -- }},
+        }},
         ["a"] = { "+automation", {
             ["r"] = "SetAutomationModeTrimRead",
             ["R"] = "SetAutomationModeRead",
@@ -165,6 +188,16 @@ return {
             ["p"] = "SetAutomationModeLatchPreview",
             ["t"] = "SetAutomationModeTouch",
             ["w"] = "SetAutomationModeWrite",
+        }},
+        ["S"] = { "+segments", {
+          ["d"] = "RepeatInsertTimeSelection",
+            -- ["r"] = "SetAutomationModeTrimRead",
+            -- ["R"] = "SetAutomationModeRead",
+            -- ["l"] = "SetAutomationModeLatch",
+            -- ["g"] = "SetAutomationModeLatchAndArm",
+            -- ["p"] = "SetAutomationModeLatchPreview",
+            -- ["t"] = "SetAutomationModeTouch",
+            -- ["w"] = "SetAutomationModeWrite",
         }},
         ["s"] = { "+selected items", {
             ["j"] = "NextTake",
@@ -231,7 +264,7 @@ return {
         ["t"] = { "+track", {
             ["n"] = "ResetTrackToNormal",
             ["R"] = "RenderTrack",
-            ["r"] = "RenameTrack",
+            ["r"] = "RenameTracks",
             ["z"] = "MinimizeTracks",
             ["m"] = "CycleRecordMonitor",
             ["f"] = "CycleFolderState",
@@ -250,6 +283,11 @@ return {
                 ["4"] = "InsertTrackFromTemplateSlot4",
             }},
             ["x"] = {"+routing", {
+                ["x"] = "RouteUpdate",
+                ["q"] = "RouteRemoveAllSends",
+                ["Q"] = "RouteRemoveAllRecieves",
+                ["l"] = "RouteLogSelection",
+                ["c"] = "RouteTestCodedT",
                 ["p"] = "TrackToggleSendToParent",
                 ["s"] = "ToggleShowTrackRouting",
             }},

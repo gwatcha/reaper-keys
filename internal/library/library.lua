@@ -5,7 +5,12 @@ local feedback = require('gui.feedback.controller')
 
 local library = {
   marks = require('library.marks'),
-  state = require('library.state')
+  state = require('library.state'),
+  routing = require('library.routing'),
+  segments = require('library.segments'),
+  midi = require('library.midi'),
+  fx = require('library.fx'),
+  io_device = require('library.io_device')
 }
 
 function library.matchTrackNameBackward()

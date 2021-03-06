@@ -26,6 +26,10 @@ function state.setModeVisualTimeline()
   end
 end
 
+function state.setModeVirtualKeyboard()
+  state_interface.setMode('vkb')
+end
+
 function state.switchTimelineSelectionSide()
   local go_to_start_of_selection = 40630
   local go_to_end_of_selection = 40631
