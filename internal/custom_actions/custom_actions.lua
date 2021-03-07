@@ -80,7 +80,7 @@ function trackUpdateName(set_prefix)
       local old_name = string.sub(old_name_full, e + 1)
 
       local new_name_full
-      if set_prefix then
+      if set_prefix == 1 then
         new_name_full = new_name_string .. old_name
       else
         new_name_full = old_prefix .. new_name_string
