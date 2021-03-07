@@ -1,5 +1,7 @@
 # jsfx
 
+repo link: `https://github.com/molleweide/reaper-jsfx`
+
 I have created an accompanying project called `reaper-jsfx`
 where I started building on a library for managing midi devices.
 
