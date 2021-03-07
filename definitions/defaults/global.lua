@@ -164,22 +164,6 @@ return {
                 ["t"] = "ToggleRecordToTapeMode",
             }},
         }},
-        ["R"] = { "+routing", {
-            -- ["o"] = "SetRecordMidiOutput",
-            -- ["d"] = "SetRecordMidiOverdub",
-            -- ["t"] = "SetRecordMidiTouchReplace",
-            -- ["R"] = "SetRecordMidiReplace",
-            -- ["v"] = "SetRecordMonitorOnly",
-            -- ["r"] = "SetRecordInput",
-            -- [","] = {"+options", {
-            --     ["n"] = "SetRecordModeNormal",
-            --     ["s"] = "SetRecordModeItemSelectionAutoPunch",
-            --     ["v"] = "SetRecordModeTimeSelectionAutoPunch",
-            --     ["p"] = "ToggleRecordingPreroll",
-            --     ["z"] = "ToggleRecordingAutoScroll",
-            --     ["t"] = "ToggleRecordToTapeMode",
-            -- }},
-        }},
         ["a"] = { "+automation", {
             ["r"] = "SetAutomationModeTrimRead",
             ["R"] = "SetAutomationModeRead",
@@ -191,13 +175,6 @@ return {
         }},
         ["S"] = { "+segments", {
           ["d"] = "RepeatInsertTimeSelection",
-            -- ["r"] = "SetAutomationModeTrimRead",
-            -- ["R"] = "SetAutomationModeRead",
-            -- ["l"] = "SetAutomationModeLatch",
-            -- ["g"] = "SetAutomationModeLatchAndArm",
-            -- ["p"] = "SetAutomationModeLatchPreview",
-            -- ["t"] = "SetAutomationModeTouch",
-            -- ["w"] = "SetAutomationModeWrite",
         }},
         ["s"] = { "+selected items", {
             ["j"] = "NextTake",
@@ -264,7 +241,8 @@ return {
         ["t"] = { "+track", {
             ["n"] = "ResetTrackToNormal",
             ["R"] = "RenderTrack",
-            ["r"] = "RenameTracks",
+            ["r"] = "UpdateTrackName",
+            ["p"] = "UpdateTrackNamePrefix",
             ["z"] = "MinimizeTracks",
             ["m"] = "CycleRecordMonitor",
             ["f"] = "CycleFolderState",

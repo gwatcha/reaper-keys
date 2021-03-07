@@ -1,6 +1,8 @@
 local log = require('utils.log')
+local config = require('definitions.config')
 local format = require('utils.format')
 local fx = require('library.fx')
+local io = require('definitions.io')
 
 local custom_actions = {
   move = require('custom_actions.movement'),
@@ -58,21 +60,32 @@ function custom_actions.splitItemsAtTimeSelection()
   reaper.Main_OnCommand(SplitAtTimeSelection, 0)
 end
 
--- seems like these two functions could be refactored later into a `changeTracks()` super func
-function custom_actions.changeNamesOfSelectedTracks()
+function custom_actions.updatePrefixOfSelectedTracks() trackUpdateName(1) end
+function custom_actions.updateNameOfSelectedTracks() trackUpdateName(0) end
+
+-- mv to util/track.lua
+function trackUpdateName(set_prefix)
+  log.clear()
   local num_sel = reaper.CountSelectedTracks(0)
   local _, new_name_string = reaper.GetUserInputs("Change track name", 1, "Track name:", "")
-
   if num_sel == 0 then return end
-  if num_sel == 1 then
-    local track = reaper.GetSelectedTrack(0,0)
-    local _, str = reaper.GetSetMediaTrackInfo_String(track, "P_NAME", new_name_string, 1);
-    return
-  end
-  if num_sel > 1 then
+
+  if num_sel > 0 then
     for i = 1, num_sel do
-      local track = reaper.GetSelectedTrack(0, i - 1)
-      local _, str = reaper.GetSetMediaTrackInfo_String(track, "P_NAME", new_name_string, 1);
+      local tr = reaper.GetSelectedTrack(0, i - 1)
+      local ret, old_name_full = reaper.GetTrackName(tr)
+      local s, e = string.find(old_name_full, config.name_prefix_match_str)
+      if s == nil then s = 0; e = 0 end
+      local old_prefix = string.sub(old_name_full, s, e)
+      local old_name = string.sub(old_name_full, e + 1)
+
+      local new_name_full
+      if set_prefix then
+        new_name_full = new_name_string .. old_name
+      else
+        new_name_full = old_prefix .. new_name_string
+      end
+      local _, str = reaper.GetSetMediaTrackInfo_String(tr, "P_NAME", new_name_full, 1);
     end
     return
   end
@@ -85,30 +98,23 @@ function updateMidiPreProcessorByInputDevice(tr)
   local dev_id = ((tr_rec_in - midi_device_offset) & device_mask) >> 5
   local retval, nameout = reaper.GetMIDIInputName( dev_id, '' )
 
-  -- put into my configs ??
-  local device_search_strings = {
-    'Virtual Midi Keyboard',
-    'Ergodox EZ',
-    '- port 1' -- tmp roland RD grand
-  }
-
   local enabled_device
-  for k,device_str in pairs(device_search_strings) do
+  for k,device_str in pairs(io.midi) do
     if nameout:lower():match(device_str:lower()) then enabled_device = device_str end
   end
 
   if enabled_device == nil then return end
-  if enabled_device == 'Virtual Midi Keyboard' then
+  if enabled_device == io.midi.vkb then
     fx.setParamForFxAtIndex(tr, 0, 1, 0, true) -- set device
     fx.setParamForFxAtIndex(tr, 0, 2, 0, true) -- set mode
   end
 
-  if enabled_device == 'Ergodox EZ' then
+  if enabled_device == io.midi.qmk then
     fx.setParamForFxAtIndex(tr, 0, 1, 1, true) -- set device
     fx.setParamForFxAtIndex(tr, 0, 2, 1, true) -- set mode
   end
 
-  if enabled_device == '- port 1' then
+  if enabled_device == io.midi.roland then
     fx.setParamForFxAtIndex(tr, 0, 1, 2, true) -- set device
     fx.setParamForFxAtIndex(tr, 0, 2, 6, true) -- set mode
   end
@@ -123,7 +129,7 @@ function custom_actions.setupMidiInputPreProcessorOnSelTrks()
     if zeroth_idx_name == 'RK_MIDI_PRE_PROCESSOR' then
       updateMidiPreProcessorByInputDevice(tr)
     else
-      local fx_str = 'mid_main.jsfx' -- INSERT MIDI PRE PROCESSOR JSFX
+      local fx_str = 'midi-rec-pre.jsfx' -- INSERT MIDI PRE PROCESSOR JSFX
       fx.insertFxAtIndex(tr, fx_str, 0, true)
       fx.getSetTrackFxNameByFxChainIndex(tr,0, true, 'RK_MIDI_PRE_PROCESSOR')
       updateMidiPreProcessorByInputDevice(tr)

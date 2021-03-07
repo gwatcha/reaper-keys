@@ -92,4 +92,6 @@ for i, x in ipairs(modes) do
   end
 end
 
+function log.clear() reaper.ClearConsole() end
+
 return log

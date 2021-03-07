@@ -1,5 +1,6 @@
 local ru = require('custom_actions.utils')
 local log = require('utils.log')
+local str_util = require('utils.string')
 local format = require('utils.format')
 local config = require('definitions.config')
 local rc = require('definitions.routing')
@@ -161,29 +162,29 @@ function getMatchedTrackGUIDs(search_name)
   if found then return t else return false end
 end
 
--- TODO
---
--- this function alse is defined in syntax/syntax
---
--- mv to util
-function getStringSplitPattern(pString, pPattern)
-  local Table = {}  -- NOTE: use {n = 0} in Lua-5.0
-  local fpat = "(.-)" .. pPattern
-  local last_end = 1
-  local s, e, cap = pString:find(fpat, 1)
-  while s do
-    if s ~= 1 or cap ~= "" then
-      table.insert(Table,cap)
-    end
-    last_end = e+1
-    s, e, cap = pString:find(fpat, last_end)
-  end
-  if last_end <= #pString then
-    cap = pString:sub(last_end)
-    table.insert(Table, cap)
-  end
-  return Table
-end
+---- TODO
+----
+---- this function alse is defined in syntax/syntax
+----
+---- mv to util
+--function getStringSplitPattern(pString, pPattern)
+--  local Table = {}  -- NOTE: use {n = 0} in Lua-5.0
+--  local fpat = "(.-)" .. pPattern
+--  local last_end = 1
+--  local s, e, cap = pString:find(fpat, 1)
+--  while s do
+--    if s ~= 1 or cap ~= "" then
+--      table.insert(Table,cap)
+--    end
+--    last_end = e+1
+--    s, e, cap = pString:find(fpat, last_end)
+--  end
+--  if last_end <= #pString then
+--    cap = pString:sub(last_end)
+--    table.insert(Table, cap)
+--  end
+--  return Table
+--end
 
 --  TODO
 --
@@ -380,7 +381,7 @@ function getEnclosedChannelData(str, encloser, sep, rangeL, rangeH)
   local dataBracket, str = getEnclosers(str, encloser)
   local bSrc, bDst
   if dataBracket ~= nil then
-    local dataBracketSplit = getStringSplitPattern(dataBracket, sep)
+    local dataBracketSplit = str_util.getStringSplitPattern(dataBracket, sep)
     for d=1, #dataBracketSplit do
       local D = tonumber(dataBracketSplit[d])
       if D < rangeL or D > rangeH then D = 0 end
@@ -439,7 +440,7 @@ function extractParamsFromString(rp, str)
 
 
   if src_tr_data ~= nil then -- SRC PROVIDED
-    local src_tr_split =  getStringSplitPattern(src_tr_data, USER_INPUT_TARGETS_DIV)
+    local src_tr_split =  str_util.getStringSplitPattern(src_tr_data, USER_INPUT_TARGETS_DIV)
     local ret, rp = setRouteTargetGuids(rp, 'src_guids', src_tr_split)
   elseif isSel() then -- FALLBACK SRC SEL
     -- rp.src_from_selection = true

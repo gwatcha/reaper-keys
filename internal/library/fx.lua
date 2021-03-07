@@ -60,11 +60,11 @@ end
 function fx_util.replaceFxAtIndex(tr, fx_str, fx_insertTo_idx, is_rec_fx)
 
   if is_rec_fx then
-    removeFxAtIndex(tr, fx_insertTo_idx, true)
-    insertFxAtIndex(tr, fx_str, fx_insertTo_idx, true)
+    fx_util.removeFxAtIndex(tr, fx_insertTo_idx, true)
+    fx_util.insertFxAtIndex(tr, fx_str, fx_insertTo_idx, true)
   else
-    removeFxAtIndex(tr, fx_insertTo_idx)
-    insertFxAtIndex(tr, fx_str, fx_insertTo_idx)
+    fx_util.removeFxAtIndex(tr, fx_insertTo_idx)
+    fx_util.insertFxAtIndex(tr, fx_str, fx_insertTo_idx)
   end
 end
 
