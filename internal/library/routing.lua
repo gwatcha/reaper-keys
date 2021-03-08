@@ -8,7 +8,7 @@ local df = rc.default_params
 
 local routing = {}
 
-local input_placeholder = "" -- "(176)aR" -- used for testing purps
+local input_placeholder = "(176)" -- used for testing purps
 
 -- I was trying format the text box but I did not get it to work
 local route_help_str = "route params:\n" .. "\nk int  = category" .. "\ni int  = send idx"
@@ -64,7 +64,7 @@ end
 
 
 function routing.updateState(route_str, coded_sources, coded_dests)
-  -- log.clear()
+  log.clear()
   local rp = rc
   local _
 
@@ -78,6 +78,7 @@ function routing.updateState(route_str, coded_sources, coded_dests)
   if route_str == nil then
     rp.user_input = true
     _, route_str = reaper.GetUserInputs("ENTER ROUTE STRING:", 1, route_help_str, input_placeholder)
+    if not _ then return end
   end
 
   local ret
@@ -93,6 +94,11 @@ function routing.updateState(route_str, coded_sources, coded_dests)
     ret, rp = setRouteTargetGuids(rp, 'dst_guids', coded_dests)
   end
 
+  -- if route_str:match('SUM_DRUMS') then
+  --   lrp(rp)
+  -- end
+  -- lrp(rp)
+
   if rp.remove_routes then
     handleRemoval(rp)
   elseif not rp.user_input then
@@ -100,9 +106,17 @@ function routing.updateState(route_str, coded_sources, coded_dests)
   elseif confirmRouteCreation(rp) then
     targetLoop(rp)
   else
-    log.clear()
     log.user('<ROUTE COMMAND ABORTED>')
   end
+end
+
+function routing.trackHasSends(guid, cat)
+  local tr, tr_idx = ru.getTrackByGUID(guid)
+  local num_routes_by_cat = reaper.GetTrackNumSends( tr, cat )
+  if num_routes_by_cat > 0 then
+    return true
+  end
+  return false
 end
 
 -- refactor these into one with variable arguments
@@ -257,25 +271,21 @@ function logHeader(str)
 end
 
 function confirmRouteCreation(rp)
-  -- LOG FINAL SOURCES TARGETS
   local num_tr_affected = #rp.src_guids*#rp.dst_guids
 
-  local warning_str = 'Tot num routes being affected = '.. num_tr_affected
-  local r_u_sure = 'Confirm update routes'
-  logHeader(warning_str)
-  -- log.user(div, warning_str)
-
-  logConfirmList(rp)
-
-  local help_str = "` #src: `" .. tostring(#rp.src_guids) ..
-  "` #dst: `" .. tostring(#rp.dst_guids) .. "` (y/n)"
-
-  if num_tr_affected > rc.tot_route_num_limit and not rp.coded_targets then
-    _, answer = reaper.GetUserInputs(r_u_sure, 1, help_str, "")
+  if num_tr_affected >= rc.tot_route_num_limit and not rp.coded_targets then
+    local warning_str = 'Tot num routes being affected = '.. num_tr_affected
+    local r_u_sure = 'Confirm update routes'
+    local help_str = "` #src: `" .. tostring(#rp.src_guids) ..
+    "` #dst: `" .. tostring(#rp.dst_guids) .. "` (y/n)"
+    logHeader(warning_str)
+    -- log.user(div, warning_str)
+    logConfirmList(rp)
+    local _, answer = reaper.GetUserInputs(r_u_sure, 1, help_str, "")
+    if answer == "y" then return true end
+    return false
   end
-
-  if answer == "y" then return true end
-  return false
+  return true
 end
 
 
@@ -425,11 +435,11 @@ function extractParamsFromString(rp, str)
     rp.remove_routes = true
     rp.remove_both = true
   end
-  if str:find('S') then
+  if str:find('%#') then
     rp.category = 0
     rp.remove_both = false
   end
-  if str:find('R') then
+  if str:find('%$') then
     rp.category = -1
     rp.remove_both = false
   end
@@ -449,7 +459,10 @@ function extractParamsFromString(rp, str)
 
 
   if dst_tr_data ~= nil then
-    local dst_tr_split =  getStringSplitPattern(dst_tr_data, USER_INPUT_TARGETS_DIV)
+    local dst_tr_split =  str_util.getStringSplitPattern(dst_tr_data, USER_INPUT_TARGETS_DIV)
+
+    -- log.user('dest: ' .. format.block(dst_tr_split))
+
     local ret, rp = setRouteTargetGuids(rp, 'dst_guids', dst_tr_split)
   end
 
@@ -511,10 +524,32 @@ function getPrevRouteState(rp, src_tr, dest_tr)
   return rp
 end
 
+
+-- this function has to be improved.
+
 function getNextRouteState(rp, check_str)
-  if (rp.new_params['a'] == nil and rp.new_params['m'] == nil) or
-    (rp.new_params['a'] ~= nil and rp.new_params['m'] == nil)
-    and rp.new_params['a'].param_value ~= rc.flags.AUDIO_SRC_OFF then
+
+  local a_present = false
+  local m_present = false
+  local audio_off = false
+  local midi_off = false
+  if rp.new_params['a'] ~= nil then
+    a_present = true
+
+    if rp.new_params['a'].param_value == rc.flags.AUDIO_SRC_OFF then
+      audio_off = true
+    end
+  end
+  if rp.new_params['m'] ~= nil then
+    m_present = true
+    if rp.new_params['m'].param_value == rc.flags.MIDI_OFF then
+       midi_off = true
+    end
+  end
+
+  -- ONLY AUDIO //////////////////////////////
+
+  if (not a_present and not m_present) or (a_present and not m_present) and not audio_off then
 
     rp.next = 1
     rp.new_params['m'] = {
@@ -523,9 +558,8 @@ function getNextRouteState(rp, check_str)
       param_value = rc.flags.MIDI_OFF,
     }
 
-  elseif rp.new_params['a'] == nil and rp.new_params['m'] ~= nil
-    and rp.new_params['m'].param_value ~= rc.flags.MIDI_OFF or
-    (rp.new_params['a'].param_value == rc.flags.AUDIO_SRC_OFF and rp.new_params['m'] ~= nil) then
+  -- ONLY MIDI ///////////////////////////
+  elseif not a_present and m_present and not midi_off or (audio_off and m_present) then
     rp.next = 2
 
     rp.new_params['a'] = {
@@ -533,6 +567,10 @@ function getNextRouteState(rp, check_str)
       param_name = df['a'].param_name,
       param_value = rc.flags.AUDIO_SRC_OFF,
     }
+
+    -- BOTH ///////////////////////////////
+    --
+    -- it feels as if this is wrong but i don't remember
   elseif rp.new_params['a'] == nil and rp.new_params['m'] ~= nil then
     rp.next = 3 -- add both
   end
@@ -684,6 +722,7 @@ function updateRouteState_Track(src_tr, rp, rid)
 
     :: continue ::
   end
+  -- lrp(rp)
 end
 
 --  OTHER

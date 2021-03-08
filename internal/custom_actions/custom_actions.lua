@@ -137,4 +137,13 @@ function custom_actions.setupMidiInputPreProcessorOnSelTrks()
   end
 end
 
+function custom_actions.sidechainCompTracks(key_track_name)
+
+-- check if not `FX_SC_GKICK` exists
+-- add last fx
+-- create recieve for sel track
+-- from ghost 1/2 into 3/4
+
+end
+
 return custom_actions
