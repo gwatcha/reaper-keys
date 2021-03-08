@@ -1,7 +1,7 @@
 local ru = require('custom_actions.utils')
 local log = require('utils.log')
 local tr_util = require('utils.track')
-local table_util = require('utils.track')
+local table_util = require('utils.table')
 local midi_util = require('utils.midi')
 local str_util = require('utils.string')
 local format = require('utils.format')
@@ -51,7 +51,7 @@ function rlib.handleRemoval(rp)
   else
     -- logHeader('src rm > connections btw list src/dst')
     -- logConfirmList(rp)
-    targetLoop(rp)
+    rlib.targetLoop(rp)
 
   end
 end

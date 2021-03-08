@@ -1,6 +1,7 @@
 local ru = require('custom_actions.utils')
 local log = require('utils.log')
 local str_util = require('utils.string')
+local midi_util = require('utils.midi')
 local tr_util = require('utils.track')
 local rc = require('definitions.routing')
 local df = rc.default_params

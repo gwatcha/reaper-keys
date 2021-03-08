@@ -8,6 +8,7 @@ local df = rc.default_params
 
 local rlib = require('library.route.rlib')
 local rlog = require('library.route.rlib_log')
+local rlib_targets = require('library.route.rlib_targets')
 local rlib_string = require('library.route.rlib_string')
 
 local routing = {}
@@ -91,11 +92,11 @@ function routing.updateState(route_str, coded_sources, coded_dests)
 
   if coded_sources ~= nil then
     rp.coded_targets = true
-    ret, rp = rlib.setRouteTargetGuids(rp, 'src_guids', coded_sources)
+    ret, rp = rlib_targets.setRouteTargetGuids(rp, 'src_guids', coded_sources)
   end
   if coded_dests ~= nil then
     rp.coded_targets = true
-    ret, rp = rlib.setRouteTargetGuids(rp, 'dst_guids', coded_dests)
+    ret, rp = rlib_targets.setRouteTargetGuids(rp, 'dst_guids', coded_dests)
   end
 
   if rp.remove_routes then
