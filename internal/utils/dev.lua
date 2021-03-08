@@ -40,6 +40,9 @@ function dev.logLastTouchedFxParams()
   reaper.defer(function() end)
 end
 
+function dev.logPaths()
+end
+
 return dev
 
 
