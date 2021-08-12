@@ -2,6 +2,7 @@
 -- https://gwatcha.github.io/reaper-keys/configuration/behaviour.html
 
 return {
+  use_extended_defaults = false,
   show_start_up_message = true,
   -- should the auto-complete menu display?
   show_feedback_window = true,

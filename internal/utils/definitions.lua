@@ -1,4 +1,5 @@
 local utils = require('command.utils')
+local config = require('definitions.config')
 
 local definitions = {}
 
@@ -50,11 +51,15 @@ function concatEntryTables(t1,t2)
 end
 
 
+default_tables_dir = "definitions.defaults."
+if config.use_extended_defaults then
+  default_tables_dir = "definitions.extended_defaults."
+end
 local user_definitions = require('definitions.bindings')
 local definition_tables = {
-  global = concatEntryTables(require('definitions.defaults.global'), user_definitions.global ),
-  main = concatEntryTables(require('definitions.defaults.main'), user_definitions.main ),
-  midi = concatEntryTables(require('definitions.defaults.midi'), user_definitions.midi ),
+  global = concatEntryTables(require(default_tables_dir .. 'global'), user_definitions.global ),
+  main = concatEntryTables(require(default_tables_dir .. 'main'), user_definitions.main ),
+  midi = concatEntryTables(require(default_tables_dir .. 'midi'), user_definitions.midi ),
 }
 
 function definitions.getPossibleEntries(context)
