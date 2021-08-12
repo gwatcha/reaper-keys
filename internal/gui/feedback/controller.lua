@@ -3,6 +3,7 @@ local string_util = require('string')
 local FeedbackView = require('gui.feedback.View')
 local reaper_state = require('utils.reaper_state')
 local model = require('gui.feedback.model')
+local config = require('definitions.config')
 
 local feedback = {}
 
@@ -64,6 +65,10 @@ function feedback.update()
   if not feedback_view_open or just_opened then
     local feedback_view = FeedbackView:new()
     feedback_view:open()
+
+    if config.show_start_up_message then
+      reaper.ShowMessageBox("Hello from inside Reaper Keys! I see the feedback window just opened... Here are some things I have been told to tell you:\n  -If the feedback window is focused, I can't hear the keys being pressed, so be sure to unfocus it.\n  -If that pesky 'this script is running in the background hur dur' message comes up just check 'new instance' and 'remember' and it will go away\n  -Everything you need to configure reaper-keys is in the REAPER/Scripts/reaper-keys/definitions/ directory.\n  -If you would like this message to not appear anymore, set the option in definitions/config.lua.\n  -If you set that option there will be no one to protect you from the focus stealing of the feedback window.\n  -reaper-keys by uses a reduced keymap by default, if you outgrow it, set the option in definitions/config.lua to use the extended defaults.\n  -Your mother loves you", "Reaper Keys Open Message", 1)
+    end
 
     model.setKeys({open = true})
 
