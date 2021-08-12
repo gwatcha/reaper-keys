@@ -7,6 +7,8 @@ local buildCommand = require('command.builder')
 local handleCommand = require('command.handler')
 local getPossibleFutureEntries = require('command.completer')
 
+local config = require('definitions.config')
+
 local log = require('utils.log')
 local format = require('utils.format')
 local feedback = require('gui.feedback.controller')
@@ -61,14 +63,18 @@ end
 
 function input(key_press)
   log.info("\n++++\ninput: " .. format.line(key_press))
-  feedback.clear()
+  if config.show_feedback_window then
+    feedback.clear()
+  end
 
   local state = state_interface.get()
   local new_state = step(state, key_press)
   state_interface.set(new_state)
 
-  feedback.displayState(new_state)
-  feedback.update()
+  if config.show_feedback_window then
+    feedback.displayState(new_state)
+    feedback.update()
+  end
 
   log.info("new state: " .. format.block(new_state))
 end
