@@ -35,6 +35,13 @@ end
 
 function reaper_state.append(name, key, new_data)
   local all_data = reaper_state.get(name)
+  if not all_data then
+    all_data = {}
+    all_data[key] = new_data
+    reaper_state.set(name, all_data)
+    return
+  end
+
   if all_data[key] then
     table.insert(all_data[key], new_data)
   else
