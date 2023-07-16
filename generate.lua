@@ -37,11 +37,10 @@ end
 local function key_script(key, context)
     key = key:gsub("\\", "\\\\"):gsub("'", "\\'")
     return
-        "\nlocal info = debug.getinfo(1,'S');\n" ..
-        "local root_path = info.source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]\n" ..
-        "package.path = package.path .. ';' .. root_path .. '?.lua'\n" ..
-        "\nlocal doInput = require('internal.reaper-keys')\n\n" ..
-        "doInput({['key'] = '" .. key .. "', ['context'] = '" .. context .. "'})\n"
+        "package.path = package.path..';'.." ..
+        "debug.getinfo(1,'S').source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]" ..
+        "..'?.lua';" ..
+        "require'internal.reaper-keys'{key='" .. key .. "', context='" .. context .. "'}"
 end
 
 local function keymap_write_key(key_type_id, key_id, context_id, script_id)
