@@ -1,4 +1,4 @@
-local def = require "key_definitions"
+local defs = require "defs"
 --local root_dir_path = debug.getinfo(1).source:match("@?(.*/)")
 local root_dir_path = "."
 local key_script_dir = 'key_scripts/'
@@ -69,11 +69,11 @@ local function gen_key(key_type_id, key, key_name, key_id, context, context_id)
 end
 
 local function gen_modified_keys(key, key_id, key_name, key_group, context, context_id)
-    for mod, mod_id in pairs(def.mods) do
+    for mod, mod_id in pairs(defs.mods) do
         local has_shift = mods_with_shift[mod]
 
         if not (key_group == "shifted" and has_shift) then
-            local shifted_key = def.shift_map[key]
+            local shifted_key = defs.shift_map[key]
 
             if shifted_key ~= nil and has_shift then
                 mod = mod:gsub("([CM]+)S", "")
@@ -82,14 +82,14 @@ local function gen_modified_keys(key, key_id, key_name, key_group, context, cont
                     modded_key, _ = format_modded_key(shifted_key, shifted_key, 'shifted', mod)
                 end
 
-                if def.mod_decremented_keys[key] ~= nil then
+                if defs.mod_decremented_keys[key] ~= nil then
                     mod_id = mod_id - 1
                 end
 
                 local reaper_key_script_id = "_reaper_keys_" .. context .. "_" .. modded_key
                 keymap_write_key(mod_id, key_id, context_id, reaper_key_script_id)
             else
-                if def.mod_decremented_keys[key] ~= nil then
+                if defs.mod_decremented_keys[key] ~= nil then
                     mod_id = mod_id - 1
                 end
 
@@ -103,10 +103,10 @@ end
 local function codegen()
     io.open(keymap_path, "w"):close() -- truncate
 
-    for context, context_id in pairs(def.contexts) do
-        for group_name, group in pairs(def.key_group) do
+    for context, context_id in pairs(defs.contexts) do
+        for group_name, group in pairs(defs.key_group) do
             for key, key_id in pairs(group.keys) do
-                local aliased_key = def.aliases[key] or key
+                local aliased_key = defs.aliases[key] or key
                 gen_key(group.key_type_id, key, aliased_key, key_id, context, context_id)
                 gen_modified_keys(key, key_id, aliased_key, group_name, context, context_id)
             end

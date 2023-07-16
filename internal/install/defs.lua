@@ -1,4 +1,4 @@
-local key_definitions = {
+return {
     contexts = {
         midi = 32060,
         main = 0
@@ -209,4 +209,3 @@ local key_definitions = {
         }
     }
 }
-return key_definitions

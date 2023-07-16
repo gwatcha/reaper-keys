@@ -3,3 +3,4 @@ internal/gui/feedback/model_data.lua
 !/internal/saved/data/.gitkeep
 internal/state_machine/state.lua
 actions-runner
+key_scripts
