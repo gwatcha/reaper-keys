@@ -4,3 +4,5 @@ internal/gui/feedback/model_data.lua
 internal/state_machine/state.lua
 actions-runner
 key_scripts
+reaper-keys.ReaperKeyMap
+

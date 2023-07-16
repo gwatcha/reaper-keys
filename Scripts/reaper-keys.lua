@@ -1,19 +1,22 @@
--- @description reaper-keys
+-- @description reaper-keys: vim-like keybindings for Reaper
 -- @version 1.0.0
 -- @author gwatcha
--- @description
---   Vim-like keybindings for Reaper -- map keystroke combinations to actions.
+-- @about
+--   Map keystroke combinations to actions.
 -- @links
 --   GitHub repository https://github.com/myrrc/reaper-keys
 -- @provides
 --   ../definitions/**/*
 --   ../internal/**/*
 
-local defs = require "../internal/install/defs"
---local root_dir_path = debug.getinfo(1).source:match("@?(.*/)")
-local root_dir_path = "."
-local key_script_dir = 'key_scripts/'
-local keymap_path = 'reaper-keys.ReaperKeyMap'
+local function msg(...) reaper.ShowConsoleMsg(string.format("%s\n", string.format(...))) end
+
+local root_dir_path = debug.getinfo(1,"S").source:match("@?(.*/)")
+package.path = package.path .. ";" .. root_dir_path .. "../internal/install/defs.lua"
+
+local defs = require "defs"
+local key_script_dir = root_dir_path .. '../key_scripts/'
+local keymap_path = reaper.GetResourcePath() .. '/KeyMaps/reaper-keys.ReaperKeyMap'
 
 local mods_with_shift = { S = true, MS = true, CS = true, CMS = true }
 
@@ -73,9 +76,8 @@ local function gen_key(key_type_id, key, key_name, key_id, context, context_id)
     io.open(script_path, "w"):write(key_script(key, context))
 
     local script_id = "_reaper_keys_" .. context .. "_" .. key
-    local reaper_script_path = './' .. root_dir_path .. script_path
 
-    io.open(keymap_path, "a"):write(keymap_scr(key, context_id, script_id, reaper_script_path))
+    io.open(keymap_path, "a"):write(keymap_scr(key, context_id, script_id, script_path))
     keymap_write_key(key_type_id, key_id, context_id, script_id)
 end
 
@@ -111,7 +113,11 @@ local function gen_modified_keys(key, key_id, key_name, key_group, context, cont
     end
 end
 
-local function codegen()
+local function install()
+    if reaper.RecursiveCreateDirectory(key_script_dir, 0) ~= 0 then
+        msg("Error creating %s", key_script_dir)
+    end
+
     io.open(keymap_path, "w"):close() -- truncate
 
     for context, context_id in pairs(defs.contexts) do
@@ -123,6 +129,10 @@ local function codegen()
             end
         end
     end
+
+    -- No way to auto-import https://forum.cockos.com/showthread.php?t=238798
+    msg("Installation finished, now import reaper-keys.ReaperKeyMap:\n\t" ..
+        "Actions list > Key Map > Import")
 end
 
-codegen()
+install()
