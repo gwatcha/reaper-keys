@@ -7,8 +7,8 @@
 -- @links
 --   GitHub repository https://github.com/myrrc/reaper-keys
 -- @provides
---   ../definitions/*
---   ../internal/*
+--   ../definitions/**/*
+--   ../internal/**/*
 
 local defs = require "../internal/install/defs"
 --local root_dir_path = debug.getinfo(1).source:match("@?(.*/)")
