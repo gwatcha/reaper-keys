@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<index version="1" name="gwatcha scripts">
+  <category name="Scripts">
+    <reapack name="reaper-keys.lua" type="script" desc="Vim-like keybindings for Reaper -- map keystroke combinations to actions.">
+      <metadata>
+        <link rel="website" href="https://github.com/myrrc/reaper-keys">GitHub repository</link>
+      </metadata>
+      <version name="1.0.0" author="myrrc" time="2023-07-16T22:04:49Z">
+        <source main="main">https://github.com/myrrc/reaper-keys/raw/f8d844aeee7bcbed78c8aba7e91a367bae05d690/Scripts/reaper-keys.lua</source>
+        <source file="../definitions/README.md">https://github.com/myrrc/reaper-keys/raw/f8d844aeee7bcbed78c8aba7e91a367bae05d690/definitions/README.md</source>
+        <source file="../definitions/actions.lua">https://github.com/myrrc/reaper-keys/raw/f8d844aeee7bcbed78c8aba7e91a367bae05d690/definitions/actions.lua</source>
+        <source file="../definitions/bindings.lua">https://github.com/myrrc/reaper-keys/raw/f8d844aeee7bcbed78c8aba7e91a367bae05d690/definitions/bindings.lua</source>
+        <source file="../definitions/config.lua">https://github.com/myrrc/reaper-keys/raw/f8d844aeee7bcbed78c8aba7e91a367bae05d690/definitions/config.lua</source>
+        <source file="../definitions/gui_config.lua">https://github.com/myrrc/reaper-keys/raw/f8d844aeee7bcbed78c8aba7e91a367bae05d690/definitions/gui_config.lua</source>
+        <source file="../internal/reaper-keys.lua">https://github.com/myrrc/reaper-keys/raw/f8d844aeee7bcbed78c8aba7e91a367bae05d690/internal/reaper-keys.lua</source>
+      </version>
+    </reapack>
+  </category>
+</index>
