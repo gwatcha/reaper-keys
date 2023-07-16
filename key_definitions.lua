@@ -5,33 +5,13 @@ local key_definitions = {
     },
 
     -- C -> ctrl, M -> alt, S -> shift
-    key_mods = { C = 9, M = 17, S = 5, MS = 21, CS = 13, CM = 25, CMS = 29 },
+    mods = { C=9, M=17, S=5, MS=21, CS=13, CM=25, CMS=29 },
 
     -- these key codes clash with others when modifiers are on,
     -- reaper solves the problem by decrementing the key_mod_id
     mod_decremented_keys = {
-        ['`'] = true,
-        ["'"] = true,
-        ['%'] = true,
-        ['&'] = true,
-        ['('] = true,
-        ['{'] = true,
-        ['}'] = true,
-        ['|'] = true,
-        ['.'] = true,
-        ['!'] = true,
-        ['#'] = true,
-        ['$'] = true,
-        ['^'] = true,
-        ['*'] = true,
-        [','] = true,
-        ['-'] = true,
-        ['"'] = true,
-        ['>'] = true,
-        ['<'] = true,
-        ['+'] = true,
-        [';'] = true
-    },
+        '`', "'", '%', '&', '(', '!', '{', '}', '|', '.', '!', '#',
+        '$', '^', '*', ',', '-', '"', '>', '<', '+', ';'},
 
     aliases = {
         ['.'] = 'period',
@@ -98,7 +78,7 @@ local key_definitions = {
         ['-'] = '_',
         ['.'] = '>',
         [','] = '<',
-        ['\\'] = '|',
+        ['\\'] =  '|',
         ["'"] = '"',
         ['0'] = ')',
         ['9'] = '(',
@@ -112,7 +92,7 @@ local key_definitions = {
         ['1'] = '!'
     },
 
-    key_table = {
+    key_group = {
         special = {
             key_type_id = 1,
             keys = {

@@ -4,43 +4,38 @@ local root_dir_path = "."
 local key_script_dir = 'key_scripts/'
 local keymap_path = 'reaper-keys.ReaperKeyMap'
 
-local mods_with_shift = { "S", "MS", "CS", "CMS" }
+local mods_with_shift = { S = true, MS = true, CS = true, CMS = true }
 
-local function format_shifted_letter(key_mod, letter)
-    local modifier_keys_excluding_shift = string.gsub(key_mod, "S", "")
-    local key_name = "(" .. key_mod .. "-" .. letter .. ")"
-    local key
+local function format_shifted_letter(mod, letter)
+    local key = letter:upper()
 
-    if modifier_keys_excluding_shift == '' then
-        key = letter.upper()
-    else
-        key = "<" .. modifier_keys_excluding_shift .. "-" .. letter.upper() .. ">"
+    local mods_excluding_shift = mod:gsub("S", "")
+    if mods_excluding_shift ~= '' then
+        key = "<" .. mods_excluding_shift .. "-" .. key .. ">"
     end
 
-    return key, key_name
+    return key, "(" .. mod .. "-" .. letter .. ")"
 end
 
-local function format_modded_key(key, key_name, key_table_name, mod)
-    local modded_key = "<" .. mod .. "-" .. key .. ">"
-    local modded_key_name = "(" .. mod .. "-" .. key_name .. ")"
-
-    local key_has_surroundings = string.match(key, "<(.*)>") ~= nil
-    if key_has_surroundings then
-        local key_without_surroundings = string.sub(key, 2, -2)
-        modded_key = "<" .. mod .. "-" .. key_without_surroundings .. ">"
-        modded_key_name = "(" .. mod .. "-" .. key_without_surroundings .. ")"
+local function format_modded_key(key, key_name, key_group, mod)
+    if mods_with_shift[mod] and key_group == "letters" then
+        return format_shifted_letter(mod, key)
     end
 
-    if mods_with_shift[mod] ~= nil and key_table_name == "letters" then
-        modded_key, modded_key_name = format_shifted_letter(mod, key)
+    if key:match("<(.*)>") ~= nil then
+        local key_without_cases = key:sub(2, -2)
+        return
+            "<" .. mod .. "-" .. key_without_cases .. ">",
+            "(" .. mod .. "-" .. key_without_cases .. ")"
+    else
+        return
+            "<" .. mod .. "-" .. key .. ">",
+            "(" .. mod .. "-" .. key_name .. ")"
     end
-
-    return modded_key, modded_key_name
 end
 
 local function key_script(key, context)
-    if key == "\\" then key = "\\\\" end
-    if key == "'" then key = "\'" end
+    key = key:gsub("\\", "\\\\"):gsub("'", "\\'")
     return
         "\nlocal info = debug.getinfo(1,'S');\n" ..
         "local root_path = info.source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]\n" ..
@@ -51,8 +46,7 @@ end
 
 local function keymap_write_key(key_type_id, key_id, context_id, script_id)
     io.open(keymap_path, "a"):write(
-        "KEY " .. key_type_id .. " " .. key_id .. " " .. script_id .. " " .. context_id .. "\n"
-    )
+        "KEY " .. key_type_id .. " " .. key_id .. " " .. script_id .. " " .. context_id .. "\n")
 end
 
 local function keymap_scr(key, context_id, script_id, key_script_path)
@@ -75,17 +69,15 @@ local function gen_key(key_type_id, key, key_name, key_id, context, context_id)
     keymap_write_key(key_type_id, key_id, context_id, script_id)
 end
 
-local function gen_modified_keys(key, key_id, key_name, key_table_name, context, context_id)
+local function gen_modified_keys(key, key_id, key_name, key_group, context, context_id)
     for mod, mod_id in pairs(def.mods) do
-        local has_shift = mods_with_shift[mod] ~= nil
+        local has_shift = mods_with_shift[mod]
 
-        if not (key_table_name == "shifted" and has_shift) then
-            -- reuse the scripts for shifted keys that have shift characters (e.g. <S-1> -> !)
-            -- but still put the keymap key lines in due to differences in how OS sees '!' (as <S-1> or !)
+        if not (key_group == "shifted" and has_shift) then
             local shifted_key = def.shift_map[key]
 
             if shifted_key ~= nil and has_shift then
-                mod = string.gsub(mod, "([CM]+)S", "")
+                mod = mod:gsub("([CM]+)S", "")
                 local modded_key = shifted_key
                 if mod then
                     modded_key, _ = format_modded_key(shifted_key, shifted_key, 'shifted', mod)
@@ -102,8 +94,7 @@ local function gen_modified_keys(key, key_id, key_name, key_table_name, context,
                     mod_id = mod_id - 1
                 end
 
-                local modded_key, modded_key_name = format_modded_key(key, key_name, key_table_name, mod)
-
+                local modded_key, modded_key_name = format_modded_key(key, key_name, key_group, mod)
                 gen_key(mod_id, modded_key, modded_key_name, key_id, context, context_id)
             end
         end
@@ -111,6 +102,8 @@ local function gen_modified_keys(key, key_id, key_name, key_table_name, context,
 end
 
 local function codegen()
+    io.open(keymap_path, "w"):close() -- truncate
+
     for context, context_id in pairs(def.contexts) do
         for group_name, group in pairs(def.key_group) do
             for key, key_id in pairs(group.keys) do
