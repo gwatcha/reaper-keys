@@ -1,3 +1,7 @@
+-- @description Install reaper-keys
+-- @version 1.00
+-- @author myrrc
+
 local defs = require "defs"
 --local root_dir_path = debug.getinfo(1).source:match("@?(.*/)")
 local root_dir_path = "."
