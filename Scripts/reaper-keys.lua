@@ -1,8 +1,16 @@
--- @description Install reaper-keys
--- @version 1.00
+-- @description reaper-keys
+-- @version 1.0.0
+-- @author gwatcha
 -- @author myrrc
+-- @description
+--   Vim-like keybindings for Reaper -- map keystroke combinations to actions.
+-- @links
+--   GitHub repository https://github.com/myrrc/reaper-keys
+-- @provides
+--   definitions/*
+--   internal/*
 
-local defs = require "defs"
+local defs = require "../internal/install/defs"
 --local root_dir_path = debug.getinfo(1).source:match("@?(.*/)")
 local root_dir_path = "."
 local key_script_dir = 'key_scripts/'
