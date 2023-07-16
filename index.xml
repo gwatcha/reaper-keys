@@ -5,7 +5,7 @@
       <metadata>
         <link rel="website" href="https://github.com/myrrc/reaper-keys">GitHub repository</link>
       </metadata>
-      <version name="1.0.0" author="myrrc" time="2023-07-16T22:06:17Z">
+      <version name="1.0.0" author="gwatcha" time="2023-07-16T22:06:17Z">
         <source main="main">https://github.com/myrrc/reaper-keys/raw/defe6d9ce1eea9d47595b027f0b431327856a934/Scripts/reaper-keys.lua</source>
         <source file="../definitions/README.md">https://github.com/myrrc/reaper-keys/raw/defe6d9ce1eea9d47595b027f0b431327856a934/definitions/README.md</source>
         <source file="../definitions/actions.lua">https://github.com/myrrc/reaper-keys/raw/defe6d9ce1eea9d47595b027f0b431327856a934/definitions/actions.lua</source>

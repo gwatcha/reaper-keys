@@ -1,7 +1,6 @@
 -- @description reaper-keys
 -- @version 1.0.0
 -- @author gwatcha
--- @author myrrc
 -- @description
 --   Vim-like keybindings for Reaper -- map keystroke combinations to actions.
 -- @links
