@@ -16,19 +16,23 @@ Click [here](https://youtu.be/ChuZswEfQuo) for a very outdated and low quality d
 - Develop arthritis at 60 instead of 40
 - Reduce mouse usage
 - Increase maximum bandwidth between your brain and your project
-- A structure for reapers giant bag of actions
+- A structure for Reaper's giant bag of actions
 
 # Table of Contents
 
-  1.  [Features](#Features)
-      1.  [Bind key sequences](#Bind-key-sequences)
-      2.  [Compose actions](#Compose-actions)
-      3.  [Multi-modal](#Multi-modal)
-      4.  [Macros](#Macros)
-  3.  [Installation](#Installation)
-  4.  [Help](#Help)
-  5.  [Further Information](#Further-Information)
+* [Installation](#Installation)
+* [Features](#Features)
+    * [Bind key sequences](#Bind-key-sequences)
+    * [Compose actions](#Compose-actions)
+    * [Multi-modal](#Multi-modal)
+    * [Macros](#Macros)
+* [Help](#Help)
+* [Further Information](#Further-Information)
 
+## Installation
+
+- Install [SWS/S&M](https://sws-extension.org/).
+- Add this repository `TODO` in Reapack.
 
 ## Features
 
@@ -82,26 +86,16 @@ Optionally, prefix it with a number to indicate the number of repetitions.
 
 ![img](img/macro_play.gif)
 
-## Installation
-
-- Clone this repository or download it via the 'releases' tab (download the file 'reaper-keys.zip').
-- Put this repository into your `REAPER/Scripts` directory . If you're unsure where your `REAPER` directory is, just run the action 'Show REAPER resource path in explorer' in REAPER.
-- Back up your key map by exporting it, then import the provided keymap `reaper-keys.ReaperKeyMap` via the `import` button at the bottom of the action list window in Reaper. (This will overwrite your current key bindings!)
-- For all the actions to work, install the [SWS/S&M](https://sws-extension.org/) extension for Reaper.
-
-When you restore your old keymap, you may want to empty the `reaper-kb.ini` in your `REAPER` root directory and restart REAPER. Otherwise, there will likely be remnants from reaper-keys.
-
 ## Help
 
-Enter `<M-x>` to show a list of available bindings you can search and filter.
+Enter `<M-x> (Alt + x)` to show a list of available bindings you can search and filter.
 
 ![img](img/binding_list.gif)
 
-If your stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
+If you're stuck in a state you don't know how to get out of, you can press `<ESC>` to reset back to normal.
 
 Also,
 If your key press is not being detected, try unfocusing the feedback window.
-If a dialog opens saying 'script is already running in the background' just click 'remember' and 'new instance'.
 
 ## Further Information
 
