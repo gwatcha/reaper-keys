@@ -1,6 +1,7 @@
 local def = require "key_definitions"
-local root_dir_path = debug.getinfo(1).source:match("@?(.*/)")
-local key_script_dir = 'key_scripts'
+--local root_dir_path = debug.getinfo(1).source:match("@?(.*/)")
+local root_dir_path = "."
+local key_script_dir = 'key_scripts/'
 local keymap_path = 'reaper-keys.ReaperKeyMap'
 
 local mods = { "S", "MS", "CS", "CMS" }
@@ -16,7 +17,7 @@ local function format_shifted_letter(key_mod, letter)
         key = "<" .. modifier_keys_excluding_shift .. "-" .. letter.upper() .. ">"
     end
 
-    return { key, key_name }
+    return key, key_name
 end
 
 local function put_keymap_scr_line(key, context_id, script_id, key_script_path)
@@ -51,15 +52,15 @@ local function format_modded_key(key, key_name, key_table_name, key_mod)
         modded_key, modded_key_name = format_shifted_letter(key_mod, key)
     end
 
-    return { modded_key, modded_key_name }
+    return modded_key, modded_key_name
 end
 
 local function gen_key_script(key, context, path)
     local key_script_header =
-        "local info = debug.getinfo(1,'S');" ..
-        "local root_path = info.source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]];" ..
-        "package.path = package.path .. ';' .. root_path .. '?.lua';" ..
-        "local doInput = require('internal.reaper-keys')"
+        "\nlocal info = debug.getinfo(1,'S');\n" ..
+        "local root_path = info.source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]\n" ..
+        "package.path = package.path .. ';' .. root_path .. '?.lua'\n" ..
+        "\nlocal doInput = require('internal.reaper-keys')\n"
 
     if key == '\\' then
         key = '\\\\\\'
@@ -67,7 +68,7 @@ local function gen_key_script(key, context, path)
         key = "\\\\'"
     end
 
-    local input_line = "doInput({['key'] = '" .. key .. "', ['context'] = '" .. context .. "'})"
+    local input_line = "\ndoInput({['key'] = '" .. key .. "', ['context'] = '" .. context .. "'})\n"
 
     io.open(path, "w"):write(key_script_header .. input_line)
 end
