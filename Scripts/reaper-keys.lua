@@ -11,11 +11,11 @@
 
 local function msg(...) reaper.ShowConsoleMsg(string.format("%s\n", string.format(...))) end
 
-local root_dir_path = debug.getinfo(1,"S").source:match("@?(.*/)")
+local root_dir_path = debug.getinfo(1, "S").source:match("@?(.*/)")
 package.path = package.path .. ";" .. root_dir_path .. "../internal/install/defs.lua"
 
 local defs = require "defs"
-local key_script_dir = root_dir_path .. '../key_scripts/'
+local codegen_dir = root_dir_path .. '../key_scripts/'
 local keymap_path = reaper.GetResourcePath() .. '/KeyMaps/reaper-keys.ReaperKeyMap'
 
 local mods_with_shift = { S = true, MS = true, CS = true, CMS = true }
@@ -51,10 +51,13 @@ end
 local function key_script(key, context)
     key = key:gsub("\\", "\\\\"):gsub("'", "\\'")
     return
-        "package.path = package.path..';'.." ..
-        "debug.getinfo(1,'S').source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]" ..
-        "..'?.lua';" ..
+        "package.path=debug.getinfo(1,'S').source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]..'?.lua';" ..
         "require'internal.reaper-keys'{key='" .. key .. "', context='" .. context .. "'}"
+end
+
+local function loader()
+    return
+        "package.path=debug.getinfo(1,'S').source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]..'?.lua';"
 end
 
 local function keymap_write_key(key_type_id, key_id, context_id, script_id)
@@ -72,7 +75,7 @@ local function keymap_scr(key, context_id, script_id, key_script_path)
 end
 
 local function gen_key(key_type_id, key, key_name, key_id, context, context_id)
-    local script_path = key_script_dir .. context .. "_" .. key_name .. ".lua"
+    local script_path = codegen_dir .. context .. "_" .. key_name .. ".lua"
     io.open(script_path, "w"):write(key_script(key, context))
 
     local script_id = "_reaper_keys_" .. context .. "_" .. key
@@ -114,11 +117,11 @@ local function gen_modified_keys(key, key_id, key_name, key_group, context, cont
 end
 
 local function install()
-    if reaper.RecursiveCreateDirectory(key_script_dir, 0) ~= 0 then
-        msg("Error creating %s", key_script_dir)
+    if reaper.RecursiveCreateDirectory(codegen_dir, 0) ~= 0 then
+        return msg("Error creating %s", codegen_dir)
     end
 
-    io.open(keymap_path, "w"):close() -- truncate
+    io.open(keymap_path, "w"):close()
 
     for context, context_id in pairs(defs.contexts) do
         for group_name, group in pairs(defs.key_group) do
@@ -129,6 +132,8 @@ local function install()
             end
         end
     end
+
+    io.open(codegen_dir .. "ldr.lua", "w"):write(loader())
 
     -- No way to auto-import https://forum.cockos.com/showthread.php?t=238798
     msg("Installation finished, now import reaper-keys.ReaperKeyMap:\n\t" ..
