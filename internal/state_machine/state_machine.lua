@@ -1,7 +1,6 @@
 local state_machine = {}
 
 local state_interface = require('state_machine.state_interface')
-local state_machine_constants = require('state_machine.constants')
 
 local buildCommand = require('command.builder')
 local handleCommand = require('command.handler')

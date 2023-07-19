@@ -6,7 +6,7 @@ local utils = require('command.utils')
 local format = require('utils.format')
 local saved = require('saved')
 local definitions = require('utils.definitions')
-local state_machine_constants = require('state_machine.constants')
+local state_machine_default_state = require'state_machine.default_state'
 local action_sequences = require('command.action_sequences')
 local log = require('utils.log')
 local reaper_state = require('utils.reaper_state')
@@ -39,7 +39,7 @@ local meta_commands = {
     local register = command.action_keys[cmd_i]['register']
     if not register then
       log.error("Did not get register for PlayMacro, but command was triggered!")
-      return state_machine_constants['reset_state']
+      return state_machine_default_state
     end
 
     local repetitions = 1
@@ -136,7 +136,7 @@ function meta_command.executeMetaCommand(state, command)
   if not meta_command_function then
     log.warn('Unknown meta command: ' .. format.block(command))
     log.warn('Available meta commands are: ' .. format.line(meta_commands))
-    return state_machine_constants['reset_state']
+    return state_machine_default_state
   end
 
   local new_state = meta_command_function(state, command)

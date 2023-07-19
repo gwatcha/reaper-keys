@@ -1,6 +1,4 @@
--- TODO rename this file to reset and just return reset state
-local constants = {
-  reset_state = {
+return {
     key_sequence = "",
     context = "main",
     mode = "normal",
@@ -11,16 +9,13 @@ local constants = {
     last_track_name_search_direction_was_forward = true,
     visual_track_pivot_i = 0,
     last_command = {
-      context = "main",
-      mode = "normal",
-      action_keys = {
-        "NoOp"
-      },
-      action_sequence = {
-        "command"
-      }
+        context = "main",
+        mode = "normal",
+        action_keys = {
+            "NoOp"
+        },
+        action_sequence = {
+            "command"
+        }
     },
-  }
 }
-
-return constants

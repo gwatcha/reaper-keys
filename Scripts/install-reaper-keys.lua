@@ -49,7 +49,7 @@ local function key_script(key, context)
     key = key:gsub("\\", "\\\\"):gsub("'", "\\'")
     return
         "package.path=debug.getinfo(1,'S').source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]..'?.lua';" ..
-        "require'internal.reaper-keys'{key='" .. key .. "', context='" .. context .. "'}"
+        "require'internal.reaper-keys'{key='" .. key .. "',context='" .. context .. "'}"
 end
 
 -- https://mespotin.uber.space/Ultraschall/Reaper-Filetype-Descriptions.html#Reaper-kb.ini
