@@ -134,11 +134,11 @@ local function install()
         end
     end
 
-    ---- No way to auto-import https://forum.cockos.com/showthread.php?t=238798
-    --msg("Installation finished, now import reaper-keys.ReaperKeyMap:\n\t" ..
-    --    "Actions list > Key Map > Import\n" ..
-    --    "WARNING: this will overwrite your current keymap, so back it up somewhere\n" ..
-    --    "You can delete reaper-keys keymap file after importing")
+    -- No way to auto-import https://forum.cockos.com/showthread.php?t=238798
+    msg("Installation finished, now import reaper-keys.ReaperKeyMap:\n\t" ..
+        "Actions list > Key Map > Import\n" ..
+        "WARNING: this will overwrite your current keymap, so back it up somewhere\n" ..
+        "You can delete reaper-keys keymap file after importing")
 end
 
 install()

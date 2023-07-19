@@ -35,6 +35,11 @@ function gui_utils.scale(normal_size)
     scale = scale * 2
   end
 
+  local ok, reaper_scale = reaper.get_config_var_string("uiscale")
+  if not ok then reaper_scale = 1 end
+
+  scale = scale * tonumber(reaper_scale)
+
   return normal_size * scale
 end
 

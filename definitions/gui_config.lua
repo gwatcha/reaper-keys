@@ -1,13 +1,4 @@
-local os_default_fonts = {
-  windows = "Lucida Console",
-  osx = "Andale Mono",
-  linux = "Fira Mono",
-}
-
-local os = reaper.GetOS()
-local default_font = (os:match("Win") and os_default_fonts.windows)
-  or (os:match("OSX") and os_default_fonts.osx)
-  or os_default_fonts.linux
+local default_font = ""
 
 return {
   -- the factor to scale all gui elements (font size, element sizes...)
