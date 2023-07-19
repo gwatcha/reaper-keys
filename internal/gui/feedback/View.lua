@@ -151,9 +151,13 @@ function View:open()
         end
       end
     else
-      if completions and #completions > 0 and not completions_triggered and idle_time_until_show <= reaper.time_precise() - update_time  then
+      local delta = reaper.time_precise() - update_time
+      if completions and #completions > 0 and not completions_triggered and idle_time_until_show <= delta then
         completions_triggered = true
         self:updateCompletions(completions)
+      end
+      if self.props.hide_after ~= 0 and delta >= self.props.hide_after then
+        self.window:close()
       end
     end
 

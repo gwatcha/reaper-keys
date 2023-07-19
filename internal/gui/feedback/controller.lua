@@ -58,21 +58,31 @@ function feedback.displayCompletions(future_entries)
   end
 end
 
+local startup_msg =
+    "Hello from inside Reaper Keys! I see the feedback window just opened... " ..
+    "Here are some things I have been told to tell you:\n" ..
+    "- If the feedback window is focused, I can't hear keys being pressed, be sure to unfocus it.\n" ..
+    "- Press <M-x> (Alt+x) to open up a keybinding menu.\n" ..
+    "- Everything you need to configure reaper-keys is in REAPER/Scripts/reaper-keys/definitions/\n" ..
+    "- If you would like to hide this message, set the option in definitions/config.lua\n" ..
+    "- If you set that option there will be no one to protect you from the focus stealing of the " ..
+    "feedback window.\n" ..
+    "- reaper-keys uses a reduced keymap by default, if you want more keybindings, set the option in " ..
+    "definitions/config.lua to use the extended defaults.\n" ..
+    "\t - Your mother loves you"
+
+local feedback_view = nil
+
 function feedback.update()
   local feedback_view_open = model.getKey("open")
   local just_opened = reaper_state.clearJustOpenedFlag()
 
   if not feedback_view_open or just_opened then
-    local feedback_view = FeedbackView:new()
+    feedback_view = FeedbackView:new()
     feedback_view:open()
 
     if config.show_start_up_message then
-      reaper.ShowMessageBox(
-        "Hello from inside Reaper Keys! I see the feedback window just opened... " ..
-        "Here are some things I have been told to tell you:\n" ..
-        "\t - If the feedback window is focused, I can't hear the keys being pressed, be sure to unfocus it.\n" ..
-        "\t - Press <M-x> (Alt+x) to open up a keybinding menu.\n" .. 
-        "\t - Everything you need to configure reaper-keys is in the REAPER/Scripts/reaper-keys/definitions/ directory.\n  -If you would like this message to not appear anymore, set the option in definitions/config.lua.\n  -If you set that option there will be no one to protect you from the focus stealing of the feedback window.\n  -reaper-keys uses a reduced keymap by default, if you want more keybindings, set the option in definitions/config.lua to use the extended defaults.\n  -Your mother loves you", "Reaper Keys Open Message", 1)
+      reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
     end
 
     model.setKeys({open = true})

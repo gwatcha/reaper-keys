@@ -17,6 +17,7 @@ return {
   },
   feedback = {
     idle_time_until_show = .2,
+    hide_after = 5, -- 0 to never hide
     elements = {
       column_padding = 20,
       row_padding = 0,
