@@ -1,9 +1,7 @@
 local utils = require('command.utils')
-local config = require('definitions.config')
-
 local definitions = {}
 
-function concatEntries(t1, t2)
+local function concatEntries(t1, t2)
   local merged_entries = {}
   for key_sequence,entry_value in pairs(t1) do
     merged_entries[key_sequence] = entry_value
@@ -32,9 +30,9 @@ function concatEntries(t1, t2)
 end
 
 
-function concatEntryTables(t1,t2)
+local function concatEntryTables(t1,t2)
   local merged_tables = t1
-  for action_type, entries in pairs(t1) do
+  for action_type, _ in pairs(t1) do
     if t2[action_type] then
       local merged = concatEntries(t1[action_type], t2[action_type])
       merged_tables[action_type] = merged
@@ -95,10 +93,6 @@ function definitions.getAllBindings()
   end
 
   return bindings
-end
-
-function definitions.getAllEntries()
-  return definition_tables
 end
 
 return definitions

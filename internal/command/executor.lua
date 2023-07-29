@@ -3,7 +3,7 @@ local format = require('utils.format')
 local action_sequences = require('command.action_sequences')
 local utils = require('command.utils')
 
-function executeCommand(command)
+local function executeCommand(command)
   local action_values = utils.getActionValues(command)
   if not action_values then
     log.error("Could not form executable command for: " .. format.block(command))

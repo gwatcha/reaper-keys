@@ -5,10 +5,7 @@ local reaper_utils = require('custom_actions.utils')
 
 return {
   all_modes = {
-    {
-      { 'track_motion' },
-      runner.runAction
-    }
+    { { 'track_motion' }, runner.runAction }
   },
   normal = {
     {
@@ -35,28 +32,18 @@ return {
     },
   },
   visual_track = {
-    {
-      { 'visual_track_command' },
-      function(visual_track_command)
-        runner.runAction(visual_track_command)
-      end
-    },
+    { { 'visual_track_command' }, runner.runAction },
     {
       { 'track_operator' },
       function(track_operator)
         runner.runAction(track_operator)
         state_interface.setModeToNormal()
-        if not config['persist_visual_track_selection'] and (type(track_operator) ~= 'table' or not track_operator['setTrackSelection']) then
+        if not config.persist_visual_track_selection and (type(track_operator) ~= 'table' or not track_operator['setTrackSelection']) then
           reaper_utils.unselectAllButLastTouchedTrack()
         end
       end
     },
-    {
-      { 'track_selector' },
-      function(track_selector)
-        runner.runAction(track_selector)
-      end
-    },
+    { { 'track_selector' }, runner.runAction },
     {
       { 'track_motion' },
       function(track_motion)

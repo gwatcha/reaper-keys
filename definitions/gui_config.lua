@@ -5,7 +5,7 @@ local font_name = ""
 
 return {
     -- the factor to scale all elements (font size, element sizes...)
-    -- will be multiplied by 2 if HiDPI mode is detected
+    -- will be multiplied by 2 if HiDPI (MacOS Retina only) mode is detected
     gui_scale = 1.6,
 
     action_type_colors = {

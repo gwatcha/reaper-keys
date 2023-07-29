@@ -27,7 +27,7 @@ function movement.firstItemStart()
   end
 end
 
-function moveToPrevItemStart(item_positions)
+local function moveToPrevItemStart(item_positions)
   local current_position = reaper.GetCursorPosition()
   local next_position = nil
   for i,item in pairs(item_positions) do
@@ -59,10 +59,10 @@ function movement.prevItemStart()
   moveToPrevItemStart(utils.getItemPositionsOnSelectedTracks())
 end
 
-function moveToNextItemStart(item_positions)
+local function moveToNextItemStart(item_positions)
   local current_position = reaper.GetCursorPosition()
   local next_position = nil
-  for i,item_position in pairs(item_positions) do
+  for _, item_position in pairs(item_positions) do
     if not next_position and current_position < item_position.left  then
       next_position = item_position.left
     end
@@ -83,7 +83,7 @@ function movement.nextItemStart()
   moveToNextItemStart(utils.getItemPositionsOnSelectedTracks())
 end
 
-function moveToNextItemEnd(item_positions)
+local function moveToNextItemEnd(item_positions)
   local current_position = reaper.GetCursorPosition()
   local next_position = nil
   local tolerance = .002
@@ -120,14 +120,10 @@ end
 
 function movement.trackWithNumber()
   local _, number = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
-  if type(number) ~= 'number' then
-    return
-  end
+  if type(number) ~= 'number' then return end
 
   local track = reaper.GetTrack(0, number-1)
-  if track then
-    reaper.SetOnlyTrackSelected(track)
-  end
+  if track then reaper.SetOnlyTrackSelected(track) end
 end
 
 function movement.firstTrackWithItem()

@@ -11,11 +11,7 @@ return {
     last_command = {
         context = "main",
         mode = "normal",
-        action_keys = {
-            "NoOp"
-        },
-        action_sequence = {
-            "command"
-        }
+        action_keys = { "NoOp" },
+        action_sequence = { "command" }
     },
 }
