@@ -7,9 +7,7 @@ return {
   all_modes = {
     {
       { 'track_motion' },
-      function(track_motion)
-        runner.runAction(track_motion)
-      end
+      runner.runAction
     }
   },
   normal = {
@@ -70,7 +68,7 @@ return {
     {
       { 'timeline_motion' },
       function(timeline_motion)
-        if config['allow_visual_track_timeline_movement'] then
+        if config.allow_timeline_movement_in_visual_mode then
           runner.runAction(timeline_motion)
         end
       end

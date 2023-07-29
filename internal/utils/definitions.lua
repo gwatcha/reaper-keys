@@ -51,15 +51,11 @@ function concatEntryTables(t1,t2)
 end
 
 
-default_tables_dir = "definitions.defaults."
-if config.use_extended_defaults then
-  default_tables_dir = "definitions.extended_defaults."
-end
-local user_definitions = require('definitions.bindings')
+local default_tables_dir = "definitions.extended_defaults."
 local definition_tables = {
-  global = concatEntryTables(require(default_tables_dir .. 'global'), user_definitions.global ),
-  main = concatEntryTables(require(default_tables_dir .. 'main'), user_definitions.main ),
-  midi = concatEntryTables(require(default_tables_dir .. 'midi'), user_definitions.midi ),
+  global = require(default_tables_dir .. 'global'),
+  main = require(default_tables_dir .. 'main'),
+  midi = require(default_tables_dir .. 'midi')
 }
 
 function definitions.getPossibleEntries(context)
@@ -101,22 +97,6 @@ function definitions.getAllBindings()
 
     for action_type,action_type_definitions in pairs(context_definitions) do
       bindings[context][action_type] = definitions.getBindings(action_type_definitions)
-    end
-  end
-
-  local user_bindings = {}
-  for context,context_definitions in pairs(user_definitions) do
-    user_bindings[context] = {}
-
-    for action_type,action_type_definitions in pairs(context_definitions) do
-      local bindings_for_action_type = definitions.getBindings(action_type_definitions)
-
-      if not bindings[context][action_type] then
-        bindings[context][action_type] = {}
-      end
-      for k,v in pairs(bindings_for_action_type) do
-        bindings[context][action_type][k] = v
-      end
     end
   end
 

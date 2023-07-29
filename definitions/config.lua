@@ -1,9 +1,5 @@
 return {
-  -- TODO remove (add non-extended defaults as an example actions2.lua)
-  use_extended_defaults = true,
-
-  -- TODO should be true by default
-  show_start_up_message = false,
+  show_start_up_message = false, -- TODO should be true by default
 
   show_feedback_window = true,
 
@@ -12,8 +8,7 @@ return {
 
   persist_visual_track_selection = false,
 
-  -- allow timeline movement when in visual track mode?
-  allow_visual_track_timeline_movement = true,
+  allow_timeline_movement_in_visual_mode = true,
 
   -- options in decreasing verbosity: [trace debug info warn user error fatal]
   -- TODO make a enum
