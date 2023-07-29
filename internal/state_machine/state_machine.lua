@@ -47,13 +47,13 @@ function step(state, key_press)
 
   local future_entries = getPossibleFutureEntries(new_state)
   if not future_entries then
-    new_state['key_sequence'] = ''
-    feedback.displayMessage("Undefined key sequence")
+    feedback.displayMessage(
+        ("Undefined key sequence %s"):format(new_state.key_sequence))
+    new_state.key_sequence = ''
     return new_state
   end
 
-  local message = format.keySequence(state['key_sequence'], true)
-  message = message .. "-"
+  message = format.keySequence(state['key_sequence'], true) .. "-"
   feedback.displayMessage(message)
   feedback.displayCompletions(future_entries)
 

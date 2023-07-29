@@ -45,15 +45,7 @@ end
 
 
 function gui_utils.addFont(font, preset_name)
-  local font_name = font[1]
-  local font_size = font[2]
-  font_size = gui_utils.scale(font_size)
-  font[2] = font_size
-
-  if Font.exists(font_name) ~= true then
-    log.warn("Font '" .. font_name .. "' does not exist, using default font instead. Please specify a different font in the gui_config file.")
-  end
-
+  font[2] = gui_utils.scale(font[2]) -- scale font_size
   local font_preset = {}
   font_preset[preset_name] = font
   Font.addFonts(font_preset)

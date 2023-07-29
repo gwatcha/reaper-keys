@@ -130,7 +130,7 @@ end
 
 function View:open()
   local update_number = 0
-  local idle_time_until_show = self.props.idle_time_until_show
+  local show_after = self.props.show_after
   local completions_triggered = false
   local update_time = reaper.time_precise()
   local command_end = true
@@ -152,10 +152,12 @@ function View:open()
       end
     else
       local delta = reaper.time_precise() - update_time
-      if completions and #completions > 0 and not completions_triggered and idle_time_until_show <= delta then
+      if completions and #completions > 0 and not completions_triggered and delta >= show_after then
         completions_triggered = true
         self:updateCompletions(completions)
       end
+
+      -- FIXME do not close bindings_view window
       if self.props.hide_after ~= 0 and delta >= self.props.hide_after then
         self.window:close()
       end

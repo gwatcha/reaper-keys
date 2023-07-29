@@ -11,7 +11,7 @@ local config = require('definitions.config')
 local log = { _version = "0.1.0" }
 
 log.usecolor = false
-log.outfile = nil
+log.outfile = reaper.GetResourcePath() .. "/reaper-keys.log"
 
 if config['log_level'] then
   log.level = config['log_level']
@@ -71,24 +71,18 @@ for i, x in ipairs(modes) do
     local info = debug.getinfo(2, "Sl")
     local lineinfo = info.short_src .. ":" .. info.currentline
 
-    -- Output to console
-    -- (modified to use reaper console)
-    if nameupper == "USER" then
-      reaper.ShowConsoleMsg(string.format("%s\n", msg))
-    else
-      reaper.ShowConsoleMsg(string.format("Reaper-Keys[%s]: %s\n", nameupper, msg))
-    end
-
-
-    -- Output to log file
-    if log.outfile then
+    if config.log_to_file_instead_of_message_box then
       local fp = io.open(log.outfile, "a")
-      local str = string.format("[%-6s%s] %s: %s\n",
-                                nameupper, os.date(), lineinfo, msg)
+      if fp == nil then return end -- nothing we can do in this case, actually
+      local str = ("[%-6s%s] %s: %s\n"):format(nameupper, os.date(), lineinfo, msg)
       fp:write(str)
       fp:close()
+    elseif nameupper == "USER" then
+      reaper.ShowConsoleMsg(msg .. "\n")
+    else
+      reaper.ShowConsoleMsg(
+        ("Reaper-Keys[%s]: %s\n"):format(nameupper, msg))
     end
-
   end
 end
 
