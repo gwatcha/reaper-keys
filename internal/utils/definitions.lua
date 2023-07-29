@@ -50,17 +50,11 @@ function concatEntryTables(t1,t2)
   return merged_tables
 end
 
-
-local default_tables_dir = "definitions.extended_defaults."
-local definition_tables = {
-  global = require(default_tables_dir .. 'global'),
-  main = require(default_tables_dir .. 'main'),
-  midi = require(default_tables_dir .. 'midi')
-}
+local definition_tables = require"definitions.bindings"
 
 function definitions.getPossibleEntries(context)
   local merged_table = {}
-  merged_table = concatEntryTables(merged_table, definition_tables['global'])
+  merged_table = concatEntryTables(merged_table, definition_tables.global)
   merged_table = concatEntryTables(merged_table, definition_tables[context])
 
   return merged_table
