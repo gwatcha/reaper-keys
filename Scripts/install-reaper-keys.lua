@@ -1,4 +1,4 @@
--- @description reaper-keys: map keystroke combinations to actions like in vim.
+-- @description reaper-keys: map keystroke combinations to actions like in vim
 -- @version 2.0.0
 -- @author gwatcha
 -- @links
