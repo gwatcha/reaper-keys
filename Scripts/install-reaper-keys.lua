@@ -62,7 +62,7 @@ end
 
 local function keymapSCREntry(key, context_id, script_id, key_script_path)
     local quote = (key == '"') and "'" or '"'
-    return ("SCR %d %d %s%s%s %s[reaper-keys] %s%s %s\n"):format(
+    return ("SCR %d %d %s%s%s %s[reaper-keys] %s%s \"%s\"\n"):format(
         always_new_instance_for_script,
         context_id,
         quote, script_id, quote,
