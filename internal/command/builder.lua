@@ -1,13 +1,14 @@
 local utils = require('command.utils')
 local action_sequences = require('command.action_sequences')
 local definitions = require('utils.definitions')
-local getAction = require('utils.get_action')
-local format = require('utils.format')
-local log = require('utils.log')
 
 function getActionKey(key_sequence, entries)
   local action_name = utils.getEntryForKeySequence(key_sequence, entries)
-  if action_name and not utils.isFolder(action_name) and (not utils.checkIfActionHasOptionSet(action_name, 'registerAction') or utils.checkIfActionHasOptionSet(action_name, 'registerOptional')) then
+  local no_register =
+    not utils.checkIfActionHasOptionSet(action_name, 'registerAction')
+    or utils.checkIfActionHasOptionSet(action_name, 'registerOptional')
+
+  if action_name and not utils.isFolder(action_name) and no_register then
     return action_name
   end
 

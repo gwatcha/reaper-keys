@@ -4,16 +4,13 @@ local binding_list = require('gui.binding_list.controller')
 local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
-local saved = require('saved')
-local definitions = require('utils.definitions')
-local state_machine_constants = require('state_machine.constants')
-local action_sequences = require('command.action_sequences')
+local state_machine_default_state = require'state_machine.default_state'
 local log = require('utils.log')
 local reaper_state = require('utils.reaper_state')
 
-function executeMacroCommands(state, command, macro_commands, repetitions)
-  for i=1,repetitions do
-    for i,macro_command in pairs(macro_commands) do
+local function executeMacroCommands(state, command, macro_commands, repetitions)
+  for _=1,repetitions do
+    for _,macro_command in pairs(macro_commands) do
       if meta_command.isMetaCommand(macro_command) then
         meta_command.executeMetaCommand(state, macro_command)
       else
@@ -23,8 +20,8 @@ function executeMacroCommands(state, command, macro_commands, repetitions)
   end
 end
 
-function executeCommandOrMetaCommand(state, command, repetitions)
-  for i=1,repetitions do
+local function executeCommandOrMetaCommand(state, command, repetitions)
+  for _=1,repetitions do
     if meta_command.isMetaCommand(command) then
       meta_command.executeMetaCommand(state, command)
     else
@@ -39,7 +36,7 @@ local meta_commands = {
     local register = command.action_keys[cmd_i]['register']
     if not register then
       log.error("Did not get register for PlayMacro, but command was triggered!")
-      return state_machine_constants['reset_state']
+      return state_machine_default_state
     end
 
     local repetitions = 1
@@ -51,7 +48,7 @@ local meta_commands = {
     if macro_commands then
       executeMacroCommands(state, command, macro_commands, repetitions)
       if state['macro_recording'] then
-        saved.append('macros', state['macro_register'], command)
+        reaper_state.append('macros', state['macro_register'], command)
       end
     end
 
@@ -105,7 +102,7 @@ local meta_commands = {
   end
 }
 
-function getMetaCommandFunctionForCommand(command)
+local function getMetaCommandFunctionForCommand(command)
   local cmd_i = utils.getActionTypeIndex(command, 'command')
   local command_key = command.action_keys[cmd_i]
   if not command_key  then
@@ -136,7 +133,7 @@ function meta_command.executeMetaCommand(state, command)
   if not meta_command_function then
     log.warn('Unknown meta command: ' .. format.block(command))
     log.warn('Available meta commands are: ' .. format.line(meta_commands))
-    return state_machine_constants['reset_state']
+    return state_machine_default_state
   end
 
   local new_state = meta_command_function(state, command)

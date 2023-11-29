@@ -1,5 +1,4 @@
 local log = require('utils.log')
-local format = require('utils.format')
 
 local custom_actions = {
   move = require('custom_actions.movement'),

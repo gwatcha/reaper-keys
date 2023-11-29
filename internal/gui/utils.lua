@@ -35,20 +35,17 @@ function gui_utils.scale(normal_size)
     scale = scale * 2
   end
 
+  local ok, reaper_scale = reaper.get_config_var_string("uiscale")
+  if not ok then reaper_scale = 1 end
+
+  scale = scale * tonumber(reaper_scale)
+
   return normal_size * scale
 end
 
 
 function gui_utils.addFont(font, preset_name)
-  local font_name = font[1]
-  local font_size = font[2]
-  font_size = gui_utils.scale(font_size)
-  font[2] = font_size
-
-  if Font.exists(font_name) ~= true then
-    log.warn("Font '" .. font_name .. "' does not exist, using default font instead. Please specify a different font in the gui_config file.")
-  end
-
+  font[2] = gui_utils.scale(font[2]) -- scale font_size
   local font_preset = {}
   font_preset[preset_name] = font
   Font.addFonts(font_preset)

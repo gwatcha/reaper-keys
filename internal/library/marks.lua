@@ -4,21 +4,18 @@ local reaper_utils = require('custom_actions.utils')
 local log = require('utils.log')
 local format = require('utils.format')
 
-local serpent = require('serpent')
-
 local marks = {}
 
-function deleteMarkIndications(mark)
-  if mark.index then
-    if mark.type == 'region' then
-      reaper.DeleteProjectMarker(0, mark.index, true)
-    elseif mark.type == 'timeline_position' then
-      reaper.DeleteProjectMarker(0, mark.index, false)
-    end
+local function deleteMarkIndications(mark)
+  if not mark.index then return end
+  if mark.type == 'region' then
+    reaper.DeleteProjectMarker(0, mark.index, true)
+  elseif mark.type == 'timeline_position' then
+    reaper.DeleteProjectMarker(0, mark.index, false)
   end
 end
 
-function overwriteMark(mark, register)
+local function overwriteMark(mark, register)
   local mode = state_interface.getMode()
   if mode == 'visual_timeline' then
     mark['type'] = 'region'

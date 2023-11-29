@@ -1,21 +1,10 @@
 local runner = require('command.runner')
-local log = require('utils.log')
 local state_interface = require('state_machine.state_interface')
 local config = require('definitions.config')
 
-function invalidSequenceCall(...)
-  log.error("An action action_sequence without a command function was called.")
-  log.trace(debug.traceback())
-end
-
 return {
   all_modes = {
-    {
-      { 'command' },
-      function(action)
-        runner.runAction(action)
-      end
-    },
+    { { 'command' }, runner.runAction },
   },
   normal = {
     {
@@ -41,36 +30,21 @@ return {
         end
       end
     },
-    {
-      { 'timeline_motion' },
-      function(timeline_motion)
-        runner.runAction(timeline_motion)
-      end
-    },
+    { { 'timeline_motion' }, runner.runAction },
   },
   visual_timeline = {
-    {
-      { 'visual_timeline_command' },
-      function(visual_timeline_command)
-        runner.runAction(visual_timeline_command)
-      end
-    },
+    { { 'visual_timeline_command' }, runner.runAction },
     {
       { 'timeline_operator' },
       function(timeline_operator)
         runner.runAction(timeline_operator)
         state_interface.setModeToNormal()
-        if not config['persist_visual_timeline_selection'] then
+        if not config.persist_visual_timeline_selection then
           runner.runAction("ClearTimeSelection")
         end
       end
     },
-    {
-      { 'timeline_selector' },
-      function(timeline_selector)
-        runner.runAction(timeline_selector)
-      end
-    },
+    { { 'timeline_selector' }, runner.runAction },
     {
       { 'timeline_motion' },
       function(timeline_motion)

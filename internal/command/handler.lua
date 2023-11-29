@@ -1,7 +1,5 @@
 local state_interface = require('state_machine.state_interface')
 local reaper_state = require('utils.reaper_state')
-local log = require('utils.log')
-local saved = require('saved')
 local utils = require('command.utils')
 local format = require('utils.format')
 local meta_command = require('command.meta_command')
