@@ -14,7 +14,8 @@ package.path = root_dir_path .. "../internal/install/defs.lua"
 
 local defs = require "defs"
 local codegen_dir = root_dir_path .. 'gen/'
-local keymap_path = reaper.GetResourcePath() .. '/KeyMaps/reaper-keys.ReaperKeyMap'
+local keymap_dir = reaper.GetResourcePath() .. '/KeyMaps/'
+local keymap_path = keymap_dir .. 'reaper-keys.ReaperKeyMap'
 local mods_with_shift = { S = true, MS = true, CS = true, CMS = true }
 
 local function formatShiftedLetter(mods, letter)
@@ -122,7 +123,8 @@ local function install()
         return msg("Error creating %s", codegen_dir)
     end
 
-    io.open(keymap_path, "w"):close() -- truncate keymap file just in case
+    reaper.RecursiveCreateDirectory(keymap_dir, 0)
+    io.open(keymap_path, "w"):close() -- truncate just in case
 
     for context, context_id in pairs(defs.contexts) do
         for group_name, group in pairs(defs.key_group) do
