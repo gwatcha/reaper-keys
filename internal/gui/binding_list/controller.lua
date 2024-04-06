@@ -6,7 +6,7 @@ local BindingListView = require('gui.binding_list.View')
 local getPossibleFutureEntries = require('command.completer')
 local gui_utils = require('gui.utils')
 local reaper_state = require('utils.reaper_state')
-local fuzzy_match = require('fuzzy_match').fuzzy_match
+local fuzzy_match = require('fuzzy').fuzzy_match
 local GUI = require('gui.core')
 
 -- TODO
