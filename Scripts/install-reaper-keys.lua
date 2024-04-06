@@ -6,6 +6,7 @@
 -- @provides
 --   ../definitions/*
 --   ../internal/**/*
+--   ../vendor/**/*
 
 local contexts = { midi = 32060, main = 0 }
 local modifiers = { C = 9, M = 17, S = 5, MS = 21, CS = 13, CM = 25, CMS = 29 } -- C:ctrl, M:alt, S:shift
@@ -196,8 +197,8 @@ local key_groups = {
 
 local function msg(...) reaper.ShowConsoleMsg(("%s\n"):format(string.format(...))) end
 
-local root_dir = debug.getinfo(1, "S").source:match("@?(.*/)")
-local codegen_dir = root_dir .. 'gen/'
+local root = debug.getinfo(1, "S").source:match("@?(.*/)")
+local codegen_dir = root .. 'gen/'
 local keymap_dir = reaper.GetResourcePath() .. '/KeyMaps/'
 local keymap_path = keymap_dir .. 'reaper-keys.ReaperKeyMap'
 
@@ -233,7 +234,7 @@ local function script(key, context)
     key = key:gsub("\\", "\\\\"):gsub("'", "\\'")
     return
         "package.path=debug.getinfo(1,'S').source:match[[([^@]*reaper.keys[^\\\\/]*[\\\\/])]]..'?.lua';" ..
-        "require'internal.reaper-keys'{key='" .. key .. "',context='" .. context .. "'}"
+        "require'rk'{key='" .. key .. "',context='" .. context .. "'}"
 end
 
 local function KEY(mod_id, key_id, script_id, context_id)

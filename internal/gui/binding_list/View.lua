@@ -4,7 +4,7 @@ local config = require('definitions.gui_config')
 local list_config = config.binding_list
 local runner = require('command.runner')
 local getActionTypes = require('command.action_sequences').getActionTypes
-local createBindingListBoxElement = require('internal.gui.binding_list.binding_list_box')
+local createBindingListBoxElement = require('gui.binding_list.binding_list_box')
 
 local scythe = require('scythe')
 local Const = require("public.const")

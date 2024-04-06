@@ -1,5 +1,5 @@
-local lib = require 'library'           -- functions specific to reaper-keys i.e. macros
-local custom = require 'custom_actions' -- custom functions which make use of the reaper api
+local lib = require 'library.library'                  -- functions specific to reaper-keys i.e. macros
+local custom = require 'custom_actions.custom_actions' -- custom functions which make use of the reaper api
 
 -- Here are some predefined commands that you can use in bindings.lua e.g to map
 -- abcd => ActivateNextMidiItem instead of abcd => 40833.
