@@ -197,7 +197,7 @@ local key_groups = {
 
 local function msg(...) reaper.ShowConsoleMsg(("%s\n"):format(string.format(...))) end
 
-local root = debug.getinfo(1, "S").source:match("@?(.*/)")
+local root = debug.getinfo(1, "S").source:match "@?(.*/)"
 local codegen_dir = root .. 'gen/'
 local keymap_dir = reaper.GetResourcePath() .. '/KeyMaps/'
 local keymap_path = keymap_dir .. 'reaper-keys.ReaperKeyMap'
@@ -218,7 +218,7 @@ local function formatModdedKey(key, key_name, key_group, mod)
         return formatShiftedLetter(mod, key)
     end
 
-    if key:match("<(.*)>") then
+    if key:match "<(.*)>" then
         local key_without_cases = key:sub(2, -2)
         return
             ("<%s-%s>"):format(mod, key_without_cases),
@@ -281,7 +281,7 @@ local function genKeysWithModifiers(key, key_id, key_name, key_group, context, c
 
         -- reuse scripts for special keys that are shifted (e.g. <[CM]S-1> -> <[CM]-!>)
         if mod_has_shift and special_shifted_key then
-            local mod_without_shift = mod:match("([CM]+)S")
+            local mod_without_shift = mod:match "([CM]+)S"
             local modded_key = special_shifted_key
 
             if mod_without_shift ~= nil then

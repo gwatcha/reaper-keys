@@ -105,10 +105,10 @@ function View:updateElementDimensions()
 end
 
 
-function createBindingListWindow(props)
+local function createBindingListWindow(props)
   local window_settings = {
     name = "Reaper Keys Binding List",
-    corner = "TL"
+    corner = "TL",
   }
   for window_setting_name,window_setting_value in pairs(props.window) do
     window_settings[window_setting_name] = window_setting_value
