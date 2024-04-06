@@ -6,6 +6,7 @@
 -- This library is free software; you can redistribute it and/or modify it
 -- under the terms of the MIT license. See LICENSE for details.
 --
+local Msg = require 'scythe.public.message'.Msg
 local config = require('definitions.config')
 local log = { _version = "0.1.0" }
 

@@ -9,4 +9,4 @@ else
         root .. "vendor/scythe/?.lua"
 end
 local function errHandler(err) require 'utils.log'.error(("%s\n%s"):format(err, debug.traceback())) end
-xpcall(require 'state_machine.state_machine', errHandler, {})
+xpcall(require 'state_machine.state_machine', errHandler)

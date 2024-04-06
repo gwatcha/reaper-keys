@@ -108,7 +108,7 @@ local function getFutureEntriesOnActionSequence(key_sequence, action_sequence, e
 end
 
 local function getPossibleFutureEntries(state)
-  local sequences = action_sequences.getPossibleActionSequences(state['context'], state['mode'])
+  local sequences = action_sequences.getPossibleActionSequences(state)
   if not sequences then return nil end
   local entries = definitions.getPossibleEntries(state['context'])
   if not entries then return nil end

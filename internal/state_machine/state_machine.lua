@@ -55,14 +55,26 @@ local function step(state, key_press)
     return new_state
 end
 
-local function input(key_press)
-    log.info("\n++++\ninput: " .. format.line(key_press))
-    if config.show_feedback_window then
-        feedback.clear()
-    end
+local function ctxToState(ctx)
+    local _, _, mod, key = ctx:find "^key:V(.*):(.*)$"
+    local ctrl, alt, shift = mod:match "C", mod:match "A", mod:match "S"
+    -- <CMS-k>
+    if mod == '' then return string.char(key + 32) end
+    key = string.char(key + shift and 0 or 32) -- 32 = 97 (a) - 65 = A
+    if mod == 'S' then return key end
+
+    key = string.char(key + 32)
+end
+
+local function input()
+    local _, _, section_id, _, _, _, _, ctx = reaper.get_action_context()
+    local hotkey = { context = section_id, key = ctxToState(ctx) }
+
+    log.info("Input: " .. format.line(hotkey))
+    if config.show_feedback_window then feedback.clear() end
 
     local state = state_interface.get()
-    local new_state = step(state, key_press)
+    local new_state = step(state, hotkey)
     state_interface.set(new_state)
 
     if config.show_feedback_window then

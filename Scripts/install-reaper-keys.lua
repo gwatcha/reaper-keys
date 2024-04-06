@@ -7,7 +7,7 @@
 --   ../definitions/*
 --   ../internal/**/*
 --   ../vendor/**/*
-local function charCodes(from_num, from_char, to_char) -- reaper uses non-Ascci codes
+local function charCodes(from_num, from_char, to_char) -- reaper uses non-ascii codes
     local from_char_num, to_char_num, out = string.byte(from_char), string.byte(to_char), {}
     for i = 0, to_char_num - from_char_num do
         out[string.char(from_char_num + i)] = from_num + i
@@ -91,7 +91,7 @@ local key_groups = {
 local modifiers = { C = 9, M = 17, S = 5, MS = 21, CS = 13, CM = 25, CMS = 29 } -- C:ctrl, M:alt, S:shift
 local mods_with_shift = { S = true, MS = true, CS = true, CMS = true }
 
--- C-! will produce KEY 9 33 and will be parsed by reaper as C- Numpad Page Up
+-- e.g. C-! will produce KEY 9 33 and will be parsed by reaper as C- Numpad Page Up
 local clashing_keys = {
     ['`'] = true,
     ["'"] = true,
@@ -117,29 +117,27 @@ local clashing_keys = {
     [';'] = true
 }
 
-local version = tonumber(reaper.GetAppVersion():match('[%d.]+'))
+local version = tonumber(reaper.GetAppVersion():match '[%d.]+')
 if version < 6.71 then
-    return reaper.ShowMessageBox(
-        "Reaper keys supports only Reaper 6.71+", "Unsupported version", 0)
+    return reaper.MB("Reaper keys supports only Reaper 6.71+", "Unsupported version", 0)
 end
 
-local keymap_dir = reaper.GetResourcePath() .. '/KeyMaps/'
-local keymap_path = keymap_dir .. 'reaper-keys.ReaperKeyMap'
+local function concat_path(...) return table.concat({ ... }, package.config:sub(1, 1)) end
+
+local keymap_dir = concat_path(reaper.GetResourcePath(), 'KeyMaps')
+local keymap_path = concat_path(keymap_dir, 'reaper-keys.ReaperKeyMap')
 reaper.RecursiveCreateDirectory(keymap_dir, 0)
 local keymap = io.open(keymap_path, "w")
-if not keymap then
-    return reaper.ShowMessageBox("Failed to create " .. keymap_path, "Error", 0)
+if not keymap then return reaper.MB("Failed to create " .. keymap_path, "Error", 0) end
+
+function KEY(mod_id, key_id, command_id, section_id)
+    return ("KEY %d %d %s %d\n"):format(mod_id, key_id, command_id, section_id)
 end
 
-function KEY(mod_id, key_id, script_id, context_id)
-    return ("KEY %d %d %s %d\n"):format(mod_id, key_id, script_id, context_id)
-end
-
-local command_path = debug.getinfo(1, "S").source:match "@?(.*/)" .. "../internal/rk.lua"
-local command_id_prefix = "_reaper_keys_"
+local command_path = concat_path(debug.getinfo(1, "S").source:match "@?(.*/)", "internal", "rk.lua")
 local sections = { midi = 32060, main = 0 }
 for section_name, section_id in pairs(sections) do
-    local command_id = command_id_prefix .. "_" .. section_name
+    local command_id = "_reaper_keys__" .. section_name
     keymap:write(('SCR 516 %d %s "reaper-keys" "%s"\n'):format(section_id, command_id, command_path))
 
     for group_name, group in pairs(key_groups) do
@@ -147,10 +145,8 @@ for section_name, section_id in pairs(sections) do
             keymap:write(KEY(group.key_type_id, key_id, command_id, section_id))
 
             for mod, mod_id in pairs(modifiers) do
-                local mod_has_shift = mods_with_shift[mod]
-
                 if clashing_keys[key] then mod_id = mod_id - 1 end
-                if group_name == "shifted" and mod_has_shift then goto iter_end end
+                if group_name == "shifted" and mods_with_shift[mod] then goto iter_end end
 
                 keymap:write(KEY(mod_id, key_id, command_id, section_id))
                 ::iter_end::
@@ -160,9 +156,7 @@ for section_name, section_id in pairs(sections) do
 end
 
 local action_str = version >= 7. and "shortcuts/custom actions, import all sections" or ""
-
--- Auto-import doesn't work on MacOS https://forums.cockos.com/showpost.php?p=2517650&postcount=15
-reaper.ShowMessageBox("Installation finished, now import reaper-keys.ReaperKeyMap:\n\t" ..
+reaper.MB("Installation finished, now import reaper-keys.ReaperKeyMap:\n\t" ..
     "Actions list > Key Map > Import " .. action_str .. "\n" ..
-    "WARNING: this will overwrite your current keymap, so back it up somewhere",
+    "WARNING: this will overwrite ALL your keybindings",
     "Installation finished", 0)

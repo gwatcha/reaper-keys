@@ -80,7 +80,7 @@ function buildCommandWithSequence(key_sequence, action_sequence, entries)
 end
 
 function buildCommand(state)
-  local action_sequences = action_sequences.getPossibleActionSequences(state['context'], state['mode'])
+  local action_sequences = action_sequences.getPossibleActionSequences(state)
   local entries = definitions.getPossibleEntries(state['context'])
 
   for _, action_sequence in pairs(action_sequences) do
