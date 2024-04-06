@@ -8,7 +8,5 @@ else
         root .. "vendor/?.lua;" ..
         root .. "vendor/scythe/?.lua"
 end
-
 local function errHandler(err) require 'utils.log'.error(("%s\n%s"):format(err, debug.traceback())) end
-local function process(key) xpcall(require 'state_machine.state_machine', errHandler, key) end
-return process
+xpcall(require 'state_machine.state_machine', errHandler, {})
