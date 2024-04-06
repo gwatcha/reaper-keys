@@ -114,17 +114,17 @@ local special_shift_keys = {
     ['1'] = '!'
 }
 
-local function charCodes(from, to)
-    local out = {}
-    for i = string.byte(from, 1), string.byte(to, 1) do
-        out[string.char(i)] = i
+local function charCodes(from_num, from_char, to_char) -- reaper uses non-Ascci codes
+    local from_char_num, to_char_num, out = string.byte(from_char), string.byte(to_char), {}
+    for i = 0, to_char_num - from_char_num do
+        out[string.char(from_char_num + i)] = from_num + i
     end
     return out
 end
 
 local key_groups = {
-    letters = { key_type_id = 1, keys = charCodes("a", "z") },
-    numbers = { key_type_id = 1, keys = charCodes('0', '9') },
+    letters = { key_type_id = 1, keys = charCodes(65, 'a', 'z') },
+    numbers = { key_type_id = 1, keys = charCodes(48, '0', '9') },
     special = {
         key_type_id = 1,
         keys = {
@@ -332,4 +332,3 @@ local function install()
 end
 
 install()
-
