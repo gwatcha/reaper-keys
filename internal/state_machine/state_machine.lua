@@ -54,18 +54,18 @@ local function step(state, key_press)
 
     return new_state
 end
--- FIXME arrow keys and backspace not working
+-- FIXME backspace should remove last cmd part
 -- FIXME cmd_part + ESC doesn't cause an immediate reset
 local aliases = {
-    [8] = '<backspace>',
+    [8] = '<BS>',
     [9] = '<TAB>',
     [13] = '<return>',
     [27] = '<ESC>',
     [32] = '<SPC>',
-    [37] = '<left>',
-    [38] = '<up>',
-    [39] = '<right>',
-    [40] = '<down>',
+    [37] = '<NumLeft>',
+    [38] = '<NumUp>',
+    [39] = '<NumRight>',
+    [40] = '<NumDown>',
     [112] = 'F1',
     [113] = 'F2',
     [114] = 'F3',
@@ -78,6 +78,17 @@ local aliases = {
     [121] = 'F10',
     [122] = 'F11',
     [123] = 'F12',
+    [32801] = '<PgUp>',
+    [32802] = '<PgDown>',
+    [32803] = '<END>',
+    [32804] = '<HOME>',
+    [32805] = '<left>',
+    [32806] = '<up>',
+    [32807] = '<right>',
+    [32808] = '<down>',
+    [32813] = '<INS>',
+    [32814] = '<DEL>',
+
 }
 local function ctxToState(ctx)
     local _, _, mod, code = ctx:find "^key:V?(.*):(.*)$"

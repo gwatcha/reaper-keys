@@ -14,34 +14,44 @@ local function charCodes(from, count)
 end
 
 -- e.g. C-! will produce KEY 9 33 and will be parsed by reaper as C- Numpad Page Up
-local clash = 1024
+local clash = 65536
 local key_groups = {
-    letters = { mod_id = 1, keys = charCodes(65, 25) }, -- a-z (not ascii codes)
+    letters = { mod_id = 1, keys = charCodes(65, 25) }, -- A-Z
     numbers = { mod_id = 1, keys = charCodes(48, 10) }, -- 0-9
     special = {
         mod_id = 1,
         keys = {
-            8,   -- backspace
-            9,   -- tab
-            13,  -- return
-            27,  -- esc
-            32,  -- space
-            37,  -- left
-            38,  -- up
-            39,  -- right
-            40,  -- down
-            112, -- f1
-            113, -- f2
-            114, -- f3
-            115, -- f4
-            116, -- f5
-            117, -- f6
-            118, -- f7
-            119, -- f8
-            120, -- f9
-            121, -- f10
-            122, -- f11
-            123, -- f12
+            8,     -- backspace
+            9,     -- tab
+            13,    -- return
+            27,    -- esc
+            32,    -- space
+            37,    -- numpad left
+            38,    -- numpad up
+            39,    -- numpad right
+            40,    -- numpad down
+            112,   -- f1
+            113,   -- f2
+            114,   -- f3
+            115,   -- f4
+            116,   -- f5
+            117,   -- f6
+            118,   -- f7
+            119,   -- f8
+            120,   -- f9
+            121,   -- f10
+            122,   -- f11
+            123,   -- f12,
+            32801, -- page up
+            32802, -- page down
+            32803, -- end
+            32804, -- home
+            32805, -- left
+            32806, -- up
+            32807, -- right
+            32808, -- down
+            32813, -- insert
+            32814, -- delete
         }
     },
     shifted = {
