@@ -1,12 +1,12 @@
 local action_sequences = {}
 
 local action_sequence_definitions = {
-    global = require('command.action_sequence_functions.global'),
-    main = require('command.action_sequence_functions.main'),
-    midi = require('command.action_sequence_functions.midi'),
+    global = require 'command.action_sequence_functions.global',
+    main = require 'command.action_sequence_functions.main',
+    midi = require 'command.action_sequence_functions.midi',
 }
 
-function concatTables(...)
+local function concatTables(...)
     local t = {}
     for n = 1, select("#", ...) do
         local arg = select(n, ...)
@@ -24,23 +24,21 @@ end
 local function getPossibleActionSequenceFunctionPairs(context, mode)
     return concatTables(
         action_sequence_definitions[context][mode],
-        action_sequence_definitions['global'][mode],
-        action_sequence_definitions[context]['all_modes'],
-        action_sequence_definitions['global']['all_modes']
+        action_sequence_definitions.global[mode],
+        action_sequence_definitions[context].all_modes,
+        action_sequence_definitions.global.all_modes
     )
 end
 
 function action_sequences.getPossibleActionSequences(state)
-    local context, mode = state["context"], state["mode"]
-    local action_sequence_function_pairs = getPossibleActionSequenceFunctionPairs(context, mode)
+    local context, mode = state.context, state.mode
+    local pairs = getPossibleActionSequenceFunctionPairs(context, mode)
 
-    local action_sequences = {}
-    for _, action_sequence_function_pair in ipairs(action_sequence_function_pairs) do
-        local action_sequence = action_sequence_function_pair[1]
-        table.insert(action_sequences, action_sequence)
+    local sequences = {}
+    for _, pair in ipairs(pairs) do
+        table.insert(sequences, pair[1])
     end
-
-    return action_sequences
+    return sequences
 end
 
 function checkIfActionSequencesAreEqual(seq1, seq2)

@@ -54,17 +54,18 @@ local function step(state, key_press)
 
     return new_state
 end
-
+-- FIXME arrow keys and backspace not working
+-- FIXME cmd_part + ESC doesn't cause an immediate reset
 local aliases = {
-    [8] = 'backspace',
-    [9] = 'TAB',
-    [13] = 'return',
-    [27] = 'ESC',
-    [32] = 'SPC',
-    [37] = 'left',
-    [38] = 'up',
-    [39] = 'right',
-    [40] = 'down',
+    [8] = '<backspace>',
+    [9] = '<TAB>',
+    [13] = '<return>',
+    [27] = '<ESC>',
+    [32] = '<SPC>',
+    [37] = '<left>',
+    [38] = '<up>',
+    [39] = '<right>',
+    [40] = '<down>',
     [112] = 'F1',
     [113] = 'F2',
     [114] = 'F3',
