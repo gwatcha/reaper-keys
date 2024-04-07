@@ -26,12 +26,12 @@ local function step(state, key_press)
     local new_state, err = updateWithKeyPress(state, key_press)
     if err ~= nil then
         new_state = state
-        new_state['key_sequence'] = ''
+        new_state.key_sequence = ''
         feedback.displayMessage(err)
         return new_state
     end
 
-    log.info("New key sequence: " .. new_state['key_sequence'])
+    log.info("New key sequence: " .. new_state.key_sequence)
     local command = buildCommand(new_state)
     if command then
         log.trace("Command built: " .. format.block(command))
@@ -48,27 +48,56 @@ local function step(state, key_press)
         return new_state
     end
 
-    message = format.keySequence(state['key_sequence'], true) .. "-"
+    message = format.keySequence(state.key_sequence, true) .. "-"
     feedback.displayMessage(message)
     feedback.displayCompletions(future_entries)
 
     return new_state
 end
 
+local aliases = {
+    [8] = 'backspace',
+    [9] = 'TAB',
+    [13] = 'return',
+    [27] = 'ESC',
+    [32] = 'SPC',
+    [37] = 'left',
+    [38] = 'up',
+    [39] = 'right',
+    [40] = 'down',
+    [112] = 'F1',
+    [113] = 'F2',
+    [114] = 'F3',
+    [115] = 'F4',
+    [116] = 'F5',
+    [117] = 'F6',
+    [118] = 'F7',
+    [119] = 'F8',
+    [120] = 'F9',
+    [121] = 'F10',
+    [122] = 'F11',
+    [123] = 'F12',
+}
 local function ctxToState(ctx)
-    local _, _, mod, key = ctx:find "^key:V(.*):(.*)$"
-    local ctrl, alt, shift = mod:match "C", mod:match "A", mod:match "S"
-    -- <CMS-k>
-    if mod == '' then return string.char(key + 32) end
-    key = string.char(key + shift and 0 or 32) -- 32 = 97 (a) - 65 = A
-    if mod == 'S' then return key end
+    local _, _, mod, code = ctx:find "^key:V?(.*):(.*)$"
+    local ctrl, shift = mod:match "C", mod:match "S"
+    local alt = mod:match "A" and "M" or nil
+    code = tonumber(code) or -1
 
-    key = string.char(key + 32)
+    if 65 <= code and code <= 90 then
+        -- A = 65, a = 97, lowercase if non-shifted
+        local key = string.char(code + (shift and 0 or 32))
+        if not ctrl and not alt then return key end
+        return ("<%s%s-%s>"):format(ctrl or "", alt or "", key)
+    end
+    local key = aliases[code] or string.char(code)
+    if mod == '' then return key end
+    return ("<%s%s%s-%s>"):format(ctrl or "", alt or "", shift or "", key)
 end
 
 local function input()
     local _, _, section_id, _, _, _, _, ctx = reaper.get_action_context()
-    local hotkey = { context = section_id, key = ctxToState(ctx) }
+    local hotkey = { context = section_id == 0 and "main" or "midi", key = ctxToState(ctx) }
 
     log.info("Input: " .. format.line(hotkey))
     if config.show_feedback_window then feedback.clear() end

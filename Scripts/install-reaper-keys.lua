@@ -23,7 +23,7 @@ local key_groups = {
         keys = {
             8,   -- backspace
             9,   -- tab
-            13,  -- enter
+            13,  -- return
             27,  -- esc
             32,  -- space
             37,  -- left
@@ -40,6 +40,8 @@ local key_groups = {
             119, -- f8
             120, -- f9
             121, -- f10
+            122, -- f11
+            123, -- f12
         }
     },
     shifted = {
@@ -108,7 +110,7 @@ function KEY(mod_id, key_id, command_id, section_id)
     return ("KEY %d %d %s %d\n"):format(mod_id, key_id, command_id, section_id)
 end
 
-local parent_dir = debug.getinfo(1, "S").source:match "@?(.*)/.*/"
+local parent_dir = debug.getinfo(1, "S").source:match "@?(.*)[\\/].*[\\/]"
 local command_path = concat_path(parent_dir, "internal", "rk.lua")
 local sections = { midi = 32060, main = 0 }
 for section_name, section_id in pairs(sections) do
