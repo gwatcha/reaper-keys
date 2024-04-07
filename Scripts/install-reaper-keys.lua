@@ -7,115 +7,89 @@
 --   ../definitions/*
 --   ../internal/**/*
 --   ../vendor/**/*
-local function charCodes(from_num, from_char, to_char) -- reaper uses non-ascii codes
-    local from_char_num, to_char_num, out = string.byte(from_char), string.byte(to_char), {}
-    for i = 0, to_char_num - from_char_num do
-        out[string.char(from_char_num + i)] = from_num + i
-    end
+local function charCodes(from, count)
+    local out = {}
+    for i = 0, count do out[i + 1] = from + i end
     return out
 end
 
+-- e.g. C-! will produce KEY 9 33 and will be parsed by reaper as C- Numpad Page Up
+local clash = 1024
 local key_groups = {
-    letters = { key_type_id = 1, keys = charCodes(65, 'a', 'z') },
-    numbers = { key_type_id = 1, keys = charCodes(48, '0', '9') },
+    letters = { mod_id = 1, keys = charCodes(65, 25) }, -- a-z (not ascii codes)
+    numbers = { mod_id = 1, keys = charCodes(48, 10) }, -- 0-9
     special = {
-        key_type_id = 1,
+        mod_id = 1,
         keys = {
-            ['<left>'] = 37,
-            ['<up>'] = 38,
-            ['<right>'] = 39,
-            ['<down>'] = 40,
-            ['<F1>'] = 112,
-            ['<F2>'] = 113,
-            ['<F3>'] = 114,
-            ['<F4>'] = 115,
-            ['<F5>'] = 116,
-            ['<F6>'] = 117,
-            ['<F7>'] = 118,
-            ['<F8>'] = 119,
-            ['<F9>'] = 120,
-            ['<F10>'] = 121,
-            ['<backspace>'] = 8,
-            ['<SPC>'] = 32,
-            ['<TAB>'] = 9,
-            ['<ESC>'] = 27,
-            ['<return>'] = 13,
+            8,   -- backspace
+            9,   -- tab
+            13,  -- enter
+            27,  -- esc
+            32,  -- space
+            37,  -- left
+            38,  -- up
+            39,  -- right
+            40,  -- down
+            112, -- f1
+            113, -- f2
+            114, -- f3
+            115, -- f4
+            116, -- f5
+            117, -- f6
+            118, -- f7
+            119, -- f8
+            120, -- f9
+            121, -- f10
         }
     },
     shifted = {
-        key_type_id = 0,
+        mod_id = 0,
         keys = {
-            ['!'] = 33,
-            ['@'] = 64,
-            ['#'] = 35,
-            ['$'] = 36,
-            ['%'] = 37,
-            ['^'] = 126,
-            ['&'] = 38,
-            ['*'] = 126,
-            ['('] = 40,
-            [')'] = 41,
-            ['"'] = 34,
-            ['|'] = 124,
-            ['<'] = 60,
-            ['>'] = 62,
-            ['_'] = 95,
-            [':'] = 58,
-            ['}'] = 125,
-            ['{'] = 123,
-            ['+'] = 43,
-            ['?'] = 63,
-            ['~'] = 126,
+            33 + clash,  -- !
+            34 + clash,  -- "
+            35 + clash,  -- #
+            36 + clash,  -- $
+            37 + clash,  -- %
+            38 + clash,  -- &
+            40 + clash,  -- (
+            41 + clash,  -- )
+            43 + clash,  -- +
+            58,          -- :
+            60 + clash,  -- >
+            62 + clash,  -- >
+            63,          -- ?
+            64,          -- @
+            95,          -- _
+            123 + clash, -- {
+            124 + clash, -- |
+            125 + clash, -- }
+            126,         -- ~
+            126 + clash, -- ^
+            126 + clash, -- *
         }
     },
     normal = {
-        key_type_id = 0,
+        mod_id = 0,
         keys = {
-            ["'"] = 39,
-            ['.'] = 46,
-            [','] = 44,
-            ['-'] = 45,
-            [';'] = 59,
-            ['\\'] = 92,
-            ['/'] = 47,
-            ['§'] = 167,
-            ['±'] = 177,
-            [']'] = 93,
-            ['['] = 91,
-            ['='] = 61,
-            ['`'] = 96,
+            39 + clash, -- '
+            44 + clash, -- ,
+            45 + clash, -- -
+            46 + clash, -- .
+            47,         -- /
+            59 + clash, -- ;
+            61,         -- =
+            91,         -- [
+            92,         -- \
+            93,         -- ]
+            96 + clash, -- `
+            167,        -- §
+            177,        -- ±
         }
     }
 }
 
 local modifiers = { C = 9, M = 17, S = 5, MS = 21, CS = 13, CM = 25, CMS = 29 } -- C:ctrl, M:alt, S:shift
 local mods_with_shift = { S = true, MS = true, CS = true, CMS = true }
-
--- e.g. C-! will produce KEY 9 33 and will be parsed by reaper as C- Numpad Page Up
-local clashing_keys = {
-    ['`'] = true,
-    ["'"] = true,
-    ['%'] = true,
-    ['&'] = true,
-    ['('] = true,
-    [')'] = true,
-    ['{'] = true,
-    ['}'] = true,
-    ['|'] = true,
-    ['.'] = true,
-    ['!'] = true,
-    ['#'] = true,
-    ['$'] = true,
-    ['^'] = true,
-    ['*'] = true,
-    [','] = true,
-    ['-'] = true,
-    ['"'] = true,
-    ['>'] = true,
-    ['<'] = true,
-    ['+'] = true,
-    [';'] = true
-}
 
 local version = tonumber(reaper.GetAppVersion():match '[%d.]+')
 if version < 6.71 then
@@ -134,21 +108,22 @@ function KEY(mod_id, key_id, command_id, section_id)
     return ("KEY %d %d %s %d\n"):format(mod_id, key_id, command_id, section_id)
 end
 
-local command_path = concat_path(debug.getinfo(1, "S").source:match "@?(.*/)", "internal", "rk.lua")
+local parent_dir = debug.getinfo(1, "S").source:match "@?(.*)/.*/"
+local command_path = concat_path(parent_dir, "internal", "rk.lua")
 local sections = { midi = 32060, main = 0 }
 for section_name, section_id in pairs(sections) do
     local command_id = "_reaper_keys__" .. section_name
     keymap:write(('SCR 516 %d %s "reaper-keys" "%s"\n'):format(section_id, command_id, command_path))
 
     for group_name, group in pairs(key_groups) do
-        for key, key_id in pairs(group.keys) do
-            keymap:write(KEY(group.key_type_id, key_id, command_id, section_id))
+        for _, key_id in pairs(group.keys) do
+            local has_clash = (key_id >= clash) and 1 or 0
+            key_id = key_id - has_clash * clash
+            keymap:write(KEY(group.mod_id, key_id, command_id, section_id))
 
             for mod, mod_id in pairs(modifiers) do
-                if clashing_keys[key] then mod_id = mod_id - 1 end
                 if group_name == "shifted" and mods_with_shift[mod] then goto iter_end end
-
-                keymap:write(KEY(mod_id, key_id, command_id, section_id))
+                keymap:write(KEY(mod_id - has_clash, key_id, command_id, section_id))
                 ::iter_end::
             end
         end
