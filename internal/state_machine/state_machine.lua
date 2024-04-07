@@ -97,7 +97,7 @@ local function ctxToState(ctx)
     code = tonumber(code) or -1
 
     if 65 <= code and code <= 90 then
-        -- A = 65, a = 97, lowercase if non-shifted
+        -- Reaper transmits uppercase letters, lowercase them
         local key = string.char(code + (shift and 0 or 32))
         if not ctrl and not alt then return key end
         return ("<%s%s-%s>"):format(ctrl or "", alt or "", key)

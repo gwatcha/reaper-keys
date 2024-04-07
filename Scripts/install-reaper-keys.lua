@@ -4,7 +4,6 @@
 -- @links
 --   GitHub repository https://github.com/gwatcha/reaper-keys
 -- @provides
---   ../definitions/*
 --   ../internal/**/*
 --   ../vendor/**/*
 local function charCodes(from, count)
