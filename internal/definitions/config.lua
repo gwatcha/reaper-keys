@@ -1,6 +1,7 @@
 return {
     show_start_up_message = false, -- TODO should be true by default
     show_feedback_window = true,
+    profile = false,
     -- should operators in visual modes reset the selection or have it persist?
     persist_visual_timeline_selection = true,
     persist_visual_track_selection = false,

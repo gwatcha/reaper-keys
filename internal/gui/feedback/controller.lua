@@ -87,6 +87,13 @@ function feedback.update()
 
     model.setKeys({open = true})
 
+    if config.profile then
+        Profiler = dofile(reaper.GetResourcePath() .. '/Scripts/ReaTeam Scripts/Development/cfillion_Lua profiler.lua')
+        Profiler.attachToWorld()
+        Profiler.start()
+        Profiler.run()
+    end
+
     reaper.atexit(function()
         model.setKeys({open  = false})
         local window_settings = feedback_view:getWindowSettings()

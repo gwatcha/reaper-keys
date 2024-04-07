@@ -100,3 +100,14 @@ If your key press is not being detected, try unfocusing the feedback window.
 ## Further Information
 
 Check out the [documentation](https://gwatcha.github.io/reaper-keys) to learn more.
+
+## Reporting performance issues
+
+1. Download "Lua profiler" from ReaTeam Scripts and "ReaImGui" from ReaTeam Extentions via ReaPack.
+2. Change "profile" to "true" in internal/definitions/config.lua
+3. In Reaper, click Actions > Running script > rk.lua > Terminate instances.
+  There may be no "Running script", then just skip this step.
+4. Press any key. A profiler window will open.
+5. Click "Acquisition > Stop" in the profiler window after you're done
+6. Click "Copy to clipboard". Paste in a GitHub issue.
+7. When you're done, change "profile" back to false and repeat (3)

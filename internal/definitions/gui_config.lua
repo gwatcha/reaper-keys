@@ -21,9 +21,7 @@ return {
     },
 
     feedback = {
-        show_after = .2, -- seconds
-        hide_after = 2, -- seconds. Set 0 to never hide
-
+        show_after = .1, -- seconds
         elements = {
             column_padding = 20,
             row_padding = 0,
