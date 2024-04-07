@@ -125,6 +125,7 @@ local command_path = concat_path(parent_dir, "internal", "rk.lua")
 local sections = { midi = 32060, main = 0 }
 for section_name, section_id in pairs(sections) do
     local command_id = "_reaper_keys__" .. section_name
+    -- 260 focuses window on every key press so 516 is only option
     keymap:write(('SCR 516 %d %s "reaper-keys" "%s"\n'):format(section_id, command_id, command_path))
 
     for group_name, group in pairs(key_groups) do
