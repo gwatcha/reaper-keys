@@ -51,6 +51,7 @@ return {
     CloseFloatingFxWindows = "_S&M_WNCLS3",
     PlayFromMouseAndSoloTrack = "_BR_CONT_PLAY_MOUSE_SOLO_TRACK",
     PlayFromEditCursorAndSoloTrackUnderMouse = "_BR_TOGGLE_PLAY_EDIT_SOLO_TRACK",
+    PrintLog = custom.printLog,
     CloseFx = { "CloseFxChains", "CloseFxWindows" },
     CloseFxWindows = "_S&M_WNCLS5",
     CloseFxChains = "_S&M_WNCLS4",
