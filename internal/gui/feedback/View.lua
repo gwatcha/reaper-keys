@@ -57,7 +57,7 @@ local function createWindow(props)
         x = settings.x,
         h = settings.h,
         y = settings.y,
-        dock = 1,
+        dock = config.dock_feedback_window and 1 or 0,
         corner = "TL"
     })
 
