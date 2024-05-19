@@ -365,10 +365,16 @@ function Textbox:drawCaret()
 
       Color.set("text")
 
-      local width, _= gfx.measurestr(self.retval:sub(self.windowPosition + 1))
+      -- Chances are we're going to use non-monospace font. If we want to avoid
+      -- issues with selection, try to estimate its width using gfx
+      local _, name = gfx.getfont()
+      local shift = name:gmatch "[Mm]ono"
+        and (caretRelative * self.charW)
+        or gfx.measurestr(self.retval:sub(self.windowPosition + 1))
+
       local caretH = self.charH - 2
 
-      gfx.rect(   self.x + width + 4,
+      gfx.rect(   self.x + shift + 4,
                   self.y + (self.h - caretH) / 2,
                   self.insertCaret and self.charW or 2,
                   caretH)
@@ -535,9 +541,11 @@ function Textbox:recalculateWindow()
   Font.set(self.textFont)
 
   self.charW, self.charH = gfx.measurestr("i")
-  -- bad estimation , still better than now
-  -- If we're lacking monospaced fonts, nothing more we can do
-  self.charW = 2 * self.charW
+
+  -- If we're lacking monospace fonts, nothing more we can do
+  local _, name = gfx.getfont()
+  if not name:gmatch "[Mm]ono" then self.charW = 2 * self.charW end
+
   self.windowW = math.floor(self.w / self.charW)
 
 end

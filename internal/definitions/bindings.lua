@@ -1,5 +1,4 @@
--- Global bindings apply both to main and midi contexts
-local global = {
+local global = { -- applies both to main and midi
     timeline_motion = {
         ["0"] = "ProjectStart",
         ["<C-$>"] = "ProjectEnd",
@@ -568,5 +567,14 @@ local midi = {
         ["<M-h>"] = "MoveNoteLeft",
     },
 }
+
+if require 'definitions.config'.search_for_custom_config then
+    local cfg = require(reaper.GetResourcePath() .. ".reaper-keys")
+    if cfg then
+        global = cfg.global or global
+        main = cfg.main or main
+        midi = cfg.midi or midi
+    end
+end
 
 return { ["global"] = global, ["main"] = main, ["midi"] = midi }

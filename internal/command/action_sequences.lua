@@ -1,3 +1,4 @@
+require 'table_concat'
 local action_sequences = {}
 
 local action_sequence_definitions = {
@@ -6,23 +7,8 @@ local action_sequence_definitions = {
     midi = require 'command.action_sequence_functions.midi',
 }
 
-local function concatTables(...)
-    local t = {}
-    for n = 1, select("#", ...) do
-        local arg = select(n, ...)
-        if type(arg) == "table" then
-            for _, v in ipairs(arg) do
-                t[#t + 1] = v
-            end
-        else
-            t[#t + 1] = arg
-        end
-    end
-    return t
-end
-
 local function getPossibleActionSequenceFunctionPairs(context, mode)
-    return concatTables(
+    return ConcatTables(
         action_sequence_definitions[context][mode],
         action_sequence_definitions.global[mode],
         action_sequence_definitions[context].all_modes,
@@ -41,7 +27,7 @@ function action_sequences.getPossibleActionSequences(state)
     return sequences
 end
 
-function checkIfActionSequencesAreEqual(seq1, seq2)
+local function checkIfActionSequencesAreEqual(seq1, seq2)
     if #seq1 ~= #seq2 then return false end
     for i = 1, #seq1 do
         if seq1[i] ~= seq2[i] then

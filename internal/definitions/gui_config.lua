@@ -1,8 +1,14 @@
--- leave empty to use default font. Invalid fonts will be ignored silently
-local font_name = ""
+local os_default_fonts = {
+    windows = "Lucida Console",
+    osx = "Andale Mono",
+    linux = "Fira Mono",
+}
+local os = reaper.GetOS()
+local font_name = (os:match("Win") and os_default_fonts.windows)
+    or (os:match("OSX") and os_default_fonts.osx)
+    or os_default_fonts.linux
 
 -- All colors are in RGBA format
-
 return {
     -- the factor to scale all elements (font size, element sizes...)
     -- will be multiplied by 2 if HiDPI (MacOS Retina only) mode is detected
