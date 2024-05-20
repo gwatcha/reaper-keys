@@ -69,6 +69,7 @@ local global = { -- applies both to main and midi
         ["<C-<SPC>>"] = "ToggleViewMixer",
 
         ["."] = "RepeatLastCommand",
+        ["<C-.>"] = "RepeatPenultimateAction",
         ["@"] = "PlayMacro",
         [","] = "RecordMacro",
         ["m"] = "Mark",

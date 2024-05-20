@@ -442,6 +442,8 @@ return {
     RenderProjectWithLastSetting = 41824,
     RenderTrack = "_SWS_AWRENDERSTEREOSMART",
     RepeatLastCommand = { metaCommand = true, prefixRepetitionCount = true },
+    RepeatLastAction = 2999,
+    RepeatPenultimateAction = 3000,
     RepeatTrackNameMatchBackward = lib.repeatTrackNameMatchBackward,
     RepeatTrackNameMatchForward = lib.repeatTrackNameMatchForward,
     ResetAllControlSurfaceDevices = 42348,
