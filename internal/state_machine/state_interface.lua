@@ -1,6 +1,6 @@
 local reaper_state = require('utils.reaper_state')
 local log = require('utils.log')
-local constants = require('state_machine.constants')
+local default_state = require'state_machine.default_state'
 local utils = require('command.utils')
 
 local state_interface= {}
@@ -25,7 +25,7 @@ function state_interface.get()
     local state = reaper_state.get(state_table_name)
     if not state then
       log.info("Could not read state data. Returning reset state.")
-      state = constants['reset_state']
+      state = default_state
     end
   return state
 end
@@ -94,7 +94,7 @@ end
 
 function state_interface.setModeToNormal()
   local state = state_interface.get()
-  state['key_sequence'] = ""
+  state['key_sequence'] = ""
   state['context'] = "main"
   state['mode'] = "normal"
   state['timeline_selection_side'] = "left"

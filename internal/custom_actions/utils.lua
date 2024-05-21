@@ -1,15 +1,11 @@
-local log = require('utils.log')
-
 local utils = {}
 
-function mergeItemPositionsLists(item_positions_list)
+local function mergeItemPositionsLists(item_positions_list)
   local merged_list = {}
 
-  function areRemainingItems()
-    for i,item_positions in ipairs(item_positions_list) do
-      if #item_positions_list[i] ~= 0 then
-        return true
-      end
+  local function areRemainingItems()
+    for i, _ in ipairs(item_positions_list) do
+      if #item_positions_list[i] ~= 0 then return true end
     end
     return false
   end
@@ -33,7 +29,7 @@ function mergeItemPositionsLists(item_positions_list)
   return merged_list
 end
 
-function getItemPositionsOnTracks(tracks)
+local function getItemPositionsOnTracks(tracks)
   local item_positions_lists = {}
   for i=1,#tracks do
     local current_track = tracks[i]
@@ -152,8 +148,7 @@ end
 
 function utils.getSelectedTracks()
   local selected_tracks = {}
-  local n_tracks = reaper.CountSelectedTracks()
-  for i=0,reaper.CountSelectedTracks()-1 do
+  for i=0, reaper.CountSelectedTracks()-1 do
     local track = reaper.GetSelectedTrack(0, i)
     selected_tracks[i+1] = track
   end
@@ -223,7 +218,7 @@ function utils.getSelectedTrackIndices()
 end
 
 function utils.unselectTracks()
-  for i,track in ipairs(utils.getSelectedTracks()) do
+  for _,track in ipairs(utils.getSelectedTracks()) do
     reaper.SetTrackSelected(track, false)
   end
 end

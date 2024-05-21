@@ -1,8 +1,6 @@
 local utils = require('command.utils')
 local ser = require('serpent')
 local string_util = require('string')
-local log = require('utils.log')
-
 local format = {}
 
 function pairsByKeys(t, f)

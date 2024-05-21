@@ -1,10 +1,8 @@
 -- FIXME refractor me
 
-local config = require('definitions.gui_config')
-local list_config = config.binding_list
-local runner = require('command.runner')
+local list_config = require'definitions.config'.gui.binding_list
 local getActionTypes = require('command.action_sequences').getActionTypes
-local createBindingListBoxElement = require('internal.gui.binding_list.binding_list_box')
+local createBindingListBoxElement = require('gui.binding_list.binding_list_box')
 
 local scythe = require('scythe')
 local Const = require("public.const")
@@ -105,10 +103,10 @@ function View:updateElementDimensions()
 end
 
 
-function createBindingListWindow(props)
+local function createBindingListWindow(props)
   local window_settings = {
     name = "Reaper Keys Binding List",
-    corner = "TL"
+    corner = "TL",
   }
   for window_setting_name,window_setting_value in pairs(props.window) do
     window_settings[window_setting_name] = window_setting_value

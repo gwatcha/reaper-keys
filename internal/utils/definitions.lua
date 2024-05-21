@@ -1,9 +1,7 @@
 local utils = require('command.utils')
-local config = require('definitions.config')
-
 local definitions = {}
 
-function concatEntries(t1, t2)
+local function concatEntries(t1, t2)
   local merged_entries = {}
   for key_sequence,entry_value in pairs(t1) do
     merged_entries[key_sequence] = entry_value
@@ -32,9 +30,9 @@ function concatEntries(t1, t2)
 end
 
 
-function concatEntryTables(t1,t2)
+local function concatEntryTables(t1,t2)
   local merged_tables = t1
-  for action_type, entries in pairs(t1) do
+  for action_type, _ in pairs(t1) do
     if t2[action_type] then
       local merged = concatEntries(t1[action_type], t2[action_type])
       merged_tables[action_type] = merged
@@ -50,21 +48,11 @@ function concatEntryTables(t1,t2)
   return merged_tables
 end
 
-
-default_tables_dir = "definitions.defaults."
-if config.use_extended_defaults then
-  default_tables_dir = "definitions.extended_defaults."
-end
-local user_definitions = require('definitions.bindings')
-local definition_tables = {
-  global = concatEntryTables(require(default_tables_dir .. 'global'), user_definitions.global ),
-  main = concatEntryTables(require(default_tables_dir .. 'main'), user_definitions.main ),
-  midi = concatEntryTables(require(default_tables_dir .. 'midi'), user_definitions.midi ),
-}
+local definition_tables = require"definitions.bindings"
 
 function definitions.getPossibleEntries(context)
   local merged_table = {}
-  merged_table = concatEntryTables(merged_table, definition_tables['global'])
+  merged_table = concatEntryTables(merged_table, definition_tables.global)
   merged_table = concatEntryTables(merged_table, definition_tables[context])
 
   return merged_table
@@ -104,27 +92,7 @@ function definitions.getAllBindings()
     end
   end
 
-  local user_bindings = {}
-  for context,context_definitions in pairs(user_definitions) do
-    user_bindings[context] = {}
-
-    for action_type,action_type_definitions in pairs(context_definitions) do
-      local bindings_for_action_type = definitions.getBindings(action_type_definitions)
-
-      if not bindings[context][action_type] then
-        bindings[context][action_type] = {}
-      end
-      for k,v in pairs(bindings_for_action_type) do
-        bindings[context][action_type][k] = v
-      end
-    end
-  end
-
   return bindings
-end
-
-function definitions.getAllEntries()
-  return definition_tables
 end
 
 return definitions
