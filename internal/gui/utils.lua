@@ -1,4 +1,4 @@
-local config = require 'definitions.gui_config'
+local gui_scale = require 'definitions.config'.gui.gui_scale
 local log = require 'utils.log'
 local Color = require 'public.color'
 local Font = require 'public.font'
@@ -7,7 +7,7 @@ local gui_utils = {}
 
 local hiDPIMode
 
-function queryHiDPIMode()
+local function queryHiDPIMode()
     -- need to set to 1 in order for reaper to set the variable
     gfx.ext_retina = 1
     gfx.init("window to check ext_retina", w, h, dock, x, y)
@@ -30,7 +30,7 @@ function gui_utils.scale(normal_size)
         queryHiDPIMode()
     end
 
-    local scale = config.gui_scale
+    local scale = gui_scale
     if hiDPIMode == true then
         scale = scale * 2
     end

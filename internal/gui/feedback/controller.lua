@@ -3,7 +3,7 @@ local string_util = require 'string'
 local FeedbackView = require 'gui.feedback.View'
 local reaper_state = require 'utils.reaper_state'
 local model = require 'gui.feedback.model'
-local config = require 'definitions.config'
+local config = require 'definitions.config'.general
 local feedback = {}
 
 function feedback.displayCompletions(future_entries)

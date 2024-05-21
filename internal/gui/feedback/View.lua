@@ -1,5 +1,5 @@
-local gui_config = require 'definitions.gui_config'
-local config = require 'definitions.config'
+local gui = require 'definitions.config'.gui
+local dock_feedback_window = require 'definitions.config'.general.dock_feedback_window
 local gui_utils = require 'gui.utils'
 local scale = gui_utils.scale
 local createCompletionsElement = require 'gui.feedback.completions'
@@ -57,7 +57,7 @@ local function createWindow(props)
         x = settings.x,
         h = settings.h,
         y = settings.y,
-        dock = config.dock_feedback_window and 1 or 0,
+        dock = dock_feedback_window and 1 or 0,
         corner = "TL"
     })
 
@@ -77,8 +77,8 @@ function View:new()
     local view = {}
     setmetatable(view, self)
     self.__index = self
-    self.props = gui_config.feedback
-    self.props.action_type_colors = gui_config.action_type_colors
+    self.props = gui.feedback
+    self.props.action_type_colors = gui.action_type_colors
     gui_utils.addFonts(self.props.fonts)
     self.window = createWindow(self.props)
     self.elements = {
