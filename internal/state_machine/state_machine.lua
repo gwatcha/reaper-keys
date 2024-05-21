@@ -90,6 +90,7 @@ local aliases = {
     [32814] = '<DEL>',
 
 }
+
 local function ctxToState(ctx)
     local _, _, mod, code = ctx:find "^key:V?(.*):(.*)$"
     local ctrl, shift = mod:match "C", mod:match "S"
@@ -109,6 +110,7 @@ end
 
 local function input()
     local _, _, section_id, _, _, _, _, ctx = reaper.get_action_context()
+    if ctx == "" then return end
     local hotkey = { context = section_id == 0 and "main" or "midi", key = ctxToState(ctx) }
 
     log.info("Input: " .. format.line(hotkey))
