@@ -54,15 +54,12 @@ local startup_msg =
     "Hello from inside Reaper Keys! I see the feedback window just opened... " ..
     "Here are some things I have been told to tell you:\n" ..
     "- If the feedback window is focused, I can't hear keys being pressed, be sure to unfocus it.\n" ..
-    "- Press <M-x> (Alt+x) to open up a keybinding menu.\n" ..
-    "- Everything you need to configure reaper-keys is in REAPER/Scripts/reaper-keys/definitions/\n" ..
-    "- If you would like to hide this message, set the option in definitions/config.lua\n" ..
+    "- Press <CM-x> (Ctrl + Alt + x) to open up a keybinding menu.\n" ..
+    "- Everything you need to configure reaper-keys is in REAPER/Scripts/reaper-keys/internal/definitions/\n" ..
+    "- If you would like to hide this message, set the option in internal/definitions/config.lua\n" ..
     "- If you set that option there will be no one to protect you from the focus stealing of the " ..
     "feedback window.\n" ..
-    "- reaper-keys uses a reduced keymap by default, if you want more keybindings, set the option in " ..
-    "definitions/config.lua to use the extended defaults.\n" ..
-    "\t - Your mother loves you"
-
+    "\t Your mother loves you"
 local feedback_view = nil
 
 function feedback.update()

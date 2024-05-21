@@ -70,8 +70,8 @@ local gui = {
 }
 
 local general = {
-    show_start_up_message = false, -- TODO should be true by default
-    dock_feedback_window = true,   -- TODO should be false by default
+    show_start_up_message = true,
+    dock_feedback_window = false,
     show_feedback_window = true,
     search_for_custom_config = false,
     profile = false,

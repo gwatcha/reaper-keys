@@ -25,7 +25,8 @@ installation video.
   Extensions). Although this extension _may_ work without SWS, the experience will be
   worse.
 
-## Features ### Bind key sequences
+## Features
+### Bind key sequences
 
 With Reaper keys you may bind key sequences to actions rather then singular key presses.
 This allows one to hierarchically organize many keybindings.
@@ -89,9 +90,13 @@ reset back to normal.
 
 Also, if your key press is not being detected, try unfocusing the feedback window.
 
-## Further Information
+## Tweaking
 
-Check out the [documentation](https://gwatcha.github.io/reaper-keys) to learn more.
+```
+internal/definitions/actions.lua -> add actions
+internal/definitions/bindings.lua -> add or customise key bindings
+internal/definitions/config.lua -> change GUI settings
+```
 
 ## Reporting performance issues
 
@@ -104,3 +109,7 @@ no "Running script", then just skip this step.
 5. Click "Acquisition > Stop" in the profiler window after you're done
 6. Click "Copy to clipboard". Paste in a GitHub issue.
 7. When you're done, change "profile" back to false and repeat (3)
+
+## Further Information
+
+Check out the [documentation](https://gwatcha.github.io/reaper-keys) to learn more.

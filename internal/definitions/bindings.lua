@@ -56,8 +56,8 @@ local global = { -- applies both to main and midi
     command = {
         ["<M-x>"] = "ShowActionList",
         ["<CM-x>"] = "ShowBindingList",
-
         ["<ESC>"] = "Reset",
+
         ["<return>"] = "StartStop",
         ["tt"] = "PlayFromTimeSelectionStart",
         ["<C-T>"] = "PlayAndSkipTimeSelection",

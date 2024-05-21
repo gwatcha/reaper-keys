@@ -15,9 +15,9 @@ local function updateWithKeyPress(state, key_press)
         return nil, 'Undefined key sequence. Next key is in different context.'
     end
 
-    local new_key_sequence = state.key_sequence .. key_press.key
-    new_state.key_sequence = new_key_sequence
-
+    new_state.key_sequence = key_press.key == "<ESC>"
+        and key_press.key
+        or state.key_sequence .. key_press.key
     return new_state, nil
 end
 
@@ -54,8 +54,7 @@ local function step(state, key_press)
 
     return new_state
 end
--- FIXME backspace should remove last cmd part
--- FIXME cmd_part + ESC doesn't cause an immediate reset
+
 local aliases = {
     [8] = '<BS>',
     [9] = '<TAB>',
@@ -102,7 +101,7 @@ local function ctxToState(ctx)
         return ("<%s%s-%s>"):format(ctrl or "", alt or "", key)
     end
 
-    local use_aliases = not(not virt and 37 <= code and code <= 40)
+    local use_aliases = not (not virt and 37 <= code and code <= 40)
     local key = use_aliases and aliases[code] or string.char(code)
     if not ctrl and not alt and not shift then return key end
     return ("<%s%s%s-%s>"):format(ctrl or "", alt or "", shift or "", key)
