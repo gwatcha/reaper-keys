@@ -88,12 +88,11 @@ local aliases = {
     [32808] = '<down>',
     [32813] = '<INS>',
     [32814] = '<DEL>',
-
 }
 
 local function ctxToState(ctx)
-    local _, _, mod, code = ctx:find "^key:V?(.*):(.*)$"
-    local ctrl, shift = mod:match "C", mod:match "S"
+    local _, _, mod, code = ctx:find "^key:(.*):(.*)$"
+    local virt, ctrl, shift = mod:match "V", mod:match "C", mod:match "S"
     local alt = mod:match "A" and "M" or nil
     code = tonumber(code) or -1
 
@@ -103,8 +102,10 @@ local function ctxToState(ctx)
         if not ctrl and not alt then return key end
         return ("<%s%s-%s>"):format(ctrl or "", alt or "", key)
     end
-    local key = aliases[code] or string.char(code)
-    if mod == '' then return key end
+
+    local use_aliases = not(not virt and 37 <= code and code <= 40)
+    local key = use_aliases and aliases[code] or string.char(code)
+    if not ctrl and not alt and not shift then return key end
     return ("<%s%s%s-%s>"):format(ctrl or "", alt or "", shift or "", key)
 end
 

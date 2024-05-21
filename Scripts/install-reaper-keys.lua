@@ -6,6 +6,7 @@
 -- @provides
 --   ../internal/**/*
 --   ../vendor/**/*
+
 local function charCodes(from, count)
     local out = {}
     for i = 0, count do out[i + 1] = from + i end
@@ -25,10 +26,6 @@ local key_groups = {
             13,    -- return
             27,    -- esc
             32,    -- space
-            37,    -- numpad left
-            38,    -- numpad up
-            39,    -- numpad right
-            40,    -- numpad down
             112,   -- f1
             113,   -- f2
             114,   -- f3
@@ -64,12 +61,14 @@ local key_groups = {
             38 + clash,  -- &
             40 + clash,  -- (
             41 + clash,  -- )
+            42 + clash,  -- *
             43 + clash,  -- +
             58,          -- :
             60 + clash,  -- >
             62 + clash,  -- >
             63,          -- ?
             64,          -- @
+            94,          -- ^
             95,          -- _
             123 + clash, -- {
             124 + clash, -- |
