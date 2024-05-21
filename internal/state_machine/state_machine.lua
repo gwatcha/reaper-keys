@@ -96,8 +96,7 @@ local function ctxToState(ctx)
     local alt = mod:match "A" and "M" or nil
     code = tonumber(code) or -1
 
-    if 65 <= code and code <= 90 then
-        -- Reaper transmits uppercase letters, lowercase them
+    if 65 <= code and code <= 90 then -- Reaper always transmits uppercase letters
         local key = string.char(code + (shift and 0 or 32))
         if not ctrl and not alt then return key end
         return ("<%s%s-%s>"):format(ctrl or "", alt or "", key)
@@ -121,12 +120,11 @@ local function input()
     local new_state = step(state, hotkey)
     state_interface.set(new_state)
 
-    if show_feedback_window then
-        feedback.displayState(new_state)
-        feedback.update()
-    end
+    log.info("New state: " .. format.block(new_state))
+    if not show_feedback_window then return end
 
-    log.info("new state: " .. format.block(new_state))
+    feedback.displayState(new_state)
+    feedback.update()
 end
 
 return input
