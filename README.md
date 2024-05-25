@@ -7,8 +7,8 @@ new action mapping system based on key sequences instead of key chords. The syst
 similar to [Vim](https://en.wikipedia.org/wiki/Vim_%28text_editor%29), a modal text
 editor, and by default comes with vim-like bindings.
 
-Click [here](https://youtu.be/ChuZswEfQuo) for a very outdated and low quality demo and
-installation video.
+Click [here](https://youtu.be/ChuZswEfQuo) for a very outdated and low quality demo for v1 or jump
+to [examples](#some-ideas-to-start-with).
 
 ## Pros
 
@@ -77,6 +77,53 @@ You may play it back by entering `@` and the character you specified earlier. Op
 prefix it with a number to indicate the number of repetitions.
 
 <a href="https://ibb.co/884T1fR"><img src="https://i.ibb.co/884T1fR/macro-play.gif" alt="macro-play" border="0" /></a>
+
+## Some ideas to start with
+
+```
+o         # insert track
+<Space>fc # show fx chain
+a         # add fx
+# add ReaSynth
+<ESC>     # close fx window
+im        # insert midi item
+<Space>so # open in midi editor
+0         # get to item start
+a         # add note and select it
+5p        # paste 5 more notes (last one is selected)
+NN        # select two more previous notes
+<M+k>     # move 3 notes up semitone
+Z         # close midi editor
+5+        # zoom horizonally 5 times
+```
+
+An alternative way if you wish to start recording straight ahead:
+
+```
+iv      # insert virtual instrument track
+# Select ReaSynth. Track gets created and armed
+<ESC>   # close fx window
+R       # toggle record
+# play some notes
+<Enter> # stop recording
+```
+
+If you want to manipulate the item:
+
+```
+v # set mode visual
+3l # jump right 3 grid divisions
+o  # change time selection bound (to left one)
+l  # jump right
+!  # play and loop
+```
+
+If you want to adjust item volume:
+
+```
+<C+<Space>> # show mixer (for visual feedback)
+10<C-J>     # -10db volume for track
+```
 
 ## Help
 
