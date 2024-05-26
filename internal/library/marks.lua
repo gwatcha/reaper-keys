@@ -6,6 +6,7 @@ local format = require('utils.format')
 
 local marks = {}
 
+---@param mark Mark
 local function deleteMarkIndications(mark)
   if not mark.index then return end
   if mark.type == 'region' then
@@ -15,6 +16,8 @@ local function deleteMarkIndications(mark)
   end
 end
 
+---@param mark Mark
+---@param register string
 local function overwriteMark(mark, register)
   local mode = state_interface.getMode()
   if mode == 'visual_timeline' then
@@ -42,6 +45,7 @@ local function overwriteMark(mark, register)
   log.trace("New Marks State: " .. format.block(all_project_marks))
 end
 
+---@param register string
 function marks.save(register)
   local time_left, time_right = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
 
@@ -56,6 +60,7 @@ function marks.save(register)
   overwriteMark(mark, register)
 end
 
+---@param register string
 function marks.delete(register)
   local ok, old_mark = project_state.get('marks', register)
   if ok and old_mark then
@@ -65,6 +70,7 @@ function marks.delete(register)
   project_state.delete('marks', register)
 end
 
+---@param register string
 function marks.recallMarkedTimelinePosition(register)
   local ok, mark = project_state.get('marks', register)
   if not ok or not mark then
@@ -79,6 +85,7 @@ function marks.recallMarkedTimelinePosition(register)
   reaper.SetEditCurPos(target_pos, true, false)
 end
 
+---@param register string
 function marks.recallMarkedRegion(register)
   local ok, mark = project_state.get('marks', register)
   if not ok or not mark then
@@ -89,6 +96,7 @@ function marks.recallMarkedRegion(register)
   reaper_utils.scrollToPosition(mark.left)
 end
 
+---@param register string
 function marks.recallMarkedTracks(register)
   local ok, mark = project_state.get('marks', register)
   if not ok or not mark then

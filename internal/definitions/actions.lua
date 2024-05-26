@@ -23,6 +23,7 @@ local custom = require 'custom_actions.custom_actions' -- custom functions which
 -- - A noun implies an action which selects the noun, or a movement to its position
 -- - Simple verbs are usually operators, such as 'change'
 -- - Longer verbs are usually commands
+---@type Action[]
 return {
     ActivateNextMidiItem = { 40833, midiCommand = true },
     ActivatePrevMidiItem = { 40834, midiCommand = true },

@@ -61,6 +61,8 @@ function format.keySequence(key_sequence, spacing)
   return key_sequence_string
 end
 
+---@param command Command
+---@return string
 function format.commandDescription(command)
   local desc = ""
   for _, command_part  in pairs(command.action_keys) do

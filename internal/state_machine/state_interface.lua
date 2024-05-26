@@ -16,11 +16,14 @@ function state_interface.setKey(key, value)
   state_interface.set(state)
 end
 
+---@param key string
+---@return string | boolean | Command
 function state_interface.getKey(key)
   local state = state_interface.get()
   return state[key]
 end
 
+--- query ext state for the current reaper-keys state
 function state_interface.get()
     local state = reaper_state.get(state_table_name)
     if not state then
@@ -86,6 +89,7 @@ function state_interface.getMode()
   return state.mode
 end
 
+---@param mode Mode
 function state_interface.setMode(mode)
   local state = state_interface.get()
   state.mode = mode

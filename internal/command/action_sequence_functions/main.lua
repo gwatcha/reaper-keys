@@ -3,6 +3,7 @@ local state_interface = require('state_machine.state_interface')
 local config = require 'definitions.config'.general
 local reaper_utils = require('custom_actions.utils')
 
+---@type ActionModes
 return {
     all_modes = {
         { { 'track_motion' }, runner.runAction }
