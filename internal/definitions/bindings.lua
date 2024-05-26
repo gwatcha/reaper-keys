@@ -1,3 +1,4 @@
+---@type Definition
 local global = { -- applies both to main and midi
     timeline_motion = {
         ["0"] = "ProjectStart",
@@ -362,6 +363,7 @@ local global = { -- applies both to main and midi
     },
 }
 
+---@type Definition
 local main = {
     track_motion = {
         ["G"] = "LastTrack",
@@ -495,6 +497,7 @@ local main = {
     },
 }
 
+---@type Definition
 local midi = {
     timeline_selector = {
         ["s"] = "SelectedNotes",

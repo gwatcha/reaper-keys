@@ -6,15 +6,21 @@ local reaper_state = {}
 
 local namespace = "reaper_keys"
 
+---@param table_name string
 function reaper_state.delete(table_name)
   reaper.DeleteExtState(namespace, table_name, true)
 end
 
+---@param table_name string
+---@param lua_table table
 function reaper_state.set(table_name, lua_table)
   local lua_table_string = serpent.dump(lua_table, { comment = false })
   reaper.SetExtState(namespace, table_name, lua_table_string, true)
 end
 
+---retrieve a table from the reaper ext state
+---@param table_name string
+---@return table|nil ext_value
 function reaper_state.get(table_name)
   local string_value = reaper.GetExtState(namespace, table_name)
   if string_value then
@@ -33,6 +39,10 @@ function reaper_state.get(table_name)
   return nil
 end
 
+---append a new data to a key in a table
+---@param name string
+---@param key string
+---@param new_data string|table
 function reaper_state.append(name, key, new_data)
   local all_data = reaper_state.get(name)
   if not all_data then
@@ -50,6 +60,9 @@ function reaper_state.append(name, key, new_data)
   reaper_state.set(name, all_data)
 end
 
+---set all the keys in new_data to the table_name in ext_state
+---@param table_name string
+---@param new_data table
 function reaper_state.setKeys(table_name, new_data)
   local saved_table = reaper_state.get(table_name)
   if not saved_table then
@@ -62,6 +75,9 @@ function reaper_state.setKeys(table_name, new_data)
   reaper_state.set(table_name, saved_table)
 end
 
+---@param table_name string
+---@param key string
+---@return nil|table|string
 function reaper_state.getKey(table_name, key)
   local saved_table = reaper_state.get(table_name)
   if not saved_table then

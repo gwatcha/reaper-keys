@@ -1,12 +1,16 @@
 require 'table_concat'
 local action_sequences = {}
 
+---@type {global: ActionModes, main: ActionModes, midi: ActionModes}
 local action_sequence_definitions = {
     global = require 'command.action_sequence_functions.global',
     main = require 'command.action_sequence_functions.main',
     midi = require 'command.action_sequence_functions.midi',
 }
 
+---@param context "main"| "midi" | "global"
+---@param mode Mode
+---@return ActionSequence[]
 local function getPossibleActionSequenceFunctionPairs(context, mode)
     return ConcatTables(
         action_sequence_definitions[context][mode],
@@ -16,6 +20,8 @@ local function getPossibleActionSequenceFunctionPairs(context, mode)
     )
 end
 
+---@param state State
+---@return string[][]
 function action_sequences.getPossibleActionSequences(state)
     local context, mode = state.context, state.mode
     local pairs = getPossibleActionSequenceFunctionPairs(context, mode)
@@ -38,6 +44,8 @@ local function checkIfActionSequencesAreEqual(seq1, seq2)
     return true
 end
 
+---@param command Command
+---@return fun(action: Action) | nil
 function action_sequences.getFunctionForCommand(command)
     local action_sequence_function_pairs = getPossibleActionSequenceFunctionPairs(command.context, command.mode)
 

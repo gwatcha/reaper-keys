@@ -1,3 +1,4 @@
+---@type {reset_state: State}
 return {
     key_sequence = "",
     context = "main",

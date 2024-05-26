@@ -1,6 +1,8 @@
 local utils = require('command.utils')
 local definitions = {}
 
+---@param t1 table
+---@param t2 table
 local function concatEntries(t1, t2)
   local merged_entries = {}
   for key_sequence,entry_value in pairs(t1) do
@@ -30,6 +32,8 @@ local function concatEntries(t1, t2)
 end
 
 
+---@param t1 table
+---@param t2 table
 local function concatEntryTables(t1,t2)
   local merged_tables = t1
   for action_type, _ in pairs(t1) do
@@ -50,6 +54,9 @@ end
 
 local definition_tables = require"definitions.bindings"
 
+---Merge command entries from global and midi/tcp contexts
+---@param context "main" | "midi" | "global"
+---@return Definition[]
 function definitions.getPossibleEntries(context)
   local merged_table = {}
   merged_table = concatEntryTables(merged_table, definition_tables.global)

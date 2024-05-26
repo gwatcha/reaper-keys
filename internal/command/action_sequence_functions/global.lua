@@ -2,6 +2,7 @@ local runner = require('command.runner')
 local state_interface = require('state_machine.state_interface')
 local persist_visual_timeline_selection = require 'definitions.config'.general.persist_visual_timeline_selection
 
+---@type ActionModes
 return {
     all_modes = {
         { { 'command' }, runner.runAction },

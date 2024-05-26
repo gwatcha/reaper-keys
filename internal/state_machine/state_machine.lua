@@ -7,6 +7,12 @@ local log = require('utils.log')
 local format = require('utils.format')
 local feedback = require('gui.feedback.controller')
 
+---check that the key was pressed in the same context as the current key sequence
+---If so, append the new key to the key sequence,
+---otherwise, return nil and an error message
+---@param state State
+---@param key_press KeyPress
+---@return State|nil new_state, string|nil err
 local function updateWithKeyPress(state, key_press)
     local new_state = state
     if state.key_sequence == "" then
@@ -21,6 +27,13 @@ local function updateWithKeyPress(state, key_press)
     return new_state, nil
 end
 
+---append the keypress to the key sequence and build a command.
+---If there’s a command, execute it.
+---If there’s no command, check that there are possible future action-entries that could be triggered.
+---if there’s no possible future action-entries, reset the keysequence to empty and raise an error
+---return the updated state
+---@param state State
+---@param key_press KeyPress
 local function step(state, key_press)
     local message = ""
     local new_state, err = updateWithKeyPress(state, key_press)
@@ -110,6 +123,7 @@ end
 local function input()
     local _, _, section_id, _, _, _, _, ctx = reaper.get_action_context()
     if ctx == "" then return end
+    ---@type KeyPress
     local hotkey = { context = section_id == 0 and "main" or "midi", key = ctxToState(ctx) }
 
     log.info("Input: " .. format.line(hotkey))
