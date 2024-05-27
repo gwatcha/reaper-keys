@@ -1,0 +1,33 @@
+#!/bin/bash
+set -o xtrace
+
+for test in *.rks; do
+    echo "Running $test"
+    expected=${test%.rks}.RPP
+    out=out.RPP
+
+    ./reaper/reaper -saveas $out -new -nosplash 1>stdout 2>stderr &
+    pid=$(echo $!)
+    sleep 6
+
+    xdotool search  --onlyvisible --all reaper \
+      windowactivate windowfocus sleep 0.5
+
+    while read cmd; do
+        if [[ $cmd == "&"* ]]; then
+            xdotool key "${cmd#&}"
+        else
+            xdotool type "$cmd"
+        fi
+    done <$test
+
+    xdotool type " ps"
+    sleep .5
+    kill $pid
+    diff $expected $out
+    echo "Stdout:"
+    cat stdout
+    echo "Stderr:"
+    cat stderr
+    rm $out stdout stderr
+done
