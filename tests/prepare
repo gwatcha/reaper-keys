@@ -1,6 +1,7 @@
 #!/bin/bash
 #wget -qO- http://reaper.fm/files/7.x/reaper715_linux_x86_64.tar.xz | tar xfJ -
 #mv reaper_linux_x86_64/REAPER reaper
+#wget -qO- https://www.sws-extension.org/download/featured/sws-2.12.1.3-Linux-x86_64.tar.xz | tar xfJ - -C reaper
 
 cp reaper*.ini reaper/
 echo -n "

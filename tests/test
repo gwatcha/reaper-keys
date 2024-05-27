@@ -12,18 +12,19 @@ for test in *.rks; do
     pid=$(echo $!)
     sleep 1
 
-    xdotool search  --onlyvisible --all reaper \
-      windowactivate windowfocus
+    xdotool search --onlyvisible --all reaper windowactivate windowfocus
+    wid=$(xdotool getactivewindow)
 
     while read cmd; do
         if [[ $cmd == "&"* ]]; then
-            xdotool key "${cmd#&}"
+            xdotool key --window $wid "${cmd#&}"
         else
-            xdotool type "$cmd"
+            xdotool type --window $wid "$cmd"
         fi
     done <$test
 
-    xdotool type " ps"
+    xdotool type --window $wid " ps"
+
     sleep .5
     kill $pid
     diff $expected $out

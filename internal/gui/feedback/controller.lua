@@ -70,7 +70,7 @@ function feedback.update()
         feedback_view = FeedbackView:new()
         feedback_view:open()
 
-        if config.show_start_up_message then
+        if config.show_start_up_message and not config.test then
             reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
         end
 
