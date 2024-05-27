@@ -1,6 +1,8 @@
 #!/bin/bash
 set -o xtrace
 
+timeout 5 ./reaper/reaper -new -nosplash &>/dev/null # still evaluating
+
 for test in *.rks; do
     echo "Running $test"
     expected=${test%.rks}.RPP
@@ -8,10 +10,10 @@ for test in *.rks; do
 
     ./reaper/reaper -saveas $out -new -nosplash 1>stdout 2>stderr &
     pid=$(echo $!)
-    sleep 6
+    sleep 1
 
     xdotool search  --onlyvisible --all reaper \
-      windowactivate windowfocus sleep 0.5
+      windowactivate windowfocus
 
     while read cmd; do
         if [[ $cmd == "&"* ]]; then
@@ -25,9 +27,6 @@ for test in *.rks; do
     sleep .5
     kill $pid
     diff $expected $out
-    echo "Stdout:"
-    cat stdout
-    echo "Stderr:"
-    cat stderr
+    echo "Stdout:\n$(cat stdout)\nStderr:\n$(cat stderr)"
     rm $out stdout stderr
 done

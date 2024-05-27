@@ -1,7 +1,13 @@
 #!/bin/bash
-wget -qO- http://reaper.fm/files/7.x/reaper715_linux_x86_64.tar.xz | tar xfJ -
-mv reaper_linux_x86_64/REAPER reaper
-cp reaper.ini reaper/
+#wget -qO- http://reaper.fm/files/7.x/reaper715_linux_x86_64.tar.xz | tar xfJ -
+#mv reaper_linux_x86_64/REAPER reaper
+
+cp reaper*.ini reaper/
+echo -n "
+SCR 516 32060 _reaper_keys__midi \"reaper-keys\" \"$(pwd)/../internal/rk.lua\"
+SCR 516 0 _reaper_keys__main \"reaper-keys\" \"$(pwd)/../internal/rk.lua\"
+" >> reaper/reaper-kb.ini
+
 rm -fr reaper_linux_x86_64 \
     reaper/{Docs,InstallData,Plugins/reaper_{python.so,video.so}} \
     reaper/{Resources,ColorThemes,Scripts/Cockos/D*,OSC,KeyMaps,MIDINoteNames,MouseMaps,LangPack,Cursors} \
