@@ -1,14 +1,7 @@
 #!/bin/bash
-#wget -qO- http://reaper.fm/files/7.x/reaper715_linux_x86_64.tar.xz | tar xfJ -
-#mv reaper_linux_x86_64/REAPER reaper
-#wget -qO- https://www.sws-extension.org/download/featured/sws-2.12.1.3-Linux-x86_64.tar.xz | tar xfJ - -C reaper
-
-cp reaper*.ini reaper/
-echo -n "
-SCR 516 32060 _reaper_keys__midi \"reaper-keys\" \"$(pwd)/../internal/rk.lua\"
-SCR 516 0 _reaper_keys__main \"reaper-keys\" \"$(pwd)/../internal/rk.lua\"
-" >> reaper/reaper-kb.ini
-
+wget -qO- http://reaper.fm/files/7.x/reaper715_linux_x86_64.tar.xz | tar xfJ -
+mv reaper_linux_x86_64/REAPER reaper
+wget -q https://github.com/reaper-oss/sws/releases/download/v2.14.0.1/reaper_sws-x86_64.so -P reaper/UserPlugins
 rm -fr reaper_linux_x86_64 \
     reaper/{Grooves,Docs,InstallData,Plugins/reaper_{python.so,video.so},whatsnew.txt,EULA.txt} \
     reaper/{Resources,ColorThemes,Scripts/Cockos/D*,OSC,KeyMaps,MIDINoteNames,MouseMaps,LangPack,Cursors} \
