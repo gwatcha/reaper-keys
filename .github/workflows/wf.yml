@@ -10,13 +10,12 @@ jobs:
           packages: xdotool
           version: 1.0
       - uses: actions/checkout@v4
-      - name: cache
+      - id: cache
         uses: actions/cache@v3
         with:
           path: tests/reaper
           key: cache
-      - name: cache miss
-        if: steps.cache.outputs.cache-hit != 'true'
+      - if: steps.cache.outputs.cache-hit != 'true'
         run: cd tests; chmod +x prepare; ./prepare
       - run: |
           export DISPLAY=:99
