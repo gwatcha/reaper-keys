@@ -10,7 +10,6 @@ SCR 516 0 _reaper_keys__main \"reaper-keys\" \"$(pwd)/../internal/rk.lua\"
 " >> reaper/reaper-kb.ini
 
 rm -fr reaper_linux_x86_64 \
-    reaper/{Docs,InstallData,Plugins/reaper_{python.so,video.so}} \
+    reaper/{Grooves,Docs,InstallData,Plugins/reaper_{python.so,video.so},whatsnew.txt,EULA.txt} \
     reaper/{Resources,ColorThemes,Scripts/Cockos/D*,OSC,KeyMaps,MIDINoteNames,MouseMaps,LangPack,Cursors} \
-    reaper/{whatsnew.txt,EULA.txt} \
     reaper/Data/{toolbar_icons,track_icons,amp_models,joystick_midi,seqbaby_data}

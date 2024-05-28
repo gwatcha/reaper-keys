@@ -1,6 +1,5 @@
 #!/bin/bash
-set -o xtrace
-
+ret=0
 timeout 5 ./reaper/reaper -new -nosplash &>/dev/null # still evaluating
 
 for test in *.rks; do
@@ -12,7 +11,7 @@ for test in *.rks; do
     pid=$(echo $!)
     sleep 1
 
-    xdotool search --onlyvisible --all reaper windowactivate windowfocus
+    xdotool search --onlyvisible --all reaper windowactivate windowfocus &>/dev/null
     wid=$(xdotool getactivewindow)
 
     while read cmd; do
@@ -27,7 +26,15 @@ for test in *.rks; do
 
     sleep .5
     kill $pid
-    diff $expected $out
-    echo "Stdout:\n$(cat stdout)\nStderr:\n$(cat stderr)"
+    ./compare $expected $out
+    diff_ret=$(echo $?)
+    echo Stdout:
+    cat stdout
+    echo Stderr:
+    cat stderr
+
+    ret=$(( ret + diff_ret ))
     rm $out stdout stderr
 done
+
+exit $ret
