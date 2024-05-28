@@ -5,12 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: cd tests
-      - run: ./prepare
+      - run: cd tests; ./prepare
       - name: cache
         uses: actions/cache@v3
         with:
           path: reaper
           key: cache
-      - run: ./copy-configs
-      - run: ./test
+      - run:|
+          cd tests
+          ./copy-configs
+          ./test
