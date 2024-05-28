@@ -6,6 +6,7 @@ out = 0
 ignored_keys = ["TRACKID", "EGUID"]
 
 if len(left_file) != len(right_file):
+    print("Different sizes")
     exit(1)
 
 # skip project declaration
