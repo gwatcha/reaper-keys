@@ -4,22 +4,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt install -y xdotool
+      - uses: actions/checkout@v2
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: xdotool
+          version: 1.0
       - uses: actions/checkout@v4
-      - run: |
-          cd tests
-          chmod +x prepare
-          ./prepare
       - name: cache
         uses: actions/cache@v3
         with:
           path: tests/reaper
           key: cache
+      - name: cache miss
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: cd tests; chmod +x prepare; ./prepare
       - run: |
-          cd tests
-          chmod +x copy-configs
-          ./copy-configs
           export DISPLAY=:99
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          chmod +x test
-          ./test
+          cd tests
+          chmod +x copy-configs; ./copy-configs
+          chmod +x test; ./test
