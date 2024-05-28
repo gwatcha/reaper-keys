@@ -4,13 +4,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt install -y xdotool 
+      - run: sudo apt install -y xdotool
       - uses: actions/checkout@v4
       - run: |
           cd tests
           chmod +x prepare
           ./prepare
-          du -h tests/reaper
       - name: cache
         uses: actions/cache@v3
         with:
