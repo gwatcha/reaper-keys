@@ -26,6 +26,7 @@ for test in *.rks; do
     kill $pid
     ./compare $expected $out
     diff_ret=$(echo $?)
+    echo "Test exit code $diff_ret"
     echo Stdout:
     cat stdout
     echo Stderr:
