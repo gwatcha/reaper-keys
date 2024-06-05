@@ -1,0 +1,2 @@
+#!/bin/sh
+sed -i 's/test = false/test = true/g' ../internal/definitions/config.lua
