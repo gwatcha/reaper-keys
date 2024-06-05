@@ -1,0 +1,6 @@
+#!/bin/bash
+cp reaper*.ini reaper/
+echo -n "
+SCR 516 32060 _reaper_keys__midi \"reaper-keys\" \"$(pwd)/../internal/rk.lua\"
+SCR 516 0 _reaper_keys__main \"reaper-keys\" \"$(pwd)/../internal/rk.lua\"
+" >> reaper/reaper-kb.ini

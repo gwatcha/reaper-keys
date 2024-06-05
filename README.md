@@ -145,7 +145,31 @@ internal/definitions/bindings.lua -> add or customise key bindings
 internal/definitions/config.lua -> change GUI settings
 ```
 
-## Reporting performance issues
+## Contributing
+### Running tests
+
+For running tests locally you'd need some Linux distribution with X11 and `xdotool`.
+
+```sh
+cd tests;
+chmod +x prepare copy-configs patch-settings test
+
+./prepare # This will create a local Reaper installation
+./copy-configs # This will make current instance of reaper-keys testable
+./patch-settings # Or change test to true in internal/definitions/config.lua
+./test # This will run every test and compare with reference projects
+```
+
+If you don't use X11 you can have a look at `.github/workflows/wf.yml` to see how x11 is
+emulated with Xvfb.
+
+### Writing tests
+
+Each test is just a sequence of keys you press to achieve some result. One notable exception is
+a hotkey or a special key like "Return" (Enter) or "Backspace". In that case, prefix line with
+`&` and enter the key combination after, like `&Return`.
+
+### Reporting performance issues
 
 1. Download "Lua profiler" from ReaTeam Scripts and "ReaImGui" from ReaTeam Extensions via
 ReaPack.

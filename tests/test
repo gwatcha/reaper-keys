@@ -1,0 +1,39 @@
+#!/bin/bash
+ret=0
+timeout 5 ./reaper/reaper -new -nosplash &>/dev/null # still evaluating
+
+for test in *.rks; do
+    echo "Running $test"
+    expected=${test%.rks}.RPP
+    out=out.RPP
+
+    ./reaper/reaper -saveas $out -new -nosplash 1>stdout 2>stderr &
+    pid=$(echo $!)
+    sleep 1
+    xdotool search --onlyvisible --all reaper windowfocus
+
+    while read cmd; do
+        if [[ $cmd == "&"* ]]; then
+            xdotool key "${cmd#&}"
+        else
+            xdotool type "$cmd"
+        fi
+    done <$test
+
+    xdotool type " ps"
+
+    sleep .5
+    kill $pid
+    ./compare $expected $out
+    diff_ret=$(echo $?)
+    echo "Test exit code $diff_ret"
+    echo Stdout:
+    cat stdout
+    echo Stderr:
+    cat stderr
+
+    ret=$(( ret + diff_ret ))
+    rm $out stdout stderr
+done
+
+exit $ret

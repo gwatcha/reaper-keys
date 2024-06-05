@@ -1,7 +1,1 @@
-internal/saved/data/*
-!/internal/saved/data/.gitkeep
-internal/gui/feedback/model_data.lua
-internal/state_machine/state.lua
-Scripts/gen
-reaper-keys.ReaperKeyMap
-
+tests/reaper
