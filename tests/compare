@@ -7,7 +7,7 @@ ignored_keys = ["TRACKID", "EGUID"]
 
 if len(left_file) != len(right_file):
     print("Different sizes")
-    exit(1)
+    out = 1
 
 # skip project declaration
 for left, right in zip(left_file.split()[1], right_file.split()[1]):
