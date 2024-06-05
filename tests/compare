@@ -10,11 +10,10 @@ if len(left_file) != len(right_file):
     out = 1
 
 # skip project declaration
-for left, right in zip(left_file.split()[1], right_file.split()[1]):
+for left, right in zip(left_file.split()[1:], right_file.split()[1:]):
     left, right = left.strip(), right.strip()
     if left == right or any(map(lambda x: left.startswith(x), ignored_keys)):
         continue
-    print(f"< {left}\n> {right}")
     out = 1
 
 exit(out)
