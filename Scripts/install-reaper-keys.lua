@@ -1,5 +1,5 @@
 -- @description reaper-keys: map keystroke combinations to actions like in vim
--- @version 2.0.0-a1
+-- @version 2.0.0-a2
 -- @author gwatcha
 -- @links
 --   GitHub repository https://github.com/gwatcha/reaper-keys
