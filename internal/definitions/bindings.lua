@@ -130,7 +130,8 @@ local global = { -- applies both to main and midi
             ["x"] = "ToggleAutoCrossfade",
             ["e"] = "ToggleEnvelopePointsMoveWithItems",
             ["c"] = "CycleRippleEditMode",
-            ["f"] = "ResetFeedbackWindow",
+            f = "SoloInFront",
+            F = "ResetFeedbackWindow",
         } },
         ["i"] = { "+insert", {
             ["f"] = "InsertMediaFile",
@@ -145,6 +146,17 @@ local global = { -- applies both to main and midi
             ["4"] = "InsertTrackFromTemplateSlot4",
         } },
         ["<SPC>"] = { "+leader commands", {
+            N = "ShowNotesWindow",
+            n = { "+notes", {
+                i = "ShowNotesItem",
+                t = "ShowNotesTrack",
+                p = "ShowNotesProject",
+                g = "ShowNotesGlobal",
+                m = "ShowNotesMarkerNames",
+                M = "ShowNotesMarkerSubtitles",
+                r = "ShowNotesRegionNames",
+                R = "ShowNotesRegionSubtitles",
+            } },
             v = { "+view", {
                 [","] = "ShowPreferences",
                 ['"'] = "ShowSnapshotsWindow",
@@ -270,6 +282,7 @@ local global = { -- applies both to main and midi
             } },
             ["t"] = { "+track", {
                 ["s"] = "TrackToggleSolo",
+                S = "TrackToggleSoloDefeat",
                 ["m"] = "TrackToggleMute",
                 ["r"] = "RenameTrack",
                 ["n"] = "ResetTrackToNormal",
@@ -343,7 +356,7 @@ local global = { -- applies both to main and midi
                 ["g"] = "SetGridDivision",
                 ["r"] = "ResetControlDevices",
                 [","] = "ShowPreferences", -- remove in 2.1
-                ["S"] = "UnsoloAllItems",
+                ["S"] = "UnsoloAllTracks",
                 ["s"] = { "+show/hide", {
                     ["x"] = "ShowRoutingMatrix",       -- remove in 2.1
                     ["w"] = "ShowWiringDiagram",       -- remove in 2.1
@@ -372,21 +385,20 @@ local global = { -- applies both to main and midi
                 [","] = "ShowProjectSettings",
                 ["n"] = "NextTab",
                 ["p"] = "PrevTab",
-                ["s"] = "SaveProject",
+                s = "SaveProject",
+                S = "SaveProjectAs",
+                v = "SaveProjectWithNewVersion",
                 ["o"] = "OpenProject",
                 ["c"] = "NewProjectTab",
                 ["x"] = "CloseProject",
                 ["C"] = "CleanProjectDirectory",
-                ["S"] = "SaveProjectWithNewVersion",
                 ["t"] = { "+timebase", {
                     ["t"] = "SetProjectTimebaseToTime",
                     ["b"] = "SetProjectTimebaseToBeatsPos",
                     ["r"] = "SetProjectTimebaseToBeatsPosLengthAndRate",
                 } },
-                ["r"] = { "+render", {
-                    ["."] = "RenderProjectWithLastSetting",
-                    ["r"] = "RenderProject",
-                } },
+                r = "RenderProject",
+                R = "RenderProjectWithLastSetting",
             } },
         } },
     },
