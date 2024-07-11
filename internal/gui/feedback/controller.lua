@@ -53,7 +53,6 @@ end
 local startup_msg =
     "Hello from inside Reaper Keys! I see the feedback window just opened... " ..
     "Here are some things I have been told to tell you:\n" ..
-    "- If the feedback window is focused, I can't hear keys being pressed, be sure to unfocus it.\n" ..
     "- Press <CM-x> (Ctrl + Alt + x) to open up a keybinding menu.\n" ..
     "- Everything you need to configure reaper-keys is in REAPER/Scripts/reaper-keys/internal/definitions/\n" ..
     "- If you would like to hide this message, set the option in internal/definitions/config.lua\n" ..
@@ -66,36 +65,35 @@ function feedback.update()
     local feedback_view_open = model.getKey("open")
     local just_opened = reaper_state.clearJustOpenedFlag()
 
-    if not feedback_view_open or just_opened then
-        feedback_view = FeedbackView:new()
-        feedback_view:open()
-
-        if config.show_start_up_message and not config.test then
-            reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
-        end
-
-        model.setKeys({ open = true })
-
-        if config.profile then
-            local path = '/Scripts/ReaTeam Scripts/Development/cfillion_Lua profiler.lua'
-            Profiler = dofile(reaper.GetResourcePath() .. path)
-            Profiler.attachToWorld()
-            Profiler.start()
-            Profiler.run()
-        end
-
-        reaper.atexit(function()
-            model.setKeys({ open = false })
-            local window_settings = feedback_view:getWindowSettings()
-            model.setKeys({ window_settings = window_settings })
-        end)
-    else
-        local update_number = model.getKey("update_number")
-        if not update_number or update_number > 20 then
-            update_number = 0
-        end
+    if feedback_view_open and not just_opened then
+        local update_number = model.getKey("update_number") or 0
+        if update_number > 20 then update_number = 0 end
         model.setKeys({ update_number = update_number + 1 })
+        return
     end
+
+    feedback_view = FeedbackView:new()
+    feedback_view:open()
+
+    if config.show_start_up_message and not config.test then
+        reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
+    end
+
+    model.setKeys({ open = true })
+
+    if config.profile then
+        local path = '/Scripts/ReaTeam Scripts/Development/cfillion_Lua profiler.lua'
+        Profiler = dofile(reaper.GetResourcePath() .. path)
+        Profiler.attachToWorld()
+        Profiler.start()
+        Profiler.run()
+    end
+
+    reaper.atexit(function()
+        model.setKeys({ open = false })
+        local window_settings = feedback_view:getWindowSettings()
+        model.setKeys({ window_settings = window_settings })
+    end)
 end
 
 function feedback.displayMessage(message)

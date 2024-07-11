@@ -1,5 +1,5 @@
 -- @description reaper-keys: map keystroke combinations to actions like in vim
--- @version 2.0.0-a2
+-- @version 2.0.0-a3
 -- @author gwatcha
 -- @links
 --   GitHub repository https://github.com/gwatcha/reaper-keys
@@ -115,7 +115,8 @@ local keymap = io.open(keymap_path, "w")
 if not keymap then return reaper.MB("Failed to create " .. keymap_path, "Error", 0) end
 
 function KEY(mod_id, key_id, command_id, section_id)
-    return ("KEY %d %d %s %d\n"):format(mod_id, key_id, command_id, section_id)
+    return ("KEY %d %d %s %d\nKEY %d %d 101 102\n"):format(
+        mod_id, key_id, command_id, section_id, mod_id, key_id)
 end
 
 local parent_dir = debug.getinfo(1, "S").source:match "@?(.*)[\\/].*[\\/]"
