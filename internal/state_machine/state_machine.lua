@@ -139,6 +139,10 @@ local function input()
 
     feedback.displayState(new_state)
     feedback.update()
+
+    -- This works only when window is docked, nothing we can do otherwise
+    local defocus_window = section_id == 0 and "_BR_FOCUS_TRACKS" or "_SN_FOCUS_MIDI_EDITOR"
+    reaper.Main_OnCommand(reaper.NamedCommandLookup(defocus_window), 0)
 end
 
 return input

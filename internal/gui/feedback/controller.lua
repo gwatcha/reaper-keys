@@ -78,10 +78,6 @@ function feedback.update()
         reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
     end
 
-    -- o or O on first track don't focus rename field
-    -- defocus window, otherwise, most commands won't work
-    -- reaper.Main_OnCommand(reaper.NamedCommandLookup("_BR_FOCUS_TRACKS"), 0)
-
     model.setKeys({ open = true })
 
     if config.profile then
