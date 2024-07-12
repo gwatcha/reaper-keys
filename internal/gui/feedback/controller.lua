@@ -56,7 +56,6 @@ local startup_msg =
     "- Press <CM-x> (Ctrl + Alt + x) to open up a keybinding menu.\n" ..
     "- Everything you need to configure reaper-keys is in REAPER/Scripts/reaper-keys/internal/definitions/\n" ..
     "- If you would like to hide this message, set the option in internal/definitions/config.lua\n" ..
-    "- If you set that option there will be no one to protect you from the focus stealing of the " ..
     "feedback window.\n" ..
     "\t Your mother loves you"
 local feedback_view = nil
@@ -66,7 +65,7 @@ function feedback.update()
     local just_opened = reaper_state.clearJustOpenedFlag()
 
     if feedback_view_open and not just_opened then
-        local update_number = model.getKey("update_number") or 0
+        local update_number = tonumber(model.getKey("update_number") or 0)
         if update_number > 20 then update_number = 0 end
         model.setKeys({ update_number = update_number + 1 })
         return
@@ -78,6 +77,10 @@ function feedback.update()
     if config.show_start_up_message and not config.test then
         reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
     end
+
+    -- o or O on first track don't focus rename field
+    -- defocus window, otherwise, most commands won't work
+    -- reaper.Main_OnCommand(reaper.NamedCommandLookup("_BR_FOCUS_TRACKS"), 0)
 
     model.setKeys({ open = true })
 

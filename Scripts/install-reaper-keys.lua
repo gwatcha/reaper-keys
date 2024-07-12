@@ -115,8 +115,7 @@ local keymap = io.open(keymap_path, "w")
 if not keymap then return reaper.MB("Failed to create " .. keymap_path, "Error", 0) end
 
 function KEY(mod_id, key_id, command_id, section_id)
-    return ("KEY %d %d %s %d\nKEY %d %d 101 102\n"):format(
-        mod_id, key_id, command_id, section_id, mod_id, key_id)
+    return ("KEY %d %d %s %d\n"):format(mod_id, key_id, command_id, section_id)
 end
 
 local parent_dir = debug.getinfo(1, "S").source:match "@?(.*)[\\/].*[\\/]"
@@ -124,7 +123,6 @@ local command_path = concat_path(parent_dir, "internal", "rk.lua")
 local sections = { midi = 32060, main = 0 }
 for section_name, section_id in pairs(sections) do
     local command_id = "_reaper_keys__" .. section_name
-    -- 260 focuses window on every key press so 516 is only option
     keymap:write(('SCR 516 %d %s "reaper-keys" "%s"\n'):format(section_id, command_id, command_path))
 
     for group_name, group in pairs(key_groups) do

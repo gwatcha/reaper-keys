@@ -122,6 +122,7 @@ end
 
 local function input()
     local _, _, section_id, _, _, _, _, ctx = reaper.get_action_context()
+    log.trace(reaper.get_action_context())
     if ctx == "" then return end
     ---@type KeyPress
     local hotkey = { context = section_id == 0 and "main" or "midi", key = ctxToState(ctx) }

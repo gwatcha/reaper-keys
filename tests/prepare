@@ -1,5 +1,5 @@
 #!/bin/bash
-wget -qO- http://reaper.fm/files/7.x/reaper715_linux_x86_64.tar.xz | tar xfJ -
+wget -qO- http://reaper.fm/files/7.x/reaper718_linux_x86_64.tar.xz | tar xfJ -
 mv reaper_linux_x86_64/REAPER reaper
 wget -q https://github.com/reaper-oss/sws/releases/download/v2.14.0.1/reaper_sws-x86_64.so -P reaper/UserPlugins
 rm -fr reaper_linux_x86_64 \
