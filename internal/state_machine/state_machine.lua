@@ -129,14 +129,14 @@ local function input()
     local hotkey = { context = section_id == 0 and "main" or "midi", key = ctxToState(ctx) }
 
     log.info("Input: " .. format.line(hotkey))
-    if config.show_feedback_window and not config.test then feedback.clear() end
+    if config.show_feedback_window then feedback.clear() end
 
     local state = state_interface.get()
     local new_state = step(state, hotkey)
     state_interface.set(new_state)
 
     log.info("New state: " .. format.block(new_state))
-    if config.test or not config.show_feedback_window then return end
+    if not config.show_feedback_window then return end
 
     feedback.displayState(new_state)
     feedback.update()

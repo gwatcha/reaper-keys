@@ -1,6 +1,6 @@
 #!/bin/bash
 ret=0
-timeout 5 ./reaper/reaper -new -nosplash &>/dev/null # still evaluating
+[ $# -eq 0 ] && timeout 6 ./reaper/reaper -new -nosplash &>/dev/null # still evaluating
 
 for test in *.rks; do
     echo "Running $test"
