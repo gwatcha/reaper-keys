@@ -71,11 +71,10 @@ local gui = {
 
 local general = {
     show_start_up_message = true,
-    dock_feedback_window = false,
+    dock_feedback_window = true,
     show_feedback_window = true,
     search_for_custom_config = false,
     profile = false,
-    test = false,
     -- should operators in visual modes reset the selection or have it persist?
     persist_visual_timeline_selection = true,
     persist_visual_track_selection = false,

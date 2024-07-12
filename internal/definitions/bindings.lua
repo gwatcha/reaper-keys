@@ -132,6 +132,7 @@ local global = { -- applies both to main and midi
             ["c"] = "CycleRippleEditMode",
             f = "SoloInFront",
             F = "ResetFeedbackWindow",
+            M = "ToggleMasterMonoStereo",
         } },
         ["i"] = { "+insert", {
             ["f"] = "InsertMediaFile",
@@ -357,13 +358,13 @@ local global = { -- applies both to main and midi
                 ["r"] = "ResetControlDevices",
                 [","] = "ShowPreferences", -- remove in 2.1
                 ["S"] = "UnsoloAllTracks",
-                ["s"] = { "+show/hide", {
+                ["s"] = { "+show/hide", { -- remove in 2.1
                     ["x"] = "ShowRoutingMatrix",       -- remove in 2.1
                     ["w"] = "ShowWiringDiagram",       -- remove in 2.1
                     ["t"] = "ShowTrackManager",        -- remove in 2.1
                     ["f"] = "ShowMonitoringFx",        -- remove in 2.1
                     ["m"] = "ToggleShowMasterTrack",   -- remove in 2.1
-                    ["M"] = "ToggleMasterMonoStereo",
+                    ["M"] = "ToggleMasterMonoStereo",  -- remove in 2.1
                     ["r"] = "ShowRegionMarkerManager", -- remove in 2.1
                 } },
                 ["f"] = { "+fx", {

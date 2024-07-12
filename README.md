@@ -21,9 +21,7 @@ to [examples](#some-ideas-to-start-with).
 ## Installation
 
 - Add `https://raw.githubusercontent.com/gwatcha/reaper-keys/master/index.xml` to Reapack.
-- Optionally, install [SWS](https://sws-extension.org/) (by hand or from ReaTeam
-  Extensions). Although this extension _may_ work without SWS, the experience will be
-  worse.
+- Install [SWS](https://sws-extension.org/) by hand or from ReaTeam Extensions.
 
 ## Features
 ### Bind key sequences
@@ -152,16 +150,16 @@ For running tests locally you'd need some Linux distribution with X11 and `xdoto
 
 ```sh
 cd tests;
-chmod +x prepare copy-configs patch-settings test
+chmod +x prepare copy-configs test
 
 ./prepare # This will create a local Reaper installation
 ./copy-configs # This will make current instance of reaper-keys testable
-./patch-settings # Or change test to true in internal/definitions/config.lua
 ./test # This will run every test and compare with reference projects
 ```
 
 If you don't use X11 you can have a look at `.github/workflows/wf.yml` to see how x11 is
 emulated with Xvfb.
+Use `./test -s` to skip first invocation which bypasses "Still evaluating" window.
 
 ### Writing tests
 

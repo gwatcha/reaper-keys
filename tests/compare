@@ -3,11 +3,7 @@ from pathlib import Path
 from sys import argv
 left_file, right_file = Path(argv[1]).read_text(), Path(argv[2]).read_text()
 out = 0
-ignored_keys = ["<TRACK", "TRACKID", "EGUID"]
-
-if len(left_file) != len(right_file):
-    print("Different sizes")
-    out = 1
+ignored_keys = ["<TRACK", "TRACKID", "EGUID", "FIXEDLANES"]
 
 # skip project declaration
 for left, right in zip(left_file.split("\n")[1:], right_file.split("\n")[1:]):

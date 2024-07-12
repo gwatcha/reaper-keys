@@ -157,6 +157,8 @@ return {
     FitSelectedItemsByStretching = 41206,
     FitNotes = { 40754, midiCommand = true },
     FocusMain = "_S&M_WNMAIN",
+    FocusTracks = "_BR_FOCUS_TRACKS",
+    FocusMidiEditor = "_SN_FOCUS_MIDI_EDITOR",
     FolderChildren = { "SelectFolderChildren", "ScrollToSelectedTracks" },
     FolderParent = { "SelectFolderParent", "ScrollToSelectedTracks" },
     Folder = { "SelectFolder", "ScrollToSelectedTracks" },

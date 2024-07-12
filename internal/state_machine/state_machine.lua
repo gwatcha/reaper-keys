@@ -3,6 +3,7 @@ local buildCommand = require('command.builder')
 local handleCommand = require('command.handler')
 local getPossibleFutureEntries = require('command.completer')
 local config = require 'definitions.config'.general
+local actions = require 'definitions.actions'
 local log = require('utils.log')
 local format = require('utils.format')
 local feedback = require('gui.feedback.controller')
@@ -127,17 +128,25 @@ local function input()
     local hotkey = { context = section_id == 0 and "main" or "midi", key = ctxToState(ctx) }
 
     log.info("Input: " .. format.line(hotkey))
-    if config.show_feedback_window and not config.test then feedback.clear() end
+    if config.show_feedback_window then feedback.clear() end
 
     local state = state_interface.get()
     local new_state = step(state, hotkey)
     state_interface.set(new_state)
 
     log.info("New state: " .. format.block(new_state))
-    if config.test or not config.show_feedback_window then return end
+    if not config.show_feedback_window then return end
 
     feedback.displayState(new_state)
     feedback.update()
+
+    -- This works only when window is docked, nothing we can do otherwise
+    local defocus_window = section_id == 0
+        and actions.FocusTracks or actions.FocusMidiEditor
+    reaper.Main_OnCommand(reaper.NamedCommandLookup(defocus_window), 0)
+
+    -- When we insert track with feedback window closed, it steals focus and track is not renamed
+    if hotkey.key:lower() == "o" then reaper.Main_OnCommand(actions.RenameTrack, 0) end
 end
 
 return input
