@@ -53,10 +53,10 @@ end
 local startup_msg =
     "Hello from inside Reaper Keys! I see the feedback window just opened... " ..
     "Here are some things I have been told to tell you:\n" ..
+    "- If the feedback window is focused and not docked, I can't hear keys being pressed, be sure to unfocus it.\n" ..
     "- Press <CM-x> (Ctrl + Alt + x) to open up a keybinding menu.\n" ..
     "- Everything you need to configure reaper-keys is in REAPER/Scripts/reaper-keys/internal/definitions/\n" ..
     "- If you would like to hide this message, set the option in internal/definitions/config.lua\n" ..
-    "feedback window.\n" ..
     "\t Your mother loves you"
 local feedback_view = nil
 
