@@ -15,7 +15,7 @@ for test in $tests; do
     ./reaper/reaper -saveas $out -new -nosplash &>/dev/null &
     pid=$(echo $!)
     sleep 1
-    xdotool search --onlyvisible --all reaper windowfocus
+    xdotool search --onlyvisible --all reaper windowfocus &>/dev/null
 
     while read cmd; do
         if [[ $cmd == "&"* ]]; then
