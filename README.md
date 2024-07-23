@@ -86,7 +86,7 @@ a         # add fx
 <ESC>     # close fx window
 im        # insert midi item
 <Space>so # open in midi editor
-0         # get to item start
+0         # jump to project start
 a         # add note and select it
 5p        # paste 5 more notes (last one is selected)
 NN        # select two more previous notes
@@ -159,7 +159,6 @@ chmod +x prepare copy-configs test
 
 If you don't use X11 you can have a look at `.github/workflows/wf.yml` to see how x11 is
 emulated with Xvfb.
-Use `./test -s` to skip first invocation which bypasses "Still evaluating" window.
 
 ### Writing tests
 
