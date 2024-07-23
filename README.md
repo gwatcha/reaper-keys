@@ -159,7 +159,6 @@ chmod +x prepare copy-configs test
 
 If you don't use X11 you can have a look at `.github/workflows/wf.yml` to see how x11 is
 emulated with Xvfb.
-Use `./test -s` to skip first invocation which bypasses "Still evaluating" window.
 
 ### Writing tests
 
