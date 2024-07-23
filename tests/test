@@ -33,7 +33,7 @@ for test in *.rks; do
     cat stderr
 
     ret=$(( ret + diff_ret ))
-    rm $out stdout stderr
+    # rm $out stdout stderr
 done
 
 exit $ret

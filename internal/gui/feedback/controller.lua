@@ -104,6 +104,7 @@ function feedback.displayState(state)
         and string_util.format("(rec %s..)", state['macro_register'])
         or ""
     model.setKeys({ right_text = right_text, mode = state['mode'] })
+    feedback.update()
 end
 
 function feedback.clear()

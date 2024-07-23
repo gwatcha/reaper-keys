@@ -86,7 +86,7 @@ a         # add fx
 <ESC>     # close fx window
 im        # insert midi item
 <Space>so # open in midi editor
-0         # get to item start
+0         # jump to project start
 a         # add note and select it
 5p        # paste 5 more notes (last one is selected)
 NN        # select two more previous notes
