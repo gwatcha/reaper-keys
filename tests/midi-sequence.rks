@@ -1,14 +1,5 @@
-o
-test
-&Return
-0
-l
-im
-b
-&space
-so
-a
-2l
-k
-a
-Z
+o test &Return "create track
+0 l im b "create midi item
+&space so "open midi editor
+a 2l k a "insert two notes
+Z "close midi editor
