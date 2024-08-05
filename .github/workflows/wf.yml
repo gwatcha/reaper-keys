@@ -11,7 +11,7 @@ jobs.build.steps:
     with: { path: tests/reaper, key: cache }
   - if: steps.cache-restore.outputs.cache-hit != 'true'
     run: cd tests; chmod +x prepare; ./prepare
-  - if: github.ref == 'refs/heads/master'
+  - if: steps.cache-restore.outputs.cache-hit != 'true' && github.ref == 'refs/heads/master'
     uses: actions/cache/save@v3
     with: { path: tests/reaper, key: cache }
   - run: |
