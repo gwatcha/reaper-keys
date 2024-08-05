@@ -1,7 +1,9 @@
 name: workflow
 on: push
-jobs.build.runs-on: ubuntu-latest
-jobs.build.steps:
+jobs:
+ build:
+  runs-on: ubuntu-latest
+  steps:
   - uses: actions/checkout@v2
   - uses: awalsh128/cache-apt-pkgs-action@latest
     with: { packages: xdotool, version: 1.0 }
