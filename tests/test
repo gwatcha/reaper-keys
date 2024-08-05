@@ -1,40 +1,34 @@
-#!/bin/bash
-ret=0
+#!/bin/sh
+ret=0; out=out.RPP; reaper="./reaper/reaper -new -nosplash"
 if [ $# -eq 0 ]; then
-    timeout 6 ./reaper/reaper -new -nosplash &>/dev/null # still evaluating
-    tests="*.rks"
+    tests="*.rks"; timeout 6 $reaper 1>/dev/null 2>&1 # still evaluating
 else
     tests=$@
 fi
 
 for test in $tests; do
     echo "Running $test"
-    expected=${test%.rks}.RPP
-    out=out.RPP
 
-    ./reaper/reaper -saveas $out -new -nosplash &>/dev/null &
-    pid=$(echo $!)
-    sleep 1
-    xdotool search --onlyvisible --all reaper windowfocus &>/dev/null
+    $reaper -saveas $out 1>/dev/null 2>&1 &
+    pid=$(echo $!); sleep 1
+    xdotool search --onlyvisible --all reaper windowfocus 1>/dev/null 2>&1
 
-    while read cmd; do
-        if [[ $cmd == "&"* ]]; then
-            xdotool key "${cmd#&}"
+    { <$test sed 's|"[^"]*$||' | tr ' ' '\n'
+    } | while read cmd; do
+        if [ "${cmd%${cmd#?}}" = "&" ]; then
+            xdotool key "${cmd#?}"
         else
             xdotool type "$cmd"
         fi
         sleep .1
-    done <$test
+    done
 
-    xdotool type " ps"
+    xdotool type " ps"; sleep .5; kill $pid
 
-    sleep .5
-    kill $pid
-    ./compare $expected $out
+    ./compare ${test%.rks}.RPP $out
     diff_ret=$(echo $?)
     echo "Test exit code $diff_ret"
     ret=$(( ret + diff_ret ))
     rm $out
 done
-
 exit $ret
