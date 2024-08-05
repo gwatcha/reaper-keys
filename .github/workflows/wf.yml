@@ -1,23 +1,23 @@
 name: workflow
 on: push
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: awalsh128/cache-apt-pkgs-action@latest
-        with: { packages: xdotool, version: 1.0 }
-      - uses: actions/checkout@v4
-      - id: cache
-        uses: actions/cache@v3
-        with: { path: tests/reaper, key: cache }
-      - if: steps.cache.outputs.cache-hit != 'true'
-        run: cd tests; chmod +x prepare; ./prepare
-      - run: |
-          # We can run local tests with feedback window, but in CI something goes wrong
-          sed -i 's/show_feedback_window = true/show_feedback_window = false/g' internal/definitions/config.lua
-          export DISPLAY=:99; sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 &
-          cd tests; chmod +x copy-configs test
-          ./copy-configs
-          ./test
-          exit $?
+jobs.build.runs-on: ubuntu-latest
+jobs.build.steps:
+  - uses: actions/checkout@v2
+  - uses: awalsh128/cache-apt-pkgs-action@latest
+    with: { packages: xdotool, version: 1.0 }
+  - uses: actions/checkout@v4
+  - id: cache-restore
+    uses: actions/cache/restore@v3
+    with: { path: tests/reaper, key: cache }
+  - if: steps.cache-restore.outputs.cache-hit != 'true'
+    run: cd tests; chmod +x prepare; ./prepare
+  - if: github.ref == 'refs/heads/master'
+    uses: actions/cache/save@v3
+    with: { path: tests/reaper, key: cache }
+  - run: |
+      sed -i 's/show_feedback_window = true/show_feedback_window = false/g' internal/definitions/config.lua
+      export DISPLAY=:99; sudo Xvfb -ac :99 -screen 0 1280x1024x24 >/dev/null 2>&1 &
+      cd tests; chmod +x copy-configs test
+      ./copy-configs
+      ./test
+      exit $?
