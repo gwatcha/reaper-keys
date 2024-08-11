@@ -100,9 +100,7 @@ function feedback.displayMessage(message)
 end
 
 function feedback.displayState(state)
-    local right_text = state.macro_recording
-        and string_util.format("(rec %s..)", state['macro_register'])
-        or ""
+    local right_text = state.macro_recording and ("(rec %s..)"):format(state.macro_register) or ""
     model.setKeys({ right_text = right_text, mode = state['mode'] })
     feedback.update()
 end

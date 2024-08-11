@@ -1,6 +1,3 @@
-local log = require('utils.log')
-local format = require('utils.format')
-
 local definitions = require('utils.definitions')
 local BindingListView = require('gui.binding_list.View')
 local getPossibleFutureEntries = require('command.completer')
@@ -62,7 +59,6 @@ function getElementValues(view)
   local action_type_i, action_type = view.elements.action_type_filter:val()
   return {
     binding_list_box = view.elements.binding_list_box:val(),
-    query = view.elements.query:val(),
     state_filter_active = view.elements.state_filter_active:val(nil, true),
     context_filter_active = view.elements.context_filter_active:val(nil, true),
     context = context,
