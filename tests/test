@@ -1,12 +1,8 @@
 #!/bin/sh
-ret=0; out=out.RPP; reaper="./reaper/reaper -new -nosplash"
-if [ $# -eq 0 ]; then
-    tests="*.rks"; timeout 6 $reaper 1>/dev/null 2>&1 # still evaluating
-else
-    tests=$@
-fi
+ret=0; out="out.RPP"; reaper="./reaper/reaper -new -nosplash"
+[ $# -eq 0 ] && timeout 6 $reaper 1>/dev/null 2>&1 # still evaluating
 
-for test in $tests; do
+for test in ${@:-*.rks}; do
     echo "Running $test"
 
     $reaper -saveas $out 1>/dev/null 2>&1 &

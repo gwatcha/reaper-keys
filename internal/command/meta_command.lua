@@ -93,12 +93,10 @@ local meta_commands = {
     new_state['key_sequence'] = ""
     return new_state
   end,
-  -- TODO make me accessible from any state
-  ["ShowBindingList"] = function(state, command)
-    local new_state = state
-    new_state['key_sequence'] = ""
-    local list = binding_list.open(new_state)
-    return new_state
+  ShowBindingList = function(state, _)
+    state.key_sequence = ""
+    binding_list.open(state)
+    return state
   end
 }
 

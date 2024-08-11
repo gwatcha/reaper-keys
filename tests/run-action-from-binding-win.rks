@@ -1,0 +1,3 @@
+otest &Return "limitation of tester - feedback must be opened before bind win
+&ctrl+alt+x "open bindings window
+insertmi &Down &Return "run insert-midi-item action
