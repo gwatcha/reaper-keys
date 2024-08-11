@@ -4,7 +4,7 @@ local handleCommand = require('command.handler')
 local getPossibleFutureEntries = require('command.completer')
 local config = require 'definitions.config'.general
 local actions = require 'definitions.actions'
-local log = require'utils.log'
+local log = require 'utils.log'
 local format = require('utils.format')
 local feedback = require('gui.feedback.controller')
 
@@ -45,8 +45,7 @@ local function step(state, key_press)
         return new_state
     end
 
-    local new_keys = new_state.key_sequence
-    log.info("New key sequence: ", new_keys)
+    log.info("New key sequence: ", new_state.key_sequence)
     local command = buildCommand(new_state)
     if command then
         log.trace("Command built: ", format.block(command))
