@@ -1,0 +1,16 @@
+#!/bin/sh
+[ $(git rev-parse --abbrev-ref HEAD) != "master" ] && echo "not on master" && exit 0
+installer="Scripts/install-reaper-keys.lua"
+version=$(<$installer sed -n 's/^-- @version //p')
+index="index.xml"
+[ $(<$index grep -c $version) -gt 0 ] && echo "version exists" && exit 0
+head -n -3 $index | tee $index >/dev/null
+time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+raw="https://github.com/gwatcha/reaper-keys/raw/$(git rev-parse HEAD)"
+echo "\
+<version name=\"$version\" author=\"gwatcha\" time=\"$time\">
+<source main=\"main\">$raw/$installer</source>" >>$index
+for file in $(find internal -type f) $(find vendor -type f); do
+    echo "<source file=\"../$file\">$raw/$file</source>" >>$index
+done
+echo "</version>\n</reapack>\n</category>\n</index>" >>$index
