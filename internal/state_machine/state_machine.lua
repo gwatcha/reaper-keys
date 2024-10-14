@@ -102,12 +102,28 @@ local aliases = {
     [32813] = '<INS>',
     [32814] = '<DEL>',
 }
+local macos = reaper.GetOS():match "OS"
+local macos_shift_fix = {
+    [51] = 35, --#
+    [52] = 36, --$
+    [53] = 37, --%
+    [54] = 94, --^
+    [55] = 38, --&
+    [56] = 42, --*
+    [57] = 40, --(
+    [48] = 41, --)
+}
 
 local function ctxToState(ctx)
     local _, _, mod, code = ctx:find "^key:(.*):(.*)$"
     local virt, ctrl, shift = mod:match "V", mod:match "C", mod:match "S"
     local alt = mod:match "A" and "M" or nil
     code = tonumber(code) or -1
+
+    local macos_shift_res = macos_shift_fix[code]
+    if macos and virt and shift and macos_shift_res then
+        virt, shift, code = false, false, macos_shift_res
+    end
 
     if 65 <= code and code <= 90 then -- Reaper always transmits uppercase letters
         local key = string.char(code + (shift and 0 or 32))
