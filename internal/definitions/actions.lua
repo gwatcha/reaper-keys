@@ -535,9 +535,12 @@ return {
     },
     ExplodeTakesInPlace = 40642,
     ExplodeTakesInOrder = 40643,
+    ExplodeTakesAcrossTracks = 40224,
+    ImplodeItemsOnSameTrackIntoTakes = 40543,
+    ImplodeItemsAcrossTracksIntoTakes = 40438, -- Overlapping items -> multiple takes
+    ImplodeItemsAcrossTracksIntoOneTrack = 40644, -- Overlapping items -> first one
     ToggleBetweenReadAndTouchAutomationMode = 41109,
     QuantizeItems = 40316,
-    ExplodeTakesInAcrossTracks = 40224,
     SetAutomationModeWrite = 40403,
     SetEnvelopeShapeBezier = 40683,
     OpenConsole = "_SWSCONSOLE",

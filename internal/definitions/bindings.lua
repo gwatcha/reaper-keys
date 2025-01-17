@@ -235,11 +235,16 @@ local global = { -- applies both to main and midi
                 ["h"] = "HealItemsSplits",
                 ["s"] = "ToggleSoloItem",
                 ["B"] = "MoveItemContentToEditCursor",
-                ["x"] = { "+explode takes", {
-                    ["p"] = "ExplodeTakesInPlace",
-                    ["o"] = "ExplodeTakesInOrder",
-                    ["a"] = "ExplodeTakesInAcrossTracks"
-                } },
+                x = { "+explode takes", {
+                    p = "ExplodeTakesInPlace",
+                    o = "ExplodeTakesInOrder",
+                    a = "ExplodeTakesAcrossTracks"
+                }},
+                i = { "+implode items", {
+                    p = "ImplodeItemsOnSameTrackIntoTakes",
+                    o = "ImplodeItemsAcrossTracksIntoTakes",
+                    a = "ImplodeItemsAcrossTracksIntoOneTrack"
+                }},
                 ["S"] = { "+stretch", {
                     ["a"] = "AddStretchMarker",
                     ["d"] = "DeleteStretchMarker",
