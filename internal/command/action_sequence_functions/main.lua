@@ -1,7 +1,7 @@
 local runner = require('command.runner')
 local state_interface = require('state_machine.state_interface')
 local config = require 'definitions.config'.general
-local reaper_utils = require('custom_actions.utils')
+local unselectAllButLastTouchedTrack = require('custom_actions.utils').unselectAllButLastTouchedTrack
 
 ---@type ActionModes
 return {
@@ -40,7 +40,7 @@ return {
                 runner.runAction(track_operator)
                 state_interface.setModeToNormal()
                 if not config.persist_visual_track_selection and (type(track_operator) ~= 'table' or not track_operator['setTrackSelection']) then
-                    reaper_utils.unselectAllButLastTouchedTrack()
+                    unselectAllButLastTouchedTrack()
                 end
             end
         },

@@ -1,7 +1,6 @@
 local log = require 'utils.log'
 local utils = require "custom_actions.utils"
-local selection = {}
-local custom_actions = { select = selection, }
+local custom_actions = {}
 
 function custom_actions.projectStart()
     reaper.SetEditCurPos(0, true, false)
@@ -138,12 +137,12 @@ function custom_actions.snap()
 end
 
 
-function selection.innerProjectTimeline()
+function custom_actions.innerProjectTimeline()
     local project_end = reaper.GetProjectLength(0)
     reaper.GetSet_LoopTimeRange(true, false, 0, project_end, false)
 end
 
-function selection.innerItem()
+function custom_actions.innerItem()
     local item_positions = utils.getItemPositionsOnSelectedTracks()
     local current_position = reaper.GetCursorPosition()
     for i = #item_positions, 1, -1 do
@@ -155,7 +154,7 @@ function selection.innerItem()
     end
 end
 
-function selection.innerBigItem()
+function custom_actions.innerBigItem()
     local item_positions = utils.getBigItemPositionsOnSelectedTracks()
     local current_position = reaper.GetCursorPosition()
     for i = #item_positions, 1, -1 do
@@ -167,14 +166,14 @@ function selection.innerBigItem()
     end
 end
 
-function selection.onlyCurrentTrack()
+function custom_actions.onlyCurrentTrack()
     local track = reaper.GetSelectedTrack(0, 0)
     if track then
         reaper.SetOnlyTrackSelected(track)
     end
 end
 
-function selection.innerRegion()
+function custom_actions.innerRegion()
     local current_position = reaper.GetCursorPosition()
     local _, region_id = reaper.GetLastMarkerAndCurRegion(0, current_position)
     utils.selectRegion(region_id)

@@ -2,8 +2,10 @@ local definitions = require('utils.definitions')
 
 local getAction = require('utils.get_action')
 local log = require('utils.log')
-local format = require('utils.format')
+
+-- getSelectedTracks, getTrackPosition
 local reaper_utils = require('custom_actions.utils')
+
 local state_interface = require('state_machine.state_interface')
 
 local runner = {}
@@ -134,7 +136,7 @@ function runner.extendTrackSelection(movement, args)
   local end_pos = reaper_utils.getTrackPosition()
   local pivot_i = state_interface.getVisualTrackPivotIndex()
 
-  runner.runAction("UnselectTracks")
+  reaper.Main_OnCommand(40297, 0) -- UnselectTracks
 
   local i = end_pos
   while pivot_i ~= i do
@@ -157,6 +159,7 @@ function runner.makeSelectionFromTrackMotion(track_motion, repetitions)
   runner.runActionNTimes(track_motion, repetitions)
   local end_track = reaper.GetSelectedTrack(0, 0)
   if not end_track then
+    -- TODO ?
     local selected_tracks = reaper_utils.getSelectedTracks()
     return
   end
