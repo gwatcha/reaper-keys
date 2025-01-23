@@ -140,6 +140,7 @@ return {
     DeleteTimeSignatureMarker = 40617,
     NextTimeSignatureMarker = 41821,
     PrevTimeSignatureMarker = 41820,
+    -- Works with multiple tracks selection
     FirstItemStart = custom.firstItemStart,
     FirstTrack = { custom.firstTrack, "ScrollToSelectedTracks" },
     GlueItemsIgnoringTimeSelection = 40362,

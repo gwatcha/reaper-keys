@@ -1,32 +1,48 @@
-local log = require 'utils.log'
 local utils = require "custom_actions.utils"
-local custom_actions = {}
+local actions = {}
 
-function custom_actions.projectStart()
-    reaper.SetEditCurPos(0, true, false)
-end
+function actions.projectStart() reaper.SetEditCurPos(0, true, false) end
 
-function custom_actions.projectEnd()
+function actions.projectEnd()
     reaper.SetEditCurPos(reaper.GetProjectLength(0), true, false)
 end
 
-function custom_actions.lastItemEnd()
-    local positions = utils.getBigItemPositionsOnSelectedTracks()
-    if #positions == 0 then return end
-    reaper.SetEditCurPos(positions[#positions].right, true, false)
+function actions.firstItemStart()
+    local start = nil
+    for i = 0, reaper.CountSelectedTracks() - 1 do
+        local track = reaper.GetSelectedTrack(0, i)
+        if reaper.GetTrackNumMediaItems(track) > 0 then
+            local item = reaper.GetTrackMediaItem(track, 0)
+            local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
+            if not start or pos < start then start = pos end
+        end
+    end
+    if start then reaper.SetEditCurPos(start, true, false) end
 end
 
-function custom_actions.firstItemStart()
-    local positions = utils.getBigItemPositionsOnSelectedTracks()
-    if #positions == 0 then return end
-    reaper.SetEditCurPos(positions[1].left, true, false)
+-- This won't work if last item on track is not the "last" one, imagine [long----[short]--],
+-- short is last but ends sooner. However, this is a reasonable limitation as otherwise we
+-- need to scan at most all items on all selected tracks
+function actions.lastItemEnd()
+    local last_end = nil
+    for i = 0, reaper.CountSelectedTracks() - 1 do
+        local track = reaper.GetSelectedTrack(0, i)
+        local items = reaper.GetTrackNumMediaItems(track)
+        if items > 0 then
+            local item = reaper.GetTrackMediaItem(track, items - 1)
+            local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
+                + reaper.GetMediaItemInfo_Value(item, "D_LENGTH")
+            if not last_end or pos > last_end then last_end = pos end
+        end
+    end
+    if last_end then reaper.SetEditCurPos(last_end, true, false) end
 end
 
 local function moveToPrevItemStart(item_positions)
-    local current_position = reaper.GetCursorPosition()
+    local pos = reaper.GetCursorPosition()
     local next_position = nil
     for i, item in pairs(item_positions) do
-        if not next_position and item.left < current_position and item.right >= current_position then
+        if not next_position and item.left < pos and item.right >= pos then
             next_position = item.left
         end
 
@@ -35,7 +51,7 @@ local function moveToPrevItemStart(item_positions)
         end
 
         local next_item = item_positions[i + 1]
-        if not next_item or next_item.left >= current_position then
+        if not next_item or next_item.left >= pos then
             next_position = item.left
             break
         end
@@ -44,19 +60,19 @@ local function moveToPrevItemStart(item_positions)
     if next_position then reaper.SetEditCurPos(next_position, true, false) end
 end
 
-function custom_actions.prevBigItemStart()
+function actions.prevBigItemStart()
     moveToPrevItemStart(utils.getBigItemPositionsOnSelectedTracks())
 end
 
-function custom_actions.prevItemStart()
+function actions.prevItemStart()
     moveToPrevItemStart(utils.getItemPositionsOnSelectedTracks())
 end
 
 local function moveToNextItemStart(item_positions)
-    local current_position = reaper.GetCursorPosition()
+    local pos = reaper.GetCursorPosition()
     local next_position = nil
     for _, item_position in pairs(item_positions) do
-        if not next_position and current_position < item_position.left then
+        if not next_position and pos < item_position.left then
             next_position = item_position.left
         end
         if next_position and item_position.left < next_position then
@@ -66,11 +82,11 @@ local function moveToNextItemStart(item_positions)
     if next_position then reaper.SetEditCurPos(next_position, true, false) end
 end
 
-function custom_actions.nextBigItemStart()
+function actions.nextBigItemStart()
     moveToNextItemStart(utils.getBigItemPositionsOnSelectedTracks())
 end
 
-function custom_actions.nextItemStart()
+function actions.nextItemStart()
     moveToNextItemStart(utils.getItemPositionsOnSelectedTracks())
 end
 
@@ -90,27 +106,27 @@ local function moveToNextItemEnd(item_positions)
     end
 end
 
-function custom_actions.nextBigItemEnd()
+function actions.nextBigItemEnd()
     moveToNextItemEnd(utils.getBigItemPositionsOnSelectedTracks())
 end
 
-function custom_actions.nextItemEnd()
+function actions.nextItemEnd()
     moveToNextItemEnd(utils.getItemPositionsOnSelectedTracks())
 end
 
-function custom_actions.firstTrack()
+function actions.firstTrack()
     local track = reaper.GetTrack(0, 0)
     if track then reaper.SetOnlyTrackSelected(track) end
 end
 
-function custom_actions.lastTrack()
+function actions.lastTrack()
     local num = reaper.GetNumTracks()
     if num == 0 then return end
     local track = reaper.GetTrack(0, num - 1)
     reaper.SetOnlyTrackSelected(track)
 end
 
-function custom_actions.trackWithNumber()
+function actions.trackWithNumber()
     local _, number = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
     if type(number) ~= 'number' then return end
 
@@ -118,31 +134,29 @@ function custom_actions.trackWithNumber()
     if track then reaper.SetOnlyTrackSelected(track) end
 end
 
-function custom_actions.firstTrackWithItem()
+function actions.firstTrackWithItem()
     local num = reaper.GetNumTracks()
     if num == 0 then return end
     for i = 0, num - 1 do
         local track = reaper.GetTrack(0, i)
         if reaper.GetTrackNumMediaItems(track) > 0 then
-            reaper.SetOnlyTrackSelected(track)
-            return
+            return reaper.SetOnlyTrackSelected(track)
         end
     end
 end
 
-function custom_actions.snap()
+function actions.snap()
     local pos = reaper.GetCursorPosition()
     local snapped_pos = reaper.SnapToGrid(0, pos)
     reaper.SetEditCurPos(snapped_pos, false, false)
 end
 
-
-function custom_actions.innerProjectTimeline()
+function actions.innerProjectTimeline()
     local project_end = reaper.GetProjectLength(0)
     reaper.GetSet_LoopTimeRange(true, false, 0, project_end, false)
 end
 
-function custom_actions.innerItem()
+function actions.innerItem()
     local item_positions = utils.getItemPositionsOnSelectedTracks()
     local current_position = reaper.GetCursorPosition()
     for i = #item_positions, 1, -1 do
@@ -154,7 +168,7 @@ function custom_actions.innerItem()
     end
 end
 
-function custom_actions.innerBigItem()
+function actions.innerBigItem()
     local item_positions = utils.getBigItemPositionsOnSelectedTracks()
     local current_position = reaper.GetCursorPosition()
     for i = #item_positions, 1, -1 do
@@ -166,63 +180,59 @@ function custom_actions.innerBigItem()
     end
 end
 
-function custom_actions.onlyCurrentTrack()
+function actions.onlyCurrentTrack()
     local track = reaper.GetSelectedTrack(0, 0)
     if track then
         reaper.SetOnlyTrackSelected(track)
     end
 end
 
-function custom_actions.innerRegion()
-    local current_position = reaper.GetCursorPosition()
-    local _, region_id = reaper.GetLastMarkerAndCurRegion(0, current_position)
+function actions.innerRegion()
+    local pos = reaper.GetCursorPosition()
+    local _, region_id = reaper.GetLastMarkerAndCurRegion(0, pos)
     utils.selectRegion(region_id)
 end
 
-
-function custom_actions.clearTimeSelection()
-    local current_position = reaper.GetCursorPosition()
-    reaper.GetSet_LoopTimeRange(true, false, current_position, current_position, false)
+function actions.clearTimeSelection()
+    local pos = reaper.GetCursorPosition()
+    reaper.GetSet_LoopTimeRange(true, false, pos, pos, false)
 end
 
 local function getUserGridDivisionInput()
-    local _, num_string = reaper.GetUserInputs("Set Grid Division", 1, "Fraction/Number", "")
-    local first_num = num_string:match("[0-9.]+")
-    local divider = num_string:match("/([0-9.]+)")
-
-    local division = nil
-    if first_num and divider then
-        division = first_num / divider
-    elseif first_num then
-        division = first_num
+    local ok, str = reaper.GetUserInputs("Set Grid Division", 1, "Fraction/Number", "")
+    if not ok then return end
+    local division = str:match("[0-9.]+")
+    local fraction = str:match("/([0-9.]+)")
+    if division and fraction then
+        return division / fraction
+    elseif division then
+        return division
     else
-        log.error("Could not parse specified grid division.")
+        reaper.MB("Could not parse specified grid division", "Error", 0)
         return nil
     end
-
-    return division
 end
 
-function custom_actions.setMidiGridDivision()
+function actions.setMidiGridDivision()
     local division = getUserGridDivisionInput()
     if division then reaper.SetMIDIEditorGrid(0, division) end
 end
 
-function custom_actions.clearSelectedTimeline()
-    local current_position = reaper.GetCursorPosition()
-    reaper.GetSet_LoopTimeRange(true, false, current_position, current_position, false)
-end
-
-function custom_actions.setGridDivision()
+function actions.setGridDivision()
     local division = getUserGridDivisionInput()
     if division then reaper.SetProjectGrid(0, division) end
 end
 
+function actions.clearSelectedTimeline()
+    local pos = reaper.GetCursorPosition()
+    reaper.GetSet_LoopTimeRange(true, false, pos, pos, false)
+end
+
 -- this one avoids splitting all items across tracks in time selection, if no items are selected
-function custom_actions.splitItemsAtTimeSelection()
+function actions.splitItemsAtTimeSelection()
     if reaper.CountSelectedMediaItems(0) == 0 then return end
     local SplitAtTimeSelection = 40061
     reaper.Main_OnCommand(SplitAtTimeSelection, 0)
 end
 
-return custom_actions
+return actions
