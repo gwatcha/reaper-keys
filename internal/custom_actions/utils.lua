@@ -86,15 +86,6 @@ function utils.getBigItemPositionsOnSelectedTracks()
   return big_item_positions
 end
 
-function utils.selectRegion(id)
-  local ok, is_region, start_pos, end_pos, _, got_id = reaper.EnumProjectMarkers(id)
-  if ok and is_region  then
-    reaper.GetSet_LoopTimeRange(true, false, start_pos, end_pos, false)
-    return true
-  end
-  return false
-end
-
 function utils.getMatchedTrack(search_name, forward)
   if not search_name then
     return nil
@@ -188,16 +179,6 @@ function utils.setCurrentTrack(index)
     end
     table.insert(new_selection, index)
     utils.setTrackSelection(new_selection)
-  end
-end
-
-function utils.unselectAllButLastTouchedTrack()
-  local last_touched_i = utils.getTrackPosition()
-  if last_touched_i then
-    local track = reaper.GetTrack(0, last_touched_i)
-    if track then
-      reaper.SetOnlyTrackSelected(track)
-    end
   end
 end
 
