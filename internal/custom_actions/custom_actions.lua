@@ -176,8 +176,7 @@ function actions.innerItem()
     for i = #item_positions, 1, -1 do
         local item = item_positions[i]
         if item.left <= current_position and item.right >= current_position then
-            reaper.GetSet_LoopTimeRange(true, false, item.left, item.right, false)
-            break
+            return reaper.GetSet_LoopTimeRange(true, false, item.left, item.right, false)
         end
     end
 end
