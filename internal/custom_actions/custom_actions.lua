@@ -9,18 +9,15 @@ function actions.firstItemStart()
     local len = reaper.GetProjectLength(0)
     local start = len
     for i = 0, reaper.CountSelectedTracks() - 1 do
-        local track = reaper.GetSelectedTrack(0, i)
-        if reaper.GetTrackNumMediaItems(track) > 0 then
-            local item = reaper.GetTrackMediaItem(track, 0)
-            local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
-            if pos < start then start = pos end
-        end
+        local item = reaper.GetTrackMediaItem(reaper.GetSelectedTrack(0, i), 0)
+        if not item then goto next_track end
+        local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
+        if pos < start then start = pos end
+        ::next_track::
     end
     if start < len then reaper.SetEditCurPos(start, true, false) end
 end
 
--- This won't work if last item on track is not the one with latest start, imagine [long----[short]--],
--- This is a reasonable limitation as otherwise we need to scan all items on all selected tracks
 function actions.lastItemEnd()
     local last_end = 0
     for i = 0, reaper.CountSelectedTracks() - 1 do
@@ -37,7 +34,8 @@ function actions.lastItemEnd()
 end
 
 function actions.prevItemStart()
-    local cur, start = reaper.GetCursorPosition(), -1
+    local cur = reaper.GetCursorPosition()
+    local start = -1
     for i = 0, reaper.CountSelectedTracks() - 1 do
         local track = reaper.GetSelectedTrack(0, i)
         for j = 0, reaper.GetTrackNumMediaItems(track) - 1 do
@@ -50,28 +48,33 @@ function actions.prevItemStart()
     if start > -1 then reaper.SetEditCurPos(start, true, false) end
 end
 
+---@param add_length number
 local function nextItem(add_length)
     local cur = reaper.GetCursorPosition()
     local len = reaper.GetProjectLength(0)
-    local start = len
-    local item = nil
+    local start = len + 1 -- next item end may be project end
+    local item
     for i = 0, reaper.CountSelectedTracks() - 1 do
         local track = reaper.GetSelectedTrack(0, i)
         for j = 0, reaper.GetTrackNumMediaItems(track) - 1 do
             item = reaper.GetTrackMediaItem(track, j)
             local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
-            if pos > cur and pos < start then start = pos end
-            if pos > cur then goto next_track end
+            if pos > cur then
+                if pos < start then start = pos end
+                goto next_track
+            end
         end
         ::next_track::
     end
-    if add_length then start = start + reaper.GetMediaItemInfo_Value(item, "D_LENGTH") end
-    if start < len then reaper.SetEditCurPos(start, true, false) end
+    if start == len + 1 then return end
+    reaper.SetEditCurPos(
+        start + add_length * reaper.GetMediaItemInfo_Value(item, "D_LENGTH"),
+        true, false)
 end
 
-function actions.nextItemStart() nextItem(false) end
+function actions.nextItemStart() nextItem(0) end
 
-function actions.nextItemEnd() nextItem(true) end
+function actions.nextItemEnd() nextItem(1) end
 
 function actions.prevBigItemStart()
     local item_positions = utils.getBigItemPositionsOnSelectedTracks()
