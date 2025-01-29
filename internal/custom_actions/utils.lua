@@ -1,4 +1,5 @@
 local utils = {}
+-- TODO rename to movement_utils.lua
 
 local function mergeItemPositionsLists(item_positions_list)
   local merged_list = {}
@@ -141,12 +142,12 @@ function utils.setCurrentTrack(index)
 end
 
 function utils.getSelectedTrackIndices()
-  local selected_tracks = utils.getSelectedTracks()
-  local selected_track_indices = {}
-  for i,track in ipairs(selected_tracks) do
-    selected_track_indices[i] = reaper.GetMediaTrackInfo_Value(track, "IP_TRACKNUMBER") - 1
-  end
-  return selected_track_indices
+    local idxs = {}
+    for i = 0, reaper.CountSelectedTracks() - 1 do
+        idxs[i + 1] = reaper.GetMediaTrackInfo_Value(
+            reaper.GetSelectedTrack(0, i), "IP_TRACKNUMBER") - 1
+    end
+    return idxs
 end
 
 return utils

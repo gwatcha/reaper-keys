@@ -1,5 +1,6 @@
 local utils = require "custom_actions.utils"
 local actions = {}
+-- TODO rename to movement.lua
 
 function actions.projectStart() reaper.SetEditCurPos(0, true, false) end
 
@@ -41,7 +42,8 @@ function actions.prevItemStart()
         for j = 0, reaper.GetTrackNumMediaItems(track) - 1 do
             local item = reaper.GetTrackMediaItem(track, j)
             local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
-            if pos >= cur then goto next_track elseif pos > start then start = pos end
+            if pos + reaper.GetMediaItemInfo_Value(item, "D_LENGTH") >= cur then goto next_track end
+            if pos > start then start = pos end
         end
         ::next_track::
     end
@@ -143,15 +145,13 @@ end
 
 function actions.trackWithNumber()
     local ok, num = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
-    if not ok or type(num) ~= 'number' then return end
+    if not ok or type(num) ~= 'number' or num < 1 then return end
     local track = reaper.GetTrack(0, num - 1)
     if track then reaper.SetOnlyTrackSelected(track) end
 end
 
 function actions.firstTrackWithItem()
-    local num = reaper.GetNumTracks()
-    if num == 0 then return end
-    for i = 0, num - 1 do
+    for i = 0, reaper.GetNumTracks() - 1 do
         local track = reaper.GetTrack(0, i)
         if reaper.GetTrackNumMediaItems(track) > 0 then
             return reaper.SetOnlyTrackSelected(track)
@@ -172,10 +172,10 @@ end
 
 function actions.innerItem()
     local item_positions = utils.getItemPositionsOnSelectedTracks()
-    local current_position = reaper.GetCursorPosition()
+    local cur = reaper.GetCursorPosition()
     for i = #item_positions, 1, -1 do
         local item = item_positions[i]
-        if item.left <= current_position and item.right >= current_position then
+        if item.left <= cur and item.right >= cur then
             return reaper.GetSet_LoopTimeRange(true, false, item.left, item.right, false)
         end
     end
@@ -214,8 +214,8 @@ local function getUserGridDivisionInput()
     if not ok then return end
     local division = str:match("[0-9.]+")
     local fraction = str:match("/([0-9.]+)")
-    if division and fraction then return division / fraction end
-    if division then return division end
+    if division and fraction and fraction ~= 0 then return division / fraction end
+    if division and not fraction then return division end
     reaper.MB("Could not parse specified grid division " .. str, "Error", 0)
     return nil
 end
