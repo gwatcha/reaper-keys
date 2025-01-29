@@ -2,7 +2,7 @@
 ret=0; out="out.RPP"; reaper="./reaper/reaper -new -nosplash"
 [ $# -eq 0 ] && timeout 6 $reaper 1>/dev/null 2>&1 # still evaluating
 
-for test in ${@:-*.rks}; do
+for test in ${1:-*.rks}; do
     echo "Running $test"
 
     $reaper -saveas $out 1>/dev/null 2>&1 &
@@ -16,15 +16,16 @@ for test in ${@:-*.rks}; do
         else
             xdotool type "$cmd"
         fi
-        sleep .1
+        [ $# -eq 2 ] && sleep .3; sleep .1
     done
 
-    xdotool type " ps"; sleep .5; kill $pid
+    xdotool type " ps"; sleep .5
+    [ $# -eq 2 ] || kill $pid
 
     ./compare ${test%.rks}.RPP $out
     diff_ret=$(echo $?)
     echo "Test exit code $diff_ret"
     ret=$(( ret + diff_ret ))
-    rm $out
+    [ $# -eq 2 ] || rm $out
 done
 exit $ret

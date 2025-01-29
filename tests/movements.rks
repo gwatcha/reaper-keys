@@ -1,0 +1,16 @@
+o t1 &Return "create track
+0 l im "midi item 1
+3l im "midi item 2
+^ ma "marker at first item start
+w mb "marker at second item start
+b e mc "marker at project end
+o t2 &Return "create track
+im "midi item 3
+k im "midi item 4
+b l md "marker at t1's second item + 1div (can't override markers)
+V j "select both tracks
+w l me "marker at t2's item + 1div
+o t3 &Return
+4l im "midi item 5
+V k "select t2 and t3
+^ 2l mf "marker 6 in the middle of t2's item
