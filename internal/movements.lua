@@ -1,6 +1,5 @@
-local utils = require "custom_actions.utils"
+local utils = require "movement_utils"
 local actions = {}
--- TODO rename to movement.lua
 
 function actions.projectStart() reaper.SetEditCurPos(0, true, false) end
 

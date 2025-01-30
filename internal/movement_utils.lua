@@ -1,5 +1,4 @@
 local utils = {}
--- TODO rename to movement_utils.lua
 
 local function mergeItemPositionsLists(item_positions_list)
   local merged_list = {}

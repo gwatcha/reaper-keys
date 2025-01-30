@@ -4,7 +4,7 @@ local getAction = require('utils.get_action')
 local log = require('utils.log')
 
 -- getSelectedTracks, getTrackPosition
-local reaper_utils = require('custom_actions.utils')
+local reaper_utils = require "movement_utils"
 
 local state_interface = require('state_machine.state_interface')
 
