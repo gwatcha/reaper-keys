@@ -14,4 +14,4 @@ j o 3 &Return "track 3
 4h im "midi item 5
 V k "select track 2 and 3
 ^ &Escape mf "marker f at midi 5 start
-V 2k 3e &Escape mg "marker g at midi 4 start
+j V 2k 3e &Escape mg "marker g at midi 4 start
