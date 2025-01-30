@@ -42,7 +42,9 @@ function actions.prevItemStart()
         for j = 0, reaper.GetTrackNumMediaItems(track) - 1 do
             local item = reaper.GetTrackMediaItem(track, j)
             local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
-            if pos + reaper.GetMediaItemInfo_Value(item, "D_LENGTH") >= cur then goto next_track end
+            local len = reaper.GetMediaItemInfo_Value(item, "D_LENGTH")
+            if cur > pos and cur <= len then return reaper.SetEditCurPos(pos, true, false) end
+            if cur <= pos then goto next_track end
             if pos > start then start = pos end
         end
         ::next_track::
@@ -50,28 +52,23 @@ function actions.prevItemStart()
     if start > -1 then reaper.SetEditCurPos(start, true, false) end
 end
 
----@param add_length number
-local function nextItem(add_length)
+---@param to_end integer
+local function nextItem(to_end)
     local cur = reaper.GetCursorPosition()
-    local len = reaper.GetProjectLength(0)
-    local start = len + 1 -- next item end may be project end
-    local item
+    local proj_end = reaper.GetProjectLength(0)
+    local next_pos = proj_end + 1
     for i = 0, reaper.CountSelectedTracks() - 1 do
         local track = reaper.GetSelectedTrack(0, i)
         for j = 0, reaper.GetTrackNumMediaItems(track) - 1 do
-            item = reaper.GetTrackMediaItem(track, j)
+            local item = reaper.GetTrackMediaItem(track, j)
             local pos = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
-            if pos > cur then
-                if pos < start then start = pos end
-                goto next_track
-            end
+            local len = reaper.GetMediaItemInfo_Value(item, "D_LENGTH")
+            if to_end == 1 and cur >= pos and cur < len then return reaper.SetEditCurPos(pos + len, true, false) end
+            pos = pos + to_end * len
+            if cur < pos and pos < next_pos then next_pos = pos end
         end
-        ::next_track::
     end
-    if start == len + 1 then return end
-    reaper.SetEditCurPos(
-        start + add_length * reaper.GetMediaItemInfo_Value(item, "D_LENGTH"),
-        true, false)
+    if next_pos < proj_end + 1 then reaper.SetEditCurPos(next_pos, true, false) end
 end
 
 function actions.nextItemStart() nextItem(0) end

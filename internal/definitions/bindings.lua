@@ -502,6 +502,7 @@ local main = {
         e = "NextItemEnd",
         b = "PrevItemStart",
         ["<M-w>"] = "NextEnvelopePoint",
+        ["^"] = "FirstItemStart",
         ["$"] = "LastItemEnd",
         ["("] = "TimeSelectionStart",
         [")"] = "TimeSelectionEnd",

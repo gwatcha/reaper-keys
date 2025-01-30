@@ -276,6 +276,10 @@ return {
     NextEnvelope = { 41864, prefixRepetitionCount = true },
     NextEnvelopePoint = { "_SWS_BRMOVEEDITTONEXTENV", prefixRepetitionCount = true },
     NextFolderNear = { "_SWS_SELNEARESTNEXTFOLDER", "ScrollToSelectedTracks", prefixRepetitionCount = true },
+    -- Jump to item end if not on end, jump to next item end otherwise.
+    -- If cursor is inside multiple items i.e. multiple tracks are selected: (from top track to bottom track)
+    --  If not on end but inside item, jump to item end
+    --  If on end, jump to item after cursor which start is closest to cursor.
     NextItemEnd = { custom.nextItemEnd, prefixRepetitionCount = true },
     NextItemStart = { custom.nextItemStart, prefixRepetitionCount = true },
     NextMarker = { 40173, prefixRepetitionCount = true },
@@ -375,6 +379,10 @@ return {
     PrevEnvelope = { 41863, prefixRepetitionCount = true },
     PrevEnvelopePoint = { "_SWS_BRMOVEEDITTOPREVENV", prefixRepetitionCount = true },
     PrevFolderNear = { "_SWS_SELNEARESTPREVFOLDER", "ScrollToSelectedTracks", prefixRepetitionCount = true },
+    -- Jump to item start if not on start, jump to previous item start otherwise.
+    -- If cursor is inside multiple items i.e. multiple tracks are selected: (from top track to bottom track)
+    --  If not on start but inside item, jump to item start
+    --  If on start, jump to item before cursor which end is closest to cursor.
     PrevItemStart = { custom.prevItemStart, prefixRepetitionCount = true },
     PrevMarker = { 40172, prefixRepetitionCount = true },
     PrevMeasure = { 40840, prefixRepetitionCount = true },
