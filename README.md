@@ -155,6 +155,8 @@ chmod +x prepare copy-configs test
 ./prepare # This will create a local Reaper installation
 ./copy-configs # This will make current instance of reaper-keys testable
 ./test # This will run every test and compare with reference projects
+./test ololo.rks # This will run one test only
+./test ololo.rks -s # This will run test in slow mode, not removing the output file
 ```
 
 If you don't use X11 you can have a look at `.github/workflows/wf.yml` to see how x11 is

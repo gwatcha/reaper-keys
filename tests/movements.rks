@@ -1,0 +1,17 @@
+o 1 &Return "track 1
+0 l im "midi 1
+3l im "midi 2
+^ ma "marker a at midi 1 start
+w mb "marker b at midi 2 start
+$ mc "marker c at midi 2 end
+o 2 &Return "track 2
+im "midi 3
+k im "midi 4
+b h md "marker d at midi 3 end - 1div
+V j "select track 1 and 2
+b l &Escape me "marker e at midi 3 start + 1div
+j o 3 &Return "track 3
+4h im "midi item 5
+V k "select track 2 and 3
+^ &Escape mf "marker f at midi 5 start
+j V 2k 3e &Escape mg "marker g at midi 4 start

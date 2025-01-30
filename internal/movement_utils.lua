@@ -86,64 +86,10 @@ function utils.getBigItemPositionsOnSelectedTracks()
   return big_item_positions
 end
 
-function utils.selectRegion(id)
-  local ok, is_region, start_pos, end_pos, _, got_id = reaper.EnumProjectMarkers(id)
-  if ok and is_region  then
-    reaper.GetSet_LoopTimeRange(true, false, start_pos, end_pos, false)
-    return true
-  end
-  return false
-end
-
-function utils.getMatchedTrack(search_name, forward)
-  if not search_name then
-    return nil
-  end
-
-  local current_track = reaper.GetSelectedTrack(0, 0)
-  local start_i = 0
-  if current_track then
-    start_i = reaper.GetMediaTrackInfo_Value(current_track, "IP_TRACKNUMBER") - 1
-  end
-
-  local num_tracks = reaper.GetNumTracks()
-  local tracks_searched = 1
-  local next_track_i = start_i
-  while tracks_searched < num_tracks do
-    if forward == true then
-      next_track_i = next_track_i + 1
-    else
-      next_track_i = next_track_i - 1
-    end
-
-    local track = reaper.GetTrack(0, next_track_i)
-    if not track then
-      if forward == true then
-        next_track_i = -1
-      else
-        next_track_i = num_tracks
-      end
-    else
-      local _, current_name = reaper.GetTrackName(track, "")
-      local has_no_name = current_name:match("Track ([0-9]+)", 1)
-      current_name = current_name:lower()
-      tracks_searched = tracks_searched + 1
-      if not has_no_name and current_name:match(search_name:lower()) then
-        return track
-      end
-    end
-  end
-
-  return nil
-end
-
 function utils.getTrackPosition()
-  local last_touched_track = reaper.GetLastTouchedTrack()
-  if last_touched_track then
-    local index = reaper.GetMediaTrackInfo_Value(last_touched_track, "IP_TRACKNUMBER") - 1
-    return index
-  end
-  return 0
+  local track = reaper.GetLastTouchedTrack()
+  if not track then return 0 end
+  return reaper.GetMediaTrackInfo_Value(track, "IP_TRACKNUMBER") - 1
 end
 
 function utils.getSelectedTracks()
@@ -156,17 +102,13 @@ function utils.getSelectedTracks()
 end
 
 function utils.setTrackSelection(indices)
-  local ScrollToSelectedTracks = 40913
-  utils.unselectTracks()
-  if indices then
-    for _,track_index in ipairs(indices) do
-      local track = reaper.GetTrack(0, track_index)
-      if track then
-        reaper.SetTrackSelected(track, true)
-      end
-    end
-    reaper.Main_OnCommand(ScrollToSelectedTracks, 0)
+  reaper.Main_OnCommand(40297, 0) -- UnselectTracks
+  if not indices then return end
+  for _, track_index in ipairs(indices) do
+    local track = reaper.GetTrack(0, track_index)
+    if track then reaper.SetTrackSelected(track, true) end
   end
+  reaper.Main_OnCommand(40913, 0) -- ScrollToSelectedTracks
 end
 
 function utils.scrollToPosition(pos)
@@ -198,29 +140,13 @@ function utils.setCurrentTrack(index)
   end
 end
 
-function utils.unselectAllButLastTouchedTrack()
-  local last_touched_i = utils.getTrackPosition()
-  if last_touched_i then
-    local track = reaper.GetTrack(0, last_touched_i)
-    if track then
-      reaper.SetOnlyTrackSelected(track)
-    end
-  end
-end
-
 function utils.getSelectedTrackIndices()
-  local selected_tracks = utils.getSelectedTracks()
-  local selected_track_indices = {}
-  for i,track in ipairs(selected_tracks) do
-    selected_track_indices[i] = reaper.GetMediaTrackInfo_Value(track, "IP_TRACKNUMBER") - 1
-  end
-  return selected_track_indices
-end
-
-function utils.unselectTracks()
-  for _,track in ipairs(utils.getSelectedTracks()) do
-    reaper.SetTrackSelected(track, false)
-  end
+    local idxs = {}
+    for i = 0, reaper.CountSelectedTracks() - 1 do
+        idxs[i + 1] = reaper.GetMediaTrackInfo_Value(
+            reaper.GetSelectedTrack(0, i), "IP_TRACKNUMBER") - 1
+    end
+    return idxs
 end
 
 return utils
