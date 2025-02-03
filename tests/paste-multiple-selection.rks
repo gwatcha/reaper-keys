@@ -1,0 +1,7 @@
+,a o &Return 0 im l im , "macro a that inserts 2 midi items on start
+o &Return "create empty track
+2@a &Return "replay macro 2 times, last enter to defocus bottom track rename
+V 2k "select tracks 2-4
+v 4l "create time selection for first track' items, ve should also work but doesn't, as well as v$ doesn't, maybe edit cursor issue
+sY "select and copy items inside time and track selection
+6l p "jump forward 6 divisions and paste items
