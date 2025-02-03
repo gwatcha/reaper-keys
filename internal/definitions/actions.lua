@@ -1,4 +1,4 @@
-local lib = require 'library.library'                  -- functions specific to reaper-keys i.e. macros
+local lib = require 'library.library' -- TODO rename to impl
 local movements = require 'movements'
 
 -- Here are some predefined commands that you can use in bindings.lua e.g to map
@@ -47,6 +47,7 @@ return {
     InsertTrackAbove = { "_SWS_INSRTTRKABOVE", prefixRepetitionCount = true },
     InsertTrackBelow = { 40001, prefixRepetitionCount = true },
     Insert4EnvelopePointsAtTimeSelection = 40726,
+    -- TODO Could not find action in reaper or action list for: _S&M_ADD_TRTEMPLATE
     InsertTrackFromTemplateSlot1 = "_S&M_ADD_TRTEMPLATE1",
     InsertTrackFromTemplateSlot2 = "_S&M_ADD_TRTEMPLATE2",
     InsertTrackFromTemplateSlot3 = "_S&M_ADD_TRTEMPLATE3",
@@ -344,7 +345,8 @@ return {
     PasteAbove = { "PrevTrack", "Paste", prefixRepetitionCount = true },
     PasteFxChain = { "_S&M_SMART_PST_FXCHAIN", prefixRepetitionCount = true },
     PasteItem = { 40058, prefixRepetitionCount = true },
-    Paste = { "_SWS_AWPASTE", prefixRepetitionCount = true },
+    PasteImpl = lib.paste,
+    Paste = {"PasteImpl", prefixRepetitionCount = true },
     Pause = 1008,
     PitchDown = { 40050, midiCommand = true, prefixRepetitionCount = true },
     PitchDown7 = { "PitchDown", repetitions = 7, prefixRepetitionCount = true },
