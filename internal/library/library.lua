@@ -93,24 +93,23 @@ function library.ResetFeedbackWindow()
   reaper_state.setKeys("feedback", {open = false})
 end
 
--- No time selection?
 ---@type integer
 local paste = reaper.NamedCommandLookup("_SWS_AWPASTE")
--- When multiple tracks are selected, paste pastes on last touched track but we
+-- When multiple tracks are selected, sws paste pastes on last touched track but we
 -- want to paste selected track-wise, skipping empty tracks
 function library.paste()
     local num = reaper.CountSelectedTracks()
     if num < 2 then return reaper.Main_OnCommand(paste, 0) end
-    local sel = {}
+    local selected = {}
     local first = nil
     for i = 0, num - 1 do
         local track = reaper.GetSelectedTrack(0, i)
+        selected[i + 1] = track
         if not first and reaper.GetTrackNumMediaItems(track) > 0 then first = track end
-        sel[i + 1] = track
     end
-    reaper.SetOnlyTrackSelected(first)
+    if first then reaper.SetOnlyTrackSelected(first) end
     reaper.Main_OnCommand(paste, 0)
-    for _, track in ipairs(sel) do reaper.SetTrackSelected(track, true) end
+    for _, track in ipairs(selected) do reaper.SetTrackSelected(track, true) end
 end
 
 return library
