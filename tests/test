@@ -3,7 +3,7 @@ ret=0; reaper="./reaper/reaper -new -nosplash"
 [ $# -eq 0 ] && timeout 6 $reaper 1>/dev/null 2>&1 # still evaluating
 
 for test in $(shuf -e ${1:-*.rks}); do
-    out="output-${test}"
+    out="output-${test%%rks}.RPP"
     [ $# -eq 0 ] && echo $test
     $reaper -saveas $out 1>/dev/null 2>&1 &
     pid=$(echo $!); sleep 1
