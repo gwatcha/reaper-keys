@@ -344,7 +344,7 @@ return {
     PasteAbove = { "PrevTrack", "Paste", prefixRepetitionCount = true },
     PasteFxChain = { "_S&M_SMART_PST_FXCHAIN", prefixRepetitionCount = true },
     PasteItem = { 40058, prefixRepetitionCount = true },
-    Paste = { "_SWS_AWPASTE", prefixRepetitionCount = true },
+    Paste = { movements.paste, prefixRepetitionCount = true },
     Pause = 1008,
     PitchDown = { 40050, midiCommand = true, prefixRepetitionCount = true },
     PitchDown7 = { "PitchDown", repetitions = 7, prefixRepetitionCount = true },

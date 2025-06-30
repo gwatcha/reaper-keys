@@ -237,4 +237,23 @@ function actions.splitItemsAtTimeSelection()
     reaper.Main_OnCommand(40061, 0) -- split at time selection
 end
 
+---@type integer
+local paste = reaper.NamedCommandLookup("_SWS_AWPASTE")
+-- Paste selected track-wise, skipping empty tracks.
+-- SWS pastes on last touched track which is usually the bottom selected one
+function actions.paste()
+    local num = reaper.CountSelectedTracks()
+    if num < 2 then return reaper.Main_OnCommand(paste, 0) end
+    local selected = {}
+    local first = nil
+    for i = 0, num - 1 do
+        local track = reaper.GetSelectedTrack(0, i)
+        selected[i + 1] = track
+        if not first and reaper.GetTrackNumMediaItems(track) > 0 then first = track end
+    end
+    if first then reaper.SetOnlyTrackSelected(first) end
+    reaper.Main_OnCommand(paste, 0)
+    for _, track in ipairs(selected) do reaper.SetTrackSelected(track, true) end
+end
+
 return actions

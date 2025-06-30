@@ -12,9 +12,6 @@ for left, right in zip(left_file.split("\n")[1:], right_file.split("\n")[1:]):
         left, right = left[:left.find("{")], right[:right.find("{")]
     if left == right or any(map(lambda x: left.startswith(x), ignored_keys)):
         continue
-    # binary state may differ slightly
-    if len(left) == len(right) and sum(x != y for x, y in zip(left, right)) < 5:
-        continue
     print(f"< {left}\n> {right}")
     out = 1
 
