@@ -18,7 +18,7 @@ for test in $(shuf -e ${1:-*.rks}); do
         [ $# -eq 2 ] && sleep .3
         case $test in
             slow*) sleep .08;;
-            *) sleep .01;;
+            *) sleep .02;;
         esac
     done
 
