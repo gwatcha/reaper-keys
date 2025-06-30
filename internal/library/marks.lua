@@ -32,7 +32,6 @@ local function overwriteMark(mark, register)
   end
 
   mark['register'] = register
-  mark['time'] = os.time()
 
   local ok, old_mark = project_state.get('marks', register)
   if ok and old_mark then

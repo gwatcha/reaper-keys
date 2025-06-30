@@ -67,9 +67,7 @@ local global = { -- applies both to main and midi
         ["<M-T>"] = "PlayFromMouseAndSoloTrack",
         ["<C-t>"] = "PlayFromEditCursorAndSoloTrackUnderMouse",
         ["F"] = "Pause",
-
-        ["<C-<SPC>>"] = "ShowMixer", -- possibly remove in 2.1
-
+        ["<C-<SPC>>"] = "ShowMixer", -- TODO remove in 2.1, replace by <SPC>vm
         ["."] = "RepeatLastCommand",
         ["<C-.>"] = "RepeatPenultimateAction",
         ["@"] = "PlayMacro",
@@ -103,7 +101,7 @@ local global = { -- applies both to main and midi
             ["j"] = "RecallNextSnapshot",
             ["k"] = "RecallPreviousSnapshot",
             ["D"] = "DeleteAllSnapshots",
-            ["t"] = "ShowSnapshotsWindow", -- remove in 2.1
+            ["t"] = "ShowSnapshotsWindow", -- TODO remove in 2.1, replaced by <SPC>v"
             ["y"] = "CopyCurrentSnapshot",
             ["p"] = "PasteSnapshot",
             ["r"] = "RecallCurrentSnapshot",
@@ -320,7 +318,7 @@ local global = { -- applies both to main and midi
                     ["y"] = "CopyEnvelope",
                     ["t"] = "ToggleShowSelectedEnvelope",
                     ["b"] = "ToggleEnvelopeBypass",
-                    ["s"] = { "+shape", {
+                    ["s"] = { "+shape", { -- TODO remove in 2.1, replaced by <SPC>eS
                         ["b"] = "SetEnvelopeShapeBezier",
                         ["e"] = "SetEnvelopeShapeFastEnd",
                         ["f"] = "SetEnvelopeShapeFastStart",
@@ -329,6 +327,14 @@ local global = { -- applies both to main and midi
                         ["S"] = "SetEnvelopeShapeSquare",
                     } },
                 } },
+                S = { "+shape", {
+                    b = "SetEnvelopeShapeBezier",
+                    e = "SetEnvelopeShapeFastEnd",
+                    f = "SetEnvelopeShapeFastStart",
+                    l = "SetEnvelopeShapeLinear",
+                    s = "SetEnvelopeShapeSlowStart",
+                    S = "SetEnvelopeShapeSquare"
+                }},
             } },
             ["f"] = { "+fx", {
                 ["a"] = "AddFx",
@@ -341,7 +347,7 @@ local global = { -- applies both to main and midi
                     ["s"] = "ToggleShowInputFxChain",
                     ["d"] = "CutInputFxChain",
                 } },
-                ["s"] = { "+show", {
+                ["s"] = { "+show", { --TODO remove in 2.1, replaced by <SPC>f{1-8}
                     ["1"] = "ToggleShowFx1",
                     ["2"] = "ToggleShowFx2",
                     ["3"] = "ToggleShowFx3",
@@ -351,30 +357,38 @@ local global = { -- applies both to main and midi
                     ["7"] = "ToggleShowFx7",
                     ["8"] = "ToggleShowFx8"
                 } },
+                ["1"] = "ToggleShowFx1",
+                ["2"] = "ToggleShowFx2",
+                ["3"] = "ToggleShowFx3",
+                ["4"] = "ToggleShowFx4",
+                ["5"] = "ToggleShowFx5",
+                ["6"] = "ToggleShowFx6",
+                ["7"] = "ToggleShowFx7",
+                ["8"] = "ToggleShowFx8"
             } },
             ["T"] = { "+timeline", {
                 ["a"] = "AddTimeSignatureMarker",
                 ["e"] = "EditTimeSignatureMarker",
                 ["d"] = "DeleteTimeSignatureMarker",
-                ["s"] = "ShowTempoEnvelope" -- remove in 2.1
+                ["s"] = "ShowTempoEnvelope" -- TODO remove in 2.1, replaced by <SPC>ve
             } },
             ["g"] = { "+global", {
                 ["g"] = "SetGridDivision",
                 ["r"] = "ResetControlDevices",
-                [","] = "ShowPreferences", -- remove in 2.1
+                [","] = "ShowPreferences", -- TODO remove in 2.1, replaced by <SPC>v,
                 ["S"] = "UnsoloAllTracks",
-                ["s"] = { "+show/hide", { -- remove in 2.1
-                    ["x"] = "ShowRoutingMatrix",       -- remove in 2.1
-                    ["w"] = "ShowWiringDiagram",       -- remove in 2.1
-                    ["t"] = "ShowTrackManager",        -- remove in 2.1
-                    ["f"] = "ShowMonitoringFx",        -- remove in 2.1
-                    ["m"] = "ToggleShowMasterTrack",   -- remove in 2.1
-                    ["M"] = "ToggleMasterMonoStereo",  -- remove in 2.1
-                    ["r"] = "ShowRegionMarkerManager", -- remove in 2.1
+                ["s"] = { "+show/hide", { -- TODO remove in 2.1, replaced by <SPC>v
+                    ["x"] = "ShowRoutingMatrix",
+                    ["w"] = "ShowWiringDiagram",
+                    ["t"] = "ShowTrackManager",
+                    ["f"] = "ShowMonitoringFx",
+                    ["m"] = "ToggleShowMasterTrack",
+                    ["M"] = "ToggleMasterMonoStereo",
+                    ["r"] = "ShowRegionMarkerManager",
                 } },
                 ["f"] = { "+fx", {
                     ["x"] = "CloseAllFxChainsAndWindows",
-                    ["c"] = "ShowMasterFxChain", -- remove in 2.1
+                    ["c"] = "ShowMasterFxChain", --TODO remove in 2.1, replaced by <SPC>vF
                 } },
                 ["e"] = "ToggleShowAllEnvelopeGlobal",
                 ["a"] = { "+automation", {
@@ -526,8 +540,8 @@ local main = {
         ["aa"] = "ArmTracks",
         ["O"] = "EnterTrackAbove",
         ["o"] = "EnterTrackBelow",
-        ["p"] = "Paste",
-        ["<C-v>"] = "Paste",
+        p = "Paste",
+        ["<C-v>"] = "Paste", -- TODO remove in v2.1
         ["yy"] = "CopyTrack",
         ["zz"] = "ScrollToSelectedTracks",
         ["%"] = "SplitItemsAtEditCursor",

@@ -3,7 +3,6 @@ local buildCommand = require('command.builder')
 local handleCommand = require('command.handler')
 local getPossibleFutureEntries = require('command.completer')
 local config = require 'definitions.config'.general
-local actions = require 'definitions.actions'
 local log = require 'utils.log'
 local format = require('utils.format')
 local feedback = require('gui.feedback.controller')
@@ -159,7 +158,9 @@ local function input()
     -- If window is floating, it's controlled by WM so we can't always defocus it
     if not config.dock_feedback_window then return end
 
-    local defocus_window = main_ctx and actions.FocusTracks or actions.FocusMidiEditor
+    local FocusTracks = "_BR_FOCUS_TRACKS"
+    local FocusMidiEditor = "_SN_FOCUS_MIDI_EDITOR"
+    local defocus_window = main_ctx and FocusTracks or FocusMidiEditor
     reaper.Main_OnCommand(reaper.NamedCommandLookup(defocus_window), 0)
 
     -- When we insert track with feedback window closed, it steals focus and track is not renamed
@@ -167,7 +168,7 @@ local function input()
     if not hotkey.key:lower():match "o" then return end
     local keys = new_state.last_command.action_keys
     if #keys ~= 1 or not keys[1]:match "^EnterTrack" then return end
-    reaper.Main_OnCommand(actions.RenameTrack, 0)
+    reaper.Main_OnCommand(40696, 0) -- renameTrack
 end
 
 return input
