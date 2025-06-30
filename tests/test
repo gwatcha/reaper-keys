@@ -1,8 +1,9 @@
 #!/bin/sh
-ret=0; out="out.RPP"; reaper="./reaper/reaper -new -nosplash"
+ret=0; reaper="./reaper/reaper -new -nosplash"
 [ $# -eq 0 ] && timeout 6 $reaper 1>/dev/null 2>&1 # still evaluating
 
 for test in $(shuf -e ${1:-*.rks}); do
+    out="output-${test}"
     [ $# -eq 0 ] && echo $test
     $reaper -saveas $out 1>/dev/null 2>&1 &
     pid=$(echo $!); sleep 1
@@ -15,7 +16,7 @@ for test in $(shuf -e ${1:-*.rks}); do
         else
             xdotool type "$cmd"
         fi
-        [ $# -eq 2 ] && sleep .5
+        [ $# -eq 2 ] && sleep .3
         case $test in
             slow*) sleep .08;;
             *) sleep .01;;
@@ -28,6 +29,5 @@ for test in $(shuf -e ${1:-*.rks}); do
     ./compare ${test%.rks}.RPP $out
     diff_ret=$(echo $?)
     ret=$(( ret + diff_ret ))
-    [ $# -eq 2 ] || rm $out
 done
 exit $ret
