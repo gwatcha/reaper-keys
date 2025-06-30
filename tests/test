@@ -15,10 +15,10 @@ for test in $(shuf -e ${1:-*.rks}); do
         else
             xdotool type "$cmd"
         fi
-        [ $# -eq 2 ] && sleep .3
+        [ $# -eq 2 ] && sleep .5
         case $test in
             slow*) sleep .08;;
-            *) sleep .02;;
+            *) sleep .01;;
         esac
     done
 
