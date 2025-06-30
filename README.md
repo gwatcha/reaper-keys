@@ -168,6 +168,8 @@ Each test is just a sequence of keys you press to achieve some result. One notab
 a hotkey or a special key like "Return" (Enter) or "Backspace". In that case, prefix line with
 `&` and enter the key combination after, like `&Return`.
 
+Project files documentation: https://github.com/ReaTeam/Doc/blob/master/State%20Chunk%20Definitions
+
 ### Reporting performance issues
 
 1. Download "Lua profiler" from ReaTeam Scripts and "ReaImGui" from ReaTeam Extensions via
