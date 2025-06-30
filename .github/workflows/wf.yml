@@ -27,4 +27,4 @@ jobs:
     uses: actions/upload-artifact@v4
     with:
       name: projects
-      path: output-*
+      path: tests/output-*
