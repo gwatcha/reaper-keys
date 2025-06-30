@@ -1,0 +1,7 @@
+,a o &Return 0 im l im , "macro a that inserts 2 midi items on selected track start
+o &Return "create empty track
+2@a &Return "replay macro 2 times, enter to defocus last track rename
+0 V 2k "select tracks 2-4, cursor on project start
+ve "create time selection for first 4 divisions, capture first items on tracks 3 and 4
+sY "select and copy items inside time and track selection
+6l p "jump forward 6 divisions, one division after last items, and paste items
