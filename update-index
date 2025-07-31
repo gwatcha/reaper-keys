@@ -9,8 +9,8 @@ time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 raw="https://github.com/gwatcha/reaper-keys/raw/$(git rev-parse HEAD)"
 echo "\
 <version name=\"$version\" author=\"gwatcha\" time=\"$time\">
-<source main=\"main\">$raw/$installer</source>" >>$index
+    <source main=\"main\">$raw/$installer</source>" >>$index
 for file in $(find internal -type f) $(find vendor -type f); do
-    echo "<source file=\"../$file\">$raw/$file</source>" >>$index
+    echo "    <source file=\"../$file\">$raw/$file</source>" >>$index
 done
 echo "</version>\n</reapack>\n</category>\n</index>" >>$index
