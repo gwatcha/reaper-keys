@@ -44,7 +44,7 @@ end
 
 
 local library = {
-  marks = require('library.marks'),
+  marks = require 'marks',
   state = require('library.state')
 }
 
