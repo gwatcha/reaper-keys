@@ -3,6 +3,7 @@ local reaper_utils = require 'movement_utils'
 local log = require 'utils.log'
 local format = require 'utils.format'
 local serpent = require 'serpent'
+local log_level = require 'definitions.config'.general.log_level
 
 ---@class Mark
 ---@field type "region"|"timeline_position"|"track_selection"
@@ -34,7 +35,7 @@ local function updateMark(register, mark)
 end
 
 local function onMarkDelete(mark)
-    if not mark.index then return end
+    if not mark or not mark.index then return end
     if mark.type == 'region' then
         reaper.DeleteProjectMarker(0, mark.index, true)
     elseif mark.type == 'timeline_position' then
@@ -46,14 +47,13 @@ local marks = {}
 
 ---@param register string
 function marks.save(register)
-    local existing_mark = getMark(register)
-    if existing_mark then onMarkDelete(existing_mark) end
+    onMarkDelete(getMark(register))
 
-    local time_left, time_right = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
+    local left, right = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
     --- @type Mark
     local mark = {
-        left = time_left,
-        right = time_right,
+        left = left,
+        right = right,
         position = reaper.GetCursorPosition(),
         track_position = reaper_utils.getTrackPosition(),
         track_selection = reaper_utils.getSelectedTrackIndices(),
@@ -75,6 +75,7 @@ function marks.save(register)
     updateMark(register, mark)
 
     state_interface.setMode('normal')
+    if log_level ~= "trace" then return end
     local all_marks = {}
     for i = 0, 5000 do
         local ok, val
@@ -84,7 +85,7 @@ function marks.save(register)
         if not ok then break end
         all_marks[register] = mark
     end
-    log.trace(("New Marks State: %s"):format(format.block(all_marks)))
+    log.trace(("new Marks State: %s"):format(format.block(all_marks)))
 end
 
 ---@param register string
