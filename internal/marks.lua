@@ -18,11 +18,9 @@ local serpent = require 'serpent'
 --- @param register string
 --- @return Mark?
 local function getMark(register)
-    local ok, value, mark
-
-    local proj, _ = reaper.EnumProjects(-1, "")
-    ok, value = reaper.GetProjExtState(proj, "marks", register)
+    local ok, value = reaper.GetProjExtState(0, "marks", register)
     if not ok or not value then return nil end
+    local mark
     ok, mark = serpent.load(value)
     if not ok or not mark or mark.deleted then return nil end
     --- @cast mark Mark
@@ -32,9 +30,7 @@ end
 --- @param register string
 --- @param mark Mark
 local function updateMark(register, mark)
-    local proj, _ = reaper.EnumProjects(-1, "")
-    local serialized = serpent.block(mark, { comment = false })
-    reaper.SetProjExtState(proj, "marks", register, serialized)
+    reaper.SetProjExtState(0, "marks", register, serpent.block(mark, { comment = false }))
 end
 
 local function onMarkDelete(mark)
