@@ -46,19 +46,19 @@ local function removeUglyBrackets(key)
     return pretty_key
 end
 
-function format.keySequence(key_sequence, spacing)
+function format.keySequence(key_sequence)
     local rest_of_key_seq = key_sequence
     local key_sequence_string = ""
     while #rest_of_key_seq ~= 0 do
         first_key, rest_of_key_seq = utils.splitFirstKey(rest_of_key_seq)
-        if tonumber(first_key) or not spacing then
+        if tonumber(first_key) then
             key_sequence_string = key_sequence_string .. first_key
         else
             key_sequence_string = key_sequence_string .. " " .. removeUglyBrackets(first_key)
         end
     end
 
-    return key_sequence_string
+    return key_sequence_string .. "-"
 end
 
 ---@param command Command

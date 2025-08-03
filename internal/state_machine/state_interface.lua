@@ -1,5 +1,5 @@
 local reaper_state = require('utils.reaper_state')
-local log = require('utils.log')
+local log = require 'log'
 local default_state = require'state_machine.default_state'
 local utils = require('command.utils')
 
@@ -8,19 +8,6 @@ local state_table_name = "state"
 
 function state_interface.set(state)
   reaper_state.set(state_table_name, state)
-end
-
-function state_interface.setKey(key, value)
-  local state = state_interface.get()
-  state[key] = value
-  state_interface.set(state)
-end
-
----@param key string
----@return string | boolean | Command
-function state_interface.getKey(key)
-  local state = state_interface.get()
-  return state[key]
 end
 
 --- query ext state for the current reaper-keys state
@@ -32,8 +19,6 @@ function state_interface.get()
     end
   return state
 end
-
--- FIXME reduntant functions
 
 function state_interface.getLastSearchedTrackNameAndDirection()
   local state = state_interface.get()

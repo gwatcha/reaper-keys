@@ -1,6 +1,6 @@
 local state_interface = require 'state_machine.state_interface'
 local reaper_utils = require 'movement_utils'
-local log = require 'utils.log'
+local log = require 'log'
 local format = require 'utils.format'
 local serpent = require 'serpent'
 local log_level = require 'definitions.config'.general.log_level

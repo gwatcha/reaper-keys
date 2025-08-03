@@ -5,7 +5,7 @@ local executeCommand = require('command.executor')
 local utils = require('command.utils')
 local format = require('utils.format')
 local state_machine_default_state = require'state_machine.default_state'
-local log = require('utils.log')
+local log = require 'log'
 local reaper_state = require('utils.reaper_state')
 
 local function executeMacroCommands(state, command, macro_commands, repetitions)

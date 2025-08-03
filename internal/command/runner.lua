@@ -1,7 +1,7 @@
 local definitions = require('utils.definitions')
 
 local getAction = require('utils.get_action')
-local log = require('utils.log')
+local log = require 'log'
 
 -- getSelectedTracks, getTrackPosition
 local reaper_utils = require "movement_utils"

@@ -1,5 +1,5 @@
 local string_util = require('string')
-local log = require('utils.log')
+local log = require 'log'
 local ser = require('serpent')
 
 local utils = {}
