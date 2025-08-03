@@ -7,7 +7,7 @@ local handleCommand = require 'command.handler'
 local getPossibleFutureEntries = require 'command.completer'
 local config = require 'definitions.config'.general
 local actions = require 'definitions.actions'
-local log = require 'utils.log'
+local log = require 'log'
 local format = require 'utils.format'
 local feedback = require 'gui.feedback.controller'
 
@@ -88,7 +88,6 @@ end
 ---@param state State
 ---@param key_press KeyPress
 local function step(state, key_press)
-    local message = ""
     local new_state = state
 
     if state.key_sequence == "" then
@@ -103,24 +102,25 @@ local function step(state, key_press)
         and key_press.key
         or state.key_sequence .. key_press.key
 
-    log.info("New key sequence: ", new_state.key_sequence)
+    log.info(("new key sequence %s"):format(new_state.key_sequence))
     local command = buildCommand(new_state)
     if command then
-        log.trace("Command built: ", format.block(command))
+        local message
+        log.trace(("command built: %s"):format(format.block(command)))
         new_state, message = handleCommand(new_state, command)
         feedback.displayMessage(message)
         return new_state
     end
 
-    local future_entries = getPossibleFutureEntries(new_state)
-    if not future_entries then
+    local completions = getPossibleFutureEntries(new_state)
+    if not completions then
         feedback.displayMessage(("Undefined key sequence %s"):format(new_state.key_sequence))
         new_state.key_sequence = ''
         return new_state
     end
 
     feedback.displayMessage(format.keySequence(state.key_sequence))
-    feedback.displayCompletions(future_entries)
+    feedback.displayCompletions(completions)
     return new_state
 end
 
@@ -131,14 +131,14 @@ local function reaperKeys()
     ---@type KeyPress
     local hotkey = { context = main_ctx and "main" or "midi", key = ctxToKey(ctx) }
 
-    log.info("Input: " .. format.line(hotkey))
+    log.info(("Input: %s"):format(format.line(hotkey)))
     if config.show_feedback_window then feedback.clear() end
 
     local state = state_interface.get()
     local new_state = step(state, hotkey)
     state_interface.set(new_state)
 
-    log.info("New state: " .. format.block(new_state))
+    log.info(("New state: %s"):format(format.block(new_state)))
     if not config.show_feedback_window then return end
 
     feedback.displayState(new_state)
@@ -158,7 +158,7 @@ local function reaperKeys()
 end
 
 local function messageHandler(err)
-    require 'utils.log'.error(err, debug.traceback())
+    log.error(debug.traceback(err))
 end
 
 xpcall(reaperKeys, messageHandler)

@@ -69,6 +69,10 @@ local gui = {
     }
 }
 
+---@class GeneralConfig
+---@field log_level "trace"|"debug"|"info"|"warn"|"error"|"fatal"
+
+---@type GeneralConfig
 local general = {
     show_start_up_message = true,
     dock_feedback_window = true,
@@ -79,7 +83,7 @@ local general = {
     persist_visual_timeline_selection = true,
     persist_visual_track_selection = false,
     allow_timeline_movement_in_visual_mode = true,
-    log_level = 'error', -- trace debug info warn user error fatal
+    log_level = 'error',
     repeatable_commands_action_type_match = { 'command', 'operator', 'meta_command', }
 }
 

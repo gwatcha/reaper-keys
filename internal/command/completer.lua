@@ -1,7 +1,7 @@
 local action_sequences = require('command.action_sequences')
 local utils = require('command.utils')
 local definitions = require('utils.definitions')
-local log = require('utils.log')
+local log = require 'log'
 
 local function entryToString(entry)
     if utils.isFolder(entry) then

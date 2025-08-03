@@ -1,5 +1,5 @@
 local gui_scale = require 'definitions.config'.gui.gui_scale
-local log = require 'utils.log'
+local log = require 'log'
 local Color = require 'public.color'
 local Font = require 'public.font'
 
@@ -22,7 +22,7 @@ end
 
 function gui_utils.scale(normal_size)
     if not normal_size or not type(normal_size) == 'number' then
-        log.error("tried to scale a non number: " .. debug.traceback())
+        log.error(debug.traceback("tried to scale a non number"))
         return nil
     end
 

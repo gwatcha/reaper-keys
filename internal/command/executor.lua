@@ -1,4 +1,4 @@
-local log = require('utils.log')
+local log = require 'log'
 local format = require('utils.format')
 local action_sequences = require('command.action_sequences')
 local utils = require('command.utils')

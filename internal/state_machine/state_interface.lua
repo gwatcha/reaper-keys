@@ -1,5 +1,5 @@
 local reaper_state = require('utils.reaper_state')
-local log = require('utils.log')
+local log = require 'log'
 local default_state = require'state_machine.default_state'
 local utils = require('command.utils')
 
