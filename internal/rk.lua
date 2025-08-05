@@ -3,13 +3,16 @@ package.path = root .. "internal/?.lua;" .. root .. "vendor/?.lua;" .. root .. "
 
 local state_interface = require 'state_machine.state_interface'
 local buildCommand = require 'command.builder'
-local handleCommand = require 'command.handler'
 local getPossibleFutureEntries = require 'command.completer'
 local config = require 'definitions.config'.general
 local actions = require 'definitions.actions'
 local log = require 'log'
 local format = require 'utils.format'
 local feedback = require 'gui.feedback.controller'
+local reaper_state = require "utils.reaper_state"
+local meta_command = require "command.meta_command"
+local executeCommand = require "command.executor"
+local config_match = require 'definitions.config'.general.repeatable_commands_action_type_match
 
 local aliases = {
     [8] = '<BS>',
@@ -57,6 +60,7 @@ local macos_shift_fix = {
 }
 
 ---@param ctx string
+---@return string
 local function ctxToKey(ctx)
     local _, _, mod, code = ctx:find "^key:(.*):(.*)$"
     local virt, ctrl, shift = mod:match "V", mod:match "C", mod:match "S"
@@ -78,6 +82,45 @@ local function ctxToKey(ctx)
     local key = use_aliases and aliases[code] or string.char(code)
     if not ctrl and not alt and not shift then return key end
     return ("<%s%s%s-%s>"):format(ctrl or "", alt or "", shift or "", key)
+end
+
+---@param command Command
+---@return boolean
+local function isRepeatableCommand(command)
+    for _, action_type in ipairs(command.action_sequence) do
+        for _, action_type_match in ipairs(config_match) do
+            if action_type:find(action_type_match) then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+---@param state State
+---@param command Command
+---@return State
+local function handleCommand(state, command)
+    local meta_function = meta_command.getMetaCommandFunctionForCommand(command)
+    if meta_function then return meta_function(state, command) end
+
+    executeCommand(command)
+    -- internal commands may have changed the state
+    local new_state = state
+    if not state_interface.checkIfConsistentState(state) then
+        new_state = state_interface.get()
+    end
+
+    if isRepeatableCommand(command) then
+        new_state.last_command = command
+    end
+
+    if new_state.macro_recording then
+        reaper_state.append('macros', state.macro_register, command)
+    end
+
+    new_state.key_sequence = ""
+    return new_state
 end
 
 ---append the keypress to the key sequence and build a command.
@@ -105,10 +148,14 @@ local function step(state, key_press)
     log.info(("new key sequence %s"):format(new_state.key_sequence))
     local command = buildCommand(new_state)
     if command then
-        local message
         log.trace(("command built: %s"):format(format.block(command)))
-        new_state, message = handleCommand(new_state, command)
-        feedback.displayMessage(message)
+        local description = format.commandDescription(command)
+
+        reaper.Undo_BeginBlock2(0)
+        new_state = handleCommand(new_state, command)
+        reaper.Undo_EndBlock2(0, ('reaper-keys: %s'):format(description), 1)
+
+        feedback.displayMessage(description)
         return new_state
     end
 

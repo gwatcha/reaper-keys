@@ -100,7 +100,7 @@ local meta_commands = {
   end
 }
 
-local function getMetaCommandFunctionForCommand(command)
+function meta_command.getMetaCommandFunctionForCommand(command)
   local cmd_i = utils.getActionTypeIndex(command, 'command')
   local command_key = command.action_keys[cmd_i]
   if not command_key  then
@@ -120,10 +120,7 @@ local function getMetaCommandFunctionForCommand(command)
 end
 
 function meta_command.isMetaCommand(command)
-  if getMetaCommandFunctionForCommand(command) then
-    return true
-  end
-  return false
+    return meta_command.getMetaCommandFunctionForCommand(command)
 end
 
 function meta_command.executeMetaCommand(state, command)
