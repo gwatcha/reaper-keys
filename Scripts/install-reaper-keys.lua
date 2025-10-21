@@ -1,5 +1,5 @@
 -- @description reaper-keys: map keystroke combinations to actions like in vim
--- @version 2.0.0-a13
+-- @version 2.0.0-a14
 -- @author gwatcha
 -- @links
 --   GitHub repository https://github.com/gwatcha/reaper-keys
@@ -97,12 +97,12 @@ local key_groups = {
             44 + clash, -- ,
             45 + clash, -- -
             46 + clash, -- .
-            47,         -- /
+            47 + clash, -- /
             59 + clash, -- ;
-            61,         -- =
-            91,         -- [
-            92,         -- \
-            93,         -- ]
+            61 + clash, -- =
+            91 + clash, -- [
+            92 + clash, -- \
+            93 + clash, -- ]
             96 + clash, -- `
             167,        -- §
             177,        -- ±
