@@ -28,12 +28,6 @@
 ---@field key string
 ---@field context Context
 
----@alias Action table | integer | string | function
-
----@alias ActionSequence { [1]:string[], [2]:fun(action: Action) }
-
----@alias ActionModes {all_modes: ActionSequence[], normal: ActionSequence[], visual_timeline: ActionSequence[]}
-
 ---@alias KeyCommand { [string]: string | {[1]:string, [2]:KeyCommand[]}}
 
 ---@class Definition

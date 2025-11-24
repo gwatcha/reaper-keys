@@ -1,0 +1,8 @@
+o 1 &Return "track 1
+o 2 &Return "track 2
+o 3 &Return "track 3
+o 4 &Return "track 3
+2gg im "jump to track 2, insert midi
+8gg "will do nothing
+l gg im "jump to first track, insert midi
+G 4h im "jump to last track, insert midi
