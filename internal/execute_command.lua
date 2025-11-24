@@ -1,8 +1,9 @@
+local action_sequences = require 'command.action_sequences'
+local format = require 'utils.format'
 local log = require 'log'
-local format = require('utils.format')
-local action_sequences = require('command.action_sequences')
-local utils = require('command.utils')
+local utils = require 'command.utils'
 
+---@param command Command
 local function executeCommand(command)
   local action_values = utils.getActionValues(command)
   if not action_values then
@@ -10,13 +11,13 @@ local function executeCommand(command)
     return
   end
 
-  local functionForCommand = action_sequences.getFunctionForCommand(command)
-  if not functionForCommand then
+  local fn = action_sequences.getFunctionForCommand(command)
+  if not fn then
     log.error('Did not find an associated action action_sequence function to execute for the command.')
     return
   end
 
-  functionForCommand(table.unpack(action_values))
+  fn(table.unpack(action_values))
 end
 
 return executeCommand

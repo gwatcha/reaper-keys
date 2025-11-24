@@ -1,7 +1,7 @@
 local meta_command = {}
 
 local binding_list = require('gui.binding_list.controller')
-local executeCommand = require('command.executor')
+local executeCommand = require 'execute_command'
 local utils = require('command.utils')
 local format = require('utils.format')
 local state_machine_default_state = require'state_machine.default_state'
