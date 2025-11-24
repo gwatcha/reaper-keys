@@ -139,9 +139,17 @@ function actions.lastTrack()
     if num ~= 0 then reaper.SetOnlyTrackSelected(reaper.GetTrack(0, num - 1)) end
 end
 
+function actions.toTrack(num)
+    if num == 0 then return end
+    local track = reaper.GetTrack(0, num - 1)
+    if track then reaper.SetOnlyTrackSelected(track) end
+end
+
 function actions.trackWithNumber()
-    local ok, num = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
-    if not ok or type(num) ~= 'number' or num < 1 then return end
+    local ok, str = reaper.GetUserInputs("Match Forward", 1, "Track Number", "")
+    if not ok then return end
+    local num = tonumber(str)
+    if num < 1 then return end
     local track = reaper.GetTrack(0, num - 1)
     if track then reaper.SetOnlyTrackSelected(track) end
 end
