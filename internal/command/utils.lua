@@ -82,15 +82,6 @@ function utils.checkIfCommandsAreEqual(command1, command2)
   return false
 end
 
-function utils.getActionTypeIndex(command, action_type)
-  for i,current_action_type in pairs(command.action_sequence) do
-    if current_action_type == action_type then
-      return i
-    end
-  end
-  return nil
-end
-
 function utils.getEntry(key_sequence, entries)
   if entries[key_sequence] then
     return entries[key_sequence]

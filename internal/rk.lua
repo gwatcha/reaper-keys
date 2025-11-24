@@ -5,11 +5,11 @@ local actions = require 'definitions.actions'
 local buildCommand = require 'command.builder'
 local config = require 'definitions.config'.general
 local executeCommand = require 'execute_command'
+local executeMetaCommand = require 'meta_command'
 local feedback = require 'gui.feedback.controller'
 local format = require 'utils.format'
 local getPossibleFutureEntries = require 'command.completer'
 local log = require 'log'
-local meta_command = require 'command.meta_command'
 local reaper_state = require 'utils.reaper_state'
 local state_interface = require 'state_machine.state_interface'
 
@@ -114,9 +114,8 @@ end
 ---@param command Command
 ---@return State
 local function handleCommand(state, command)
-    if meta_command.isMetaCommand(command) then
-        return meta_command.executeMetaCommand(state, command)
-    end
+    local new_state = executeMetaCommand(state, command)
+    if new_state then return new_state end
 
     executeCommand(command)
 
