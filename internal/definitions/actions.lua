@@ -1,22 +1,50 @@
 local lib = require 'library.library'                  -- functions specific to reaper-keys i.e. macros
 local movements = require 'movements'
 
+---@alias ActionPart integer | string | function
+
+---@class ActionTable
+---@field repetitions? number Repetitions supplied in actions.lua
+---@field prefixedRepetitions? number Repetitions supplied by user
+---@field registerAction? boolean A (mark) function that operates on a
+--  register, single character, passed as argument
+---@field midiCommand? boolean
+---@field toTrack? boolean Special case for toTrack function
+
+---@alias Action ActionPart | ActionTable
+
+---@alias ActionSequence { [1]:string[], [2]:fun(action: Action) }
+
+---@alias ActionModes {all_modes: ActionSequence[], normal: ActionSequence[], visual_timeline: ActionSequence[]}
+
 -- Here are some predefined commands that you can use in bindings.lua e.g to map
 -- abcd => ActivateNextMidiItem instead of abcd => 40833.
 --
 -- You can add your own actions. The following forms are possible:
 --
--- Foo = 1337 -- run action 1337
--- Foo = "Fooable" -- run action with custom name Fooable (e.g. SWS actions are usually named).
---       You can refer to other actions.
--- Foo = {"Foo1", "Foo2"} -- run a sequence of actions: first Foo1, then Foo2
+-- Run action 1337
+-- Foo = 1337
+--
+-- Run action with custom name Fooable, e.g. SWS actions are usually named
+-- You can refer to other actions as well
+-- Foo = "Fooable"
+--
+-- Run a sequence of actions: first Foo1, then Foo2
+-- Foo = {"Foo1", "Foo2"}
 -- Foo = lib.foo.bar -- run a lua function
 --
 -- You can specify flags for every action:
 -- Foo = {1337, midiCommand = true}
+--
+-- User can supply repetitions for action. Multipled by "repetitions" field
 -- Foo = {1337, prefixRepetitionCount = true}
+--
+-- Predefined repetitions for action. Multiplied by "prefixRepetitionCount" if enabled
 -- Foo = {1337, repetitions = 100500}
+--
 -- Foo = {1337, metaCommand = true}
+--
+-- A (mark) function that operates on a register - a single key passed as argument
 -- Foo = {1337, registerAction = true}
 --
 -- Naming conventions:
@@ -143,6 +171,7 @@ return {
     -- Works with multiple tracks selection
     FirstItemStart = movements.firstItemStart,
     FirstTrack = { movements.firstTrack, "ScrollToSelectedTracks" },
+    ToTrack = { prefixRepetitionCount = true, toTrack = true },
     GlueItemsIgnoringTimeSelection = 40362,
     FitByLoopingNoExtend = {
         "OnlySelectItemsCrossingTimeAndTrackSelection",

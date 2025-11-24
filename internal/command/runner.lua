@@ -1,16 +1,13 @@
-local definitions = require('utils.definitions')
-
 local getAction = require('utils.get_action')
 local log = require 'log'
-
--- getSelectedTracks, getTrackPosition
 local reaper_utils = require "movement_utils"
-
-local state_interface = require('state_machine.state_interface')
-
 local runner = {}
+local scrollToSelectedTracks = require 'definitions.actions'.ScrollToSelectedTracks
+local state_interface = require('state_machine.state_interface')
+local toTrack = require 'movements'.toTrack
 
-function runActionPart(id, midi_command)
+---@param id ActionPart
+local function runActionPart(id, midi_command)
   if type(id) == "function" then
     id()
     return
@@ -52,41 +49,37 @@ function runRegisterAction(registerAction)
   registerAction[1](register)
 end
 
+---@param action Action
 function runner.runAction(action)
-  if type(action) ~= 'table' then
-    runActionPart(action, false)
-    return
-  end
-
-  local repetitions = 1
-  if action['repetitions'] then
-    repetitions = action['repetitions']
-  end
-
-  local prefixedRepetitions = 1
-  if action['prefixedRepetitions'] then
-    prefixedRepetitions = action['prefixedRepetitions']
-  end
-
-  if action['registerAction'] then
-    runRegisterAction(action)
-    return
-  end
-
-  midi_command = false
-  if action['midiCommand'] then
-    midi_command = true
-  end
-
-  for i=1,repetitions*prefixedRepetitions do
-    for _, sub_action in ipairs(action) do
-      if type(sub_action) == 'table' then
-        runner.runAction(sub_action)
-      else
-        runActionPart(sub_action, midi_command)
-      end
+    if type(action) ~= 'table' then
+        runActionPart(action --[[@as ActionPart]], false)
+        return
     end
-  end
+
+    ---@cast action ActionTable
+    if action.registerAction then
+        runRegisterAction(action)
+        return
+    end
+
+    local prefixedRepetitions = action.prefixedRepetitions or 1
+    if action.toTrack then
+        toTrack(prefixedRepetitions)
+        reaper.Main_OnCommand(scrollToSelectedTracks, 0)
+        return
+    end
+
+    local repetitions = action.repetitions or 1
+    local midiCommand = action.midiCommand or false
+    for _ = 1, repetitions * prefixedRepetitions do
+        for _, sub_action in ipairs(action) do
+            if type(sub_action) == 'table' then
+                runner.runAction(sub_action)
+            else
+                runActionPart(sub_action, midiCommand)
+            end
+        end
+    end
 end
 
 function runner.runActionNTimes(action, times)
