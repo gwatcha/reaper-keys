@@ -7,16 +7,13 @@ local utils = require 'command.utils'
 local function executeCommand(command)
     local action_values = utils.getActionValues(command)
     if not action_values then
-        log.error("Could not form executable command for: " .. format.block(command))
-        return
+        return log.error("Could not form executable command for: " .. format.block(command))
     end
-  local fn = action_sequences.getFunctionForCommand(command)
-  if not fn then
-    log.error('Did not find an associated action action_sequence function to execute for the command.')
-    return
-  end
-
-  fn(table.unpack(action_values))
+    local fn = action_sequences.getFunctionForCommand(command)
+    if not fn then
+        return log.error('Did not find an associated action action_sequence function to execute for the command')
+    end
+    fn(table.unpack(action_values))
 end
 
 return executeCommand
