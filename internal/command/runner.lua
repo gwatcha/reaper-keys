@@ -46,12 +46,12 @@ function runner.runAction(action)
     if action.registerAction then
         local register = action.register
         if not register then
-            log.fatal("no register for register action")
+            log.error("no register for register action")
             return
         end
         local fn = action[1]
         if type(fn) ~= 'function' then
-            log.fatal(("expected fun, got %s"):format(fn))
+            log.error(("expected fun, got %s"):format(fn))
             return
         end
 

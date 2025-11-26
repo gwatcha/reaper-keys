@@ -9,7 +9,7 @@ local state_machine_default_state = require 'state_machine.default_state'
 local commands = {}
 
 ---@param command Command
----@return Action
+---@return Action?
 local function getActionKey(command)
     for i, action_type in pairs(command.action_sequence) do
         if action_type == "command" then return command.action_keys[i] end
@@ -20,16 +20,16 @@ end
 ---@param command Command
 ---@return MetaFunction?
 local function getFn(command)
-    local name = getActionKey(command)
-    if not name then return nil end
-    if type(name) == 'table' then name = name[1] end
-    return commands[name]
+    local key = getActionKey(command)
+    if not key then return nil end
+    if type(key) == 'table' then key = key[1] end
+    return commands[key]
 end
 
 ---@param state State
 ---@param command Command
 ---@return State
-function commands.recordMacro(state, command)
+function commands.RecordMacro(state, command)
     if state.macro_recording then
         state.macro_recording = false
         state.key_sequence = ''
@@ -50,8 +50,12 @@ end
 ---@param state State
 ---@param command Command
 ---@return State
-function commands.playMacro(state, command)
+function commands.PlayMacro(state, command)
     local action = getActionKey(command)
+    if not action then
+        log.error("no action for PlayMacro" .. require'utils.format'.block(command))
+        return state_machine_default_state
+    end
     local register = action.register
     if not register then
         log.error("no register for PlayMacro")
@@ -89,7 +93,7 @@ end
 ---@param state State
 ---@param command Command
 ---@return State
-function commands.repeatLastCommand(state, command)
+function commands.RepeatLastCommand(state, command)
     local repetitions = getActionKey(command).prefixedRepetitions or 1
     local last_command = state.last_command
     local fn = getFn(last_command)
@@ -111,7 +115,7 @@ end
 
 ---@param state State
 ---@return State
-function commands.showBindingList(state, _)
+function commands.ShowBindingList(state, _)
     state.key_sequence = ""
     binding_list.open(state)
     return state
