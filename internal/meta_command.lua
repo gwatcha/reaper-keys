@@ -10,7 +10,7 @@ local commands = {}
 
 ---@param command Command
 ---@return Action?
-local function getActionKey(command)
+local function getAction(command)
     for i, action_type in pairs(command.action_sequence) do
         if action_type == "command" then return command.action_keys[i] end
     end
@@ -20,7 +20,7 @@ end
 ---@param command Command
 ---@return MetaFunction?
 local function getFn(command)
-    local key = getActionKey(command)
+    local key = getAction(command)
     if not key then return nil end
     if type(key) == 'table' then key = key[1] end
     return commands[key]
@@ -29,31 +29,10 @@ end
 ---@param state State
 ---@param command Command
 ---@return State
-function commands.RecordMacro(state, command)
-    if state.macro_recording then
-        state.macro_recording = false
-        state.key_sequence = ''
-        return state
-    end
-
-    local register = command.action_keys[1].register
-    if not register then return state end
-
-    local blank_macro = { register = {} }
-    reaper_state.setKeys('macros', blank_macro)
-    state.macro_register = register
-    state.macro_recording = true
-    state.key_sequence = ''
-    return state
-end
-
----@param state State
----@param command Command
----@return State
 function commands.PlayMacro(state, command)
-    local action = getActionKey(command)
+    local action = getAction(command)
     if not action then
-        log.error("no action for PlayMacro" .. require'utils.format'.block(command))
+        log.error("no action for PlayMacro" .. require 'utils.format'.block(command))
         return state_machine_default_state
     end
     local register = action.register
@@ -64,22 +43,16 @@ function commands.PlayMacro(state, command)
 
     local macro_commands = reaper_state.getKey('macros', register) --[[@as table?]]
     if macro_commands then
-        local repetitions = action.prefixedRepetitions or 1
-        local fn = getFn(command)
-        if fn then
-            for _ = 1, repetitions do
-                for _, macro_command in pairs(macro_commands) do
+        for _ = 1, action.prefixedRepetitions or 1 do
+            for _, macro_command in pairs(macro_commands) do
+                local fn = getFn(macro_command)
+                if fn then
                     fn(state, macro_command)
-                end
-            end
-        else
-            for _ = 1, repetitions do
-                for _, macro_command in pairs(macro_commands) do
+                else
                     executeCommand(macro_command)
                 end
             end
         end
-
         if state.macro_recording then
             reaper_state.append('macros', state.macro_register, command)
         end
@@ -93,11 +66,33 @@ end
 ---@param state State
 ---@param command Command
 ---@return State
+function commands.RecordMacro(state, command)
+    if state.macro_recording then
+        state.macro_recording = false
+        state.key_sequence = ''
+        return state
+    end
+    local register = command.action_keys[1].register
+    if not register then return state end
+
+    local blank_macro = {}
+    blank_macro[register] = {}
+    reaper_state.setKeys('macros', blank_macro)
+    state.macro_register = register
+    state.macro_recording = true
+    state.key_sequence = ''
+    return state
+end
+
+---@param state State
+---@param command Command
+---@return State
 function commands.RepeatLastCommand(state, command)
-    local repetitions = getActionKey(command).prefixedRepetitions or 1
+    local action = getAction(command)
+    if not action then return state_machine_default_state end
     local last_command = state.last_command
     local fn = getFn(last_command)
-
+    local repetitions = action.prefixedRepetitions or 1
     if fn then
         for _ = 1, repetitions do fn(state, last_command) end
     else
@@ -105,7 +100,7 @@ function commands.RepeatLastCommand(state, command)
     end
 
     if state.macro_recording then
-        reaper_state.append('macros', state.macro_register, state.last_command)
+        reaper_state.append('macros', state.macro_register, last_command)
     end
 
     state.key_sequence = ""
