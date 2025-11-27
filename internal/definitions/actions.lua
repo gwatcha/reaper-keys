@@ -1,4 +1,4 @@
-local lib = require 'library.library'                  -- functions specific to reaper-keys i.e. macros
+local lib = require 'library.library'
 local movements = require 'movements'
 
 ---@alias ActionPart integer | string | function
@@ -8,8 +8,10 @@ local movements = require 'movements'
 ---@field prefixedRepetitions? number Repetitions supplied by user
 ---@field registerAction? boolean A (mark) function that operates on a register, a single character, passed as argument
 ---@field register? string Register for registerAction
----@field midiCommand? boolean
----@field toTrack? boolean Special case for toTrack function
+---@field setTimeSelection? boolean For timeline operator action only: keep time selection
+---@field setTrackSelection? boolean For track operator action only: keep track selection
+---@field midiCommand? boolean Use command only in MIDI context and not in main one
+---@field toTrack? boolean Special option for toTrack function
 
 ---@alias Action ActionPart | ActionTable
 
@@ -42,15 +44,12 @@ local movements = require 'movements'
 -- Predefined repetitions for action. Multiplied by "prefixRepetitionCount" if enabled
 -- Foo = {1337, repetitions = 100500}
 --
+-- A meta command is a command which accesses Reaper keys state, e.g. RecordMacro
 -- Foo = {1337, metaCommand = true}
 --
 -- A (mark) function that operates on a register - a single key passed as argument
 -- Foo = {1337, registerAction = true}
 --
--- Naming conventions:
--- - A noun implies an action which selects the noun, or a movement to its position
--- - Simple verbs are usually operators, such as 'change'
--- - Longer verbs are usually commands
 ---@type Action[]
 return {
     ActivateNextMidiItem = { 40833, midiCommand = true },

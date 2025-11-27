@@ -1,8 +1,3 @@
----
-title: Action Composition
-nav_order: 1
----
-
 # Action Composition
 
 The main feature reaper-keys provides is the ability to compose actions of different types to create new commands. 
@@ -32,23 +27,9 @@ There are various action types in reaper-keys.
 
 Check out the [modes](modes) documentation to learn about how these types compose together.
 
-
----
-layout: default
-title: Actions
-nav_order: 2
-parent: Configuration
----
-
 # Actions
 
-## Relevant Files
-
-      ├── definitions
-          ├── actions.lua
-          └── defaults
-              └── actions.lua
-
+Relevant file: `internal/definitions/actions.lua`
 
 ## Configuration
 
@@ -79,37 +60,11 @@ SetRecordModeNormal = 40252,
 Reset = {"Stop", "SetModeNormal", "SetRecordModeNormal", "ResetSelection"},
 ```
 
-
 ## Action Options
 You may have noticed that this action had an option set:
 ``` lua
 UnselectAllEvents = {40214, midiCommand=true},
 ```
-
-There are various other options one can use as well. 
-
-| Option                | Use                                                                                                  |
-| ------                | ---                                                                                                  |
-| repetitions           | Specifies the number of times to run the action                                                      |
-| prefixRepetitionCount | Indicates a number may prefix the actions key binding which will indicate repetitions.               |
-| setTimeSelection      | Used with timeline operator actions to indicate it to keep the time selection it operated on, not restore the previous. |
-| setTrackSelection     | Used with track operator actions to indicate it to keep the track selection it operated on, not restore the previous. |
-| midiCommand           | Indicates that the action id is from Reaper's 'MidiEditor' section                                   |
-
-
----
-layout: default
-title: Advanced Configuration
-nav_order: 4
-parent: Configuration
----
-
-# Advanced Configuration
-{: .no_toc}
-
-1. TOC
-{:toc}
-
 
 ## Action Sequences and Modes
 
@@ -209,59 +164,7 @@ To create a custom action, follow the examples in the `custom_actions` directory
 
 `reaper` is a global which provides access to the [reaper api](https://www.reaper.fm/sdk/reascript/reascripthelp.html#l)
 
-
-
-
----
-layout: default
-title: Reaper-Keys Behaviour
-nav_order: 3
-parent: Configuration
----
-
-# Reaper-Keys Behaviour
-
-## Relevant Files
-
-    ├── definitions
-        └── config.lua
-        
-        
-## Configuration
-
-The `config` file has a table of options that tweaks reaper-keys behaviour.
-
-| Option                                  | Values                                   | Use                                                                                                                     |
-| ---                                     | ---                                      | ---                                                                                                                     |
-| `log_level`                             | [trace debug info warn user error fatal] | sets log verbosity                                                                                                      |
-| `persist_visual_timeline_selection`     | [true false]                             | controls if timeline operators in visual timeline mode reset the timeline selection                                     |
-| `persist_visual_track_selection`        | [true false]                             | controls if track operators in visual track mode reset the track selection                                              |
-| `allow_visual_track_timeline_movement`  | [true false]                             | controls if timeline movement in `visual track` mode is allowed                                                         |
-| `repeatable_commands_action_type_match` | table of action type match strings       | controls which commands are considered repeatable by specifying the action type it should contain in its action sequence |
-
-
----
-layout: default
-title: Bindings
-nav_order: 1
-parent: Configuration
----
-
-# Bindings
-
-## Relevant Files
-
-        
-    ├── definitions
-        ├── bindings.lua
-        └── defaults
-            ├── global.lua
-            ├── main.lua
-            └── midi.lua
-        
-        
-
-## Configuration
+## Bindings configuration
 
 ```lua
 -- add a binding by specifying a key sequence and an action name
@@ -317,14 +220,6 @@ command = {
     }},
 }
 ``` 
-
-
----
-title: Configuration
-nav_order: 5
-has_toc: true
-has_children: true
----
 
 # Configuration
 For most configuration needs, check out the `definitions` directory. 
@@ -401,4 +296,3 @@ This mode is the same in principle as `visual timeline` mode, just with track mo
 | `track motion` | Extends the track selection up to the new track position after the motion |
 | `track operator` | Executes the operator and exits to normal mode. |
 | `visual track command` | Executes a visual track command. |
-
