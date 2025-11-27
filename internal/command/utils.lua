@@ -161,46 +161,4 @@ function utils.getEntryForKeySequence(key_sequence, entries)
   return nil
 end
 
-function table.shallow_copy(t)
-  local t2 = {}
-  for k,v in pairs(t) do
-    t2[k] = v
-  end
-  return t2
-end
-
-function utils.getActionValue(action_key, action_type)
-  if type(action_key) ~= 'table' then
-    action_key = {action_key}
-  end
-
-  local action_name = action_key[1]
-  local action = getAction(action_name)
-  if not action then
-    log.error("Could not find action for " .. action_name)
-    return nil
-  end
-
-  local action_value = table.shallow_copy(action_key)
-  if type(action) == 'table' then
-    for k,v in pairs(action) do action_value[k] = v end
-  else
-    action_value[1] = action
-  end
-
-  return action_value
-end
-
-function utils.getActionValues(command)
-  local action_values = {}
-  for i,action_type in pairs(command.action_sequence) do
-      local action_value = utils.getActionValue(command.action_keys[i], action_type)
-      if not action_value then
-        return nil
-      end
-      table.insert(action_values, action_value)
-    end
-  return action_values
-end
-
 return utils
