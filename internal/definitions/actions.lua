@@ -7,16 +7,12 @@ local movements = require 'movements'
 ---@field repetitions? number Repetitions supplied in actions.lua
 ---@field prefixedRepetitions? number Repetitions supplied by user
 ---@field setTrackSelection? boolean
+---@field setTimeSelection? boolean
 ---@field registerAction? boolean A (mark) function that operates on a register, a single character, passed as argument
 ---@field register? string Register for registerAction
 ---@field midiCommand? boolean
 ---@field toTrack? boolean Special case for toTrack function
-
 ---@alias Action ActionPart | ActionTable
-
----@alias ActionSequence { [1]:string[], [2]:fun(action: Action) }
-
----@alias ActionModes {all_modes: ActionSequence[], normal: ActionSequence[], visual_timeline: ActionSequence[]}
 
 -- Here are some predefined commands that you can use in bindings.lua e.g to map
 -- abcd => ActivateNextMidiItem instead of abcd => 40833.

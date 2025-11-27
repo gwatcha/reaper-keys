@@ -1,7 +1,7 @@
 -- FIXME refractor me
 
 local list_config = require'definitions.config'.gui.binding_list
-local getActionTypes = require('command.action_sequences').getActionTypes
+local getActionTypes = require('action_sequence').getActionTypes
 local createBindingListBoxElement = require('gui.binding_list.binding_list_box')
 
 local scythe = require('scythe')
