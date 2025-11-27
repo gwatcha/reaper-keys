@@ -1,4 +1,4 @@
-local action_sequences = require 'command.action_sequences'
+local action_sequences = require 'action_sequence'
 local actions = require 'definitions.actions'
 local log = require 'log'
 

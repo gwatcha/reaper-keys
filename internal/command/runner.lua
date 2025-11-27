@@ -6,6 +6,12 @@ local scrollToSelectedTracks = require 'definitions.actions'.ScrollToSelectedTra
 local state_interface = require('state_machine.state_interface')
 local toTrack = require 'movements'.toTrack
 
+---Run action not present in internal/definitions/actions.lua
+---@param name string
+function runner.runInternalActionByName(name)
+    reaper.Main_OnCommand(reaper.NamedCommandLookup(name), 0)
+end
+
 ---@param id ActionPart
 local function runActionPart(id, midi_command)
   if type(id) == "function" then

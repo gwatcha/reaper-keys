@@ -1,5 +1,5 @@
 local utils = require 'command.utils'
-local action_sequences = require 'command.action_sequences'
+local action_sequences = require 'action_sequence'
 local definitions = require 'utils.definitions'
 
 local function getActionKey(key_sequence, entries)
