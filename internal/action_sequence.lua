@@ -64,7 +64,8 @@ end
 local function visualTrackTrackOperator(track_operator)
     runner.runAction(track_operator)
     state_interface.setModeToNormal()
-    if not config.persist_visual_track_selection and (type(track_operator) ~= 'table' or not track_operator.setTrackSelection) then
+    if not config.persist_visual_track_selection and
+        (type(track_operator) ~= 'table' or not track_operator.setTrackSelection) then
         local track = reaper.GetLastTouchedTrack()
         if track then reaper.SetOnlyTrackSelected(track) end
     end
