@@ -27,4 +27,4 @@
 ---@field context Context
 
 ---@alias KeyCommand { [string]: string | {[1]:string, [2]:KeyCommand[]}}
----@alias Definition { [ActionType]: KeyCommand[]}
+---@alias Definition table<ActionType, KeyCommand[]>

@@ -5,7 +5,6 @@ local persist_visual_timeline_selection = require 'definitions.config'.general.p
 local runner = require 'command.runner'
 local state_interface = require 'state_machine.state_interface'
 
-
 ---@param timeline_operator Action
 ---@param timeline_selector Action
 local function timelineOperatorTimelineSelector(timeline_operator, timeline_selector)
@@ -104,7 +103,7 @@ function action_sequences.getActionTypes() return action_types end
 
 ---@alias ActionSequence ActionType[]
 ---@alias ActionSequenceWithFn { [1]:ActionSequence, [2]:fun(action: Action) }
----@alias ActionModes { [Mode]: ActionSequenceWithFn[] }
+---@alias ActionModes table<Mode, ActionSequenceWithFn[]>
 ---@type ActionModes
 local pairs_global_midi = {
     normal = {
@@ -152,7 +151,7 @@ local pairs_main = {
     }
 }
 
----@alias ActionTypePairs { [Context]: ActionModes }
+---@alias ActionTypePairs table<Context, ActionModes>
 ---@type ActionTypePairs
 local action_sequences_pairs = {
     global = pairs_global_midi,
@@ -171,14 +170,11 @@ function action_sequences.getPossibleActionSequences(state)
     return sequences
 end
 
+---@param seq1 ActionSequence
+---@param seq2 ActionSequence
+---@return boolean
 local function checkIfActionSequencesAreEqual(seq1, seq2)
-    if #seq1 ~= #seq2 then return false end
-    for i = 1, #seq1 do
-        if seq1[i] ~= seq2[i] then
-            return false
-        end
-    end
-    return true
+    return seq1[1] == seq2[1] and seq1[2] == seq2[2]
 end
 
 ---@param command Command
