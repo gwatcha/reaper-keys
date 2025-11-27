@@ -27,14 +27,4 @@
 ---@field context Context
 
 ---@alias KeyCommand { [string]: string | {[1]:string, [2]:KeyCommand[]}}
-
----@class Definition
----@field command KeyCommand[]
----@field timeline_motion KeyCommand[]
----@field timeline_operator KeyCommand[]
----@field timeline_selector KeyCommand[]
----@field track_motion? KeyCommand[] main context only
----@field track_operator? KeyCommand[] main context only
----@field track_selector? KeyCommand[] main context only
----@field visual_timeline_command? KeyCommand[]
----@field visual_track_command? KeyCommand[]  main context only
+---@alias Definition { [ActionType]: KeyCommand[]}
