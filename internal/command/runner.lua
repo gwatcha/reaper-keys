@@ -35,20 +35,6 @@ local function runActionPart(id, midi_command)
   end
 end
 
-function runRegisterAction(registerAction)
-  local register = registerAction['register']
-  if not register then
-    log.error("Tried to run a register action but got no register!")
-    return
-  end
-
-  if not type(registerAction[1]) == 'function' then
-    log.error("Did not get passed a proper function for the register action. Got " .. registerAction[1] .. " instead.")
-  end
-
-  registerAction[1](register)
-end
-
 ---@param action Action
 function runner.runAction(action)
     if type(action) ~= 'table' then
@@ -58,7 +44,18 @@ function runner.runAction(action)
 
     ---@cast action ActionTable
     if action.registerAction then
-        runRegisterAction(action)
+        local register = action.register
+        if not register then
+            log.error("no register for register action")
+            return
+        end
+        local fn = action[1]
+        if type(fn) ~= 'function' then
+            log.error(("expected fun, got %s"):format(fn))
+            return
+        end
+
+        fn(register)
         return
     end
 
