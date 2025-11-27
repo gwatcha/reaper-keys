@@ -168,7 +168,13 @@ local function step(state, key_press)
         local description = format.commandDescription(command)
         reaper.Undo_EndBlock2(0, ('reaper-keys: %s'):format(description), 1)
 
-        feedback.displayMessage(description)
+        if config.show_feedback_window then
+            feedback.displayMessage(description)
+        end
+        return new_state
+    end
+
+    if not config.show_feedback_window then
         return new_state
     end
 

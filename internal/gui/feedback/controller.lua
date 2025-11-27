@@ -6,7 +6,6 @@ local config = require 'definitions.config'.general
 local feedback = {}
 
 function feedback.displayCompletions(future_entries)
-    if not future_entries then return end
     local completions = {}
 
     for action_type, future_entries_for_action_type in pairs(future_entries) do

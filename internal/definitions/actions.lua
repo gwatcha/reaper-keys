@@ -6,6 +6,7 @@ local movements = require 'movements'
 ---@class ActionTable
 ---@field repetitions? number Repetitions supplied in actions.lua
 ---@field prefixedRepetitions? number Repetitions supplied by user
+---@field setTrackSelection? boolean
 ---@field registerAction? boolean A (mark) function that operates on a register, a single character, passed as argument
 ---@field register? string Register for registerAction
 ---@field midiCommand? boolean

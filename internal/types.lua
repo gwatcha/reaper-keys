@@ -1,9 +1,7 @@
 ---@meta
 
 ---@alias Context "midi"|"main"|"global"
-
 ---@alias Mode "normal"|"visual_track"|"visual_timeline"
-
 ---@alias ReaProject number
 
 ---@class Command
