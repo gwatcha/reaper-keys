@@ -5,6 +5,7 @@ local persist_visual_timeline_selection = require 'definitions.config'.general.p
 local runner = require 'command.runner'
 local state_interface = require 'state_machine.state_interface'
 
+
 ---@param timeline_operator Action
 ---@param timeline_selector Action
 local function timelineOperatorTimelineSelector(timeline_operator, timeline_selector)
@@ -125,8 +126,12 @@ local pairs_global_midi = {
 ---@type ActionModes
 local pairs_main = {
     normal = {
-        { { 'track_operator', 'track_motion' },   trackOperatorTrackMotion },
-        { { 'track_operator', 'track_selector' }, trackOperatorTrackSelector },
+        { { 'command' },                                runner.runAction },
+        { { 'timeline_motion' },                        runner.runAction },
+        { { 'timeline_operator', 'timeline_motion' },   timelineOperatorTimelineMotion },
+        { { 'timeline_operator', 'timeline_selector' }, timelineOperatorTimelineSelector },
+        { { 'track_operator', 'track_motion' },         trackOperatorTrackMotion },
+        { { 'track_operator', 'track_selector' },       trackOperatorTrackSelector },
     },
     visual_track = {
         { { 'command' },                                runner.runAction },
