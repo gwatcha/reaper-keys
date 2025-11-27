@@ -6,9 +6,9 @@
 
 ---@class Command
 ---@field action_keys Action[]
----@field action_sequence string[]
+---@field action_sequence ActionSequence
 ---@field context Context
----@field mode string "normal"|"insert" ?
+---@field mode Mode
 
 ---@class State
 ---@field key_sequence string
