@@ -31,15 +31,9 @@ end
 ---@return State
 function commands.PlayMacro(state, command)
     local action = getAction(command)
-    if not action then
-        log.error("no action for PlayMacro" .. require 'utils.format'.block(command))
-        return state_machine_default_state
-    end
+    if not action then return state_machine_default_state end
     local register = action.register
-    if not register then
-        log.error("no register for PlayMacro")
-        return state_machine_default_state
-    end
+    if not register then return state_machine_default_state end
 
     local macro_commands = reaper_state.getKey('macros', register) --[[@as table?]]
     if macro_commands then
