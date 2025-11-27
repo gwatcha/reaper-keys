@@ -82,9 +82,10 @@ local function visualTrackTimelineMotion(timeline_motion)
     runner.runAction(timeline_motion)
 end
 
----@alias TimelineType "timeline_motion" | "timeline_operator" | "timeline_selector" | "visual_timeline_command"
+---@alias VisualType "visual_timeline_command" | "visual_track_command"
+---@alias TimelineType "timeline_motion" | "timeline_operator" | "timeline_selector"
 ---@alias TrackType "track_motion" | "track_operator" | "track_selector"
----@alias ActionType "command" | TimelineType | TrackType
+---@alias ActionType "command" | TimelineType | TrackType | VisualType
 ---@type ActionType[]
 local action_types = {
     "command",
@@ -94,7 +95,8 @@ local action_types = {
     "track_motion",
     "track_operator",
     "track_selector",
-    "visual_timeline_command"
+    "visual_timeline_command",
+    "visual_track_command"
 }
 
 local action_sequences = {}
@@ -106,48 +108,47 @@ function action_sequences.getActionTypes() return action_types end
 ---@type ActionModes
 local pairs_global_midi = {
     normal = {
-        { { 'command' },                                runner.runAction },
-        { { 'timeline_motion' },                        runner.runAction },
-        { { 'timeline_operator', 'timeline_motion' },   timelineOperatorTimelineMotion },
         { { 'timeline_operator', 'timeline_selector' }, timelineOperatorTimelineSelector },
+        { { 'timeline_operator', 'timeline_motion' },   timelineOperatorTimelineMotion },
+        { { 'timeline_motion' },                        runner.runAction },
+        { { 'command' },                                runner.runAction },
     },
-    visual_track = {
-        { { 'command' }, runner.runAction }
-    },
+    visual_track = { { { 'command' }, runner.runAction } },
     visual_timeline = {
-        { { 'command' },                 runner.runAction },
-        { { 'timeline_motion' },         visualTimelineTimelineMotion },
+        { { 'visual_timeline_command' }, runner.runAction },
         { { 'timeline_operator' },       visualTimelineTimelineOperator },
         { { 'timeline_selector' },       runner.runAction },
-        { { 'visual_timeline_command' }, runner.runAction },
+        { { 'timeline_motion' },         visualTimelineTimelineMotion },
+        { { 'command' },                 runner.runAction },
     }
 }
 
 ---@type ActionModes
 local pairs_main = {
     normal = {
-        { { 'command' },                                runner.runAction },
-        { { 'timeline_motion' },                        runner.runAction },
-        { { 'timeline_operator', 'timeline_motion' },   timelineOperatorTimelineMotion },
-        { { 'timeline_operator', 'timeline_selector' }, timelineOperatorTimelineSelector },
         { { 'track_operator', 'track_motion' },         trackOperatorTrackMotion },
         { { 'track_operator', 'track_selector' },       trackOperatorTrackSelector },
+        { { 'timeline_operator', 'timeline_selector' }, timelineOperatorTimelineSelector },
+        { { 'timeline_operator', 'timeline_motion' },   timelineOperatorTimelineMotion },
+        { { 'timeline_motion' },                        runner.runAction },
+        { { 'track_motion' },                           runner.runAction },
+        { { 'command' },                                runner.runAction },
     },
     visual_track = {
-        { { 'command' },                                runner.runAction },
-        { { 'timeline_motion' },                        visualTrackTimelineMotion },
-        { { 'timeline_operator', 'timeline_motion' },   timelineOperatorTimelineMotion },
-        { { 'timeline_operator', 'timeline_selector' }, timelineOperatorTimelineSelector },
-        { { 'track_motion' },                           visualTrackTrackMotion },
-        { { 'track_operator' },                         visualTrackTrackOperator },
+        { { 'visual_track_command' }, runner.runAction },
+        { { 'track_operator' },       visualTrackTrackOperator },
+        { { 'track_selector' },       runner.runAction },
+        { { 'track_motion' },         visualTrackTrackMotion },
+        { { 'timeline_motion' },      visualTrackTimelineMotion },
+        { { 'command' },              runner.runAction },
     },
     visual_timeline = {
-        { { 'command' },                 runner.runAction },
-        { { 'timeline_motion' },         visualTimelineTimelineMotion },
+        { { 'visual_timeline_command' }, runner.runAction },
         { { 'timeline_operator' },       visualTimelineTimelineOperator },
         { { 'timeline_selector' },       runner.runAction },
+        { { 'timeline_motion' },         visualTimelineTimelineMotion },
         { { 'track_motion' },            runner.runAction },
-        { { 'visual_timeline_command' }, runner.runAction },
+        { { 'command' },                 runner.runAction },
     }
 }
 
@@ -177,7 +178,6 @@ local function checkIfActionSequencesAreEqual(seq1, seq2)
             return false
         end
     end
-
     return true
 end
 
@@ -185,13 +185,11 @@ end
 ---@return fun(action: Action)?
 function action_sequences.getFunctionForCommand(command)
     local pairs = action_sequences_pairs[command.context][command.mode]
-
     for _, pair in ipairs(pairs) do
         if checkIfActionSequencesAreEqual(command.action_sequence, pair[1]) then
             return pair[2]
         end
     end
-
     return nil
 end
 
