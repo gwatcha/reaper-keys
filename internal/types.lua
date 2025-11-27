@@ -7,7 +7,7 @@
 ---@alias ReaProject number
 
 ---@class Command
----@field action_keys string[]
+---@field action_keys Action[]
 ---@field action_sequence string[]
 ---@field context Context
 ---@field mode string "normal"|"insert" ?
