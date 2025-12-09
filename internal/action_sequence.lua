@@ -142,7 +142,7 @@ local action_sequences_pairs = {
 
 ---@param context Context
 ---@param mode Mode
----@return ActionType[]
+---@return ActionType[][]
 local function keys(context, mode)
     local pairs = action_sequences_pairs[context][mode]
     local sequences = {}
@@ -150,7 +150,7 @@ local function keys(context, mode)
     return sequences
 end
 
----@type table<Context, table<Mode, ActionType[]>>
+---@type table<Context, table<Mode, ActionType[][]>>
 local action_sequence_keys = {
     global = {
         normal = keys("global", "normal"),

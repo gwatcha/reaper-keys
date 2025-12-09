@@ -1,5 +1,5 @@
 local action_sequences = require 'action_sequence'
-local definitions = require 'utils.definitions'
+local bindings = require "definitions.bindings"
 local log = require 'log'
 local utils = require 'command.utils'
 
@@ -141,79 +141,132 @@ local function getActionKey(key_sequence, entries)
 end
 
 local function stripNextActionKeyInKeySequence(key_sequence, action_type_entries)
-    if not action_type_entries then return nil, nil, false end
+    if not action_type_entries then return nil, nil end
 
     local rest_of_key_sequence = ""
     local key_sequence_for_action_type = key_sequence
     while #key_sequence_for_action_type ~= 0 do
         local action_key = getActionKey(key_sequence_for_action_type, action_type_entries)
-        if action_key then return rest_of_key_sequence, action_key, true end
+        if action_key then return rest_of_key_sequence, action_key end
 
         local last_key
         key_sequence_for_action_type, last_key = utils.splitLastKey(key_sequence_for_action_type)
         rest_of_key_sequence = last_key .. rest_of_key_sequence
     end
 
-    return nil, nil, false
+    return nil, nil
 end
 
-local function buildCommandWithSequence(key_sequence, action_sequence, entries)
-    local command = { action_sequence = {}, action_keys = {} }
-    local rest_of_key_sequence = key_sequence
+---@param t1 table
+---@param t2 table
+local function concatEntries(t1, t2)
+  local merged_entries = {}
+  for key_sequence,entry_value in pairs(t1) do
+    merged_entries[key_sequence] = entry_value
+  end
 
-    for _, action_type in pairs(action_sequence) do
-        local action_key, found
-        rest_of_key_sequence, action_key, found = stripNextActionKeyInKeySequence(
-            rest_of_key_sequence, entries[action_type])
-        if not found then return nil end
-        table.insert(command.action_sequence, action_type)
-        table.insert(command.action_keys, action_key)
+  for key_sequence,t2_value in pairs(t2) do
+    local merged_value = t2_value
+    if t2_value == "" then
+      merged_value = nil
     end
 
-    if #rest_of_key_sequence > 0 then return nil end
-    return command
+    local t1_value = merged_entries[key_sequence]
+    if utils.isFolder(t2_value) and utils.isFolder(t1_value) and t1_value[1] == t2_value[1] then
+        local folder_1_entries = t1_value[2]
+        local folder_2_entries = t2_value[2]
+        merged_value = {
+          t2_value[1],
+          concatEntries(folder_1_entries, folder_2_entries),
+        }
+    end
+
+    merged_entries[key_sequence] = merged_value
+  end
+
+  return merged_entries
 end
+
+---@param t1 table
+---@param t2 table
+local function concatEntryTables(t1,t2)
+  local merged_tables = t1
+  for action_type, _ in pairs(t1) do
+    if t2[action_type] then
+      local merged = concatEntries(t1[action_type], t2[action_type])
+      merged_tables[action_type] = merged
+    end
+  end
+
+  for action_type, entries in pairs(t2) do
+    if not merged_tables[action_type] then
+      merged_tables[action_type] = entries
+    end
+  end
+
+  return merged_tables
+end
+
+---@type table<Context, Definition[]>
+local possible_entries = {
+    global = bindings.global,
+    midi = concatEntryTables(bindings.global, bindings.midi),
+    main = concatEntryTables(bindings.global, bindings.main)
+}
 
 ---@param state State
 ---@param build boolean if false, just suggest completions
 ---@return Command?, Completion[]?
 local function buildCommandWithCompletions(state, build)
     local sequences = action_sequences.action_sequence_keys[state.context][state.mode]
-    local entries = definitions.getPossibleEntries(state.context)
+    local entries = possible_entries[state.context]
+    if not sequences or not entries then return nil, nil end
     if not build then goto build_completions end
 
+    ---@type Command
+    local command = {
+        action_keys = {},
+        action_sequence = {},
+        context = state.context,
+        mode = state.mode
+    }
+    local action_key
+
     for _, action_sequence in pairs(sequences) do
-        local command = buildCommandWithSequence(state.key_sequence, action_sequence, entries)
-        if command then
-            command.mode = state.mode
-            command.context = state.context
-            return command, nil
+        command.action_sequence = {}
+        command.action_keys = {}
+        local tail = state.key_sequence
+
+        for _, action_type in pairs(action_sequence) do
+            tail, action_key = stripNextActionKeyInKeySequence(tail, entries[action_type])
+            if not tail then goto next_sequence_build end
+            table.insert(command.action_sequence, action_type)
+            table.insert(command.action_keys, action_key)
         end
+
+        if #tail == 0 then return command, nil end
+::next_sequence_build::
     end
 
 ::build_completions::
-    if not sequences or not entries then return nil, nil end
-
     local future_entries = {}
-    local exists = false
+
     for _, action_sequence in pairs(sequences) do
         local next_action_type_for_sequence, entries_for_sequence = getFutureEntriesOnActionSequence(
             state.key_sequence, action_sequence, entries)
+        if not entries_for_sequence then goto next_sequence_complete end
 
-        if entries_for_sequence then
-            exists = true
-            if not future_entries[next_action_type_for_sequence] then
-                future_entries[next_action_type_for_sequence] = entries_for_sequence
-            else
-                for key, entry in pairs(entries_for_sequence) do
-                    future_entries[next_action_type_for_sequence][key] = entry
-                end
+        if not future_entries[next_action_type_for_sequence] then
+            future_entries[next_action_type_for_sequence] = entries_for_sequence
+        else
+            for key, entry in pairs(entries_for_sequence) do
+                future_entries[next_action_type_for_sequence][key] = entry
             end
         end
+::next_sequence_complete::
     end
 
-    if exists then return nil, future_entries end
-    return nil, nil
+    return nil, next(future_entries) == nil and nil or future_entries
 end
 
 return buildCommandWithCompletions
