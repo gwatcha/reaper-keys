@@ -82,26 +82,6 @@ local function visualTrackTimelineMotion(timeline_motion)
     runner.runAction(timeline_motion)
 end
 
----@alias VisualType "visual_timeline_command" | "visual_track_command"
----@alias TimelineType "timeline_motion" | "timeline_operator" | "timeline_selector"
----@alias TrackType "track_motion" | "track_operator" | "track_selector"
----@alias ActionType "command" | TimelineType | TrackType | VisualType
----@type ActionType[]
-local action_types = {
-    "command",
-    "timeline_motion",
-    "timeline_operator",
-    "timeline_selector",
-    "track_motion",
-    "track_operator",
-    "track_selector",
-    "visual_timeline_command",
-    "visual_track_command"
-}
-
-local action_sequences = {}
-function action_sequences.getActionTypes() return action_types end
-
 ---@alias ActionSequence ActionType[]
 ---@alias ActionSequenceWithFn { [1]:ActionSequence, [2]:fun(action: Action) }
 ---@alias ActionModes table<Mode, ActionSequenceWithFn[]>
@@ -160,34 +140,52 @@ local action_sequences_pairs = {
     main = pairs_main,
 }
 
----@param state State
----@return ActionSequence[]
-function action_sequences.getPossibleActionSequences(state)
-    local pairs = action_sequences_pairs[state.context][state.mode]
+---@param context Context
+---@param mode Mode
+---@return ActionType[][]
+local function keys(context, mode)
+    local pairs = action_sequences_pairs[context][mode]
     local sequences = {}
-    for _, pair in ipairs(pairs) do
-        table.insert(sequences, pair[1])
-    end
+    for _, pair in ipairs(pairs) do table.insert(sequences, pair[1]) end
     return sequences
 end
 
----@param seq1 ActionSequence
----@param seq2 ActionSequence
----@return boolean
-local function checkIfActionSequencesAreEqual(seq1, seq2)
-    return seq1[1] == seq2[1] and seq1[2] == seq2[2]
-end
+---@type table<Context, table<Mode, ActionType[][]>>
+local action_sequence_keys = {
+    global = {
+        normal = keys("global", "normal"),
+        visual_timeline = keys("global", "visual_timeline"),
+        visual_track = keys("global", "visual_track"),
+    },
+    midi = {
+        normal = keys("midi", "normal"),
+        visual_timeline = keys("midi", "visual_timeline"),
+        visual_track = keys("midi", "visual_track"),
+    },
+    main = {
+        normal = keys("main", "normal"),
+        visual_timeline = keys("main", "visual_timeline"),
+        visual_track = keys("main", "visual_track"),
+    }
+}
 
----@param command Command
----@return fun(action: Action)?
-function action_sequences.getFunctionForCommand(command)
-    local pairs = action_sequences_pairs[command.context][command.mode]
-    for _, pair in ipairs(pairs) do
-        if checkIfActionSequencesAreEqual(command.action_sequence, pair[1]) then
-            return pair[2]
-        end
-    end
-    return nil
-end
-
-return action_sequences
+---@alias VisualType "visual_timeline_command" | "visual_track_command"
+---@alias TimelineType "timeline_motion" | "timeline_operator" | "timeline_selector"
+---@alias TrackType "track_motion" | "track_operator" | "track_selector"
+---@alias ActionType "command" | TimelineType | TrackType | VisualType
+return {
+    ---@type ActionType[]
+    action_types = {
+        "command",
+        "timeline_motion",
+        "timeline_operator",
+        "timeline_selector",
+        "track_motion",
+        "track_operator",
+        "track_selector",
+        "visual_timeline_command",
+        "visual_track_command"
+    },
+    action_sequence_keys = action_sequence_keys,
+    action_sequences_pairs = action_sequences_pairs
+}

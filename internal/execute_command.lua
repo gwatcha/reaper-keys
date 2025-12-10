@@ -31,6 +31,13 @@ local function getActionValue(action_key)
     return action_value
 end
 
+---@param seq1 ActionSequence
+---@param seq2 ActionSequence
+---@return boolean
+local function checkIfActionSequencesAreEqual(seq1, seq2)
+    return seq1[1] == seq2[1] and seq1[2] == seq2[2]
+end
+
 ---@param command Command
 local function executeCommand(command)
     local action_values = {}
@@ -40,11 +47,13 @@ local function executeCommand(command)
         table.insert(action_values, action_value)
     end
 
-    local fn = action_sequences.getFunctionForCommand(command)
-    if not fn then
-        return log.error('Did not find an associated action action_sequence function to execute for the command')
+    local pairs = action_sequences.action_sequences_pairs[command.context][command.mode]
+    for _, pair in ipairs(pairs) do
+        if checkIfActionSequencesAreEqual(command.action_sequence, pair[1]) then
+            return pair[2](table.unpack(action_values))
+        end
     end
-    fn(table.unpack(action_values))
+    return log.error('Did not find an associated action action_sequence function to execute for the command')
 end
 
 return executeCommand

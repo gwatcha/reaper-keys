@@ -3,32 +3,6 @@ local serpent = require 'serpent'
 local string_util = require 'string'
 local format = {}
 
-local function pairsByKeys(t, f)
-    local a = {}
-    for n in pairs(t) do
-        table.insert(a, n)
-    end
-    table.sort(a, f)
-    local i = 0
-    local iter = function()
-        i = i + 1
-        if a[i] == nil then
-            return nil
-        else
-            return a[i], t[a[i]]
-        end
-    end
-    return iter
-end
-
-function sortTableAlphabetically(table_to_sort)
-    local t = {}
-    for title, value in pairsByKeys(table_to_sort) do
-        table.insert(t, { title = title, value = value })
-    end
-    return t
-end
-
 function format.line(data)
     return serpent.line(data, { comment = false })
 end

@@ -2,13 +2,12 @@ local root = debug.getinfo(1, 'S').source:match ".*reaper.keys[^\\/]*[\\/]":sub(
 package.path = root .. "internal/?.lua;" .. root .. "vendor/?.lua;" .. root .. "vendor/scythe/?.lua"
 
 local actions = require 'definitions.actions'
-local buildCommand = require 'command.builder'
+local buildCommandWithCompletions = require 'build'
 local config = require 'definitions.config'.general
 local executeCommand = require 'execute_command'
 local executeMetaCommand = require 'meta_command'
 local feedback = require 'gui.feedback.controller'
-local format = require 'utils.format'
-local getPossibleFutureEntries = require 'command.completer'
+local format = require 'format'
 local log = require 'log'
 local reaper_state = require 'utils.reaper_state'
 local state_interface = require 'state_machine.state_interface'
@@ -159,7 +158,7 @@ local function step(state, key_press)
         or state.key_sequence .. key_press.key
 
     log.info(("new key sequence %s"):format(new_state.key_sequence))
-    local command = buildCommand(new_state)
+    local command, completions = buildCommandWithCompletions(new_state, true)
     if command then
         log.trace(("command built: %s"):format(format.block(command)))
 
@@ -178,7 +177,6 @@ local function step(state, key_press)
         return new_state
     end
 
-    local completions = getPossibleFutureEntries(new_state)
     if not completions then
         feedback.displayMessage(("Undefined key sequence %s"):format(new_state.key_sequence))
         new_state.key_sequence = ''

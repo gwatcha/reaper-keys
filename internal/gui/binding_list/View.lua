@@ -1,7 +1,7 @@
 -- FIXME refractor me
 
 local list_config = require'definitions.config'.gui.binding_list
-local getActionTypes = require('action_sequence').getActionTypes
+local action_types = require('action_sequence').action_types
 local createBindingListBoxElement = require('gui.binding_list.binding_list_box')
 
 local scythe = require('scythe')
@@ -167,7 +167,7 @@ local function createBindingListWindow(props)
                          frame = false,
                          textFont = "binding_list_label",
                          captionFont = "binding_list_label",
-                         options = getActionTypes(),
+                         options = action_types,
                        },
                        {
                          name = "action_type_filter_active",

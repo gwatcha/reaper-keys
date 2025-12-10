@@ -1,6 +1,5 @@
 local binding_list = require 'gui.binding_list.controller'
 local executeCommand = require 'execute_command'
-local log = require 'log'
 local reaper_state = require 'utils.reaper_state'
 local state_machine_default_state = require 'state_machine.default_state'
 

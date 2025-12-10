@@ -4,6 +4,8 @@
 ---@alias Mode "normal"|"visual_track"|"visual_timeline"
 ---@alias ReaProject number
 
+---@class Completion
+
 ---@class Command
 ---@field action_keys Action[]
 ---@field action_sequence ActionSequence
