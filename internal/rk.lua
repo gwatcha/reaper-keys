@@ -2,12 +2,12 @@ local root = debug.getinfo(1, 'S').source:match ".*reaper.keys[^\\/]*[\\/]":sub(
 package.path = root .. "internal/?.lua;" .. root .. "vendor/?.lua;" .. root .. "vendor/scythe/?.lua"
 
 local actions = require 'definitions.actions'
-local buildCommandWithCompletions = require 'command.builder'
+local buildCommandWithCompletions = require 'build'
 local config = require 'definitions.config'.general
 local executeCommand = require 'execute_command'
 local executeMetaCommand = require 'meta_command'
 local feedback = require 'gui.feedback.controller'
-local format = require 'utils.format'
+local format = require 'format'
 local log = require 'log'
 local reaper_state = require 'utils.reaper_state'
 local state_interface = require 'state_machine.state_interface'

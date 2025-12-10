@@ -1,6 +1,6 @@
 local definitions = require('utils.definitions')
 local BindingListView = require('gui.binding_list.View')
-local buildCommandWithCompletions = require 'command.builder'
+local buildCommandWithCompletions = require 'build'
 local gui_utils = require('gui.utils')
 local reaper_state = require('utils.reaper_state')
 local fuzzy_match = require('fuzzy').fuzzy_match
