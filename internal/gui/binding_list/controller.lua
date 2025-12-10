@@ -13,7 +13,7 @@ local binding_list = {}
 
 function createBindingList(state)
   local data = {}
-  local state_entries = buildCommandWithCompletions(state, false)
+  local _, state_entries = buildCommandWithCompletions(state, false)
   local bindings = definitions.getAllBindings()
 
   for context,context_bindings in pairs(bindings) do

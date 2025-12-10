@@ -281,10 +281,26 @@ end
 
 ---@type table<Context, Definition[]>
 local possible_entries = {
-    global = bindings.global,
-    midi = concatEntryTables(bindings.global, bindings.midi),
-    main = concatEntryTables(bindings.global, bindings.main)
+    global = concatEntryTables({}, bindings.global),
+    midi = concatEntryTables(concatEntryTables({}, bindings.global), bindings.midi),
+    main = concatEntryTables(concatEntryTables({}, bindings.global), bindings.main),
 }
+
+---@return Command?
+local function buildCommandWithSequence(key_sequence, action_sequence, entries)
+    local command = { action_sequence = {}, action_keys = {} }
+    local action_key
+    local tail = key_sequence
+
+    for _, action_type in pairs(action_sequence) do
+        tail, action_key = stripNextActionKeyInKeySequence(tail, entries[action_type])
+        if not tail then return nil end
+        table.insert(command.action_sequence, action_type)
+        table.insert(command.action_keys, action_key)
+    end
+
+    return #tail == 0 and command or nil
+end
 
 ---@param state State
 ---@param build boolean if false, just suggest completions
@@ -293,31 +309,15 @@ local function buildCommandWithCompletions(state, build)
     local sequences = action_sequences.action_sequence_keys[state.context][state.mode]
     local entries = possible_entries[state.context]
     if not sequences or not entries then return nil, nil end
-
-    local action_key
-    ---@type Command
-    local command = {
-        action_keys = {},
-        action_sequence = {},
-        context = state.context,
-        mode = state.mode
-    }
     if not build then goto build_completions end
 
     for _, action_sequence in pairs(sequences) do
-        command.action_sequence = {}
-        command.action_keys = {}
-        local tail = state.key_sequence
-
-        for _, action_type in pairs(action_sequence) do
-            tail, action_key = stripNextActionKeyInKeySequence(tail, entries[action_type])
-            if not tail then goto next_sequence_build end
-            table.insert(command.action_sequence, action_type)
-            table.insert(command.action_keys, action_key)
+        local command = buildCommandWithSequence(state.key_sequence, action_sequence, entries)
+        if command then
+            command.mode = state.mode
+            command.context = state.context
+            return command, nil
         end
-
-        if #tail == 0 then return command, nil end
-::next_sequence_build::
     end
 
 ::build_completions::
