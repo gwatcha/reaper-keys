@@ -4,7 +4,7 @@ local config = require 'definitions.config'.general
 local log = require 'log'
 local persist_visual_timeline_selection = require 'definitions.config'.general.persist_visual_timeline_selection
 local reaper_utils = require "movement_utils"
-local reaper_state = require "utils.reaper_state"
+local reaper_state = require "reaper_state"
 
 local action_sequences = {}
 

@@ -1,4 +1,4 @@
-local reaper_state = require('utils.reaper_state')
+local reaper_state = require('reaper_state')
 
 local model = {}
 

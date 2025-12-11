@@ -9,7 +9,7 @@ local executeMetaCommand = require 'meta_command'
 local feedback = require 'gui.feedback.controller'
 local format = require 'format'
 local log = require 'log'
-local reaper_state = require 'utils.reaper_state'
+local reaper_state = require 'reaper_state'
 local serpent = require 'serpent'
 
 local aliases = {

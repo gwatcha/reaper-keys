@@ -1,6 +1,6 @@
 local binding_list = require 'gui.binding_list.controller'
 local executeCommand = require 'execute_command'
-local reaper_state = require 'utils.reaper_state'
+local reaper_state = require 'reaper_state'
 local default_state = require 'default_state'
 
 ---@alias MetaFunction fun(state: State, command: Command): State

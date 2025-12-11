@@ -1,7 +1,7 @@
 local format = require 'format'
 local log = require 'log'
 local log_level = require 'definitions.config'.general.log_level
-local reaper_state = require 'utils.reaper_state'
+local reaper_state = require 'reaper_state'
 local reaper_utils = require 'movement_utils'
 local serpent = require 'serpent'
 
