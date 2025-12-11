@@ -1,5 +1,17 @@
-local lib = require 'library.library'                  -- functions specific to reaper-keys i.e. macros
 local movements = require 'movements'
+---compatibility for reaper-keys 2.0.0-a17
+local lib = {
+    marks = require 'marks',
+    state = {
+        setModeNormal = movements.setModeNormal,
+        setModeVisualTimeline = movements.setModeVisualTimeline,
+        setModeVisualTrack = movements.setModeVisualTrack,
+        switchTimelineSelectionSide = movements.switchTimelineSelectionSide,
+    },
+    ResetFeedbackWindow = movements.ResetFeedbackWindow,
+    matchTrackNameBackward = movements.matchTrackNameBackward,
+    matchTrackNameForward = movements.matchTrackNameForward,
+}
 
 ---@alias ActionPart integer | string | function
 
@@ -616,7 +628,6 @@ return {
     ClearSelectedTimeline = movements.clearSelectedTimeline,
     ClearTimelineSelectionAndSetModeVisualTimeline = { "ClearSelectedTimeline", "SetModeVisualTimeline" },
     SetModeVisualTrack = lib.state.setModeVisualTrack,
-    SetModeRecord = lib.state.setModeRecord,
     SetProjectTimebaseToBeatsPosLengthAndRate = "_SWS_AWTBASEBEATALL",
     SetProjectTimebaseToBeatsPos = "_SWS_AWTBASEBEATPOS",
     SetProjectTimebaseToTime = "_SWS_AWTBASETIME",
@@ -810,4 +821,8 @@ return {
     ShowNotesRegionNames = "_S&M_RGN_NAMES",
     ShowNotesRegionSubtitles = "_S&M_RGN_SUBTITLES",
     SoloInFront = 40745,
+    ShowMediaItemProperties = 40009,
+    ShowMediaItemSourceProperties = 40011,
+    TogglePreFxVolumeEnvelope = 40408,
+    ToggleDisplayVisibleEnvelopesInLanes = 40891,
 }

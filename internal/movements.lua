@@ -1,4 +1,7 @@
+local feedback = require 'gui.feedback.controller'
+local reaper_state = require 'utils.reaper_state'
 local utils = require "movement_utils"
+
 local actions = {}
 
 function actions.projectStart() reaper.SetEditCurPos(0, true, false) end
@@ -262,6 +265,138 @@ function actions.paste()
     if first then reaper.SetOnlyTrackSelected(first) end
     reaper.Main_OnCommand(paste, 0)
     for _, track in ipairs(selected) do reaper.SetTrackSelected(track, true) end
+end
+
+function actions.setModeNormal()
+    local state = reaper_state.getState()
+    state.mode = "normal"
+    reaper_state.setState(state)
+end
+
+function actions.setModeVisualTrack()
+    local track = reaper.GetLastTouchedTrack()
+    if not track then return end
+    reaper.SetOnlyTrackSelected(track)
+
+    local state = reaper_state.getState()
+    state.mode = "visual_track"
+    state.visual_track_pivot_i = reaper.GetMediaTrackInfo_Value(track, "IP_TRACKNUMBER") - 1
+    reaper_state.setState(state)
+end
+
+function actions.setModeVisualTimeline()
+    local state = reaper_state.getState()
+    state.mode = "visual_timeline"
+    state.timeline_selection_side = "right"
+    reaper_state.setState(state)
+end
+
+function actions.switchTimelineSelectionSide()
+    local state = reaper_state.getState()
+
+    if state.timeline_selection_side == 'right' then
+        reaper.Main_OnCommand(40630, 0) -- GoToStartOfSelection
+        state.timeline_selection_side = "left"
+    else
+        reaper.Main_OnCommand(40631, 0) -- GoToEndOfSelection
+        state.timeline_selection_side = "right"
+    end
+
+    reaper_state.setState(state)
+end
+
+---@param name string
+---@param forward boolean
+local function getMatchedTrack(name, forward)
+    if not name then return nil end
+
+    local current_track = reaper.GetSelectedTrack(0, 0)
+    local start_i = current_track
+        and reaper.GetMediaTrackInfo_Value(current_track, "IP_TRACKNUMBER") - 1
+        or 0
+
+    local num_tracks = reaper.GetNumTracks()
+    local tracks_searched = 1
+    local next_track_i = start_i
+
+    while tracks_searched < num_tracks do
+        if forward == true then
+            next_track_i = next_track_i + 1
+        else
+            next_track_i = next_track_i - 1
+        end
+
+        local track = reaper.GetTrack(0, next_track_i)
+        if not track then
+            if forward == true then
+                next_track_i = -1
+            else
+                next_track_i = num_tracks
+            end
+        else
+            local _, current_name = reaper.GetTrackName(track, "")
+            local has_no_name = current_name:match("Track ([0-9]+)", 1)
+            current_name = current_name:lower()
+            tracks_searched = tracks_searched + 1
+            if not has_no_name and current_name:match(name:lower()) then
+                return track
+            end
+        end
+    end
+
+    return nil
+end
+
+function actions.matchTrackNameBackward()
+    local _, name = reaper.GetUserInputs("Match Backward", 1, "Match String", "")
+    local track = getMatchedTrack(name, false)
+    local state = reaper_state.getState()
+
+    if track then
+        state.last_searched_track_name = name
+        state.last_track_name_search_direction_was_forward = false
+        reaper.SetOnlyTrackSelected(track)
+    else
+        state.last_searched_track_name = "^$"
+        state.last_track_name_search_direction_was_forward = true
+        feedback.displayMessage(("No match for %s"):format(name))
+    end
+
+    reaper_state.setState(state)
+end
+
+function actions.matchTrackNameForward()
+    local _, name = reaper.GetUserInputs("Match Forward", 1, "Match String", "")
+    local track = getMatchedTrack(name, true)
+    local state = reaper_state.getState()
+
+    if track then
+        state.last_searched_track_name = name
+        state.last_track_name_search_direction_was_forward = true
+        reaper.SetOnlyTrackSelected(track)
+    else
+        state.last_searched_track_name = "^$"
+        state.last_track_name_search_direction_was_forward = true
+        feedback.displayMessage(("No match for %s"):format(name))
+    end
+
+    reaper_state.setState(state)
+end
+
+function actions.repeatTrackNameMatchForward()
+    local state = reaper_state.getState()
+    local track = getMatchedTrack(state.last_searched_track_name, state.last_track_name_search_direction_was_forward)
+    if track then reaper.SetOnlyTrackSelected(track) end
+end
+
+function actions.repeatTrackNameMatchBackward()
+    local state = reaper_state.getState()
+    local track = getMatchedTrack(state.last_searched_track_name, not state.last_track_name_search_direction_was_forward)
+    if track then reaper.SetOnlyTrackSelected(track) end
+end
+
+function actions.ResetFeedbackWindow()
+    reaper_state.clearFeedbackOpen()
 end
 
 return actions

@@ -10,7 +10,7 @@ local feedback = require 'gui.feedback.controller'
 local format = require 'format'
 local log = require 'log'
 local reaper_state = require 'utils.reaper_state'
-local state_interface = require 'state_machine.state_interface'
+local serpent = require 'serpent'
 
 local aliases = {
     [8] = '<BS>',
@@ -83,7 +83,7 @@ local function ctxToKey(ctx)
         virt, shift, code = false, false, macos_shift_res
     end
 
-    -- Reaper always transmits uppercase letters. Convert them to lowecase if we don't have Shift
+    -- Reaper always transmits uppercase letters. Convert them to lowercase if we don't have Shift
     if 65 <= code and code <= 90 then
         local key = string.char(code + (shift and 0 or 32))
         if not ctrl and not alt then return key end
@@ -109,6 +109,30 @@ local function isRepeatableCommand(command)
     return false
 end
 
+---@param left Command
+---@param right Command
+---@return boolean
+local function checkIfCommandsAreEqual(left, right)
+    return serpent.block(left, {comment=false}) == serpent.block(right, {comment=false})
+end
+
+---@param state State
+---@return State
+local function checkIfConsistentState(state)
+    local serialized_state = reaper_state.getState()
+
+    for k, value in pairs(serialized_state) do
+        if k == 'last_command' then
+            if not checkIfCommandsAreEqual(state.last_command, serialized_state.last_command) then
+                return serialized_state
+            end
+        elseif value ~= state[k] then
+            return serialized_state
+        end
+    end
+    return state
+end
+
 ---@param state State
 ---@param command Command
 ---@return State
@@ -119,16 +143,14 @@ local function handleCommand(state, command)
     executeCommand(command)
 
     -- internal commands may have changed the state
-    if not state_interface.checkIfConsistentState(state) then
-        state = state_interface.get()
-    end
+    state = checkIfConsistentState(state)
 
     if isRepeatableCommand(command) then
         state.last_command = command
     end
 
     if state.macro_recording then
-        reaper_state.append('macros', state.macro_register, command)
+        reaper_state.appendToMacro(state.macro_register, command)
     end
 
     state.key_sequence = ""
@@ -198,9 +220,9 @@ local function reaperKeys()
     log.info(("Input: %s"):format(format.line(hotkey)))
     if config.show_feedback_window then feedback.clear() end
 
-    local state = state_interface.get()
+    local state = reaper_state.getState()
     local new_state = step(state, hotkey)
-    state_interface.set(new_state)
+    reaper_state.setState(new_state)
 
     log.info(("New state: %s"):format(format.block(new_state)))
     if not config.show_feedback_window then return end

@@ -5,16 +5,50 @@ local gui_utils = require('gui.utils')
 local reaper_state = require('utils.reaper_state')
 local fuzzy_match = require('fuzzy').fuzzy_match
 local GUI = require('gui.core')
-
--- TODO
-local runner = require('command.runner')
+local run = require 'action_sequence'.run
+local definition_tables = require "definitions.bindings"
+local utils = require('command.utils')
 
 local binding_list = {}
+
+-- this reverses the keys and values of entries
+local function getBindings(entries)
+  local bindings = {}
+  if not entries then return bindings end
+
+  for entry_key,entry_value in pairs(entries) do
+    if utils.isFolder(entry_value) then
+      local folder_table = entry_value[2]
+      local folder_bindings = definitions.getBindings(folder_table)
+
+      for action_name_from_folder,binding_from_folder in pairs(folder_bindings) do
+        bindings[action_name_from_folder] = entry_key .. binding_from_folder
+      end
+    else
+      bindings[entry_value] = entry_key
+    end
+  end
+
+  return bindings
+end
+
+local function getAllBindings()
+  local bindings = {}
+
+  for context,context_definitions in pairs(definition_tables) do
+    bindings[context] = {}
+    for action_type,action_type_definitions in pairs(context_definitions) do
+      bindings[context][action_type] = getBindings(action_type_definitions)
+    end
+  end
+
+  return bindings
+end
 
 function createBindingList(state)
   local data = {}
   local _, state_entries = buildCommandWithCompletions(state, false)
-  local bindings = definitions.getAllBindings()
+  local bindings = getAllBindings()
 
   for context,context_bindings in pairs(bindings) do
     for action_type,action_type_bindings in pairs(context_bindings) do
@@ -132,7 +166,7 @@ function binding_list.open(state)
     if view.action_executed then
       local selected_row = view.elements.binding_list_box.list[view.selected_i]
       if selected_row then
-        runner.runAction(selected_row.action_name)
+        run(selected_row.action_name)
       end
       view.window:close()
     end

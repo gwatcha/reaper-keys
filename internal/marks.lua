@@ -1,9 +1,14 @@
-local state_interface = require 'state_machine.state_interface'
-local reaper_utils = require 'movement_utils'
-local log = require 'log'
 local format = require 'format'
-local serpent = require 'serpent'
+local log = require 'log'
 local log_level = require 'definitions.config'.general.log_level
+local reaper_state = require 'utils.reaper_state'
+local reaper_utils = require 'movement_utils'
+local serpent = require 'serpent'
+
+-- marks.lua is referenced in definitions.actions so we can't require it here
+local ScrollToSelectedTracks = 40913
+local SetFirstSelectedTrackAsLastTouchedTrack = 40914
+local UnselectTracks = 40297
 
 ---@class Mark
 ---@field type "region"|"timeline_position"|"track_selection"
@@ -43,6 +48,15 @@ local function onMarkDelete(mark)
     end
 end
 
+local function getSelectedTrackIndices()
+    local idxs = {}
+    for i = 0, reaper.CountSelectedTracks() - 1 do
+        idxs[i + 1] = reaper.GetMediaTrackInfo_Value(
+            reaper.GetSelectedTrack(0, i), "IP_TRACKNUMBER") - 1
+    end
+    return idxs
+end
+
 local marks = {}
 
 ---@param register string
@@ -56,12 +70,13 @@ function marks.save(register)
         right = right,
         position = reaper.GetCursorPosition(),
         track_position = reaper_utils.getTrackPosition(),
-        track_selection = reaper_utils.getSelectedTrackIndices(),
+        track_selection = getSelectedTrackIndices(),
         type = "track_selection",
         register = register
     }
 
-    local mode = state_interface.getMode()
+    local state = reaper_state.getState()
+    local mode = state.mode
     if mode == 'visual_timeline' then
         mark.type = 'region'
         mark.index = reaper.AddProjectMarker(0, true, mark.left, mark.right, register, -1)
@@ -74,7 +89,9 @@ function marks.save(register)
 
     updateMark(register, mark)
 
-    state_interface.setMode('normal')
+    state.mode = "normal"
+    reaper_state.setState(state)
+
     if log_level ~= "trace" then return end
     local all_marks = {}
     for i = 0, 5000 do
@@ -107,22 +124,59 @@ function marks.recallMarkedTimelinePosition(register)
     reaper.SetEditCurPos(pos, true, false)
 end
 
+local function scrollToPosition(pos)
+  local current_position = reaper.GetCursorPosition()
+  reaper.SetEditCurPos(pos, true, false)
+  reaper.SetEditCurPos(current_position, false, false)
+end
+
 ---@param register string
 function marks.recallMarkedRegion(register)
     local mark = getMark(register)
     if not mark then return end
 
     reaper.GetSet_LoopTimeRange(true, false, mark.left, mark.right, false)
-    reaper_utils.scrollToPosition(mark.left)
+    scrollToPosition(mark.left)
+end
+
+local function setTrackSelection(index)
+    reaper.Main_OnCommand(UnselectTracks, 0)
+    if not index then return end
+    for _, track_index in ipairs(index) do
+        local track = reaper.GetTrack(0, track_index)
+        if track then reaper.SetTrackSelected(track, true) end
+    end
+    reaper.Main_OnCommand(ScrollToSelectedTracks, 0)
+end
+
+local function setCurrentTrack(index)
+  local previously_selected = getSelectedTrackIndices()
+  local previous_position = reaper_utils.getTrackPosition()
+
+  local track = reaper.GetTrack(0, index)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
+    reaper.Main_OnCommand(SetFirstSelectedTrackAsLastTouchedTrack, 0)
+
+    local new_selection = previously_selected
+    if previous_position and new_selection then
+      for i,selected_track_i in ipairs(new_selection) do
+        if selected_track_i == previous_position then
+          table.remove(new_selection, i)
+        end
+      end
+    end
+    table.insert(new_selection, index)
+    setTrackSelection(new_selection)
+  end
 end
 
 ---@param register string
 function marks.recallMarkedTracks(register)
     local mark = getMark(register)
     if not mark then return end
-
-    reaper_utils.setCurrentTrack(mark.track_position)
-    reaper_utils.setTrackSelection(mark.track_selection)
+    setCurrentTrack(mark.track_position)
+    setTrackSelection(mark.track_position)
 end
 
 return marks

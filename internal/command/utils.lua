@@ -1,13 +1,4 @@
-local ser = require('serpent')
-
 local utils = {}
-
-function utils.checkIfCommandsAreEqual(command1, command2)
-  if ser.block(command1, {comment=false}) == ser.block(command2, {comment=false}) then
-    return true
-  end
-  return false
-end
 
 function utils.isFolder(entry_value)
   if entry_value then

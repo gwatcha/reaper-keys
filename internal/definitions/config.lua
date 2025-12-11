@@ -74,7 +74,7 @@ local gui = {
 
 ---@type GeneralConfig
 local general = {
-    show_start_up_message = true,
+    show_start_up_message = false,
     dock_feedback_window = true,
     show_feedback_window = true,
     search_for_custom_config = false,
