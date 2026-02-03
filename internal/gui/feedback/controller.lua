@@ -44,7 +44,7 @@ function feedback.displayCompletions(future_entries)
             return a.value < b.value
         end)
 
-        model.setKeys({ completions = completions })
+        reaper_state.setFeedbackKeys({ completions = completions })
     end
 end
 
@@ -59,13 +59,13 @@ local startup_msg =
 local feedback_view = nil
 
 function feedback.update()
-    local feedback_view_open = model.getKey("open")
+    local feedback_view_open = reaper_state.getFeedbackKey("open")
     local just_opened = reaper_state.clearJustOpenedFlag()
 
     if feedback_view_open and not just_opened then
-        local update_number = tonumber(model.getKey("update_number") or 0)
+        local update_number = tonumber(reaper_state.getFeedbackKey("update_number") or 0)
         if update_number > 20 then update_number = 0 end
-        model.setKeys({ update_number = update_number + 1 })
+        reaper_state.setFeedbackKeys({ update_number = update_number + 1 })
         return
     end
 
@@ -76,7 +76,7 @@ function feedback.update()
         reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
     end
 
-    model.setKeys({ open = true })
+    reaper_state.setFeedbackKeys({ open = true })
 
     if config.profile then
         local path = '/Scripts/ReaTeam Scripts/Development/cfillion_Lua profiler.lua'
@@ -87,24 +87,24 @@ function feedback.update()
     end
 
     reaper.atexit(function()
-        model.setKeys({ open = false })
+        reaper_state.setFeedbackKeys({ open = false })
         local window_settings = feedback_view:getWindowSettings()
-        model.setKeys({ window_settings = window_settings })
+        reaper_state.setFeedbackKeys({ window_settings = window_settings })
     end)
 end
 
 function feedback.displayMessage(message)
-    model.setKeys({ message = message })
+    reaper_state.setFeedbackKeys({ message = message })
 end
 
 function feedback.displayState(state)
     local right_text = state.macro_recording and ("(rec %s..)"):format(state.macro_register) or ""
-    model.setKeys({ right_text = right_text, mode = state['mode'] })
+    reaper_state.setFeedbackKeys({ right_text = right_text, mode = state['mode'] })
     feedback.update()
 end
 
 function feedback.clear()
-    model.setKeys({ message = "", completions = "", mode = "" })
+    reaper_state.setFeedbackKeys({ message = "", completions = "", mode = "" })
 end
 
 return feedback
