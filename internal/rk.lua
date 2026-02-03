@@ -73,6 +73,7 @@ local macos_shift_fix = {
 }
 
 ---@param ctx string
+---@return string
 local function ctxToKey(ctx)
     local _, _, mod, code = ctx:find "^key:(.*):(.*)$"
     local virt, ctrl, shift = mod:match "V", mod:match "C", mod:match "S"
@@ -109,24 +110,16 @@ local function isRepeatableCommand(command)
     return false
 end
 
----@param left Command
----@param right Command
----@return boolean
-local function checkIfCommandsAreEqual(left, right)
-    return serpent.block(left, {comment=false}) == serpent.block(right, {comment=false})
-end
-
 ---@param state State
 ---@return State
 local function checkIfConsistentState(state)
     local serialized_state = reaper_state.getState()
-
-    for k, value in pairs(serialized_state) do
-        if k == 'last_command' then
-            if not checkIfCommandsAreEqual(state.last_command, serialized_state.last_command) then
-                return serialized_state
-            end
-        elseif value ~= state[k] then
+    for key, value in pairs(serialized_state) do
+        if key == 'last_command' then
+            local left = serpent.line(state.last_command, { comment = false })
+            local right = serpent.line(serialized_state.last_command, { comment = false })
+            if left ~= right then return serialized_state end
+        elseif value ~= state[key] then
             return serialized_state
         end
     end
@@ -202,13 +195,9 @@ local function formatActionKeys(action_keys)
     return desc
 end
 
----append the keypress to the key sequence and build a command.
----If there’s a command, execute it.
----If there’s no command, check that there are possible future action-entries that could be triggered.
----if there’s no possible future action-entries, reset the keysequence to empty and raise an error
----return the updated state
 ---@param state State
 ---@param key_press KeyPress
+---@return State
 local function step(state, key_press)
     local new_state = state
 

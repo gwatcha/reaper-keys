@@ -1,5 +1,5 @@
 local movements = require 'movements'
----compatibility for reaper-keys 2.0.0-a17
+---compatibility for reaper-keys <= 2.0.0-a18
 local lib = {
     marks = require 'marks',
     state = {
