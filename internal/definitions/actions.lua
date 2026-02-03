@@ -1,7 +1,13 @@
 local movements = require 'movements'
----compatibility for reaper-keys <= 2.0.0-a18
+---compatibility for reaper-keys <= 2.0.0-a18|a19
 local lib = {
-    marks = require 'marks',
+    marks = {
+        delete = movements.deleteMark,
+        save = movements.saveMark,
+        recallMarkedRegion = movements.recallMarkedRegion,
+        recallMarkedTimelinePosition = movements.recallMarkedTimelinePosition,
+        recallMarkedTracks = movements.recallMarkedTracks,
+    },
     state = {
         setModeNormal = movements.setModeNormal,
         setModeVisualTimeline = movements.setModeVisualTimeline,
@@ -14,7 +20,7 @@ local lib = {
 }
 
 ---@alias ActionPart integer | string | function
-
+--
 ---@class ActionTable
 ---@field repetitions? number Repetitions supplied in actions.lua
 ---@field prefixedRepetitions? number Repetitions supplied by user
@@ -25,7 +31,7 @@ local lib = {
 ---@field midiCommand? boolean
 ---@field toTrack? boolean Special case for toTrack function
 ---@alias Action ActionPart | ActionTable
-
+--
 -- Here are some predefined commands that you can use in bindings.lua e.g to map
 -- abcd => ActivateNextMidiItem instead of abcd => 40833.
 --
@@ -464,7 +470,6 @@ return {
     ProjectStart = movements.projectStart,
     ProjectTimeline = movements.innerProjectTimeline,
     Quantize = { 40009, midiCommand = true },
-    RecallMark = { lib.marks.recall, registerAction = true },
     RecordConditional = { "Stop", "ToggleRecordConditional" },
     RecordMacro = { metaCommand = true, registerAction = true, registerOptional = true },
     RecordOrStop = "_SWS_RECTOGGLE",

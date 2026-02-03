@@ -4,6 +4,9 @@ local bindings = require "definitions.bindings"
 local log = require 'log'
 local utils = require 'utils'
 
+---@alias KeyCommand { [string]: string | {[1]:string, [2]:KeyCommand[]}}
+---@alias Definition table<ActionType, KeyCommand[]>
+
 local function entryToString(entry)
     return utils.isFolder(entry) and entry[1] or entry
 end

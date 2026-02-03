@@ -3,7 +3,6 @@ local movements = require 'movements'
 local config = require 'definitions.config'.general
 local log = require 'log'
 local persist_visual_timeline_selection = require 'definitions.config'.general.persist_visual_timeline_selection
-local reaper_utils = require "movement_utils"
 local reaper_state = require "reaper_state"
 
 local action_sequences = {}
@@ -150,8 +149,15 @@ local function visualTimelineTimelineMotion(timeline_motion)
     reaper_state.setState(state)
 end
 
+local function getTrackPosition()
+    local track = reaper.GetLastTouchedTrack()
+    return track
+        and (reaper.GetMediaTrackInfo_Value(track, "IP_TRACKNUMBER") - 1)
+        or 0
+end
+
 local function makeSelectionFromTrackMotion(track_motion)
-    local first_index = reaper_utils.getTrackPosition()
+    local first_index = getTrackPosition()
 
     action_sequences.run(track_motion)
 
@@ -211,7 +217,7 @@ end
 local function visualTrackTrackMotion(track_motion)
     -- extend track selection
     makeSelectionFromTrackMotion(track_motion)
-    local end_pos = reaper_utils.getTrackPosition()
+    local end_pos = getTrackPosition()
     local pivot_i = reaper_state.getState().visual_track_pivot_i
 
     reaper.Main_OnCommand(actions.UnselectTracks, 0)

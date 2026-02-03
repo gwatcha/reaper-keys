@@ -1,6 +1,19 @@
 local feedback = require 'gui.feedback.controller'
+local log = require 'log'
+local log_level = require 'definitions.config'.general.log_level
 local reaper_state = require 'reaper_state'
-local utils = require "movement_utils"
+local serpent = require 'serpent'
+
+---@class Mark
+---@field type "region"|"timeline_position"|"track_selection"
+---@field register string
+---@field position number
+---@field left number
+---@field right number
+---@field track_position number
+---@field track_selection table
+---@field deleted? boolean
+---@field index? integer
 
 local actions = {}
 
@@ -77,8 +90,96 @@ function actions.nextItemStart() nextItem(0) end
 
 function actions.nextItemEnd() nextItem(1) end
 
+local function mergeItemPositionsLists(item_positions_list)
+  local merged_list = {}
+
+  local function areRemainingItems()
+    for i, _ in ipairs(item_positions_list) do
+      if #item_positions_list[i] ~= 0 then return true end
+    end
+    return false
+  end
+
+  local selected_list_i
+  while areRemainingItems() do
+    local next_item = nil
+    for i,item_positions in ipairs(item_positions_list) do
+      local next_item_for_this_list = item_positions[1]
+      if next_item_for_this_list then
+        if not next_item or next_item_for_this_list.left < next_item.left then
+          next_item = next_item_for_this_list
+          selected_list_i = i
+        end
+      end
+    end
+
+    table.insert(merged_list, next_item)
+    table.remove(item_positions_list[selected_list_i], 1)
+  end
+
+  return merged_list
+end
+
+local function getItemPositionsOnTracks(tracks)
+  local item_positions_lists = {}
+  for i=1,#tracks do
+    local current_track = tracks[i]
+    local item_positions = {}
+    local num_items_on_track = reaper.GetTrackNumMediaItems(current_track)
+
+    for j=1,num_items_on_track do
+      local item = reaper.GetTrackMediaItem(current_track, j-1)
+      local start = reaper.GetMediaItemInfo_Value(item, "D_POSITION")
+      local length = reaper.GetMediaItemInfo_Value(item, "D_LENGTH")
+      item_positions[j] = {left=start, right=start+length}
+    end
+
+    item_positions_lists[i] = item_positions
+  end
+
+  local merged_list = mergeItemPositionsLists(item_positions_lists)
+  return merged_list
+end
+
+local function getItemPositionsOnSelectedTracks()
+  local selected_tracks = {}
+  for i=0,reaper.CountSelectedTracks() do
+    selected_tracks[i] = reaper.GetSelectedTrack(0, i-1)
+  end
+
+  return getItemPositionsOnTracks(selected_tracks)
+end
+
+
+local function getBigItemPositionsOnSelectedTracks()
+  local item_positions = getItemPositionsOnSelectedTracks()
+  local big_item_positions = {}
+
+  if #item_positions == 0 then
+    return big_item_positions
+  end
+
+  local j = 1
+  big_item_positions[j] = item_positions[1]
+  for i=1,#item_positions do
+    local next_item = item_positions[i]
+    local current_big_item = big_item_positions[j]
+    if next_item.left <= current_big_item.right and next_item.right > current_big_item.right then
+       current_big_item.right = next_item.right
+       big_item_positions[j] = current_big_item
+    end
+
+    if next_item.left > current_big_item.right then
+      j = j + 1
+      big_item_positions[j] = next_item
+    end
+  end
+
+  return big_item_positions
+end
+
 function actions.prevBigItemStart()
-    local item_positions = utils.getBigItemPositionsOnSelectedTracks()
+    local item_positions = getBigItemPositionsOnSelectedTracks()
     local pos = reaper.GetCursorPosition()
     local next_position = nil
     for i, item in pairs(item_positions) do
@@ -101,7 +202,7 @@ function actions.prevBigItemStart()
 end
 
 function actions.nextBigItemStart()
-    local item_positions = utils.getBigItemPositionsOnSelectedTracks()
+    local item_positions = getBigItemPositionsOnSelectedTracks()
     local pos = reaper.GetCursorPosition()
     local next_position = nil
     for _, item_position in pairs(item_positions) do
@@ -116,7 +217,7 @@ function actions.nextBigItemStart()
 end
 
 function actions.nextBigItemEnd()
-    local item_positions = utils.getBigItemPositionsOnSelectedTracks()
+    local item_positions = getBigItemPositionsOnSelectedTracks()
     local current_position = reaper.GetCursorPosition()
     local next_position = nil
     local tolerance = .002
@@ -178,7 +279,7 @@ function actions.innerProjectTimeline()
 end
 
 function actions.innerItem()
-    local item_positions = utils.getItemPositionsOnSelectedTracks()
+    local item_positions = getItemPositionsOnSelectedTracks()
     local cur = reaper.GetCursorPosition()
     for i = #item_positions, 1, -1 do
         local item = item_positions[i]
@@ -189,7 +290,7 @@ function actions.innerItem()
 end
 
 function actions.innerBigItem()
-    local item_positions = utils.getBigItemPositionsOnSelectedTracks()
+    local item_positions = getBigItemPositionsOnSelectedTracks()
     local current_position = reaper.GetCursorPosition()
     for i = #item_positions, 1, -1 do
         local item = item_positions[i]
@@ -397,6 +498,171 @@ end
 
 function actions.ResetFeedbackWindow()
     reaper_state.clearFeedbackOpen()
+end
+
+--- @param register string
+--- @return Mark?
+local function getMark(register)
+    local ok, value = reaper.GetProjExtState(0, "marks", register)
+    if not ok or not value then return nil end
+    local mark
+    ok, mark = serpent.load(value)
+    if not ok or not mark or mark.deleted then return nil end
+    --- @cast mark Mark
+    return mark
+end
+
+--- @param register string
+--- @param mark Mark
+local function updateMark(register, mark)
+    reaper.SetProjExtState(0, "marks", register, serpent.block(mark, { comment = false }))
+end
+
+--- @param mark Mark?
+local function onMarkDelete(mark)
+    if not mark or not mark.index then return end
+    if mark.type == 'region' then
+        reaper.DeleteProjectMarker(0, mark.index, true)
+    elseif mark.type == 'timeline_position' then
+        reaper.DeleteProjectMarker(0, mark.index, false)
+    end
+end
+
+local function getSelectedTrackIndices()
+    local idxs = {}
+    for i = 0, reaper.CountSelectedTracks() - 1 do
+        idxs[i + 1] = reaper.GetMediaTrackInfo_Value(
+            reaper.GetSelectedTrack(0, i), "IP_TRACKNUMBER") - 1
+    end
+    return idxs
+end
+
+--- @return number
+local function getTrackPosition()
+    local track = reaper.GetLastTouchedTrack()
+    return track
+        and (reaper.GetMediaTrackInfo_Value(track, "IP_TRACKNUMBER") - 1)
+        or 0
+end
+
+---@param register string
+function actions.saveMark(register)
+    onMarkDelete(getMark(register))
+
+    local left, right = reaper.GetSet_LoopTimeRange(false, false, 0, 0, false)
+    --- @type Mark
+    local mark = {
+        left = left,
+        right = right,
+        position = reaper.GetCursorPosition(),
+        track_position = getTrackPosition(),
+        track_selection = getSelectedTrackIndices(),
+        type = "track_selection",
+        register = register
+    }
+
+    local state = reaper_state.getState()
+    local mode = state.mode
+    if mode == 'visual_timeline' then
+        mark.type = 'region'
+        mark.index = reaper.AddProjectMarker(0, true, mark.left, mark.right, register, -1)
+    elseif mode == 'visual_track' then
+        mark.type = 'track_selection'
+    else
+        mark.type = 'timeline_position'
+        mark.index = reaper.AddProjectMarker(0, false, mark.position, mark.position, register, -1)
+    end
+
+    updateMark(register, mark)
+
+    state.mode = "normal"
+    reaper_state.setState(state)
+
+    if log_level ~= "trace" then return end
+    local all_marks = {}
+    for i = 0, 5000 do
+        local ok, val
+        ok, register, val = reaper.EnumProjExtState(0, "marks", i)
+        if not ok then break end
+        ok, mark = serpent.load(val)
+        if not ok then break end
+        all_marks[register] = mark
+    end
+    log.trace(("new Marks State: %s"):format(serpent.block(all_marks, { comment = false })))
+end
+
+---@param register string
+function actions.deleteMark(register)
+    local mark = getMark(register)
+    if not mark then return end
+    mark.deleted = true
+    onMarkDelete(mark)
+    updateMark(register, mark)
+end
+
+---@param register string
+function actions.recallMarkedTimelinePosition(register)
+    local mark = getMark(register)
+    if not mark then return end
+
+    local pos = mark.position
+    if mark.type == 'region' then pos = mark.left end
+    reaper.SetEditCurPos(pos, true, false)
+end
+
+local function scrollToPosition(pos)
+  local current_position = reaper.GetCursorPosition()
+  reaper.SetEditCurPos(pos, true, false)
+  reaper.SetEditCurPos(current_position, false, false)
+end
+
+---@param register string
+function actions.recallMarkedRegion(register)
+    local mark = getMark(register)
+    if not mark then return end
+
+    reaper.GetSet_LoopTimeRange(true, false, mark.left, mark.right, false)
+    scrollToPosition(mark.left)
+end
+
+local function setTrackSelection(index)
+    reaper.Main_OnCommand(40297, 0) -- unselect tracks
+    if not index then return end
+    for _, track_index in ipairs(index) do
+        local track = reaper.GetTrack(0, track_index)
+        if track then reaper.SetTrackSelected(track, true) end
+    end
+    reaper.Main_OnCommand(40913, 0) -- scroll to selected tracks
+end
+
+local function setCurrentTrack(index)
+  local previously_selected = getSelectedTrackIndices()
+  local previous_position = getTrackPosition()
+
+  local track = reaper.GetTrack(0, index)
+  if track then
+    reaper.SetOnlyTrackSelected(track)
+    reaper.Main_OnCommand(40914, 0) -- set first selected track as last touched track
+
+    local new_selection = previously_selected
+    if previous_position and new_selection then
+      for i,selected_track_i in ipairs(new_selection) do
+        if selected_track_i == previous_position then
+          table.remove(new_selection, i)
+        end
+      end
+    end
+    table.insert(new_selection, index)
+    setTrackSelection(new_selection)
+  end
+end
+
+---@param register string
+function actions.recallMarkedTracks(register)
+    local mark = getMark(register)
+    if not mark then return end
+    setCurrentTrack(mark.track_position)
+    setTrackSelection(mark.track_position)
 end
 
 return actions

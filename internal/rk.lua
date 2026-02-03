@@ -1,6 +1,10 @@
 local root = debug.getinfo(1, 'S').source:match ".*reaper.keys[^\\/]*[\\/]":sub(2)
 package.path = root .. "internal/?.lua;" .. root .. "vendor/?.lua;" .. root .. "vendor/scythe/?.lua"
 
+---@class KeyPress
+---@field key string
+---@field context Context
+
 local actions = require 'definitions.actions'
 local buildCommandWithCompletions = require 'build'
 local config = require 'definitions.config'.general
