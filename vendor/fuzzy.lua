@@ -11,25 +11,6 @@
 
 local module = {}
 
--- Returns true if each character in pattern is found sequentially within str
-function module.fuzzy_match_simple(pattern, str)
-	local patternIdx = 1
-	local strIdx = 1
-	local patternLength = #pattern
-	local strLength = #str
-
-	while (patternIdx <= patternLength and strIdx <= strLength) do
-		local patternChar = pattern:sub(patternIdx, patternIdx):lower()
-		local strChar = str:sub(strIdx, strIdx):lower()
-		if patternChar == strChar then
-			patternIdx = patternIdx + 1
-		end
-		strIdx = strIdx + 1
-	end
-
-	return patternLength ~= 0 and strLength ~= 0 and patternIdx == patternLength
-end
-
 -- Returns [bool, score, matchedIndices]
 -- bool: true if each character in pattern is found sequentially within str
 -- score: integer; higher is better match. Value has no intrinsic meaning. Range localies with pattern. 

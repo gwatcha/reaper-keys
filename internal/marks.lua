@@ -1,4 +1,3 @@
-local format = require 'format'
 local log = require 'log'
 local log_level = require 'definitions.config'.general.log_level
 local reaper_state = require 'reaper_state'
@@ -102,7 +101,7 @@ function marks.save(register)
         if not ok then break end
         all_marks[register] = mark
     end
-    log.trace(("new Marks State: %s"):format(format.block(all_marks)))
+    log.trace(("new Marks State: %s"):format(serpent.block(all_marks, { comment = false })))
 end
 
 ---@param register string

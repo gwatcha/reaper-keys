@@ -7,10 +7,10 @@ local config = require 'definitions.config'.general
 local executeCommand = require 'execute_command'
 local executeMetaCommand = require 'meta_command'
 local feedback = require 'gui.feedback.controller'
-local format = require 'format'
 local log = require 'log'
 local reaper_state = require 'reaper_state'
 local serpent = require 'serpent'
+local utils = require 'utils'
 
 local aliases = {
     [8] = '<BS>',
@@ -157,6 +157,51 @@ local function handleCommand(state, command)
     return state
 end
 
+---@param key string
+---@return string
+local function removeUglyBrackets(key)
+    if key:sub(1, 1) == "<" and key:sub(#key, #key) == ">" then
+        return key:sub(2, #key - 1)
+    end
+    return key
+end
+
+---@param sequence string
+---@return string
+local function formatKeySequence(sequence)
+    local rest = sequence
+    local key_sequence_string = ""
+    local first_key
+    while #rest ~= 0 do
+        first_key, rest = utils.splitFirstKey(rest)
+        if tonumber(first_key) then
+            key_sequence_string = key_sequence_string .. first_key
+        else
+            key_sequence_string = key_sequence_string .. " " .. removeUglyBrackets(first_key)
+        end
+    end
+
+    return key_sequence_string .. "-"
+end
+
+---@param action_keys Action[]
+---@return string
+local function formatActionKeys(action_keys)
+    local desc = ""
+    for _, command_part in pairs(action_keys) do
+        if type(command_part) == 'table' then
+            desc = desc .. '['
+            for _, additional_args in pairs(command_part) do
+                desc = desc .. ' ' .. additional_args
+            end
+            desc = desc .. ' ]'
+        else
+            desc = desc .. (command_part) .. " "
+        end
+    end
+    return desc
+end
+
 ---append the keypress to the key sequence and build a command.
 ---If there’s a command, execute it.
 ---If there’s no command, check that there are possible future action-entries that could be triggered.
@@ -182,11 +227,11 @@ local function step(state, key_press)
     log.info(("new key sequence %s"):format(new_state.key_sequence))
     local command, completions = buildCommandWithCompletions(new_state, true)
     if command then
-        log.trace(("command built: %s"):format(format.block(command)))
+        log.trace(("command built: %s"):format(serpent.block(command, { comment = false})))
 
         reaper.Undo_BeginBlock2(0)
         new_state = handleCommand(new_state, command)
-        local description = format.commandDescription(command)
+        local description = formatActionKeys(command.action_keys)
         reaper.Undo_EndBlock2(0, ('reaper-keys: %s'):format(description), 1)
 
         if config.show_feedback_window then
@@ -205,7 +250,7 @@ local function step(state, key_press)
         return new_state
     end
 
-    feedback.displayMessage(format.keySequence(state.key_sequence))
+    feedback.displayMessage(formatKeySequence(state.key_sequence))
     feedback.displayCompletions(completions)
     return new_state
 end
@@ -217,14 +262,14 @@ local function reaperKeys()
     ---@type KeyPress
     local hotkey = { context = main_ctx and "main" or "midi", key = ctxToKey(ctx) }
 
-    log.info(("Input: %s"):format(format.line(hotkey)))
+    log.info(("Input: %s"):format(serpent.line(hotkey, { comment = false })))
     if config.show_feedback_window then feedback.clear() end
 
     local state = reaper_state.getState()
     local new_state = step(state, hotkey)
     reaper_state.setState(new_state)
 
-    log.info(("New state: %s"):format(format.block(new_state)))
+    log.info(("New state: %s"):format(serpent.block(new_state, {comment = false})))
     if not config.show_feedback_window then return end
 
     feedback.displayState(new_state)
