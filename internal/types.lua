@@ -3,6 +3,7 @@
 ---@alias Context "midi"|"main"|"global"
 ---@alias Mode "normal"|"visual_track"|"visual_timeline"
 ---@alias ReaProject number
+---@alias TimelineSelectionSide "left"|"right"
 
 ---@class Completion
 
@@ -19,7 +20,7 @@
 ---@field last_searched_track_name string
 ---@field context Context
 ---@field macro_register string
----@field timeline_selection_side string
+---@field timeline_selection_side TimelineSelectionSide
 ---@field last_track_name_search_direction_was_forward boolean
 ---@field last_command Command
 ---@field visual_track_pivot_i number

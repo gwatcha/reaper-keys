@@ -144,6 +144,14 @@ internal/definitions/config.lua -> change GUI settings
 ```
 
 ## Contributing
+
+When cloning the repository, it's beneficial to only include the history from
+commit following v2.0 release (250kB vs. 99mB git folder size).
+
+```
+git clone https://github.com/gwatcha/reaper-keys --shallow-since="2024-05-22"
+```
+
 ### Running tests
 
 For running tests locally you'd need some Linux distribution with X11 and `xdotool`.

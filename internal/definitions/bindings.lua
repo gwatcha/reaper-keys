@@ -285,6 +285,10 @@ local global = { -- applies both to main and midi
                     ["b"] = "SetItemsTimebaseToBeatsPos",
                     ["r"] = "SetItemsTimebaseToBeatsPosLengthAndRate",
                 } },
+                p = { "+properties", {
+                    p = "ShowMediaItemProperties",
+                    s = "ShowMediaItemSourceProperties"
+                }},
             } },
             ["t"] = { "+track", {
                 ["s"] = "TrackToggleSolo",
@@ -307,11 +311,13 @@ local global = { -- applies both to main and midi
                 } },
             } },
             ["e"] = { "+envelopes", {
+                l = "ToggleDisplayVisibleEnvelopesInLanes",
                 ["t"] = "ToggleShowAllEnvelope",
                 ["a"] = "ToggleArmAllEnvelopes",
                 ["A"] = "UnarmAllEnvelopes",
                 ["d"] = "ClearAllEnvelope",
                 ["v"] = "ToggleVolumeEnvelope",
+                V = "TogglePreFxVolumeEnvelope",
                 ["p"] = "TogglePanEnvelope",
                 ["w"] = "SelectWidthEnvelope",
                 ["s"] = { "+selected", {

@@ -7,10 +7,10 @@ local config = require 'definitions.config'.general
 local executeCommand = require 'execute_command'
 local executeMetaCommand = require 'meta_command'
 local feedback = require 'gui.feedback.controller'
-local format = require 'format'
 local log = require 'log'
-local reaper_state = require 'utils.reaper_state'
-local state_interface = require 'state_machine.state_interface'
+local reaper_state = require 'reaper_state'
+local serpent = require 'serpent'
+local utils = require 'utils'
 
 local aliases = {
     [8] = '<BS>',
@@ -73,6 +73,7 @@ local macos_shift_fix = {
 }
 
 ---@param ctx string
+---@return string
 local function ctxToKey(ctx)
     local _, _, mod, code = ctx:find "^key:(.*):(.*)$"
     local virt, ctrl, shift = mod:match "V", mod:match "C", mod:match "S"
@@ -83,7 +84,7 @@ local function ctxToKey(ctx)
         virt, shift, code = false, false, macos_shift_res
     end
 
-    -- Reaper always transmits uppercase letters. Convert them to lowecase if we don't have Shift
+    -- Reaper always transmits uppercase letters. Convert them to lowercase if we don't have Shift
     if 65 <= code and code <= 90 then
         local key = string.char(code + (shift and 0 or 32))
         if not ctrl and not alt then return key end
@@ -110,6 +111,22 @@ local function isRepeatableCommand(command)
 end
 
 ---@param state State
+---@return State
+local function checkIfConsistentState(state)
+    local serialized_state = reaper_state.getState()
+    for key, value in pairs(serialized_state) do
+        if key == 'last_command' then
+            local left = serpent.line(state.last_command, { comment = false })
+            local right = serpent.line(serialized_state.last_command, { comment = false })
+            if left ~= right then return serialized_state end
+        elseif value ~= state[key] then
+            return serialized_state
+        end
+    end
+    return state
+end
+
+---@param state State
 ---@param command Command
 ---@return State
 local function handleCommand(state, command)
@@ -119,29 +136,68 @@ local function handleCommand(state, command)
     executeCommand(command)
 
     -- internal commands may have changed the state
-    if not state_interface.checkIfConsistentState(state) then
-        state = state_interface.get()
-    end
+    state = checkIfConsistentState(state)
 
     if isRepeatableCommand(command) then
         state.last_command = command
     end
 
     if state.macro_recording then
-        reaper_state.append('macros', state.macro_register, command)
+        reaper_state.appendToMacro(state.macro_register, command)
     end
 
     state.key_sequence = ""
     return state
 end
 
----append the keypress to the key sequence and build a command.
----If there’s a command, execute it.
----If there’s no command, check that there are possible future action-entries that could be triggered.
----if there’s no possible future action-entries, reset the keysequence to empty and raise an error
----return the updated state
+---@param key string
+---@return string
+local function removeUglyBrackets(key)
+    if key:sub(1, 1) == "<" and key:sub(#key, #key) == ">" then
+        return key:sub(2, #key - 1)
+    end
+    return key
+end
+
+---@param sequence string
+---@return string
+local function formatKeySequence(sequence)
+    local rest = sequence
+    local key_sequence_string = ""
+    local first_key
+    while #rest ~= 0 do
+        first_key, rest = utils.splitFirstKey(rest)
+        if tonumber(first_key) then
+            key_sequence_string = key_sequence_string .. first_key
+        else
+            key_sequence_string = key_sequence_string .. " " .. removeUglyBrackets(first_key)
+        end
+    end
+
+    return key_sequence_string .. "-"
+end
+
+---@param action_keys Action[]
+---@return string
+local function formatActionKeys(action_keys)
+    local desc = ""
+    for _, command_part in pairs(action_keys) do
+        if type(command_part) == 'table' then
+            desc = desc .. '['
+            for _, additional_args in pairs(command_part) do
+                desc = desc .. ' ' .. additional_args
+            end
+            desc = desc .. ' ]'
+        else
+            desc = desc .. (command_part) .. " "
+        end
+    end
+    return desc
+end
+
 ---@param state State
 ---@param key_press KeyPress
+---@return State
 local function step(state, key_press)
     local new_state = state
 
@@ -160,11 +216,11 @@ local function step(state, key_press)
     log.info(("new key sequence %s"):format(new_state.key_sequence))
     local command, completions = buildCommandWithCompletions(new_state, true)
     if command then
-        log.trace(("command built: %s"):format(format.block(command)))
+        log.trace(("command built: %s"):format(serpent.block(command, { comment = false})))
 
         reaper.Undo_BeginBlock2(0)
         new_state = handleCommand(new_state, command)
-        local description = format.commandDescription(command)
+        local description = formatActionKeys(command.action_keys)
         reaper.Undo_EndBlock2(0, ('reaper-keys: %s'):format(description), 1)
 
         if config.show_feedback_window then
@@ -183,7 +239,7 @@ local function step(state, key_press)
         return new_state
     end
 
-    feedback.displayMessage(format.keySequence(state.key_sequence))
+    feedback.displayMessage(formatKeySequence(state.key_sequence))
     feedback.displayCompletions(completions)
     return new_state
 end
@@ -195,14 +251,14 @@ local function reaperKeys()
     ---@type KeyPress
     local hotkey = { context = main_ctx and "main" or "midi", key = ctxToKey(ctx) }
 
-    log.info(("Input: %s"):format(format.line(hotkey)))
+    log.info(("Input: %s"):format(serpent.line(hotkey, { comment = false })))
     if config.show_feedback_window then feedback.clear() end
 
-    local state = state_interface.get()
+    local state = reaper_state.getState()
     local new_state = step(state, hotkey)
-    state_interface.set(new_state)
+    reaper_state.setState(new_state)
 
-    log.info(("New state: %s"):format(format.block(new_state)))
+    log.info(("New state: %s"):format(serpent.block(new_state, {comment = false})))
     if not config.show_feedback_window then return end
 
     feedback.displayState(new_state)
