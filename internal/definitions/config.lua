@@ -74,7 +74,7 @@ local gui = {
 
 ---@type GeneralConfig
 local general = {
-    show_start_up_message = false,
+    show_start_up_message = true,
     dock_feedback_window = true,
     show_feedback_window = true,
     -- On some keyboards, F12 conflicts with { (S-[), F13 conflicts with } (S-]),

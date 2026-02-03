@@ -546,7 +546,7 @@ local main = {
         ["<CM-k>"] = "ShiftEnvelopePointsUpATinyBit",
         ["<CM-J>"] = "ShiftEnvelopePointsDown",
         ["<CM-K>"] = "ShiftEnvelopePointsUp",
-        ["<C-s>"] = "SelectItemsUnderEditCursor",
+        ["<M-S>"] = "SelectItemsUnderEditCursor",
         ["'"] = "MarkedTracks",
     },
 }
