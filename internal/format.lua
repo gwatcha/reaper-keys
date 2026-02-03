@@ -1,4 +1,4 @@
-local utils = require 'command.utils'
+local utils = require 'utils'
 local serpent = require 'serpent'
 local string_util = require 'string'
 local format = {}

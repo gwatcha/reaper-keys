@@ -2,7 +2,7 @@ local action_sequences = require 'action_sequence'
 local actions = require "definitions.actions"
 local bindings = require "definitions.bindings"
 local log = require 'log'
-local utils = require 'command.utils'
+local utils = require 'utils'
 
 local function entryToString(entry)
     return utils.isFolder(entry) and entry[1] or entry

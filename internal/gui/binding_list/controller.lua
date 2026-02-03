@@ -1,4 +1,3 @@
-local definitions = require('utils.definitions')
 local BindingListView = require('gui.binding_list.View')
 local buildCommandWithCompletions = require 'build'
 local gui_utils = require('gui.utils')
@@ -7,7 +6,7 @@ local fuzzy_match = require('fuzzy').fuzzy_match
 local GUI = require('gui.core')
 local run = require 'action_sequence'.run
 local definition_tables = require "definitions.bindings"
-local utils = require('command.utils')
+local utils = require 'utils'
 
 local binding_list = {}
 
@@ -19,7 +18,7 @@ local function getBindings(entries)
   for entry_key,entry_value in pairs(entries) do
     if utils.isFolder(entry_value) then
       local folder_table = entry_value[2]
-      local folder_bindings = definitions.getBindings(folder_table)
+      local folder_bindings = getBindings(folder_table)
 
       for action_name_from_folder,binding_from_folder in pairs(folder_bindings) do
         bindings[action_name_from_folder] = entry_key .. binding_from_folder
@@ -45,14 +44,14 @@ local function getAllBindings()
   return bindings
 end
 
-function createBindingList(state)
+local function createBindingList(state)
   local data = {}
   local _, state_entries = buildCommandWithCompletions(state, false)
   local bindings = getAllBindings()
 
   for context,context_bindings in pairs(bindings) do
     for action_type,action_type_bindings in pairs(context_bindings) do
-      local state_bindings = definitions.getBindings(state_entries[action_type])
+      local state_bindings = getBindings(state_entries[action_type])
 
       for action_name,action_binding in pairs(action_type_bindings) do
         local row = {

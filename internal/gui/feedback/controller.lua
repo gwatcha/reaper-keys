@@ -1,4 +1,4 @@
-local utils = require 'command.utils'
+local utils = require 'utils'
 local FeedbackView = require 'gui.feedback.View'
 local reaper_state = require 'reaper_state'
 local model = require 'gui.feedback.model'
