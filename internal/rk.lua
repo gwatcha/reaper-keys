@@ -5,7 +5,6 @@ package.path = root .. "internal/?.lua;" .. root .. "vendor/?.lua;" .. root .. "
 ---@field key string
 ---@field context Context
 
-local actions = require 'definitions.actions'
 local buildCommandWithCompletions = require 'build'
 local config = require 'definitions.config'.general
 local executeCommand = require 'execute_command'
@@ -217,9 +216,6 @@ local function step(state, key_press)
     return new_state
 end
 
-local focus_tracks = reaper.NamedCommandLookup(actions.FocusTracks)
-local focus_midi = reaper.NamedCommandLookup(actions.FocusMidiEditor)
-
 local function reaperKeys()
     local _, _, section_id, _, _, _, _, ctx = reaper.get_action_context()
     if ctx == "" then return end
@@ -228,28 +224,16 @@ local function reaperKeys()
     local hotkey = { context = main_ctx and "main" or "midi", key = ctxToKey(ctx) }
 
     log.info(("Input: %s"):format(serpent.line(hotkey, { comment = false })))
-    if config.show_feedback_window then feedback.clear() end
+    feedback.clear()
 
     local state = reaper_state.getState()
-    local new_state = step(state, hotkey)
-    reaper_state.setState(new_state)
+    state = step(state, hotkey)
+    reaper_state.setState(state)
 
-    log.info(("New state: %s"):format(serpent.block(new_state, {comment = false})))
+    log.info(("New state: %s"):format(serpent.block(state, {comment = false})))
     if not config.show_feedback_window then return end
 
-    feedback.displayState(new_state)
-
-    -- If window is floating, it's controlled by WM so we can't always defocus it
-    if not config.dock_feedback_window then return end
-
-    reaper.Main_OnCommand(main_ctx and focus_tracks or focus_midi, 0)
-
-    -- When we insert track with feedback window closed, it steals focus and track is not renamed
-    if not main_ctx or not new_state or new_state.key_sequence ~= "" then return end
-    if not hotkey.key:lower():match "o" then return end
-    local keys = new_state.last_command.action_keys
-    if #keys ~= 1 or not keys[1]:match "^EnterTrack" then return end
-    reaper.Main_OnCommand(actions.RenameTrack, 0)
+    feedback.displayStateAndDefocus(state, main_ctx, hotkey)
 end
 
 local function messageHandler(err)

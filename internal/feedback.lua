@@ -1,3 +1,4 @@
+local actions = require 'definitions.actions'
 local Font = require 'public.font'
 local GUI = require 'gui.core'
 local config = require 'definitions.config'
@@ -439,10 +440,10 @@ local startup_msg =
     "- Everything you need to configure reaper-keys is in REAPER/Scripts/reaper-keys/internal/definitions/\n" ..
     "- If you would like to hide this message, set the option in internal/definitions/config.lua\n" ..
     "\t Your mother loves you"
-local feedback_view = nil
+local window = nil
 
 ---@param state State
-function feedback.displayState(state)
+local function displayState(state)
     local right_text = state.macro_recording and ("(rec %s..)"):format(state.macro_register) or ""
     reaper_state.setKeys(feedback_table_name, { right_text = right_text, mode = state.mode })
 
@@ -461,8 +462,8 @@ function feedback.displayState(state)
         return
     end
 
-    feedback_view = feedbackWindow:new()
-    feedback_view:open()
+    window = feedbackWindow:new()
+    window:open()
 
     if config.general.show_start_up_message then
         reaper.ShowMessageBox(startup_msg, "Reaper Keys Open Message", 1)
@@ -479,9 +480,31 @@ function feedback.displayState(state)
     end
 
     reaper.atexit(function()
-        local window_settings = feedback_view:getWindowSettings()
+        local window_settings = window:getWindowSettings()
         reaper_state.setKeys(feedback_table_name, { open = false, window_settings = window_settings })
     end)
+end
+
+local focus_tracks = reaper.NamedCommandLookup(actions.FocusTracks)
+local focus_midi = reaper.NamedCommandLookup(actions.FocusMidiEditor)
+
+--- @param state State
+--- @param main_ctx boolean
+--- @param hotkey KeyPress
+function feedback.displayStateAndDefocus(state, main_ctx, hotkey)
+    displayState(state)
+
+    -- If window is floating, it's controlled by WM so we can't always defocus it
+    if not config.dock_feedback_window then return end
+
+    reaper.Main_OnCommand(main_ctx and focus_tracks or focus_midi, 0)
+
+    -- When we insert track with feedback window closed, it steals focus and track is not renamed
+    if not main_ctx or not state or state.key_sequence ~= "" then return end
+    if not hotkey.key:lower():match "o" then return end
+    local keys = state.last_command.action_keys
+    if #keys ~= 1 or not keys[1]:match "^EnterTrack" then return end
+    reaper.Main_OnCommand(actions.RenameTrack, 0)
 end
 
 function feedback.displayMessage(message)
@@ -490,6 +513,7 @@ function feedback.displayMessage(message)
 end
 
 function feedback.clear()
+    if not config.general.show_feedback_window then return end
     reaper_state.setKeys(feedback_table_name, { message = "", completions = "", mode = "" })
 end
 
