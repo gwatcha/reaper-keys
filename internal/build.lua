@@ -15,7 +15,7 @@ local function mergeEntries(t1, t2)
     if not t2 then return t1 end
     for key_seq, entry_val in pairs(t2) do
         if t1[key_seq] then
-            log.warn("Found key clash for action_sequence " ..
+            log.error("Found key clash for action_sequence " ..
             key_seq .. " : " .. entryToString(t1[key_seq]) .. " and " .. entryToString(entry_val))
         end
         t1[key_seq] = entry_val

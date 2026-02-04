@@ -70,7 +70,7 @@ local gui = {
 }
 
 ---@class GeneralConfig
----@field log_level "trace"|"debug"|"info"|"warn"|"error"|"fatal"
+---@field log_level "debug"|"info"|"error"
 
 ---@type GeneralConfig
 local general = {

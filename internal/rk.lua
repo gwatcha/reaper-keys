@@ -191,7 +191,7 @@ local function step(state, key_press)
     log.info(("new key sequence %s"):format(new_state.key_sequence))
     local command, completions = buildCommandWithCompletions(new_state, true)
     if command then
-        log.trace(("command built: %s"):format(serpent.block(command, { comment = false})))
+        log.debug(("command built: %s"):format(serpent.block(command, { comment = false})))
 
         reaper.Undo_BeginBlock2(0)
         new_state = handleCommand(new_state, command)

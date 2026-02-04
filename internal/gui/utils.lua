@@ -1,5 +1,4 @@
 local gui_scale = require 'definitions.config'.gui.gui_scale
-local log = require 'log'
 local Color = require 'public.color'
 local Font = require 'public.font'
 
@@ -12,23 +11,12 @@ local function queryHiDPIMode()
     gfx.ext_retina = 1
     gfx.init("window to check ext_retina", w, h, dock, x, y)
     gfx.quit()
-
-    if gfx.ext_retina == 2 then
-        hiDPIMode = true
-    else
-        hiDPIMode = false
-    end
+    hiDPIMode = gfx.ext_retina == 2
 end
 
 function gui_utils.scale(normal_size)
-    if not normal_size or not type(normal_size) == 'number' then
-        log.error(debug.traceback("tried to scale a non number"))
-        return nil
-    end
-
-    if hiDPIMode == nil then
-        queryHiDPIMode()
-    end
+    if not normal_size or not type(normal_size) == 'number' then return nil end
+    if hiDPIMode == nil then queryHiDPIMode() end
 
     local scale = gui_scale
     if hiDPIMode == true then
@@ -69,11 +57,7 @@ end
 
 function gui_utils.styled_draw(text, text_preset, color)
     Font.set(text_preset)
-    if color then
-        Color.set(color)
-        log.warn("No color passed for styled draw when drawing: " .. text)
-    end
-
+    if color then Color.set(color) end
     gfx.drawstr(text)
 end
 
