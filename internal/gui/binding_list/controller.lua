@@ -129,8 +129,10 @@ function createDisplayedList(full_binding_list, element_values)
   return displayed_list
 end
 
+local binding_list_table_name = "binding_list"
+
 function binding_list.open(state)
-  local saved_props = reaper_state.getBindingList()
+  local saved_props = reaper_state.get(binding_list_table_name)
   if not saved_props then
     saved_props = {
       window = {},
@@ -176,7 +178,7 @@ function binding_list.open(state)
       window = gui_utils.getWindowSettings(),
       element_values = element_values
     }
-    reaper_state.setBindingList(binding_list_state)
+    reaper_state.set(binding_list_table_name, binding_list_state)
   end
 
   reaper.atexit(saveState)

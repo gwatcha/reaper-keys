@@ -3,8 +3,6 @@ local executeCommand = require 'execute_command'
 local reaper_state = require 'reaper_state'
 local default_state = require 'default_state'
 
----@alias MetaFunction fun(state: State, command: Command): State
----@type { [string]: MetaFunction }
 local commands = {}
 
 ---@param command Command
@@ -16,6 +14,7 @@ local function getAction(command)
     return nil
 end
 
+---@alias MetaFunction fun(state: State, command: Command): State
 ---@param command Command
 ---@return MetaFunction?
 local function getFn(command)
@@ -24,6 +23,8 @@ local function getFn(command)
     if type(key) == 'table' then key = key[1] end
     return commands[key]
 end
+
+local macro_table_name = "macros"
 
 ---@param state State
 ---@param command Command
@@ -34,7 +35,7 @@ function commands.PlayMacro(state, command)
     local register = action.register
     if not register then return default_state end
 
-    local macro_commands = reaper_state.getMacro(register)
+    local macro_commands = reaper_state.getKey(macro_table_name, register)
     if macro_commands then
         for _ = 1, action.prefixedRepetitions or 1 do
             for _, macro_command in pairs(macro_commands) do
@@ -47,7 +48,7 @@ function commands.PlayMacro(state, command)
             end
         end
         if state.macro_recording then
-            reaper_state.appendToMacro(state.macro_register, command)
+            commands.appendToMacro(state.macro_register, command)
         end
     end
 
@@ -68,11 +69,31 @@ function commands.RecordMacro(state, command)
     local register = command.action_keys[1].register
     if not register then return state end
 
-    reaper_state.clearMacro(register)
+    local blank_macro = {}
+    blank_macro[register] = {}
+    reaper_state.setKeys(macro_table_name, blank_macro)
+
     state.macro_register = register
     state.macro_recording = true
     state.key_sequence = ''
     return state
+end
+
+--- @param register string
+--- @param command Command
+function commands.appendToMacro(register, command)
+    local macros = reaper_state.get(macro_table_name)
+    if macros then
+        if macros[register] then
+            table.insert(macros[register], command)
+        else
+            macros[register] = { command }
+        end
+    else
+        macros = {}
+        macros[register] = command
+    end
+    reaper_state.set(macro_table_name, macros)
 end
 
 ---@param state State
@@ -91,7 +112,7 @@ function commands.RepeatLastCommand(state, command)
     end
 
     if state.macro_recording then
-        reaper_state.appendToMacro(state.macro_register, last_command)
+        commands.appendToMacro(state.macro_register, last_command)
     end
 
     state.key_sequence = ""
@@ -110,10 +131,10 @@ end
 ---@param state State
 ---@param command Command
 ---@return State? new_state
-local function executeMetaCommand(state, command)
+function commands.executeMetaCommand(state, command)
     local fn = getFn(command)
     if not fn then return nil end
     return fn(state, command)
 end
 
-return executeMetaCommand
+return commands

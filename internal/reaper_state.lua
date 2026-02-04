@@ -29,7 +29,7 @@ local namespace = "reaper_keys"
 
 ---@param table_name string
 ---@param lua_table table
-local function set(table_name, lua_table)
+function reaper_state.set(table_name, lua_table)
     local serialized = serpent.dump(lua_table, { comment = false })
     reaper.SetExtState(namespace, table_name, serialized, true)
 end
@@ -37,7 +37,7 @@ end
 ---retrieve a table from the reaper ext state
 ---@param table_name string
 ---@return table|nil ext_value
-local function get(table_name)
+function reaper_state.get(table_name)
     local state = reaper.GetExtState(namespace, table_name)
     if not state then return nil end
     local ok, table = serpent.load(state)
@@ -45,95 +45,31 @@ local function get(table_name)
     return table
 end
 
-local function getKey(name, key)
-    local data = get(name)
+--- @param name string
+--- @param key string
+--- @return table?
+function reaper_state.getKey(name, key)
+    local data = reaper_state.get(name)
     return data and data[key] or nil
 end
 
-local function setKeys(name, keys)
-    local data = get(name)
+function reaper_state.setKeys(name, keys)
+    local data = reaper_state.get(name)
     if not data then data = {} end
     for key, value in pairs(keys) do data[key] = value end
-    set(name, data)
-end
-
----@param register string
----@return table?
-function reaper_state.getMacro(register)
-    return getKey('macros', register) --[[@as table?]]
-end
-
----@param register string
-function reaper_state.clearMacro(register)
-    local blank_macro = {}
-    blank_macro[register] = {}
-    setKeys("macros", blank_macro)
-end
-
----@param register string
----@param command Command
-function reaper_state.appendToMacro(register, command)
-    local all_data = get("macros")
-    if not all_data then
-        all_data = {}
-        all_data[register] = command
-        set("macros", all_data)
-        return
-    end
-
-    if all_data[register] then
-        table.insert(all_data[register], command)
-    else
-        all_data[register] = { command }
-    end
-    set("macros", all_data)
+    reaper_state.set(name, data)
 end
 
 local rk_state_table_name = "state"
 
 ---@param state State
 function reaper_state.setState(state)
-    set(rk_state_table_name, state)
+    reaper_state.set(rk_state_table_name, state)
 end
 
 ---@return State
 function reaper_state.getState()
-    return get(rk_state_table_name) or default_state
-end
-
-local binding_list_table_name = "binding_list"
-
-function reaper_state.getBindingList()
-    return get(binding_list_table_name)
-end
-
-function reaper_state.setBindingList(state)
-    set(binding_list_table_name, state)
-end
-
-local feedback_table_name = "feedback"
-
-function reaper_state.getFeedback()
-    return get(feedback_table_name)
-end
-
-function reaper_state.getFeedbackKey(key)
-    return getKey(feedback_table_name, key)
-end
-
-function reaper_state.setFeedbackKeys(keys)
-    setKeys(feedback_table_name, keys)
-end
-
-function reaper_state.clearJustOpenedFlag()
-    local is_open = reaper.GetExtState(namespace, "reaper_started")
-    if is_open == "open" then return false end
-    reaper.SetExtState(namespace, "reaper_started", "open", false)
-    return true
-end
-
-function reaper_state.clearFeedbackOpen()
-    setKeys(feedback_table_name, {open = false})
+    return reaper_state.get(rk_state_table_name) or default_state
 end
 
 return reaper_state

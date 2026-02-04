@@ -1,19 +1,8 @@
-local feedback = require 'gui.feedback.controller'
+local feedback = require 'feedback'
 local log = require 'log'
 local log_level = require 'definitions.config'.general.log_level
 local reaper_state = require 'reaper_state'
 local serpent = require 'serpent'
-
----@class Mark
----@field type "region"|"timeline_position"|"track_selection"
----@field register string
----@field position number
----@field left number
----@field right number
----@field track_position number
----@field track_selection table
----@field deleted? boolean
----@field index? integer
 
 local actions = {}
 
@@ -497,8 +486,19 @@ function actions.repeatTrackNameMatchBackward()
 end
 
 function actions.ResetFeedbackWindow()
-    reaper_state.clearFeedbackOpen()
+    feedback.reset()
 end
+
+---@class Mark
+---@field type "region"|"timeline_position"|"track_selection"
+---@field register string
+---@field position number
+---@field left number
+---@field right number
+---@field track_position number
+---@field track_selection table
+---@field deleted? boolean
+---@field index? integer
 
 --- @param register string
 --- @return Mark?
@@ -635,33 +635,31 @@ local function setTrackSelection(index)
     reaper.Main_OnCommand(40913, 0) -- scroll to selected tracks
 end
 
-local function setCurrentTrack(index)
-  local previously_selected = getSelectedTrackIndices()
-  local previous_position = getTrackPosition()
-
-  local track = reaper.GetTrack(0, index)
-  if track then
-    reaper.SetOnlyTrackSelected(track)
-    reaper.Main_OnCommand(40914, 0) -- set first selected track as last touched track
-
-    local new_selection = previously_selected
-    if previous_position and new_selection then
-      for i,selected_track_i in ipairs(new_selection) do
-        if selected_track_i == previous_position then
-          table.remove(new_selection, i)
-        end
-      end
-    end
-    table.insert(new_selection, index)
-    setTrackSelection(new_selection)
-  end
-end
-
 ---@param register string
 function actions.recallMarkedTracks(register)
     local mark = getMark(register)
     if not mark then return end
-    setCurrentTrack(mark.track_position)
+
+    local previously_selected = getSelectedTrackIndices()
+    local previous_position = getTrackPosition()
+    local track = reaper.GetTrack(0, mark.track_position)
+
+    if track then
+        reaper.SetOnlyTrackSelected(track)
+        reaper.Main_OnCommand(40914, 0) -- set first selected track as last touched track
+
+        local new_selection = previously_selected
+        if previous_position and new_selection then
+            for i, selected_track_i in ipairs(new_selection) do
+                if selected_track_i == previous_position then
+                    table.remove(new_selection, i)
+                end
+            end
+        end
+        table.insert(new_selection, mark.track_position)
+        setTrackSelection(new_selection)
+    end
+
     setTrackSelection(mark.track_position)
 end
 

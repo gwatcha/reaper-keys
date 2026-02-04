@@ -9,12 +9,11 @@ local actions = require 'definitions.actions'
 local buildCommandWithCompletions = require 'build'
 local config = require 'definitions.config'.general
 local executeCommand = require 'execute_command'
-local executeMetaCommand = require 'meta_command'
-local feedback = require 'gui.feedback.controller'
+local meta_command = require 'meta_command'
+local feedback = require 'feedback'
 local log = require 'log'
 local reaper_state = require 'reaper_state'
 local serpent = require 'serpent'
-local utils = require 'utils'
 
 local aliases = {
     [8] = '<BS>',
@@ -134,7 +133,7 @@ end
 ---@param command Command
 ---@return State
 local function handleCommand(state, command)
-    local new_state = executeMetaCommand(state, command)
+    local new_state = meta_command.executeMetaCommand(state, command)
     if new_state then return new_state end
 
     executeCommand(command)
@@ -147,38 +146,11 @@ local function handleCommand(state, command)
     end
 
     if state.macro_recording then
-        reaper_state.appendToMacro(state.macro_register, command)
+        meta_command.appendToMacro(state.macro_register, command)
     end
 
     state.key_sequence = ""
     return state
-end
-
----@param key string
----@return string
-local function removeUglyBrackets(key)
-    if key:sub(1, 1) == "<" and key:sub(#key, #key) == ">" then
-        return key:sub(2, #key - 1)
-    end
-    return key
-end
-
----@param sequence string
----@return string
-local function formatKeySequence(sequence)
-    local rest = sequence
-    local key_sequence_string = ""
-    local first_key
-    while #rest ~= 0 do
-        first_key, rest = utils.splitFirstKey(rest)
-        if tonumber(first_key) then
-            key_sequence_string = key_sequence_string .. first_key
-        else
-            key_sequence_string = key_sequence_string .. " " .. removeUglyBrackets(first_key)
-        end
-    end
-
-    return key_sequence_string .. "-"
 end
 
 ---@param action_keys Action[]
@@ -227,9 +199,7 @@ local function step(state, key_press)
         local description = formatActionKeys(command.action_keys)
         reaper.Undo_EndBlock2(0, ('reaper-keys: %s'):format(description), 1)
 
-        if config.show_feedback_window then
-            feedback.displayMessage(description)
-        end
+        feedback.displayMessage(description)
         return new_state
     end
 
@@ -243,10 +213,12 @@ local function step(state, key_press)
         return new_state
     end
 
-    feedback.displayMessage(formatKeySequence(state.key_sequence))
-    feedback.displayCompletions(completions)
+    feedback.displayCompletions(completions, state.key_sequence)
     return new_state
 end
+
+local focus_tracks = reaper.NamedCommandLookup(actions.FocusTracks)
+local focus_midi = reaper.NamedCommandLookup(actions.FocusMidiEditor)
 
 local function reaperKeys()
     local _, _, section_id, _, _, _, _, ctx = reaper.get_action_context()
@@ -270,8 +242,7 @@ local function reaperKeys()
     -- If window is floating, it's controlled by WM so we can't always defocus it
     if not config.dock_feedback_window then return end
 
-    local defocus_window = main_ctx and actions.FocusTracks or actions.FocusMidiEditor
-    reaper.Main_OnCommand(reaper.NamedCommandLookup(defocus_window), 0)
+    reaper.Main_OnCommand(main_ctx and focus_tracks or focus_midi, 0)
 
     -- When we insert track with feedback window closed, it steals focus and track is not renamed
     if not main_ctx or not new_state or new_state.key_sequence ~= "" then return end
