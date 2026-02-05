@@ -6,8 +6,93 @@ local gui_utils = require 'gui.utils'
 local reaper_state = require 'reaper_state'
 local scale = gui_utils.scale
 local utils = require 'utils'
+local draw = gui_utils.styled_draw
 
+local feedback_table_name = "feedback"
 local feedbackWindow = {}
+local feedback = {}
+
+function feedbackWindow:new()
+    local view = {}
+    setmetatable(view, self)
+    self.__index = self
+    self.props = config.gui.feedback
+    self.props.action_type_colors = config.gui.action_type_colors
+    gui_utils.addFonts(self.props.fonts)
+
+    local settings = reaper_state.getKey(feedback_table_name, "window_settings") or {}
+    self.window = GUI.createWindow({
+        name = "Reaper Keys Feedback",
+        w = settings.w,
+        x = settings.x,
+        h = settings.h,
+        y = settings.y,
+        dock = config.general.dock_feedback_window and 1 or 0,
+        corner = "TL"
+    })
+
+    local layer = GUI.createLayer { name = "Main Layer" }
+    layer:addElements(GUI.createElements(
+        { type = "Frame", name = "message", font = "feedback_main" },
+        {
+            type = "Frame",
+            name = "completions",
+            font = "feedback_main",
+            bg = "backgroundDarkest",
+            completions = {},
+        }
+    ))
+    self.window:addLayers(layer)
+
+    local completions = GUI.findElementByName("completions")
+    completions.props = self.props
+    completions.drawText = function(other) other:drawCompletions() end
+    completions.val = function (other) other:valCompletions() end
+    completions.getCompletionPositions = function (other) other:getCompletionPositions() end
+
+    local message = GUI.findElementByName("message")
+    message.props = self.props
+    message.val = function (other) other:valMessage() end
+    message.drawText = function (other) other:drawMessage() end
+
+    self.elements = { completions = completions, message = message }
+    self:updateElementDimensions()
+
+    return view
+end
+
+function feedbackWindow:valCompletions(completions)
+    if not completions then return self.completions end
+    self.completions = completions
+    if self.buffer then self:init() end
+    self:redraw()
+end
+
+function feedbackWindow:valMessage(message, extra_info, mode)
+    self.message = message
+    self.extra_info = extra_info
+    self.mode = mode
+    if self.buffer then self:init() end
+    self:redraw()
+end
+
+function feedbackWindow:drawMessage()
+    if not self.message or not self.extra_info or not self.mode then return end
+
+    gfx.x, gfx.y = self.pad + 1, self.pad + 1
+    draw(self.message, "feedback_main", "text")
+
+    if self.extra_info ~= "" then
+        draw("  " .. self.extra_info, "feedback_main", self.props.colors.extra_info)
+    end
+
+    if self.mode == "normal" then return end
+
+    local mode_str_w = gfx.measurestr(self.mode)
+    gfx.x = self.w - mode_str_w - self.pad
+    local mode_color = self.props.colors[self.mode]
+    draw(self.mode, "feedback_main", mode_color)
+end
 
 function feedbackWindow:updateElementDimensions()
     Font.set("feedback_main")
@@ -33,84 +118,37 @@ function feedbackWindow:updateElementDimensions()
     elements.message.pad = pad
 end
 
-local function createElements()
-    local layer = GUI.createLayer { name = "Main Layer" }
-    layer:addElements(GUI.createElements(
-        { type = "Frame", name = "message", font = "feedback_main" },
-        {
-            type = "Frame",
-            name = "completions",
-            font = "feedback_main",
-            bg = "backgroundDarkest",
-            completions = {},
-        }
-    ))
-    return layer
-end
-
-local function drawMessage(self)
-    if not self.message or not self.extra_info or not self.mode then
-        return
-    end
-
-    gfx.x, gfx.y = self.pad + 1, self.pad + 1
-    gui_utils.styled_draw(self.message, "feedback_main", "text")
-
-    if self.extra_info ~= "" then
-        gui_utils.styled_draw("  " .. self.extra_info, "feedback_main", self.props.colors.extra_info)
-    end
-
-    if self.mode ~= "normal" then
-        local mode_str_w = gfx.measurestr(self.mode)
-        gfx.x = self.w - mode_str_w - self.pad
-        local mode_color = self.props.colors[self.mode]
-        gui_utils.styled_draw(self.mode, "feedback_main", mode_color)
-    end
-end
-
-local function valMessage(self, message, extra_info, mode)
-    self.message = message
-    self.extra_info = extra_info
-    self.mode = mode
-
-    if self.buffer then self:init() end
-    self:redraw()
-end
-
 local function getMaxKeyWidth(completions)
-  local max_key_width = 0
-  for _,completion in pairs(completions) do
-    Font.set("feedback_key")
-    local key_width = gfx.measurestr(completion.key_sequence)
-    if key_width > max_key_width then
-      max_key_width = key_width
+    local max_key_width = 0
+    for _, completion in pairs(completions) do
+        Font.set("feedback_key")
+        local key_width = gfx.measurestr(completion.key_sequence)
+        if key_width > max_key_width then
+            max_key_width = key_width
+        end
     end
-  end
-
-  return max_key_width
+    return max_key_width
 end
 
 function table.slice(t, first, last)
-  local sliced = {}
+    local sliced = {}
 
-  local adjusted_last = last
-  if not last or last > #t then
-      adjusted_last = #t
-  end
+    local adjusted_last = last
+    if not last or last > #t then
+        adjusted_last = #t
+    end
 
-  for i = first or 1, adjusted_last, 1 do
-    sliced[#sliced+1] = t[i]
-  end
+    for i = first or 1, adjusted_last, 1 do
+        sliced[#sliced + 1] = t[i]
+    end
 
-  return sliced
+    return sliced
 end
 
-local function getCompletionPositions(self)
+function feedbackWindow:getCompletionPositions()
   local positions = {}
   local completions = self.completions
-  if not completions then
-    return positions, 0
-  end
+  if not completions then return positions, 0 end
 
   Font.set("feedback_main")
   local _, char_h = gfx.measurestr("i")
@@ -171,128 +209,52 @@ local function getCompletionPositions(self)
   return positions, required_w
 end
 
-local function drawCompletions(self)
-  local completions = self.completions
-  if type(completions) == 'string' then return end
-  if not completions then return end
-
-  local positions = self:getCompletionPositions()
-  for i,position in pairs(positions) do
-    local completion = completions[i]
-    gfx.x = position.x
-    gfx.y = position.y
-    gui_utils.styled_draw(completion.key_sequence, "feedback_key", self.props.colors.key)
-    gui_utils.styled_draw(" -> ", "feedback_arrow", self.props.colors.arrow)
-    if completion.folder == true then
-      gui_utils.styled_draw(completion.value, "feedback_folder", self.props.colors.folder)
-    else
-      local action_type_color = self.props.action_type_colors[completion.action_type]
-      gui_utils.styled_draw(completion.value, "feedback_main", action_type_color)
-    end
-  end
-end
-
-local function valCompletions(self, completions)
-  if completions then
-    self.completions = completions
-    if self.buffer then self:init() end
-    self:redraw()
-  else
-    return self.completions
-  end
-end
-
-local function getRequiredHeight(self)
-  if not self.completions or #self.completions == 0 then
-    return 0
-  end
-
-  local current_h = self.h
-  Font.set("feedback_main")
-
-  local _, char_h = gfx.measurestr("i")
-  local row_pad = self.props.elements.row_padding
-
-  local x,y = self.pad, self.pad
-
-  local row_size = char_h + row_pad
-  self.h = 100000
-  local _, required_w = self:getCompletionPositions()
-  self.h = current_h
-  local max_column_width = required_w
-  local num_columns = math.floor(self.w / max_column_width)
-
-  local required_rows = math.ceil(#self.completions / num_columns)
-  local required_height = required_rows * row_size + self.pad * 2
-
-  return required_height
-end
-
-local feedback_table_name = "feedback"
-
-local function createWindow(props)
-    local settings = reaper_state.getKey(feedback_table_name, "window_settings") or {}
-    local window = GUI.createWindow({
-        name = "Reaper Keys Feedback",
-        w = settings.w,
-        x = settings.x,
-        h = settings.h,
-        y = settings.y,
-        dock = config.general.dock_feedback_window and 1 or 0,
-        corner = "TL"
-    })
-
-    local layer = createElements()
-    window:addLayers(layer)
-
-    local frame_element = GUI.findElementByName("completions")
-    frame_element.props = props
-    frame_element.drawText = drawCompletions
-    frame_element.val = valCompletions
-    frame_element.getRequiredHeight = getRequiredHeight
-    frame_element.getCompletionPositions = getCompletionPositions
-
-    frame_element = GUI.findElementByName("message")
-    frame_element.props = props
-    frame_element.val = valMessage
-    frame_element.drawText = drawMessage
-
-    return window
-end
-
-function feedbackWindow:new()
-    local view = {}
-    setmetatable(view, self)
-    self.__index = self
-    self.props = config.gui.feedback
-    self.props.action_type_colors = config.gui.action_type_colors
-    gui_utils.addFonts(self.props.fonts)
-    self.window = createWindow(self.props)
-    self.elements = {
-        completions = GUI.findElementByName("completions"),
-        message = GUI.findElementByName("message"),
-    }
-    self:updateElementDimensions()
-
-    return view
-end
-
-function feedbackWindow:adjustWindow()
-    local completions_h = self.elements.completions:getRequiredHeight()
-    local new_h = self.message_h + completions_h
-    local _, _, _, _, current_h = gfx.dock(-1, 0, 0, 0, 0)
-    if new_h ~= current_h then
-        self:redraw({ h = new_h })
+function feedbackWindow:drawCompletions()
+    local completions = self.completions
+    if type(completions) == 'string' then return end
+    if not completions then return end
+    local positions = self:getCompletionPositions()
+    for i, position in pairs(positions) do
+        local completion = completions[i]
+        gfx.x = position.x
+        gfx.y = position.y
+        draw(completion.key_sequence, "feedback_key", self.props.colors.key)
+        draw(" -> ", "feedback_arrow", self.props.colors.arrow)
+        if completion.folder == true then
+            draw(completion.value, "feedback_folder", self.props.colors.folder)
+        else
+            local action_type_color = self.props.action_type_colors[completion.action_type]
+            draw(completion.value, "feedback_main", action_type_color)
+        end
     end
 end
 
 function feedbackWindow:updateCompletions(completions)
     self.elements.completions:val(completions)
-    self:adjustWindow()
-end
+    completions = self.elements.completions
 
-function feedbackWindow:updateMessage(model)
-    self.elements.message:val(model.message, model.right_text, model.mode)
+    local required_height = 0
+    if completions and #completions > 0 then
+        local current_h = self.h
+        Font.set("feedback_main")
+
+        local _, char_h = gfx.measurestr("i")
+        local row_pad = self.props.elements.row_padding
+
+        local row_size = char_h + row_pad
+        self.h = 100000
+        local _, required_w = self:getCompletionPositions()
+        self.h = current_h
+        local max_column_width = required_w
+        local num_columns = math.floor(self.w / max_column_width)
+
+        local required_rows = math.ceil(#self.completions / num_columns)
+        required_height = required_rows * row_size + self.pad * 2
+    end
+
+    local new_h = self.message_h + required_height
+    local _, _, _, _, current_h = gfx.dock(-1, 0, 0, 0, 0)
+    if new_h ~= current_h then self:redraw({ h = new_h }) end
 end
 
 function feedbackWindow:open()
@@ -303,12 +265,13 @@ function feedbackWindow:open()
 
     local function main()
         local model = reaper_state.get(feedback_table_name)
+        if not model then return end
         local completions = model.completions
 
         if model.update_number ~= update_number then
             update_time = reaper.time_precise()
             update_number = model.update_number
-            self:updateMessage(model)
+            self.elements.message:val(model.message, model.right_text, model.mode)
 
             if completions_triggered then
                 self:updateCompletions(completions)
@@ -336,10 +299,6 @@ function feedbackWindow:open()
     GUI.Main()
 end
 
-function feedbackWindow:getWindowSettings()
-    return gui_utils.getWindowSettings()
-end
-
 function feedbackWindow:redraw(params)
     if self.window.state then
         self.window.h = self.window.state.currentH
@@ -348,47 +307,30 @@ function feedbackWindow:redraw(params)
     end
 
     self:updateElementDimensions()
+
     for _, element in pairs(self.elements) do
-        if element.recalculateWindow then
-            element:recalculateWindow()
-        end
+        if element.recalculateWindow then element:recalculateWindow() end
         element:init()
         element:redraw()
     end
 end
 
-local feedback = {}
-
----@param key string
----@return string
-local function removeUglyBrackets(key)
-    if key:sub(1, 1) == "<" and key:sub(#key, #key) == ">" then
-        return key:sub(2, #key - 1)
-    end
-    return key
-end
-
-
----@param sequence string
----@return string
-local function formatKeySequence(sequence)
-    local rest = sequence
-    local key_sequence_string = ""
-    local first_key
+function feedback.displayCompletions(future_entries, state_key_sequence)
+    local rest = state_key_sequence
+    local formatted = ""
+    local head
     while #rest ~= 0 do
-        first_key, rest = utils.splitFirstKey(rest)
-        if tonumber(first_key) then
-            key_sequence_string = key_sequence_string .. first_key
+        head, rest = utils.splitFirstKey(rest)
+        if tonumber(head) then
+            formatted = formatted .. head
         else
-            key_sequence_string = key_sequence_string .. " " .. removeUglyBrackets(first_key)
+            formatted = formatted .. " " ..
+                (head:sub(1, 1) == "<" and head:sub(#head, #head) == ">"
+                    and head:sub(2, #head - 1)
+                    or head)
         end
     end
-
-    return key_sequence_string .. "-"
-end
-
-function feedback.displayCompletions(future_entries, state_key_sequence)
-    feedback.displayMessage(formatKeySequence(state_key_sequence))
+    feedback.displayMessage(formatted .. "-")
 
     local completions = {}
 
@@ -442,26 +384,7 @@ local startup_msg =
     "\t Your mother loves you"
 local window = nil
 
----@param state State
-local function displayState(state)
-    local right_text = state.macro_recording and ("(rec %s..)"):format(state.macro_register) or ""
-    reaper_state.setKeys(feedback_table_name, { right_text = right_text, mode = state.mode })
-
-    local feedback_view_open = reaper_state.getKey(feedback_table_name, "open")
-    -- TODO hack with direct namespace access
-    local just_opened = false
-    if reaper.GetExtState("reaper_keys", "reaper_started") ~= "open" then
-        reaper.SetExtState("reaper_keys", "reaper_started", "open", false)
-        just_opened = true
-    end
-
-    if feedback_view_open and not just_opened then
-        local update_number = tonumber(reaper_state.getKey(feedback_table_name, "update_number") or 0)
-        if update_number > 20 then update_number = 0 end
-        reaper_state.setKeys(feedback_table_name, { update_number = update_number + 1 })
-        return
-    end
-
+local function onOpen()
     window = feedbackWindow:new()
     window:open()
 
@@ -480,8 +403,8 @@ local function displayState(state)
     end
 
     reaper.atexit(function()
-        local window_settings = window:getWindowSettings()
-        reaper_state.setKeys(feedback_table_name, { open = false, window_settings = window_settings })
+        reaper_state.setKeys(feedback_table_name, {
+            open = false, window_settings = gui_utils.getWindowSettings() })
     end)
 end
 
@@ -491,8 +414,25 @@ local focus_midi = reaper.NamedCommandLookup(actions.FocusMidiEditor)
 --- @param state State
 --- @param main_ctx boolean
 --- @param hotkey KeyPress
-function feedback.displayStateAndDefocus(state, main_ctx, hotkey)
-    displayState(state)
+function feedback.displayState(state, main_ctx, hotkey)
+    local right_text = state.macro_recording and ("(rec %s..)"):format(state.macro_register) or ""
+    reaper_state.setKeys(feedback_table_name, { right_text = right_text, mode = state.mode })
+
+    local feedback_view_open = reaper_state.getKey(feedback_table_name, "open")
+    -- TODO hack with direct namespace access
+    local just_opened = false
+    if reaper.GetExtState("reaper_keys", "reaper_started") ~= "open" then
+        reaper.SetExtState("reaper_keys", "reaper_started", "open", false)
+        just_opened = true
+    end
+
+    if feedback_view_open and not just_opened then
+        local update_number = tonumber(reaper_state.getKey(feedback_table_name, "update_number") or 0)
+        if update_number > 20 then update_number = 0 end
+        reaper_state.setKeys(feedback_table_name, { update_number = update_number + 1 })
+    else
+        onOpen()
+    end
 
     -- If window is floating, it's controlled by WM so we can't always defocus it
     if not config.dock_feedback_window then return end

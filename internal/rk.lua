@@ -233,7 +233,7 @@ local function reaperKeys()
     log.info(("New state: %s"):format(serpent.block(state, {comment = false})))
     if not config.show_feedback_window then return end
 
-    feedback.displayStateAndDefocus(state, main_ctx, hotkey)
+    feedback.displayState(state, main_ctx, hotkey)
 end
 
 local function messageHandler(err)
