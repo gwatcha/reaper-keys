@@ -78,8 +78,8 @@ local general = {
     dock_feedback_window = true,
     show_feedback_window = true,
     -- On some keyboards, F12 conflicts with { (S-[), F13 conflicts with } (S-]),
-    -- and F14 conflicts with | (S-\)
-    use_f12_f14 = false,
+    -- F14 conflicts with | (S-\), and F15 conflicts with ~
+    use_f12_f15 = false,
     profile = false,
     -- should operators in visual modes reset the selection or have it persist?
     persist_visual_timeline_selection = true,

@@ -33,7 +33,6 @@ local aliases = {
     [120] = '<F9>',
     [121] = '<F10>',
     [122] = '<F11>',
-    [126] = '<F15>',
     [127] = '<F16>',
     [128] = '<F17>',
     [129] = '<F18>',
@@ -54,10 +53,11 @@ local aliases = {
     [32813] = '<INS>',
     [32814] = '<DEL>',
 }
-if config.use_f12_f14 then
+if config.use_f12_f15 then
     aliases[123] = '<F12>'
     aliases[124] = '<F13>'
     aliases[125] = '<F14>'
+    aliases[126] = '<F15>'
 end
 
 local macos = reaper.GetOS():match "OS"
