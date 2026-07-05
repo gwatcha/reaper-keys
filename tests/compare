@@ -4,13 +4,10 @@ from sys import argv
 left_file, right_file = Path(argv[1]).read_text(), Path(argv[2]).read_text()
 out = 0
 ignored_keys = Path("ignored_keys").read_text().split()
-autocolor = "0 \"\" \"\" \"\""
 
 # skip project declaration
 for left, right in zip(left_file.split("\n")[1:], right_file.split("\n")[1:]):
     left, right = left.strip(), right.strip()
-    if left.find(autocolor) != -1 and right.find(autocolor) != -1:
-        continue
     if left.startswith("MARKER") and right.startswith("MARKER"):  # marker id
         left, right = left[:left.find("{")], right[:right.find("{")]
     if left == right or any(map(lambda x: left.startswith(x), ignored_keys)):
