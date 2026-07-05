@@ -175,7 +175,7 @@ function marks.recallMarkedTracks(register)
     local mark = getMark(register)
     if not mark then return end
     setCurrentTrack(mark.track_position)
-    setTrackSelection(mark.track_position)
+    setTrackSelection(mark.track_selection)
 end
 
 return marks

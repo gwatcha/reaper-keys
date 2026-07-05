@@ -1,0 +1,12 @@
+o 1 &Return "track 1
+o 2 &Return "track 2
+ma "marker a
+2l mb "marker b
+`a "move to marker a
+v5l mc "create a visual region c at 5 lines
+l 'a "select track 2 via mark a
+Vk "also select track 1
+~a "re-select only track 2 via timeline selection
+V 0 "move to project start and remove selection
+10l vh md "create a visual region c
+&ctrl+apostrophe d "remove selection, delete mark d
