@@ -14,13 +14,18 @@ local reaper_state = require "reaper_state"
 local scale = gui_utils.scale
 local utils = require 'utils'
 
----@class Elements
+---@alias MaybeContext Context | "all"
+---@alias MaybeActionType ActionType | "all"
+
+---@class Filter
 ---@field query string
+---@field context MaybeContext
+---@field action_type MaybeActionType
 ---@field state_filter_active boolean
----@field context_filter_active boolean
----@field action_type_filter_active boolean
----@field context Context
----@field action_type ActionType
+
+---@class Values : Filter
+---@field context_i number
+---@field action_type_i number
 
 ---@class Row
 ---@field match_score number
@@ -143,39 +148,23 @@ function View:updateElementDimensions()
   state_filter_active.w = window.w / 32
   state_filter_active.optionSize = top_bar_element_h
 
-  local context_filter = elements.context_filter
-  context_filter.x = window.w - 2 * menu_box_w - 2 * check_box_w - 7 * padding_x - gfx.measurestr(captions[3]) - side_pad
-  context_filter.y = top_pad
-  context_filter.h = top_bar_element_h
-  context_filter.w = window.w / 8
-  context_filter.optionSize = scale(20)
-  context_filter.caption = captions[2]
-  context_filter.pad = scale(5)
+      local context = elements.context
+      context.x = window.w - 2 * menu_box_w - 2 * check_box_w - 7 * padding_x - gfx.measurestr(captions[3]) - side_pad
+      context.y = top_pad
+      context.h = top_bar_element_h
+      context.w = window.w / 8
+      context.optionSize = scale(20)
+      context.caption = captions[2]
+      context.pad = scale(5)
 
-  local context_filter_active = elements.context_filter_active
-  context_filter_active.x = window.w - menu_box_w - 2 * check_box_w - 6 * padding_x - gfx.measurestr(captions[3]) - side_pad
-  context_filter_active.y = top_pad
-  context_filter_active.h = top_bar_element_h
-  context_filter_active.w = window.w / 32
-  context_filter_active.pad = 0
-  context_filter_active.optionSize = top_bar_element_h
-
-  local action_type_filter = elements.action_type_filter
-  action_type_filter.x = window.w - menu_box_w - check_box_w - padding_x - side_pad
-  action_type_filter.y = top_pad
-  action_type_filter.h = top_bar_element_h
-  action_type_filter.w = menu_box_w
-  action_type_filter.optionSize = scale(20)
-  action_type_filter.caption = captions[3]
-  action_type_filter.pad = scale(5)
-
-  local action_type_filter_active = elements.action_type_filter_active
-  action_type_filter_active.x = window.w - side_pad - check_box_w
-  action_type_filter_active.y = top_pad
-  action_type_filter_active.h = top_bar_element_h
-  action_type_filter_active.w = window.w / 32
-  action_type_filter_active.optionSize = top_bar_element_h
-  action_type_filter_active.pad = 0
+      local action_type = elements.action_type
+      action_type.x = window.w - menu_box_w - check_box_w - padding_x - side_pad
+      action_type.y = top_pad
+      action_type.h = top_bar_element_h
+      action_type.w = menu_box_w
+      action_type.optionSize = scale(20)
+      action_type.caption = captions[3]
+      action_type.pad = scale(5)
 
   local binding_list_box = elements.binding_list_box
   binding_list_box.x = 0
@@ -193,11 +182,34 @@ local function createBindingListWindow(props)
   for window_setting_name,window_setting_value in pairs(props.window) do
     window_settings[window_setting_name] = window_setting_value
   end
-  local window = GUI.createWindow(window_settings)
 
-  local layer = GUI.createLayer({name = "MainLayer"})
+    local window = GUI.createWindow(window_settings)
+    local layer = GUI.createLayer({name = "MainLayer"})
+    ---@type Values
+    local values = props.element_values
 
-  local element_values = props.element_values
+    local context = {
+        name = "context",
+        type = "Menubox",
+        frame = false,
+        retval = values.context_i,
+        textFont = "binding_list_label",
+        captionFont = "binding_list_label",
+        labelFont = "binding_list_label",
+        options = { "all", "global", "main", "midi" },
+    }
+
+    local types = action_sequence.action_types
+    table.insert(types, 1, "all")
+    local action_type = {
+        name = "action_type",
+        type = "Menubox",
+        retval = values.action_type_i,
+        frame = false,
+        textFont = "binding_list_label",
+        captionFont = "binding_list_label",
+        options = types
+    }
 
   layer:addElements( GUI.createElements(
                        {
@@ -218,47 +230,14 @@ local function createBindingListWindow(props)
                        {
                          name = "state_filter_active",
                          type =  "Checklist",
-                         selectedOptions = { element_values.state_filter_active },
+                         selectedOptions = { values.state_filter_active },
                          frame = false,
                          caption = "",
                          options = {""},
                          pad = 0,
                        },
-                       {
-                         name = "context_filter",
-                         type =  "Menubox",
-                         frame = false,
-                         retval = element_values.context_i,
-                         textFont = "binding_list_label",
-                         captionFont = "binding_list_label",
-                         labelFont = "binding_list_label",
-                         options = {"global", "main", "midi"},
-                       },
-                       {
-                         name = "context_filter_active",
-                         type =  "Checklist",
-                         selectedOptions = { element_values.context_filter_active },
-                         frame = false,
-                         caption = "",
-                         options = {""},
-                       },
-                       {
-                         name = "action_type_filter",
-                         type =  "Menubox",
-                         retval = element_values.action_type_i,
-                         frame = false,
-                         textFont = "binding_list_label",
-                         captionFont = "binding_list_label",
-                         options = action_sequence.action_types,
-                       },
-                       {
-                         name = "action_type_filter_active",
-                         type =  "Checklist",
-                         selectedOptions = { element_values.action_type_filter_active },
-                         frame = false,
-                         caption = "",
-                         options = {""},
-                       },
+                       context,
+                       action_type,
                        {
                          type = "Listbox",
                          name = "binding_list_box",
@@ -306,21 +285,19 @@ function View:new(props)
     self.action_executed = true
   end
 
-  self.elements = {
-    binding_list_box = GUI.findElementByName("binding_list_box"),
-    query = GUI.findElementByName("query"),
-    state_filter_active = GUI.findElementByName("state_filter_active"),
-    state_label = GUI.findElementByName("state_label"),
-    context_filter_active = GUI.findElementByName("context_filter_active"),
-    context_filter = GUI.findElementByName("context_filter"),
-    action_type_filter_active = GUI.findElementByName("action_type_filter_active"),
-    action_type_filter = GUI.findElementByName("action_type_filter"),
-  }
+    self.elements = {
+        binding_list_box = GUI.findElementByName("binding_list_box"),
+        query = GUI.findElementByName("query"),
+        state_filter_active = GUI.findElementByName("state_filter_active"),
+        state_label = GUI.findElementByName("state_label"),
+        context = GUI.findElementByName("context"),
+        action_type = GUI.findElementByName("action_type"),
+    }
 
-  self:updateElementDimensions()
-  self:redraw()
+    self:updateElementDimensions()
+    self:redraw()
 
-  return binding_list
+    return binding_list
 end
 
 function View:redraw()
@@ -407,32 +384,31 @@ local function createBindingList(state)
 end
 
 ---@param row Row
----@param element_values Elements
+---@param filter Filter
 ---@return boolean
-local function filtered(row, element_values)
-    return (element_values.query ~= "" and row.match_score < -3) or
-        (element_values.state_filter_active and not row.is_valid_in_state) or
-        (element_values.context_filter_active and row.context ~= element_values.context) or
-        (element_values.action_type_filter_active and row.action_type ~= element_values.action_type)
+local function filtered(row, filter)
+    return (filter.query ~= "" and row.match_score < -3) or
+        (filter.state_filter_active and not row.is_valid_in_state) or
+        (filter.context ~= "all" and row.context ~= filter.context) or
+        (filter.action_type ~= "all" and row.action_type ~= filter.action_type)
 end
 
-local function getElementValues(view)
-  local context_i, context = view.elements.context_filter:val()
-  local action_type_i, action_type = view.elements.action_type_filter:val()
-  return {
-    binding_list_box = view.elements.binding_list_box:val(),
-    state_filter_active = view.elements.state_filter_active:val(nil, true),
-    context_filter_active = view.elements.context_filter_active:val(nil, true),
-    context = context,
-    context_i = context_i,
-    action_type_filter_active = view.elements.action_type_filter_active:val(nil, true),
-    action_type = action_type,
-    action_type_i = action_type_i,
-    query = view.elements.query:val(),
-  }
+---@return Values
+local function values(elements)
+    local context_i, context = elements.context:val()
+    local action_type_i, action_type = elements.action_type:val()
+    return {
+        binding_list_box = elements.binding_list_box:val(),
+        state_filter_active = elements.state_filter_active:val(nil, true),
+        context = context,
+        context_i = context_i,
+        action_type = action_type,
+        action_type_i = action_type_i,
+        query = elements.query:val(),
+    }
 end
 
----@param element_values Elements
+---@param element_values Filter
 local function createDisplayedList(full_binding_list, element_values)
   local displayed_list = {}
   for _,row in ipairs(full_binding_list) do
@@ -473,7 +449,7 @@ local function open(state)
   view.elements.binding_list_box.list = full_binding_list
 
   local function updateLoop()
-    local new_element_values = getElementValues(view)
+    local new_element_values = values(view.elements)
     local update_list = false
     for element_name,new_value in pairs(new_element_values) do
       if element_values[element_name] ~= new_value then
