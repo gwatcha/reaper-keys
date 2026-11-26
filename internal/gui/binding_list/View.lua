@@ -4,7 +4,6 @@ local list_config = require'definitions.config'.gui.binding_list
 local action_types = require('action_sequence').action_types
 local createBindingListBoxElement = require('gui.binding_list.binding_list_box')
 
-local scythe = require('scythe')
 local Const = require("public.const")
 local Font = require("public.font")
 local GUI = require('gui.core')
@@ -21,7 +20,6 @@ function View:updateElementDimensions()
   local _, label_char_h = gfx.measurestr("i")
 
   local top_pad = scale(5)
-  local bottom_pad = scale(5) + label_char_h
   local side_pad = scale(20)
   local top_bar_element_h = char_h + scale(5)
   local top_bar_h = top_pad + top_bar_element_h + scale(5)
