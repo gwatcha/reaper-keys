@@ -14,6 +14,20 @@ local reaper_state = require "reaper_state"
 local scale = gui_utils.scale
 local utils = require 'utils'
 
+---@class Elements
+---@field query string
+---@field state_filter_active boolean
+---@field context_filter_active boolean
+---@field action_type_filter_active boolean
+---@field context Context
+---@field action_type ActionType
+
+---@class Row
+---@field match_score number
+---@field is_valid_in_state boolean
+---@field context Context
+---@field action_type ActionType
+
 View = {}
 
 local function drawText(self)
@@ -82,12 +96,6 @@ local function drawText(self)
     gfx.y = gfx.y + self.pad / 2
     gfx.drawstr(#self.list)
     gfx.drawstr(" bindings")
-end
-
-local function createBindingListBoxElement(list_box_element)
-    list_box_element.list = {}
-    list_box_element:val(1)
-    list_box_element.drawText = drawText
 end
 
 function View:updateElementDimensions()
@@ -177,7 +185,6 @@ function View:updateElementDimensions()
   binding_list_box.pad = scale(20)
 end
 
-
 local function createBindingListWindow(props)
   local window_settings = {
     name = "Reaper Keys Binding List",
@@ -259,12 +266,13 @@ local function createBindingListWindow(props)
                        }
   ))
 
-  window:addLayers(layer)
+    window:addLayers(layer)
 
-  local list_box = GUI.findElementByName("binding_list_box")
-  createBindingListBoxElement(list_box)
-
-  return window
+    local list_box = GUI.findElementByName("binding_list_box")
+    list_box.list = {}
+    list_box:val(1)
+    list_box.drawText = drawText
+    return window
 end
 
 function View:new(props)
@@ -311,7 +319,6 @@ function View:new(props)
 
   self:updateElementDimensions()
   self:redraw()
-
 
   return binding_list
 end
@@ -399,15 +406,14 @@ local function createBindingList(state)
   return data
 end
 
-local function rowIsFiltered(row, element_values)
-  if (element_values.query ~= "" and row.match_score < -3) or
-    (element_values.state_filter_active and not row.is_valid_in_state) or
-    (element_values.context_filter_active and row.context ~= element_values.context) or
-    (element_values.action_type_filter_active and row.action_type ~= element_values.action_type) then
-      return true
-  end
-
-  return false
+---@param row Row
+---@param element_values Elements
+---@return boolean
+local function filtered(row, element_values)
+    return (element_values.query ~= "" and row.match_score < -3) or
+        (element_values.state_filter_active and not row.is_valid_in_state) or
+        (element_values.context_filter_active and row.context ~= element_values.context) or
+        (element_values.action_type_filter_active and row.action_type ~= element_values.action_type)
 end
 
 local function getElementValues(view)
@@ -426,11 +432,12 @@ local function getElementValues(view)
   }
 end
 
+---@param element_values Elements
 local function createDisplayedList(full_binding_list, element_values)
   local displayed_list = {}
   for _,row in ipairs(full_binding_list) do
     row.sequential_match, row.match_score, row.matched_indices = fuzzy_match(element_values.query, row.action_name)
-    if not rowIsFiltered(row, element_values) then
+    if not filtered(row, element_values) then
       table.insert(displayed_list, row)
     end
   end
@@ -494,22 +501,20 @@ local function open(state)
     end
   end
 
-  local function saveState()
-    local binding_list_state = {
-      window = gui_utils.getWindowSettings(),
-      element_values = element_values
-    }
-    reaper_state.set("binding_list", binding_list_state)
-  end
+    reaper.atexit(function()
+        local binding_list_state = {
+          window = gui_utils.getWindowSettings(),
+          element_values = element_values
+        }
+        reaper_state.set("binding_list", binding_list_state)
+    end)
 
-  reaper.atexit(saveState)
+    view.window:open()
+    view.window.state.focusedElm = view.elements.query
 
-  view.window:open()
-  view.window.state.focusedElm = view.elements.query
-
-  GUI.func = updateLoop
-  GUI.funcTime = 0
-  GUI.Main()
+    GUI.func = updateLoop
+    GUI.funcTime = 0
+    GUI.Main()
 end
 
 return open
