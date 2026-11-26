@@ -1,8 +1,8 @@
 #!/bin/bash
 rm -fr reaper
-curl -sL http://reaper.fm/files/7.x/reaper717_linux_x86_64.tar.xz | tar xfJ -
+curl -sL http://reaper.fm/files/7.x/reaper786_linux_x86_64.tar.xz | tar xfJ -
 mv reaper_linux_x86_64/REAPER reaper
-curl -sLO --create-dirs https://github.com/reaper-oss/sws/releases/download/v2.14.0.3/reaper_sws-x86_64.so --output-dir reaper/UserPlugins
+curl -sLO --create-dirs https://github.com/reaper-oss/sws/releases/download/v2.14.0.7/reaper_sws-x86_64.so --output-dir reaper/UserPlugins
 rm -fr reaper_linux_x86_64 \
     reaper/{Grooves,Docs,InstallData,Plugins/reaper_{python.so,video.so},whatsnew.txt,EULA.txt,libSwell.colortheme} \
     reaper/{Resources,ColorThemes,Scripts/Cockos/D*,OSC,KeyMaps,MIDINoteNames,MouseMaps,LangPack,Cursors} \
