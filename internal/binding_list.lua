@@ -1,17 +1,94 @@
--- FIXME refractor me
+local Const = require "public.const"
+local Font = require "public.font"
+local GUI = require "gui.core"
+local Color = require "public.color"
 
-local list_config = require'definitions.config'.gui.binding_list
-local action_types = require('action_sequence').action_types
-local createBindingListBoxElement = require('gui.binding_list.binding_list_box')
-
-local Const = require("public.const")
-local Font = require("public.font")
-local GUI = require('gui.core')
-
-local gui_utils = require('gui.utils')
+local action_sequence = require "action_sequence"
+local build = require 'build'
+local definition_tables = require "definitions.bindings"
+local fuzzy_match = require "fuzzy".fuzzy_match
+local gui = require "definitions.config".gui
+local gui_utils = require "gui.utils"
+local list_config = gui.binding_list
+local reaper_state = require "reaper_state"
 local scale = gui_utils.scale
+local utils = require 'utils'
 
 View = {}
+
+local function drawText(self)
+    gfx.x, gfx.y = self.x + self.pad, self.y + self.pad
+
+    Font.set("binding_list_main")
+    local _, main_font_h = gfx.measurestr("_")
+
+    for i = self.windowY, math.min(self:windowBottom() - 1, #self.list) do
+        local current_row = self.list[i]
+
+        local action_name = current_row.action_name
+
+        local index = 1
+        for char in action_name:gmatch "." do
+            Color.set(list_config.colors.action_name)
+            for _, matched_index in ipairs(current_row.matched_indices) do
+                if index == matched_index then
+                    Color.set(list_config.colors.matched_key)
+                    break
+                end
+            end
+
+            gfx.drawstr(self:formatOutput(char))
+
+            index = index + 1
+        end
+
+        local binding = current_row.action_binding
+        if binding then
+            Color.set(list_config.colors.action_name)
+            gfx.drawstr(" (")
+            Color.set(list_config.colors.bindings[current_row.context])
+            gfx.drawstr(self:formatOutput(binding))
+            Color.set(list_config.colors.action_name)
+            gfx.drawstr(")  ")
+        end
+
+        Font.set("binding_list_label")
+        local action_type_color = gui.action_type_colors[current_row.action_type]
+        if action_type_color then
+            Color.set(action_type_color)
+        end
+
+        local str_w, str_h = gfx.measurestr(current_row.action_type)
+        local action_type_text_pos = self.w - str_w
+        if action_type_text_pos > gfx.x then
+            gfx.x = self.w - self.pad - str_w
+        else
+            gfx.x = gfx.x + 5
+        end
+
+        local old_y = gfx.y
+        gfx.y = gfx.y + (main_font_h - str_h) / 2
+        gfx.drawstr(current_row.action_type)
+        gfx.y = old_y
+
+        gfx.x = self.x + self.pad
+
+        Font.set("binding_list_main")
+        gfx.y = gfx.y + main_font_h
+    end
+
+    Font.set("binding_list_label")
+    Color.set(list_config.colors.count)
+    gfx.y = gfx.y + self.pad / 2
+    gfx.drawstr(#self.list)
+    gfx.drawstr(" bindings")
+end
+
+local function createBindingListBoxElement(list_box_element)
+    list_box_element.list = {}
+    list_box_element:val(1)
+    list_box_element.drawText = drawText
+end
 
 function View:updateElementDimensions()
   Font.set("binding_list_main")
@@ -165,7 +242,7 @@ local function createBindingListWindow(props)
                          frame = false,
                          textFont = "binding_list_label",
                          captionFont = "binding_list_label",
-                         options = action_types,
+                         options = action_sequence.action_types,
                        },
                        {
                          name = "action_type_filter_active",
@@ -256,5 +333,183 @@ function View:redraw()
   end
 end
 
+-- this reverses the keys and values of entries
+local function getBindings(entries)
+  local bindings = {}
+  if not entries then return bindings end
 
-return View
+  for entry_key,entry_value in pairs(entries) do
+    if utils.isFolder(entry_value) then
+      local folder_table = entry_value[2]
+      local folder_bindings = getBindings(folder_table)
+
+      for action_name_from_folder,binding_from_folder in pairs(folder_bindings) do
+        bindings[action_name_from_folder] = entry_key .. binding_from_folder
+      end
+    else
+      bindings[entry_value] = entry_key
+    end
+  end
+
+  return bindings
+end
+
+local function getAllBindings()
+  local bindings = {}
+
+  for context,context_definitions in pairs(definition_tables) do
+    bindings[context] = {}
+    for action_type,action_type_definitions in pairs(context_definitions) do
+      bindings[context][action_type] = getBindings(action_type_definitions)
+    end
+  end
+
+  return bindings
+end
+
+local function createBindingList(state)
+  local data = {}
+  local _, state_entries = build(state, false)
+  local bindings = getAllBindings()
+
+  for context,context_bindings in pairs(bindings) do
+    for action_type,action_type_bindings in pairs(context_bindings) do
+      local state_bindings = getBindings(state_entries[action_type])
+
+      for action_name,action_binding in pairs(action_type_bindings) do
+        local row = {
+          match_score = 0,
+          matched_indices = {},
+          context = context,
+          action_name = action_name,
+          action_binding = action_binding,
+          action_type = action_type,
+        }
+
+        if state_bindings[action_name] then
+          row.is_valid_in_state = true
+          row.action_binding = state_bindings[action_name]
+        end
+
+        table.insert(data, row)
+      end
+    end
+  end
+
+  return data
+end
+
+local function rowIsFiltered(row, element_values)
+  if (element_values.query ~= "" and row.match_score < -3) or
+    (element_values.state_filter_active and not row.is_valid_in_state) or
+    (element_values.context_filter_active and row.context ~= element_values.context) or
+    (element_values.action_type_filter_active and row.action_type ~= element_values.action_type) then
+      return true
+  end
+
+  return false
+end
+
+local function getElementValues(view)
+  local context_i, context = view.elements.context_filter:val()
+  local action_type_i, action_type = view.elements.action_type_filter:val()
+  return {
+    binding_list_box = view.elements.binding_list_box:val(),
+    state_filter_active = view.elements.state_filter_active:val(nil, true),
+    context_filter_active = view.elements.context_filter_active:val(nil, true),
+    context = context,
+    context_i = context_i,
+    action_type_filter_active = view.elements.action_type_filter_active:val(nil, true),
+    action_type = action_type,
+    action_type_i = action_type_i,
+    query = view.elements.query:val(),
+  }
+end
+
+local function createDisplayedList(full_binding_list, element_values)
+  local displayed_list = {}
+  for _,row in ipairs(full_binding_list) do
+    row.sequential_match, row.match_score, row.matched_indices = fuzzy_match(element_values.query, row.action_name)
+    if not rowIsFiltered(row, element_values) then
+      table.insert(displayed_list, row)
+    end
+  end
+
+  if element_values.query ~= "" then
+    table.sort(displayed_list, function(a, b)
+      return a.match_score > b.match_score
+    end)
+  else
+    table.sort(displayed_list, function(a, b)
+      if a.action_type == b.action_type then
+        return a.action_name < b.action_name
+      else
+        return a.action_type > b.action_type
+      end
+    end)
+  end
+
+  return displayed_list
+end
+
+local function open(state)
+  local saved_props = reaper_state.get("binding_list")
+  if not saved_props then
+    saved_props = {
+      window = {},
+      element_values = {}
+    }
+  end
+  local view = View:new(saved_props)
+  local element_values = {}
+  local full_binding_list = createBindingList(state)
+  view.elements.binding_list_box.list = full_binding_list
+
+  local function updateLoop()
+    local new_element_values = getElementValues(view)
+    local update_list = false
+    for element_name,new_value in pairs(new_element_values) do
+      if element_values[element_name] ~= new_value then
+        element_values[element_name] = new_value
+        update_list = true
+      end
+    end
+
+    if update_list then
+      update_list = false
+      view.elements.binding_list_box.list = createDisplayedList(full_binding_list, new_element_values)
+    end
+
+    if view.window.state.resized then
+      view.window.state.resized = false
+      view:redraw()
+    end
+
+    if view.action_executed then
+      local selected_row = view.elements.binding_list_box.list[view.selected_i]
+      if selected_row then
+        action_sequence.run(selected_row.action_name)
+      end
+      view.window:close()
+    end
+  end
+
+  local function saveState()
+    local binding_list_state = {
+      window = gui_utils.getWindowSettings(),
+      element_values = element_values
+    }
+    reaper_state.set("binding_list", binding_list_state)
+  end
+
+  reaper.atexit(saveState)
+
+  view.window:open()
+  view.window.state.focusedElm = view.elements.query
+
+  GUI.func = updateLoop
+  GUI.funcTime = 0
+  GUI.Main()
+end
+
+return open

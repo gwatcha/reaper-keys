@@ -1,4 +1,4 @@
-local binding_list = require 'gui.binding_list.controller'
+local binding_list = require 'binding_list'
 local executeCommand = require 'execute_command'
 local reaper_state = require 'reaper_state'
 local default_state = require 'default_state'
@@ -103,7 +103,7 @@ end
 ---@return State
 function commands.ShowBindingList(state, _)
     state.key_sequence = ""
-    binding_list.open(state)
+    binding_list(state)
     return state
 end
 
